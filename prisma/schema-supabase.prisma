@@ -1,0 +1,19 @@
+// This is your Prisma schema file for Supabase DB
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator supabaseClient {
+    provider        = "prisma-client-js"
+    previewFeatures = ["multiSchema"]
+    output          = "./generated/supabase"
+}
+
+datasource supabaseDb {
+    provider = "postgresql"
+    url      = env("SUPABASE_DATABASE_URL")
+}
+
+model User {
+    id       String @id @default(uuid())
+    email    String @unique
+    password String
+}

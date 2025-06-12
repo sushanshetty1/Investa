@@ -1,0 +1,15 @@
+// MULTI-DATABASE SETUP DOCUMENTATION
+// =====================================
+// This project uses multiple databases with separate Prisma schemas:
+//
+// 1. schema-neon.prisma    - For Neon database
+// 2. schema-supabase.prisma - For Supabase database
+//
+// USAGE:
+// - Generate clients: npm run db:generate
+// - Run migrations: npm run db:migrate:neon or npm run db:migrate:supabase
+// - Use in code: import { neonClient, supabaseClient } from '@/lib/db'
+//
+// Each database will have its own generated client in:
+// - ./generated/neon/    - Neon Prisma client
+// - ./generated/supabase/ - Supabase Prisma client
