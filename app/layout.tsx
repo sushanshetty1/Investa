@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { ScrollDetector } from "@/components/scroll-detector";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -40,13 +41,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={`${spaceGrotesk.className} bg-background text-foreground antialiased`}
-      >
-        <ThemeProvider
+      >        <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
+          <ScrollDetector />
           {children}
         </ThemeProvider>
       </body>
