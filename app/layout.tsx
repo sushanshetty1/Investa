@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Space_Grotesk } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -24,6 +25,9 @@ export const metadata: Metadata = {
     "Procurement",
     "Reporting",
   ],
+};
+
+export const viewport: Viewport = {
   themeColor: "#0f172a",
 };
 
@@ -33,11 +37,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.className} bg-gray-50 text-gray-900 antialiased dark:bg-gray-900 dark:text-gray-100`}
+        className={`${spaceGrotesk.className} bg-background text-foreground antialiased`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
