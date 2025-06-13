@@ -15,6 +15,11 @@ export default function AuthPage() {
 
     const handleAuth = async () => {
         setError('')
+        
+        if (!supabase) {
+            return setError('Authentication service is not configured')
+        }
+        
         if (!email || !password || (isSignup && !name)) {
             return setError('Please fill in all fields')
         }
@@ -32,8 +37,7 @@ export default function AuthPage() {
                 await supabase.from('profiles').insert([{ id: user.id, name }])
                 router.push('/')
             }
-        } else {
-            const { error: loginError } = await supabase.auth.signInWithPassword({
+        } else {            const { error: loginError } = await supabase.auth.signInWithPassword({
                 email,
                 password,
             })
@@ -45,50 +49,59 @@ export default function AuthPage() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
             <div className="bg-gray-800 p-8 rounded-lg w-96 space-y-4 shadow-lg">
-                <h1 className="text-2xl font-bold text-center">
-                    {isSignup ? 'Create an account' : 'Login'}
-                </h1>
+                {!supabase ? (
+                    <div className="text-center">
+                        <h1 className="text-2xl font-bold mb-4">Configuration Required</h1>
+                        <p className="text-red-400">Please configure Supabase environment variables to use authentication.</p>
+                    </div>
+                ) : (
+                    <>
+                        <h1 className="text-2xl font-bold text-center">
+                            {isSignup ? 'Create an account' : 'Login'}
+                        </h1>
 
-                {isSignup && (
-                    <input
-                        type="text"
-                        placeholder="Name"
-                        className="w-full p-2 rounded bg-gray-700 focus:outline-none"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
+                        {isSignup && (
+                            <input
+                                type="text"
+                                placeholder="Name"
+                                className="w-full p-2 rounded bg-gray-700 focus:outline-none"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        )}
+
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            className="w-full p-2 rounded bg-gray-700 focus:outline-none"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            className="w-full p-2 rounded bg-gray-700 focus:outline-none"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+
+                        {error && <p className="text-red-400 text-sm">{error}</p>}
+
+                        <button
+                            className="w-full bg-green-500 hover:bg-green-600 p-2 rounded font-semibold"
+                            onClick={handleAuth}
+                        >
+                            {isSignup ? 'Sign Up' : 'Login'}
+                        </button>
+
+                        <p
+                            className="text-center text-sm cursor-pointer text-gray-300 hover:text-white"
+                            onClick={() => setIsSignup(!isSignup)}
+                        >
+                            {isSignup ? 'Already have an account? Login' : "Don't have an account? Sign up"}
+                        </p>
+                    </>
                 )}
-
-                <input
-                    type="email"
-                    placeholder="Email"
-                    className="w-full p-2 rounded bg-gray-700 focus:outline-none"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    className="w-full p-2 rounded bg-gray-700 focus:outline-none"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-
-                {error && <p className="text-red-400 text-sm">{error}</p>}
-
-                <button
-                    className="w-full bg-green-500 hover:bg-green-600 p-2 rounded font-semibold"
-                    onClick={handleAuth}
-                >
-                    {isSignup ? 'Sign Up' : 'Login'}
-                </button>
-
-                <p
-                    className="text-center text-sm cursor-pointer text-gray-300 hover:text-white"
-                    onClick={() => setIsSignup(!isSignup)}
-                >
-                    {isSignup ? 'Already have an account? Login' : "Don't have an account? Sign up"}
-                </p>
             </div>
         </div>
     )
