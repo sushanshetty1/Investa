@@ -130,7 +130,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\susha\\Desktop\\invista\\prisma\\generated\\neon",
+      "value": "C:\\Users\\SHAUN RODRIGUES\\OneDrive\\Desktop\\INVESTA\\Invista\\prisma\\generated\\neon",
       "fromEnvVar": null
     },
     "config": {
@@ -146,7 +146,7 @@ const config = {
     "previewFeatures": [
       "multiSchema"
     ],
-    "sourceFilePath": "C:\\Users\\susha\\Desktop\\invista\\prisma\\schema-neon.prisma",
+    "sourceFilePath": "C:\\Users\\SHAUN RODRIGUES\\OneDrive\\Desktop\\INVESTA\\Invista\\prisma\\schema-neon.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

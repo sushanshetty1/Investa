@@ -123,7 +123,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\susha\\Desktop\\invista\\prisma\\generated\\supabase",
+      "value": "C:\\Users\\SHAUN RODRIGUES\\OneDrive\\Desktop\\INVESTA\\Invista\\prisma\\generated\\supabase",
       "fromEnvVar": null
     },
     "config": {
@@ -139,7 +139,7 @@ const config = {
     "previewFeatures": [
       "multiSchema"
     ],
-    "sourceFilePath": "C:\\Users\\susha\\Desktop\\invista\\prisma\\schema-supabase.prisma",
+    "sourceFilePath": "C:\\Users\\SHAUN RODRIGUES\\OneDrive\\Desktop\\INVESTA\\Invista\\prisma\\schema-supabase.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
