@@ -3,6 +3,7 @@ import "./globals.css";
 import { Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ScrollDetector } from "@/components/scroll-detector";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -40,15 +41,16 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${spaceGrotesk.className} bg-background text-foreground antialiased`}
-      >        <ThemeProvider
+        className={`${spaceGrotesk.className} bg-background text-foreground antialiased`}      >        <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <ScrollDetector />
-          {children}
+          <AuthProvider>
+            <ScrollDetector />
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

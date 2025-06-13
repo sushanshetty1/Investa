@@ -1,13 +1,14 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { 
-  Package, 
-  BarChart3, 
-  Users, 
-  ShoppingCart, 
-  FileText, 
-  Truck, 
-  Bell, 
+import Link from 'next/link';
+import {
+  Package,
+  BarChart3,
+  Users,
+  ShoppingCart,
+  FileText,
+  Truck,
+  Bell,
   Shield,
   CheckCircle,
   XCircle,
@@ -25,10 +26,10 @@ import { ThemeToggle } from '@/components/theme-toggle';
 const InvistaLanding = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showFloatingCTA, setShowFloatingCTA] = useState(false);
-  
+
   useEffect(() => {
     setIsLoaded(true);
-    
+
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
       const triggerHeight = window.innerHeight * 0.5; // Show after scrolling 50% of viewport
@@ -52,16 +53,17 @@ const InvistaLanding = () => {
       <nav className="bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">            <div className="flex items-center">
-              <Package className="h-8 w-8 text-primary mr-2" />
-              <span className="text-xl font-bold text-foreground">Invista</span>
-            </div><div className="hidden md:flex items-center space-x-8">              <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</a>
+            <Package className="h-8 w-8 text-primary mr-2" />
+            <span className="text-xl font-bold text-foreground">Invista</span>
+          </div><div className="hidden md:flex items-center space-x-8">              <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</a>
               <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">How It Works</a>
-              <a href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</a>
-              <div className="flex items-center space-x-4">
+              <Link href="/auth/logout" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</Link>              <div className="flex items-center space-x-4">
                 <ThemeToggle />
-                <button className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-                  Get Started
-                </button>
+                <Link href="/auth/login">
+                  <button className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+                    Get Started
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -86,7 +88,7 @@ const InvistaLanding = () => {
         <div className="absolute bottom-20 right-40 animate-float delay-300 opacity-30">
           <div className="w-2 h-2 bg-emerald-400 rounded-full blur-[0.5px]" />
         </div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[600px]">
             <div className="space-y-8 flex flex-col justify-center">
               {/* Status Badge */}
@@ -95,7 +97,7 @@ const InvistaLanding = () => {
                 <Zap className="h-4 w-4 mr-2" />
                 Next-Gen Inventory & Supply Chain Platform
               </div>
-              
+
               {/* Main Headline */}
               <div className="space-y-4">
                 <h1 className="text-5xl lg:text-7xl font-bold text-foreground leading-tight">
@@ -104,21 +106,21 @@ const InvistaLanding = () => {
                     Starts Here
                   </span>
                 </h1>
-                
+
                 <div className="flex items-center space-x-2 text-muted-foreground">
                   <div className="h-1 w-12 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full" />
                   <span className="text-sm font-medium">Powered by Invista</span>
                 </div>
               </div>
-              
+
               {/* Enhanced Description */}
               <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
-                Transform your business with our unified platform that provides 
-                <span className="text-foreground font-semibold"> real-time inventory visibility</span>, 
-                <span className="text-foreground font-semibold"> automated supplier collaboration</span>, 
+                Transform your business with our unified platform that provides
+                <span className="text-foreground font-semibold"> real-time inventory visibility</span>,
+                <span className="text-foreground font-semibold"> automated supplier collaboration</span>,
                 and <span className="text-foreground font-semibold">intelligent logistics management</span>.
               </p>
-                {/* Key Benefits with Industry Stats */}
+              {/* Key Benefits with Industry Stats */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex items-center space-x-3 group hover:bg-emerald-50/50 dark:hover:bg-chart-2/10 p-3 rounded-lg transition-all duration-300">
                   <div className="w-8 h-8 bg-emerald-100 dark:bg-chart-2/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -201,7 +203,7 @@ const InvistaLanding = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-4">
                 <button className="group bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center">
@@ -226,37 +228,37 @@ const InvistaLanding = () => {
                   </div>
                   <div className="text-xs text-muted-foreground font-medium">Invista Dashboard</div>
                 </div>
-                
+
                 {/* Dashboard Content */}
                 <div className="space-y-6">                  {/* Status Cards */}                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-chart-2/20 dark:to-chart-2/10 p-4 rounded-xl hover:shadow-md transition-all duration-300">
-                      <div className="flex items-start justify-between h-full">
-                        <div className="flex flex-col justify-center h-full">
-                          <div className="text-2xl font-bold text-emerald-700 dark:text-chart-2 mb-1">234</div>
-                          <div className="text-sm text-emerald-600 dark:text-chart-2/80 mb-1">Active Orders</div>
-                          <div className="text-xs text-emerald-500 dark:text-chart-2/60">+8 today</div>
-                        </div>
-                        <div className="relative mt-1">
-                          <ShoppingCart className="h-8 w-8 text-emerald-600 dark:text-chart-2" />
-                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full animate-ping" />
-                        </div>
+                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-chart-2/20 dark:to-chart-2/10 p-4 rounded-xl hover:shadow-md transition-all duration-300">
+                    <div className="flex items-start justify-between h-full">
+                      <div className="flex flex-col justify-center h-full">
+                        <div className="text-2xl font-bold text-emerald-700 dark:text-chart-2 mb-1">234</div>
+                        <div className="text-sm text-emerald-600 dark:text-chart-2/80 mb-1">Active Orders</div>
+                        <div className="text-xs text-emerald-500 dark:text-chart-2/60">+8 today</div>
                       </div>
-                    </div>                    
-                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-primary/20 dark:to-primary/10 p-4 rounded-xl hover:shadow-md transition-all duration-300">
-                      <div className="flex items-start justify-between h-full">
-                        <div className="flex flex-col justify-center h-full">
-                          <div className="text-2xl font-bold text-blue-700 dark:text-primary mb-1">12</div>
-                          <div className="text-sm text-blue-600 dark:text-primary/80 mb-1">Low Stock</div>
-                          <div className="text-xs text-orange-500">Needs attention</div>
-                        </div>
-                        <div className="relative mt-1">
-                          <Bell className="h-8 w-8 text-blue-600 dark:text-primary animate-pulse" />
-                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-400 rounded-full" />
-                        </div>
+                      <div className="relative mt-1">
+                        <ShoppingCart className="h-8 w-8 text-emerald-600 dark:text-chart-2" />
+                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full animate-ping" />
                       </div>
                     </div>
                   </div>
-                    {/* Live Activity Feed */}
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-primary/20 dark:to-primary/10 p-4 rounded-xl hover:shadow-md transition-all duration-300">
+                    <div className="flex items-start justify-between h-full">
+                      <div className="flex flex-col justify-center h-full">
+                        <div className="text-2xl font-bold text-blue-700 dark:text-primary mb-1">12</div>
+                        <div className="text-sm text-blue-600 dark:text-primary/80 mb-1">Low Stock</div>
+                        <div className="text-xs text-orange-500">Needs attention</div>
+                      </div>
+                      <div className="relative mt-1">
+                        <Bell className="h-8 w-8 text-blue-600 dark:text-primary animate-pulse" />
+                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-400 rounded-full" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                  {/* Live Activity Feed */}
                   <div className="bg-slate-50 dark:bg-muted/50 rounded-xl p-4 space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-foreground">Live Activity Feed</span>
@@ -295,7 +297,7 @@ const InvistaLanding = () => {
                         <span className="text-indigo-600 font-medium">12m ago</span>
                       </div>
                     </div>
-                    
+
                     {/* Quick Actions */}
                     <div className="pt-2 border-t border-border/50">
                       <div className="flex items-center justify-between">
@@ -314,7 +316,7 @@ const InvistaLanding = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Mini Chart */}
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
@@ -347,7 +349,7 @@ const InvistaLanding = () => {
                   </div>
                 </div>
               </div>
-                {/* Floating Cards - Better Positioned */}
+              {/* Floating Cards - Better Positioned */}
               <div className="absolute -top-4 -right-4 lg:-top-6 lg:-right-6 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white p-3 lg:p-4 rounded-xl shadow-lg transform rotate-2 hover:rotate-0 transition-transform duration-300">
                 <div className="flex items-center space-x-2">
                   <Truck className="h-4 lg:h-6 w-4 lg:w-6" />
@@ -357,7 +359,7 @@ const InvistaLanding = () => {
                   </div>
                 </div>
               </div>
-              
+
               <div className="absolute -bottom-4 -left-4 lg:-bottom-6 lg:-left-6 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-3 lg:p-4 rounded-xl shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
                 <div className="flex items-center space-x-2">
                   <BarChart3 className="h-4 lg:h-6 w-4 lg:w-6" />
@@ -376,7 +378,7 @@ const InvistaLanding = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8">
             <p className="text-sm text-muted-foreground font-medium mb-4">Trusted by 500+ companies across industries</p>
-            
+
             {/* Industry Icons */}
             <div className="flex justify-center items-center space-x-8 opacity-60 hover:opacity-80 transition-opacity">
               <div className="flex items-center space-x-2 text-muted-foreground">
@@ -405,7 +407,7 @@ const InvistaLanding = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Key Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="space-y-2">
@@ -443,7 +445,7 @@ const InvistaLanding = () => {
               Everything You Need in One Platform
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              From multi-location inventory tracking to intelligent forecasting, 
+              From multi-location inventory tracking to intelligent forecasting,
               Invista provides the tools modern supply chains need to thrive.
             </p>
           </div>
@@ -456,7 +458,7 @@ const InvistaLanding = () => {
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-4">Multi-Location Tracking</h3>
               <p className="text-muted-foreground mb-6">
-                Monitor inventory levels across unlimited warehouses, stores, and distribution centers 
+                Monitor inventory levels across unlimited warehouses, stores, and distribution centers
                 with real-time synchronization and automated stock transfers.
               </p>
               <div className="space-y-3">
@@ -482,7 +484,7 @@ const InvistaLanding = () => {
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-4">AI-Powered Forecasting</h3>
               <p className="text-muted-foreground mb-6">
-                Leverage machine learning algorithms to predict demand patterns, optimize stock levels, 
+                Leverage machine learning algorithms to predict demand patterns, optimize stock levels,
                 and prevent stockouts with intelligent reorder recommendations.
               </p>
               <div className="space-y-3">
@@ -508,7 +510,7 @@ const InvistaLanding = () => {
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-4">Supplier Collaboration</h3>
               <p className="text-muted-foreground mb-6">
-                Streamline supplier relationships with automated purchase orders, 
+                Streamline supplier relationships with automated purchase orders,
                 real-time communication, and performance tracking dashboards.
               </p>
               <div className="space-y-3">
@@ -579,10 +581,10 @@ const InvistaLanding = () => {
             <h2 className="text-4xl font-bold text-foreground mb-4">Core Features</h2>
             <p className="text-xl text-muted-foreground">Everything you need to manage your supply chain efficiently</p>
           </div>          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">            <div className="bg-white dark:bg-card p-6 rounded-xl border border-slate-200 dark:border dark:border-border hover:border-slate-300 dark:hover:border-border/60 transition-colors">
-              <BarChart3 className="h-12 w-12 text-slate-700 dark:text-primary mb-4" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">Real-Time Inventory Monitoring</h3>
-              <p className="text-muted-foreground">Track stock levels across all warehouses with live updates</p>
-            </div>
+            <BarChart3 className="h-12 w-12 text-slate-700 dark:text-primary mb-4" />
+            <h3 className="text-xl font-semibold text-foreground mb-2">Real-Time Inventory Monitoring</h3>
+            <p className="text-muted-foreground">Track stock levels across all warehouses with live updates</p>
+          </div>
 
             <div className="bg-white dark:bg-card p-6 rounded-xl border border-slate-200 dark:border dark:border-border hover:border-slate-300 dark:hover:border-border/60 transition-colors">
               <ShoppingCart className="h-12 w-12 text-emerald-700 dark:text-chart-2 mb-4" />
