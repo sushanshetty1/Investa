@@ -1,6 +1,8 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   Package,
   BarChart3,
@@ -26,6 +28,15 @@ import { ThemeToggle } from '@/components/theme-toggle';
 const InvistaLanding = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showFloatingCTA, setShowFloatingCTA] = useState(false);
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  // Redirect if user is already logged in
+  useEffect(() => {
+    if (!loading && user) {
+      router.push('/dashboard');
+    }
+  }, [user, loading, router]);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -39,6 +50,23 @@ const InvistaLanding = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Show loading state while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render the landing page if user is logged in (will redirect)
+  if (user) {
+    return null;
+  }
 
   const AnimatedCounter = ({ value, suffix = "" }: { value: string; suffix?: string }) => {
     return (
@@ -68,20 +96,20 @@ const InvistaLanding = () => {
         </div>
         <div className="absolute bottom-20 right-40 animate-float delay-300 opacity-30">
           <div className="w-2 h-2 bg-emerald-400 rounded-full blur-[0.5px]" />
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center min-h-[600px]">
-            <div className="space-y-8 flex flex-col justify-center">
+        </div>        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center min-h-[500px] sm:min-h-[600px]">
+            <div className="space-y-6 lg:space-y-8 flex flex-col justify-center order-2 lg:order-1">
               {/* Status Badge */}
-              <div className="inline-flex items-center bg-gradient-to-r from-emerald-50/80 to-blue-50/80 dark:from-primary/10 dark:to-chart-2/10 text-emerald-700 dark:text-primary px-4 py-2 rounded-full text-sm font-medium border border-emerald-200/50 dark:border-primary/20 backdrop-blur-sm">
+              <div className="inline-flex items-center bg-gradient-to-r from-emerald-50/80 to-blue-50/80 dark:from-primary/10 dark:to-chart-2/10 text-emerald-700 dark:text-primary px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium border border-emerald-200/50 dark:border-primary/20 backdrop-blur-sm w-fit">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full mr-2 animate-pulse" />
-                <Zap className="h-4 w-4 mr-2" />
-                Next-Gen Inventory & Supply Chain Platform
+                <Zap className="h-3 w-3 sm:h-4 sm:w-4 mr-2" />
+                <span className="hidden sm:inline">Next-Gen Inventory & Supply Chain Platform</span>
+                <span className="sm:hidden">Next-Gen Supply Chain</span>
               </div>
 
               {/* Main Headline */}
-              <div className="space-y-4">
-                <h1 className="text-5xl lg:text-7xl font-bold text-foreground leading-tight">
+              <div className="space-y-3 sm:space-y-4">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight">
                   Smart Supply Chain
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-600 dark:from-primary dark:via-chart-3 dark:to-chart-2 block">
                     Starts Here
@@ -89,193 +117,195 @@ const InvistaLanding = () => {
                 </h1>
 
                 <div className="flex items-center space-x-2 text-muted-foreground">
-                  <div className="h-1 w-12 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full" />
-                  <span className="text-sm font-medium">Powered by Invista</span>
+                  <div className="h-1 w-8 sm:w-12 bg-gradient-to-r from-blue-500 to-emerald-500 rounded-full" />
+                  <span className="text-xs sm:text-sm font-medium">Powered by Invista</span>
                 </div>
               </div>
 
               {/* Enhanced Description */}
-              <p className="text-xl lg:text-2xl text-muted-foreground leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground leading-relaxed">
                 Transform your business with our unified platform that provides
                 <span className="text-foreground font-semibold"> real-time inventory visibility</span>,
                 <span className="text-foreground font-semibold"> automated supplier collaboration</span>,
                 and <span className="text-foreground font-semibold">intelligent logistics management</span>.
-              </p>
-              {/* Key Benefits with Industry Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center space-x-3 group hover:bg-emerald-50/50 dark:hover:bg-chart-2/10 p-3 rounded-lg transition-all duration-300">
-                  <div className="w-8 h-8 bg-emerald-100 dark:bg-chart-2/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <CheckCircle className="h-5 w-5 text-emerald-600 dark:text-chart-2" />
+              </p>              {/* Key Benefits with Industry Stats */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="flex items-center space-x-3 group hover:bg-emerald-50/50 dark:hover:bg-chart-2/10 p-2 sm:p-3 rounded-lg transition-all duration-300">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-emerald-100 dark:bg-chart-2/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                    <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600 dark:text-chart-2" />
                   </div>
-                  <div>
-                    <span className="text-foreground font-medium block">99.9% System Uptime</span>
+                  <div className="min-w-0">
+                    <span className="text-sm sm:text-base text-foreground font-medium block">99.9% System Uptime</span>
                     <span className="text-xs text-muted-foreground">Industry leading reliability</span>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3 group hover:bg-blue-50/50 dark:hover:bg-primary/10 p-3 rounded-lg transition-all duration-300">
-                  <div className="w-8 h-8 bg-blue-100 dark:bg-primary/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Zap className="h-5 w-5 text-blue-600 dark:text-primary" />
+                <div className="flex items-center space-x-3 group hover:bg-blue-50/50 dark:hover:bg-primary/10 p-2 sm:p-3 rounded-lg transition-all duration-300">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-100 dark:bg-primary/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                    <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-primary" />
                   </div>
-                  <div>
-                    <span className="text-foreground font-medium block">Real-Time Analytics</span>
+                  <div className="min-w-0">
+                    <span className="text-sm sm:text-base text-foreground font-medium block">Real-Time Analytics</span>
                     <span className="text-xs text-muted-foreground">Sub-second data updates</span>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3 group hover:bg-indigo-50/50 dark:hover:bg-chart-3/10 p-3 rounded-lg transition-all duration-300">
-                  <div className="w-8 h-8 bg-indigo-100 dark:bg-chart-3/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Shield className="h-5 w-5 text-indigo-600 dark:text-chart-3" />
+                <div className="flex items-center space-x-3 group hover:bg-indigo-50/50 dark:hover:bg-chart-3/10 p-2 sm:p-3 rounded-lg transition-all duration-300">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-indigo-100 dark:bg-chart-3/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                    <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 dark:text-chart-3" />
                   </div>
-                  <div>
-                    <span className="text-foreground font-medium block">Enterprise Security</span>
+                  <div className="min-w-0">
+                    <span className="text-sm sm:text-base text-foreground font-medium block">Enterprise Security</span>
                     <span className="text-xs text-muted-foreground">SOC 2 Type II compliant</span>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3 group hover:bg-amber-50/50 dark:hover:bg-chart-4/10 p-3 rounded-lg transition-all duration-300">
-                  <div className="w-8 h-8 bg-amber-100 dark:bg-chart-4/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <RefreshCw className="h-5 w-5 text-amber-600 dark:text-chart-4" />
+                <div className="flex items-center space-x-3 group hover:bg-amber-50/50 dark:hover:bg-chart-4/10 p-2 sm:p-3 rounded-lg transition-all duration-300">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-amber-100 dark:bg-chart-4/20 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform flex-shrink-0">
+                    <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5 text-amber-600 dark:text-chart-4" />
                   </div>
-                  <div>
-                    <span className="text-foreground font-medium block">Auto-Replenishment</span>
+                  <div className="min-w-0">
+                    <span className="text-sm sm:text-base text-foreground font-medium block">Auto-Replenishment</span>
                     <span className="text-xs text-muted-foreground">AI-powered demand forecasting</span>
                   </div>
                 </div>
               </div>              {/* Enhanced Key Metrics */}
-              <div className="grid grid-cols-3 gap-4 lg:gap-6 p-4 lg:p-6 bg-white/40 dark:bg-card/30 backdrop-blur-sm rounded-2xl border border-white/30 dark:border-border/30 shadow-lg">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6 p-3 sm:p-4 lg:p-6 bg-white/40 dark:bg-card/30 backdrop-blur-sm rounded-2xl border border-white/30 dark:border-border/30 shadow-lg">
                 <div className="text-center group hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-center justify-center mb-3">
+                  <div className="flex items-center justify-center mb-2 sm:mb-3">
                     <div className="relative">
-                      <Warehouse className="h-6 lg:h-8 w-6 lg:w-8 text-blue-600 dark:text-primary group-hover:scale-110 transition-transform" />
-                      <div className="absolute -top-1 -right-1 w-2 lg:w-3 h-2 lg:h-3 bg-emerald-500 rounded-full animate-pulse" />
+                      <Warehouse className="h-4 w-4 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-blue-600 dark:text-primary group-hover:scale-110 transition-transform" />
+                      <div className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-3 lg:h-3 bg-emerald-500 rounded-full animate-pulse" />
                     </div>
                   </div>
                   <AnimatedCounter value="50+" />
-                  <div className="text-xs lg:text-sm text-muted-foreground font-medium">Active Warehouses</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">Active Warehouses</div>
                   <div className="text-xs text-emerald-600 dark:text-chart-2 mt-1 flex items-center justify-center">
-                    <TrendingUp className="h-2.5 lg:h-3 w-2.5 lg:w-3 mr-1" />
-                    +12% this month
+                    <TrendingUp className="h-2 w-2 sm:h-2.5 sm:w-2.5 lg:h-3 lg:w-3 mr-1" />
+                    <span className="hidden sm:inline">+12% this month</span>
+                    <span className="sm:hidden">+12%</span>
                   </div>
                 </div>
                 <div className="text-center group hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-center justify-center mb-3">
+                  <div className="flex items-center justify-center mb-2 sm:mb-3">
                     <div className="relative">
-                      <RefreshCw className="h-6 lg:h-8 w-6 lg:w-8 text-emerald-600 dark:text-chart-2 group-hover:rotate-180 transition-transform duration-500" />
-                      <div className="absolute -top-1 -right-1 w-2 lg:w-3 h-2 lg:h-3 bg-blue-500 rounded-full animate-pulse" />
+                      <RefreshCw className="h-4 w-4 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-emerald-600 dark:text-chart-2 group-hover:rotate-180 transition-transform duration-500" />
+                      <div className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-3 lg:h-3 bg-blue-500 rounded-full animate-pulse" />
                     </div>
                   </div>
-                  <div className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">15K+</div>
-                  <div className="text-xs lg:text-sm text-muted-foreground font-medium">Orders Processed</div>
+                  <div className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">15K+</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">Orders Processed</div>
                   <div className="text-xs text-emerald-600 dark:text-chart-2 mt-1 flex items-center justify-center">
-                    <Clock className="h-2.5 lg:h-3 w-2.5 lg:w-3 mr-1" />
-                    Daily average
+                    <Clock className="h-2 w-2 sm:h-2.5 sm:w-2.5 lg:h-3 lg:w-3 mr-1" />
+                    <span className="hidden sm:inline">Daily average</span>
+                    <span className="sm:hidden">Daily</span>
                   </div>
                 </div>
                 <div className="text-center group hover:scale-105 transition-transform duration-300">
-                  <div className="flex items-center justify-center mb-3">
+                  <div className="flex items-center justify-center mb-2 sm:mb-3">
                     <div className="relative">
-                      <Shield className="h-6 lg:h-8 w-6 lg:w-8 text-indigo-600 dark:text-chart-3 group-hover:scale-110 transition-transform" />
-                      <div className="absolute -top-1 -right-1 w-2 lg:w-3 h-2 lg:h-3 bg-emerald-500 rounded-full animate-pulse" />
+                      <Shield className="h-4 w-4 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-indigo-600 dark:text-chart-3 group-hover:scale-110 transition-transform" />
+                      <div className="absolute -top-0.5 -right-0.5 sm:-top-1 sm:-right-1 w-1.5 h-1.5 sm:w-2 sm:h-2 lg:w-3 lg:h-3 bg-emerald-500 rounded-full animate-pulse" />
                     </div>
                   </div>
-                  <div className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">99.9%</div>
-                  <div className="text-xs lg:text-sm text-muted-foreground font-medium">System Uptime</div>
+                  <div className="text-xl sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">99.9%</div>
+                  <div className="text-xs sm:text-sm text-muted-foreground font-medium">System Uptime</div>
                   <div className="text-xs text-emerald-600 dark:text-chart-2 mt-1 flex items-center justify-center">
-                    <Globe className="h-2.5 lg:h-3 w-2.5 lg:w-3 mr-1" />
-                    Last 30 days
+                    <Globe className="h-2 w-2 sm:h-2.5 sm:w-2.5 lg:h-3 lg:w-3 mr-1" />
+                    <span className="hidden sm:inline">Last 30 days</span>
+                    <span className="sm:hidden">30 days</span>
                   </div>
                 </div>
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button className="group bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                <Link href="/auth/signUp" className="group bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center text-sm sm:text-base">
                   <span>Start Free Trial</span>
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-                <button className="group border-2 border-foreground/20 hover:border-foreground/40 text-foreground px-8 py-4 rounded-xl font-semibold transition-all duration-300 hover:bg-foreground/5 flex items-center justify-center">
-                  <Package className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <button className="group border-2 border-foreground/20 hover:border-foreground/40 text-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 hover:bg-foreground/5 flex items-center justify-center text-sm sm:text-base">
+                  <Package className="mr-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:rotate-12 transition-transform" />
                   <span>View Demo</span>
                 </button>
               </div>
             </div>            {/* Enhanced Right Side - Dashboard Preview */}
-            <div className="relative group flex items-center justify-center">
+            <div className="hidden lg:block relative group items-center justify-center order-1 lg:order-2">
               {/* Main Dashboard Card */}
-              <div className="relative bg-white/90 dark:bg-card/90 rounded-3xl p-6 lg:p-8 shadow-2xl border border-white/40 dark:border-border/40 backdrop-blur-sm group-hover:shadow-3xl transition-all duration-500 transform group-hover:-translate-y-2 w-full max-w-md">
+              <div className="relative bg-white/90 dark:bg-card/90 rounded-3xl p-4 sm:p-6 lg:p-8 shadow-2xl border border-white/40 dark:border-border/40 backdrop-blur-sm group-hover:shadow-3xl transition-all duration-500 transform group-hover:-translate-y-2 w-full max-w-sm sm:max-w-md">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
                   <div className="flex items-center space-x-2">
-                    <div className="w-2.5 h-2.5 bg-red-400 rounded-full" />
-                    <div className="w-2.5 h-2.5 bg-yellow-400 rounded-full" />
-                    <div className="w-2.5 h-2.5 bg-green-400 rounded-full" />
+                    <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-red-400 rounded-full" />
+                    <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-yellow-400 rounded-full" />
+                    <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-green-400 rounded-full" />
                   </div>
                   <div className="text-xs text-muted-foreground font-medium">Invista Dashboard</div>
                 </div>
 
                 {/* Dashboard Content */}
-                <div className="space-y-6">                  {/* Status Cards */}                  <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-chart-2/20 dark:to-chart-2/10 p-4 rounded-xl hover:shadow-md transition-all duration-300">
-                    <div className="flex items-start justify-between h-full">
-                      <div className="flex flex-col justify-center h-full">
-                        <div className="text-2xl font-bold text-emerald-700 dark:text-chart-2 mb-1">234</div>
-                        <div className="text-sm text-emerald-600 dark:text-chart-2/80 mb-1">Active Orders</div>
-                        <div className="text-xs text-emerald-500 dark:text-chart-2/60">+8 today</div>
-                      </div>
-                      <div className="relative mt-1">
-                        <ShoppingCart className="h-8 w-8 text-emerald-600 dark:text-chart-2" />
-                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full animate-ping" />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-primary/20 dark:to-primary/10 p-4 rounded-xl hover:shadow-md transition-all duration-300">
-                    <div className="flex items-start justify-between h-full">
-                      <div className="flex flex-col justify-center h-full">
-                        <div className="text-2xl font-bold text-blue-700 dark:text-primary mb-1">12</div>
-                        <div className="text-sm text-blue-600 dark:text-primary/80 mb-1">Low Stock</div>
-                        <div className="text-xs text-orange-500">Needs attention</div>
-                      </div>
-                      <div className="relative mt-1">
-                        <Bell className="h-8 w-8 text-blue-600 dark:text-primary animate-pulse" />
-                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-orange-400 rounded-full" />
+                <div className="space-y-4 sm:space-y-6">                  {/* Status Cards */}                  
+                  <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-chart-2/20 dark:to-chart-2/10 p-3 sm:p-4 rounded-xl hover:shadow-md transition-all duration-300">
+                      <div className="flex items-start justify-between h-full">
+                        <div className="flex flex-col justify-center h-full min-w-0">
+                          <div className="text-xl sm:text-2xl font-bold text-emerald-700 dark:text-chart-2 mb-1">234</div>
+                          <div className="text-xs sm:text-sm text-emerald-600 dark:text-chart-2/80 mb-1">Active Orders</div>
+                          <div className="text-xs text-emerald-500 dark:text-chart-2/60">+8 today</div>
+                        </div>
+                        <div className="relative mt-1 flex-shrink-0">
+                          <ShoppingCart className="h-6 w-6 sm:h-8 sm:w-8 text-emerald-600 dark:text-chart-2" />
+                          <div className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-emerald-400 rounded-full animate-ping" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-                  {/* Live Activity Feed */}
-                  <div className="bg-slate-50 dark:bg-muted/50 rounded-xl p-4 space-y-3">
+                    <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-primary/20 dark:to-primary/10 p-3 sm:p-4 rounded-xl hover:shadow-md transition-all duration-300">
+                      <div className="flex items-start justify-between h-full">
+                        <div className="flex flex-col justify-center h-full min-w-0">
+                          <div className="text-xl sm:text-2xl font-bold text-blue-700 dark:text-primary mb-1">12</div>
+                          <div className="text-xs sm:text-sm text-blue-600 dark:text-primary/80 mb-1">Low Stock</div>
+                          <div className="text-xs text-orange-500">Needs attention</div>
+                        </div>
+                        <div className="relative mt-1 flex-shrink-0">
+                          <Bell className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600 dark:text-primary animate-pulse" />
+                          <div className="absolute -top-1 -right-1 w-2 h-2 sm:w-3 sm:h-3 bg-orange-400 rounded-full" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>                  {/* Live Activity Feed */}
+                  <div className="bg-slate-50 dark:bg-muted/50 rounded-xl p-3 sm:p-4 space-y-2 sm:space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-foreground">Live Activity Feed</span>
+                      <span className="text-xs sm:text-sm font-medium text-foreground">Live Activity Feed</span>
                       <div className="flex items-center space-x-1">
-                        <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
+                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 rounded-full animate-pulse" />
                         <span className="text-xs text-muted-foreground">Live</span>
                       </div>
                     </div>
-                    <div className="space-y-2 text-xs">
-                      <div className="flex items-center justify-between py-2 px-3 bg-emerald-50 dark:bg-chart-2/10 rounded-lg">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-emerald-500 rounded-full" />
-                          <span className="text-muted-foreground">Order #1234 shipped to Chicago</span>
+                    <div className="space-y-1.5 sm:space-y-2 text-xs">
+                      <div className="flex items-center justify-between py-1.5 sm:py-2 px-2 sm:px-3 bg-emerald-50 dark:bg-chart-2/10 rounded-lg">
+                        <div className="flex items-center space-x-2 min-w-0">
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-emerald-500 rounded-full flex-shrink-0" />
+                          <span className="text-muted-foreground truncate">Order #1234 shipped to Chicago</span>
                         </div>
-                        <span className="text-emerald-600 font-medium">2m ago</span>
+                        <span className="text-emerald-600 font-medium text-xs whitespace-nowrap ml-2">2m ago</span>
                       </div>
-                      <div className="flex items-center justify-between py-2 px-3 bg-orange-50 dark:bg-chart-4/10 rounded-lg">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-orange-500 rounded-full" />
-                          <span className="text-muted-foreground">Low stock alert: iPhone Cases</span>
+                      <div className="flex items-center justify-between py-1.5 sm:py-2 px-2 sm:px-3 bg-orange-50 dark:bg-chart-4/10 rounded-lg">
+                        <div className="flex items-center space-x-2 min-w-0">
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-orange-500 rounded-full flex-shrink-0" />
+                          <span className="text-muted-foreground truncate">Low stock alert: iPhone Cases</span>
                         </div>
-                        <span className="text-orange-600 font-medium">5m ago</span>
+                        <span className="text-orange-600 font-medium text-xs whitespace-nowrap ml-2">5m ago</span>
                       </div>
-                      <div className="flex items-center justify-between py-2 px-3 bg-blue-50 dark:bg-primary/10 rounded-lg">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full" />
-                          <span className="text-muted-foreground">New supplier: TechParts Inc.</span>
+                      <div className="flex items-center justify-between py-1.5 sm:py-2 px-2 sm:px-3 bg-blue-50 dark:bg-primary/10 rounded-lg">
+                        <div className="flex items-center space-x-2 min-w-0">
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full flex-shrink-0" />
+                          <span className="text-muted-foreground truncate">New supplier: TechParts Inc.</span>
                         </div>
-                        <span className="text-blue-600 font-medium">8m ago</span>
+                        <span className="text-blue-600 font-medium text-xs whitespace-nowrap ml-2">8m ago</span>
                       </div>
-                      <div className="flex items-center justify-between py-2 px-3 bg-indigo-50 dark:bg-chart-3/10 rounded-lg">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-indigo-500 rounded-full" />
-                          <span className="text-muted-foreground">Warehouse B at 85% capacity</span>
+                      <div className="flex items-center justify-between py-1.5 sm:py-2 px-2 sm:px-3 bg-indigo-50 dark:bg-chart-3/10 rounded-lg">
+                        <div className="flex items-center space-x-2 min-w-0">
+                          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-indigo-500 rounded-full flex-shrink-0" />
+                          <span className="text-muted-foreground truncate">Warehouse B at 85% capacity</span>
                         </div>
-                        <span className="text-indigo-600 font-medium">12m ago</span>
+                        <span className="text-indigo-600 font-medium text-xs whitespace-nowrap ml-2">12m ago</span>
                       </div>
                     </div>
 
@@ -285,44 +315,42 @@ const InvistaLanding = () => {
                         <span className="text-xs text-muted-foreground">Quick Actions</span>
                         <div className="flex space-x-1">
                           <button className="p-1 hover:bg-blue-100 dark:hover:bg-primary/20 rounded">
-                            <Package className="h-3 w-3 text-blue-600 dark:text-primary" />
+                            <Package className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-blue-600 dark:text-primary" />
                           </button>
                           <button className="p-1 hover:bg-emerald-100 dark:hover:bg-chart-2/20 rounded">
-                            <Bell className="h-3 w-3 text-emerald-600 dark:text-chart-2" />
+                            <Bell className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-emerald-600 dark:text-chart-2" />
                           </button>
                           <button className="p-1 hover:bg-indigo-100 dark:hover:bg-chart-3/20 rounded">
-                            <FileText className="h-3 w-3 text-indigo-600 dark:text-chart-3" />
+                            <FileText className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-indigo-600 dark:text-chart-3" />
                           </button>
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Mini Chart */}
-                  <div className="space-y-3">
+                  </div>                  {/* Mini Chart */}
+                  <div className="space-y-2 sm:space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-foreground">Inventory Levels</span>
+                      <span className="text-xs sm:text-sm font-medium text-foreground">Inventory Levels</span>
                       <span className="text-xs text-emerald-600 dark:text-chart-2">+5.2%</span>
                     </div>
                     <div className="space-y-2">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-24 text-xs text-muted-foreground">Electronics</div>
-                        <div className="flex-1 bg-slate-200 dark:bg-muted rounded-full h-2">
-                          <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full w-4/5" />
+                      <div className="flex items-center space-x-2 sm:space-x-3">
+                        <div className="w-16 sm:w-24 text-xs text-muted-foreground">Electronics</div>
+                        <div className="flex-1 bg-slate-200 dark:bg-muted rounded-full h-1.5 sm:h-2">
+                          <div className="bg-gradient-to-r from-blue-500 to-blue-600 h-1.5 sm:h-2 rounded-full w-4/5" />
                         </div>
                         <div className="text-xs text-muted-foreground">80%</div>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <div className="w-24 text-xs text-muted-foreground">Clothing</div>
-                        <div className="flex-1 bg-slate-200 dark:bg-muted rounded-full h-2">
-                          <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full w-3/5" />
+                      <div className="flex items-center space-x-2 sm:space-x-3">
+                        <div className="w-16 sm:w-24 text-xs text-muted-foreground">Clothing</div>
+                        <div className="flex-1 bg-slate-200 dark:bg-muted rounded-full h-1.5 sm:h-2">
+                          <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-1.5 sm:h-2 rounded-full w-3/5" />
                         </div>
                         <div className="text-xs text-muted-foreground">60%</div>
                       </div>
-                      <div className="flex items-center space-x-3">
-                        <div className="w-24 text-xs text-muted-foreground">Home & Garden</div>
-                        <div className="flex-1 bg-slate-200 dark:bg-muted rounded-full h-2">
-                          <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 h-2 rounded-full w-2/3" />
+                      <div className="flex items-center space-x-2 sm:space-x-3">
+                        <div className="w-16 sm:w-24 text-xs text-muted-foreground">Home & Garden</div>
+                        <div className="flex-1 bg-slate-200 dark:bg-muted rounded-full h-1.5 sm:h-2">
+                          <div className="bg-gradient-to-r from-indigo-500 to-indigo-600 h-1.5 sm:h-2 rounded-full w-2/3" />
                         </div>
                         <div className="text-xs text-muted-foreground">65%</div>
                       </div>
@@ -330,88 +358,87 @@ const InvistaLanding = () => {
                   </div>
                 </div>
               </div>
-              {/* Floating Cards - Better Positioned */}
-              <div className="absolute -top-4 -right-4 lg:-top-6 lg:-right-6 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white p-3 lg:p-4 rounded-xl shadow-lg transform rotate-2 hover:rotate-0 transition-transform duration-300">
-                <div className="flex items-center space-x-2">
-                  <Truck className="h-4 lg:h-6 w-4 lg:w-6" />
+                {/* Floating Cards - Better Positioned */}
+              <div className="hidden sm:block absolute -top-2 -right-2 sm:-top-4 sm:-right-4 lg:-top-6 lg:-right-6 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-lg transform rotate-2 hover:rotate-0 transition-transform duration-300">
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <Truck className="h-3 w-3 sm:h-4 sm:w-4 lg:h-6 lg:w-6" />
                   <div>
-                    <div className="text-sm lg:text-lg font-bold">34</div>
+                    <div className="text-xs sm:text-sm lg:text-lg font-bold">34</div>
                     <div className="text-xs opacity-90">In Transit</div>
                   </div>
                 </div>
               </div>
 
-              <div className="absolute -bottom-4 -left-4 lg:-bottom-6 lg:-left-6 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-3 lg:p-4 rounded-xl shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
-                <div className="flex items-center space-x-2">
-                  <BarChart3 className="h-4 lg:h-6 w-4 lg:w-6" />
+              <div className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 lg:-bottom-6 lg:-left-6 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 lg:h-6 lg:w-6" />
                   <div>
-                    <div className="text-sm lg:text-lg font-bold">↗ 23%</div>
+                    <div className="text-xs sm:text-sm lg:text-lg font-bold">↗ 23%</div>
                     <div className="text-xs opacity-90">Growth</div>
                   </div>
-                </div></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Social Proof Section */}
-      <section className="py-12 bg-white/50 dark:bg-card/20 border-y border-border/40">
+      </section>      {/* Social Proof Section */}
+      <section className="py-8 sm:py-12 bg-white/50 dark:bg-card/20 border-y border-border/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8">
-            <p className="text-sm text-muted-foreground font-medium mb-4">Trusted by 500+ companies across industries</p>
+          <div className="text-center mb-6 sm:mb-8">
+            <p className="text-xs sm:text-sm text-muted-foreground font-medium mb-3 sm:mb-4">Trusted by 500+ companies across industries</p>
 
             {/* Industry Icons */}
-            <div className="flex justify-center items-center space-x-8 opacity-60 hover:opacity-80 transition-opacity">
+            <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 lg:gap-8 opacity-60 hover:opacity-80 transition-opacity">
               <div className="flex items-center space-x-2 text-muted-foreground">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
-                  <Package className="h-4 w-4 text-white" />
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
+                  <Package className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
                 </div>
-                <span className="text-sm font-medium">E-commerce</span>
+                <span className="text-xs sm:text-sm font-medium">E-commerce</span>
               </div>
               <div className="flex items-center space-x-2 text-muted-foreground">
-                <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-green-500 rounded-lg flex items-center justify-center">
-                  <Warehouse className="h-4 w-4 text-white" />
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-emerald-500 to-green-500 rounded-lg flex items-center justify-center">
+                  <Warehouse className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
                 </div>
-                <span className="text-sm font-medium">Manufacturing</span>
+                <span className="text-xs sm:text-sm font-medium">Manufacturing</span>
               </div>
               <div className="flex items-center space-x-2 text-muted-foreground">
-                <div className="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
-                  <Truck className="h-4 w-4 text-white" />
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center">
+                  <Truck className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
                 </div>
-                <span className="text-sm font-medium">Logistics</span>
+                <span className="text-xs sm:text-sm font-medium">Logistics</span>
               </div>
               <div className="flex items-center space-x-2 text-muted-foreground">
-                <div className="w-8 h-8 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg flex items-center justify-center">
-                  <ShoppingCart className="h-4 w-4 text-white" />
+                <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg flex items-center justify-center">
+                  <ShoppingCart className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
                 </div>
-                <span className="text-sm font-medium">Retail</span>
+                <span className="text-xs sm:text-sm font-medium">Retail</span>
               </div>
             </div>
           </div>
 
           {/* Key Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-foreground">$2.3M</div>
-              <div className="text-sm text-muted-foreground">Cost Savings</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 text-center">
+            <div className="space-y-1 sm:space-y-2">
+              <div className="text-2xl sm:text-3xl font-bold text-foreground">$2.3M</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Cost Savings</div>
               <div className="text-xs text-emerald-600 dark:text-chart-2">Average per client</div>
             </div>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-foreground">45%</div>
-              <div className="text-sm text-muted-foreground">Faster Processing</div>
+            <div className="space-y-1 sm:space-y-2">
+              <div className="text-2xl sm:text-3xl font-bold text-foreground">45%</div>              <div className="text-xs sm:text-sm text-muted-foreground">Faster Processing</div>
               <div className="text-xs text-emerald-600 dark:text-chart-2">Order fulfillment</div>
             </div>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-foreground">95%</div>
-              <div className="text-sm text-muted-foreground">Accuracy Rate</div>
+            <div className="space-y-1 sm:space-y-2">
+              <div className="text-2xl sm:text-3xl font-bold text-foreground">95%</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Accuracy Rate</div>
               <div className="text-xs text-emerald-600 dark:text-chart-2">Inventory tracking</div>
             </div>
-            <div className="space-y-2">
-              <div className="text-3xl font-bold text-foreground">24/7</div>
-              <div className="text-sm text-muted-foreground">Support</div>
+            <div className="space-y-1 sm:space-y-2">
+              <div className="text-2xl sm:text-3xl font-bold text-foreground">24/7</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">Support</div>
               <div className="text-xs text-emerald-600 dark:text-chart-2">Global coverage</div>
             </div>
-          </div>        </div>
+          </div>        
+        </div>
       </section>
 
       {/* Feature Highlight Section */}
@@ -521,41 +548,43 @@ const InvistaLanding = () => {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Problem Section */}
-      <section className="py-20 bg-background">
+      </section>      {/* Problem Section */}
+      <section className="py-12 sm:py-16 lg:py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-foreground mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-3 sm:mb-4">
               Why Traditional Inventory Systems Fail
             </h2>
-            <p className="text-xl text-muted-foreground">Common pain points that slow down growing businesses</p>
-          </div>          <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <div className="text-center p-6">
-              <XCircle className="h-16 w-16 text-destructive mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">Fragmented Data</h3>
-              <p className="text-muted-foreground">Multiple systems creating data silos and inconsistencies</p>
+            <p className="text-lg sm:text-xl text-muted-foreground">Common pain points that slow down growing businesses</p>
+          </div>          
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
+            <div className="text-center p-4 sm:p-6">
+              <XCircle className="h-12 w-12 sm:h-16 sm:w-16 text-destructive mx-auto mb-3 sm:mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">Fragmented Data</h3>
+              <p className="text-sm sm:text-base text-muted-foreground">Multiple systems creating data silos and inconsistencies</p>
             </div>
-            <div className="text-center p-6">
-              <XCircle className="h-16 w-16 text-destructive mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">Manual Errors</h3>
-              <p className="text-muted-foreground">Time-consuming manual processes leading to costly mistakes</p>
+            <div className="text-center p-4 sm:p-6">
+              <XCircle className="h-12 w-12 sm:h-16 sm:w-16 text-destructive mx-auto mb-3 sm:mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">Manual Errors</h3>
+              <p className="text-sm sm:text-base text-muted-foreground">Time-consuming manual processes leading to costly mistakes</p>
             </div>
-            <div className="text-center p-6">
-              <XCircle className="h-16 w-16 text-destructive mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-foreground mb-2">No Real-Time Visibility</h3>
-              <p className="text-muted-foreground">Delayed insights preventing proactive decision making</p>
+            <div className="text-center p-4 sm:p-6 sm:col-span-2 lg:col-span-1">
+              <XCircle className="h-12 w-12 sm:h-16 sm:w-16 text-destructive mx-auto mb-3 sm:mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">No Real-Time Visibility</h3>
+              <p className="text-sm sm:text-base text-muted-foreground">Delayed insights preventing proactive decision making</p>
             </div>
-          </div>          <div className="text-center">
-            <h3 className="text-3xl font-bold text-foreground mb-8">Invista Solves This</h3>
+          </div>          
+
+          <div className="text-center">
+            <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-6 sm:mb-8">Invista Solves This</h3>
             <div className="inline-flex items-center bg-emerald-50 dark:bg-chart-2/10 text-emerald-700 dark:text-chart-2 px-4 py-2 rounded-full">
-              <CheckCircle className="h-5 w-5 mr-2" />
+              <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
               Unified. Automated. Real-Time.
             </div>
           </div>
         </div>
-      </section>      {/* Features Section */}
+      </section>{/* Features Section */}
       <section id="features" className="py-20 bg-slate-50 dark:bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
