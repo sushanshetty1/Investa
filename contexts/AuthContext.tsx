@@ -8,6 +8,7 @@ type AuthContextType = {
     loading: boolean
     signUp: (email: string, password: string) => Promise<any>
     login: (email: string, password: string) => Promise<any>
+    signInWithGoogle: () => Promise<any>
     logout: () => Promise<void>
     resetPassword: (email: string) => Promise<any>
     deleteAccount: () => Promise<any>
@@ -46,9 +47,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         return await supabase.auth.signInWithPassword({ email, password })
     }
 
+    const signInWithGoogle = async () => {
+        return await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `${window.location.origin}/auth/callback`
+            }
+        })
+    }
+
     const logout = async () => {
         await supabase.auth.signOut()
-        router.push('/auth/login')
+        router.push('/')
     }
 
     const resetPassword = async (email: string) => {
@@ -71,7 +81,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ user, loading, signUp, login, logout, resetPassword, deleteAccount }}>
+        <AuthContext.Provider value={{ user, loading, signUp, login, signInWithGoogle, logout, resetPassword, deleteAccount }}>
             {children}
         </AuthContext.Provider>
     )
