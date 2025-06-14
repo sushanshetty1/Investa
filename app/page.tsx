@@ -49,26 +49,7 @@ const InvistaLanding = () => {
   };
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
-      <nav className="bg-background/95 backdrop-blur-sm border-b border-border sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">            <div className="flex items-center">
-            <Package className="h-8 w-8 text-primary mr-2" />
-            <span className="text-xl font-bold text-foreground">Invista</span>
-          </div><div className="hidden md:flex items-center space-x-8">              <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</a>
-              <a href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">How It Works</a>
-              <Link href="/auth/logout" className="text-muted-foreground hover:text-foreground transition-colors">Pricing</Link>              <div className="flex items-center space-x-4">
-                <ThemeToggle />
-                <Link href="/auth/login">
-                  <button className="bg-primary text-primary-foreground px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-                    Get Started
-                  </button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>      {/* Hero Section */}
+      {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-slate-50/90 via-blue-50/40 to-indigo-50/60 dark:from-background dark:via-muted/20 dark:to-chart-3/10 py-20 overflow-hidden">
         {/* Background Pattern with Better Mask */}
         <div className="absolute inset-0 bg-grid-slate-100 dark:bg-grid-slate-800/20 [mask-image:radial-gradient(ellipse_at_center,white_40%,rgba(255,255,255,0.4)_70%,transparent_100%)] dark:[mask-image:radial-gradient(ellipse_at_center,rgba(255,255,255,0.1)_40%,rgba(255,255,255,0.05)_70%,transparent_100%)]" />

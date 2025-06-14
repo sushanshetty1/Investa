@@ -59,11 +59,9 @@ export default function SignUpPage() {
                         setError(`Account created but failed to store profile: ${dbError.message}`)
                         return
                     } console.log('User data stored successfully:', insertData)
-                    setMessage('Account created successfully! Please check your email to verify your account.')
-
-                    // Optionally redirect to homepage after a delay
+                    setMessage('Account created successfully! Please check your email to verify your account.')                    // Optionally redirect to dashboard after a delay
                     setTimeout(() => {
-                        router.push('/')
+                        router.push('/dashboard')
                     }, 3000)
                 } catch (dbErr) {
                     console.error('Unexpected database error:', dbErr)

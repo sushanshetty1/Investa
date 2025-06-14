@@ -4,6 +4,8 @@ import { Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ScrollDetector } from "@/components/scroll-detector";
 import { AuthProvider } from "@/contexts/AuthContext";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -48,8 +50,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
+            <Navbar />
             <ScrollDetector />
             {children}
+            <Footer />
           </AuthProvider>
         </ThemeProvider>
       </body>
