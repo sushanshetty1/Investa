@@ -123,8 +123,7 @@ const Navbar = () => {
       </nav>
     );
   }
-
-  // Navigation items for dashboard pages
+  
   const dashboardNavItems = [
     {
       title: "Dashboard",
