@@ -12,9 +12,7 @@ export default function ResetPasswordConfirmation() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const [success, setSuccess] = useState(false);  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,8 +37,7 @@ export default function ResetPasswordConfirmation() {
         setTimeout(() => {
           router.push("/auth/login");
         }, 3000);
-      }
-    } catch (err) {
+      }    } catch {
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);

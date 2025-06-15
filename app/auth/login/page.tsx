@@ -27,8 +27,7 @@ export default function LoginPage() {
                 setError(error.message)
             } else {
                 router.push('/dashboard')
-            }
-        } catch (err) {
+            }        } catch {
             setError('An unexpected error occurred')
         } finally {
             setLoading(false)
@@ -43,9 +42,8 @@ export default function LoginPage() {
             const { error } = await signInWithGoogle()
             if (error) {
                 setError(error.message)
-                setLoading(false)
-            }            // Note: Don't set loading to false here as user will be redirected
-        } catch (err) {
+                setLoading(false)            }            // Note: Don't set loading to false here as user will be redirected
+        } catch {
             setError('An unexpected error occurred')
             setLoading(false)        }
     }
@@ -122,7 +120,7 @@ export default function LoginPage() {
                                             <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                                         ))}
                                     </div>                                    <p className="text-muted-foreground italic">
-                                        "Since using Invista, we've reduced inventory costs by 30% while improving stock availability. The real-time visibility is game-changing."
+                                        &quot;Since using Invista, we&apos;ve reduced inventory costs by 30% while improving stock availability. The real-time visibility is game-changing.&quot;
                                     </p>
                                     <div className="flex items-center space-x-3">
                                         <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-white font-semibold">
@@ -308,9 +306,8 @@ export default function LoginPage() {
                                             <span>Sign in with Google</span>
                                         </button>
 
-                                        <div className="text-center pt-4">
-                                            <p className="text-sm text-muted-foreground">
-                                                Don't have an account?{' '}
+                                        <div className="text-center pt-4">                                            <p className="text-sm text-muted-foreground">
+                                                Don&apos;t have an account?{' '}
                                                 <Link
                                                     href="/auth/signUp"
                                                     className="font-medium text-primary hover:text-primary/80 transition-colors"

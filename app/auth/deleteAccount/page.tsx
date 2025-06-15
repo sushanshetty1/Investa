@@ -41,8 +41,7 @@ export default function DeleteAccountPage() {
                 setError(error.message)
             } else {
                 router.push('/')
-            }
-        } catch (err) {
+            }        } catch {
             setError('An unexpected error occurred')
         } finally {
             setLoading(false)
@@ -93,9 +92,8 @@ export default function DeleteAccountPage() {
                             </div>
                         )}
 
-                        <div>
-                            <label htmlFor="confirm" className="block text-sm font-medium text-foreground mb-2">
-                                Type "DELETE" to confirm
+                        <div>                            <label htmlFor="confirm" className="block text-sm font-medium text-foreground mb-2">
+                                Type &quot;DELETE&quot; to confirm
                             </label>
                             <input
                                 id="confirm"
