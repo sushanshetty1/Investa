@@ -23,8 +23,7 @@ export default function ResetPasswordPage() {
                 setError(error.message)
             } else {
                 setMessage('Password reset email sent! Please check your inbox.')
-            }
-        } catch (err) {
+            }        } catch {
             setError('An unexpected error occurred')
         } finally {
             setLoading(false)
@@ -41,9 +40,8 @@ export default function ResetPasswordPage() {
                     </div>
                     <h2 className="mt-6 text-3xl font-bold text-foreground">
                         Reset your password
-                    </h2>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                        Enter your email address and we'll send you a link to reset your password
+                    </h2>                    <p className="mt-2 text-sm text-muted-foreground">
+                        Enter your email address and we&apos;ll send you a link to reset your password
                     </p>
                 </div>
 

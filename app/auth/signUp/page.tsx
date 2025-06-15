@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabaseClient'
-import { Package, Eye, EyeOff, Mail, Lock, User, TrendingUp, Shield, Zap, Users, CheckCircle, Star } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Package, Eye, EyeOff, Mail, Lock, User, TrendingUp, Shield, Zap, CheckCircle, Star } from 'lucide-react'
+import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
 export default function SignUpPage() {
@@ -88,9 +88,8 @@ export default function SignUpPage() {
             const { error } = await signInWithGoogle()
             if (error) {
                 setError(error.message)
-                setLoading(false)
-            }            // Note: Don't set loading to false here as user will be redirected
-        } catch (err) {
+                setLoading(false)            }            // Note: Don't set loading to false here as user will be redirected
+        } catch {
             setError('An unexpected error occurred')
             setLoading(false)
         }
@@ -170,9 +169,8 @@ export default function SignUpPage() {
                                     </div>                                    <span className="text-sm text-muted-foreground">4.9/5 from 500+ companies</span>
                                 </div>
                                 
-                                <div className="space-y-3">
-                                    <p className="text-sm italic text-muted-foreground">
-                                        "Invista has transformed our supply chain operations. We've reduced costs by 25% while improving efficiency."
+                                <div className="space-y-3">                                    <p className="text-sm italic text-muted-foreground">
+                                        &quot;Invista has transformed our supply chain operations. We&apos;ve reduced costs by 25% while improving efficiency.&quot;
                                     </p>
                                     <div className="flex items-center space-x-3">
                                         <div className="w-8 h-8 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center text-white text-xs font-semibold">
