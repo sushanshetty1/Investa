@@ -28,10 +28,11 @@ const InvistaLanding = () => {
   const [showFloatingCTA, setShowFloatingCTA] = useState(false);
   const { user, loading } = useAuth();
   const router = useRouter();
-
   // Redirect if user is already logged in
   useEffect(() => {
+    console.log('Home page auth state:', { user: !!user, loading, userEmail: user?.email });
     if (!loading && user) {
+      console.log('User is logged in, redirecting to dashboard');
       router.push('/dashboard');
     }
   }, [user, loading, router]);

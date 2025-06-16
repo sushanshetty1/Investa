@@ -98,12 +98,11 @@ const Navbar = () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [openDropdown]);
-
   // Show loading state while auth is being determined
   if (loading) {
     return (
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-4 max-w-7xl">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
@@ -196,6 +195,7 @@ const Navbar = () => {
   const isDashboard = user && (pathname?.startsWith("/dashboard") || 
                      pathname?.startsWith("/inventory") ||
                      pathname?.startsWith("/orders") ||
+                     pathname?.startsWith("/profile") ||
                      pathname?.startsWith("/suppliers") ||
                      pathname?.startsWith("/shipments") ||
                      pathname?.startsWith("/reports") ||
@@ -275,13 +275,12 @@ const Navbar = () => {
           onClick={() => setIsOpen(false)}
         />
       )}
-      
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
           ? "bg-background/95 backdrop-blur-xl border-b border-border/60 shadow-lg shadow-black/5" 
           : "bg-background/80 backdrop-blur-sm border-b border-border/30"
       }`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto px-4 max-w-7xl">
           <div className="flex items-center justify-between h-16 gap-4">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-3 group flex-shrink-0">
@@ -422,13 +421,11 @@ const Navbar = () => {
                 {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
               </Button>
             </div>
-          </div>
-
-          {/* Mobile Menu */}
+          </div>          {/* Mobile Menu */}
           <div className={`xl:hidden absolute top-full left-0 right-0 border-t border-border/60 bg-background/95 backdrop-blur-xl transition-all duration-300 ease-in-out z-40 ${
             isOpen ? 'max-h-screen opacity-100 visible' : 'max-h-0 opacity-0 invisible'
           }`}>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="container mx-auto px-4 max-w-7xl">
               <div className="py-2 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
                 {isDashboard ? (
                   <>

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
+import { supabase } from '@/lib/supabaseClient'
 import { Package, Eye, EyeOff, Mail, Lock, TrendingUp, Shield, Users, Star, CheckCircle, ArrowRight } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -22,12 +23,42 @@ export default function LoginPage() {
         setError('')
 
         try {
-            const { error } = await login(email, password)
+            const { data, error } = await login(email, password)
             if (error) {
                 setError(error.message)
-            } else {
+            } else if (data?.user) {
+                // Update last login information in database
+                try {
+                    await supabase
+                        .from('users')
+                        .update({
+                            lastLoginAt: new Date().toISOString(),
+                            lastLoginIp: window.location.hostname,
+                            failedLoginCount: 0,
+                            updatedAt: new Date().toISOString()
+                        })
+                        .eq('id', data.user.id)
+
+                    // Log successful login
+                    await supabase
+                        .from('login_history')
+                        .insert({
+                            userId: data.user.id,
+                            successful: true,
+                            ipAddress: window.location.hostname,
+                            userAgent: navigator.userAgent,
+                            deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+                            attemptedAt: new Date().toISOString()
+                        })
+                } catch (dbError) {
+                    console.error('Failed to update login info:', dbError)
+                    // Don't fail the login for this
+                }
+
                 router.push('/dashboard')
-            }        } catch {
+            }
+        } catch (err) {
+            console.error('Login error:', err)
             setError('An unexpected error occurred')
         } finally {
             setLoading(false)

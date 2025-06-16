@@ -32,8 +32,45 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         const {
             data: { subscription },
-        } = supabase.auth.onAuthStateChange((_event, session) => {
+        } = supabase.auth.onAuthStateChange(async (event, session) => {
             setUser(session?.user ?? null)
+            
+            // Handle Google sign-in user creation
+            if (event === 'SIGNED_IN' && session?.user) {
+                const { data: existingUser } = await supabase
+                    .from('users')
+                    .select('id')
+                    .eq('id', session.user.id)
+                    .single()
+
+                if (!existingUser) {
+                    // Create user record for Google sign-in
+                    const fullName = session.user.user_metadata?.full_name || ''
+                    const [firstName = '', lastName = ''] = fullName.split(' ')
+                    
+                    await supabase
+                        .from('users')
+                        .insert({
+                            id: session.user.id,
+                            email: session.user.email || '',
+                            firstName: firstName || null,
+                            lastName: lastName || null,
+                            displayName: fullName || null,
+                            avatar: session.user.user_metadata?.avatar_url || null,
+                            phone: session.user.user_metadata?.phone || null,
+                            timezone: 'UTC',
+                            language: 'en',
+                            theme: 'system',
+                            isActive: true,
+                            isVerified: true,
+                            emailVerified: session.user.email_confirmed_at ? true : false,
+                            twoFactorEnabled: false,
+                            failedLoginCount: 0,
+                            createdAt: new Date().toISOString(),
+                            updatedAt: new Date().toISOString()
+                        })
+                }
+            }
         })
 
         return () => subscription.unsubscribe()

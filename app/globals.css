@@ -125,160 +125,159 @@
   }
 }
 
-/* Simple Clean Scrollbar */
+/* Super Thin Clean Scrollbar */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 4px;
   background: transparent;
 }
 
 ::-webkit-scrollbar-track {
-  background: oklch(0.93 0.004 220 / 0.3);
-  border-radius: 6px;
-  margin: 4px 0;
+  background: oklch(0.93 0.004 220 / 0.2);
+  border-radius: 2px;
+  margin: 2px 0;
 }
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(
     180deg,
-    oklch(0.46 0.15 230 / 0.8) 0%,
-    oklch(0.58 0.16 260 / 0.9) 50%,
-    oklch(0.46 0.15 230 / 0.8) 100%
+    oklch(0.46 0.15 230 / 0.7) 0%,
+    oklch(0.58 0.16 260 / 0.8) 50%,
+    oklch(0.46 0.15 230 / 0.7) 100%
   );
-  border-radius: 6px;
-  border: 1px solid transparent;
-  background-clip: padding-box;
+  border-radius: 2px;
   box-shadow: 
-    0 0 0 1px oklch(0.46 0.15 230 / 0.2),
-    0 2px 4px oklch(0.46 0.15 230 / 0.1);
+    0 0 0 0.5px oklch(0.46 0.15 230 / 0.15),
+    0 1px 2px oklch(0.46 0.15 230 / 0.08);
   transition: all 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(
     180deg,
-    oklch(0.55 0.18 235 / 0.95) 0%,
-    oklch(0.68 0.16 165 / 1) 50%,
-    oklch(0.55 0.18 235 / 0.95) 100%
+    oklch(0.55 0.18 235 / 0.9) 0%,
+    oklch(0.68 0.16 165 / 0.95) 50%,
+    oklch(0.55 0.18 235 / 0.9) 100%
   );
   box-shadow: 
-    0 0 0 2px oklch(0.46 0.15 230 / 0.3),
-    0 4px 8px oklch(0.46 0.15 230 / 0.15);
+    0 0 0 1px oklch(0.46 0.15 230 / 0.25),
+    0 2px 4px oklch(0.46 0.15 230 / 0.12);
 }
 
 ::-webkit-scrollbar-track:hover {
-  background: oklch(0.88 0.003 220 / 0.4);
+  background: oklch(0.88 0.003 220 / 0.3);
 }
 
 /* Dark theme scrollbar */
 .dark ::-webkit-scrollbar-track {
-  background: oklch(0.22 0.008 220 / 0.4);
+  background: oklch(0.22 0.008 220 / 0.3);
 }
 
 .dark ::-webkit-scrollbar-thumb {
   background: linear-gradient(
     180deg,
-    oklch(0.58 0.18 235 / 0.9) 0%,
-    oklch(0.72 0.18 265 / 1) 50%,
-    oklch(0.58 0.18 235 / 0.9) 100%
+    oklch(0.58 0.18 235 / 0.8) 0%,
+    oklch(0.72 0.18 265 / 0.9) 50%,
+    oklch(0.58 0.18 235 / 0.8) 100%
   );
   box-shadow: 
-    0 0 0 1px oklch(0.68 0.12 230 / 0.3),
-    0 2px 4px oklch(0.11 0.005 220 / 0.4);
+    0 0 0 0.5px oklch(0.68 0.12 230 / 0.25),
+    0 1px 2px oklch(0.11 0.005 220 / 0.3);
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(
     180deg,
-    oklch(0.68 0.20 240 / 1) 0%,
-    oklch(0.68 0.16 165 / 1) 50%,
-    oklch(0.68 0.20 240 / 1) 100%
+    oklch(0.68 0.20 240 / 0.95) 0%,
+    oklch(0.68 0.16 165 / 0.95) 50%,
+    oklch(0.68 0.20 240 / 0.95) 100%
   );
   box-shadow: 
-    0 0 0 2px oklch(0.68 0.12 230 / 0.4),
-    0 4px 8px oklch(0.58 0.18 235 / 0.2);
+    0 0 0 1px oklch(0.68 0.12 230 / 0.35),
+    0 2px 4px oklch(0.58 0.18 235 / 0.15);
 }
 
 .dark ::-webkit-scrollbar-track:hover {
-  background: oklch(0.26 0.01 220 / 0.5);
+  background: oklch(0.26 0.01 220 / 0.4);
 }
 
-/* Enhanced corner styling */
-::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-/* Firefox scrollbar support */
-html {
-  scrollbar-width: auto;
-  scrollbar-color: oklch(0.46 0.15 230 / 0.8) oklch(0.93 0.004 220 / 0.3);
-}
-
-.dark html {
-  scrollbar-color: oklch(0.58 0.18 235 / 0.9) oklch(0.22 0.008 220 / 0.4);
-}
-
-/* Custom Animations for Hero Section */
+/* Custom Animations for Enhanced UI */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+  0%, 100% {
+    transform: translateY(0px);
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  50% {
+    transform: translateY(-10px);
   }
-}
-
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
 }
 
 .animate-float {
-  animation: float 3s ease-in-out infinite;
+  animation: float 6s ease-in-out infinite;
 }
 
-.animate-fadeInUp {
-  animation: fadeInUp 0.8s ease-out forwards;
+/* Profile Page Enhancements */
+@keyframes gentle-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
-.animate-slideInRight {
-  animation: slideInRight 0.8s ease-out forwards;
+.animate-float {
+  animation: gentle-float 6s ease-in-out infinite;
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 2s ease-in-out infinite;
+.animate-float.delay-1000 {
+  animation-delay: 1s;
 }
 
-/* Grid Background Pattern - Subtle and Consistent */
+.animate-float.delay-500 {
+  animation-delay: 0.5s;
+}
+
+/* Form Input Focus Enhancements */
+.profile-input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: rgb(59, 130, 246);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Card Hover Effects */
+.profile-card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.profile-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Tab Animation */
+.profile-tab {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Grid background pattern */
 .bg-grid-slate-100 {
-  background-image: 
-    linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
-  background-size: 3rem 3rem;
+  background-image: linear-gradient(0deg, transparent 24%, rgba(148, 163, 184, 0.05) 25%, rgba(148, 163, 184, 0.05) 26%, transparent 27%, transparent 74%, rgba(148, 163, 184, 0.05) 75%, rgba(148, 163, 184, 0.05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(148, 163, 184, 0.05) 25%, rgba(148, 163, 184, 0.05) 26%, transparent 27%, transparent 74%, rgba(148, 163, 184, 0.05) 75%, rgba(148, 163, 184, 0.05) 76%, transparent 77%, transparent);
+  background-size: 50px 50px;
 }
 
 .dark .bg-grid-slate-800\/20 {
-  background-image: 
-    linear-gradient(to right, rgba(148, 163, 184, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
-  background-size: 3rem 3rem;
+  background-image: linear-gradient(0deg, transparent 24%, rgba(30, 41, 59, 0.2) 25%, rgba(30, 41, 59, 0.2) 26%, transparent 27%, transparent 74%, rgba(30, 41, 59, 0.2) 75%, rgba(30, 41, 59, 0.2) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(30, 41, 59, 0.2) 25%, rgba(30, 41, 59, 0.2) 26%, transparent 27%, transparent 74%, rgba(30, 41, 59, 0.2) 75%, rgba(30, 41, 59, 0.2) 76%, transparent 77%, transparent);
+  background-size: 50px 50px;
+}
+
+/* Enhanced focus states */
+.focus\:ring-ring:focus {
+  --tw-ring-color: var(--ring);
+}
+
+/* Improved backdrop blur */
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* Gradient text utilities */

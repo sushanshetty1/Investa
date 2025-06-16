@@ -404,6 +404,7 @@ const config = {
     "supabaseDb"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "supabaseDb": {
       "url": {
