@@ -17,13 +17,11 @@ import {
   ArrowRight,
   Warehouse,
   RefreshCw,
-  Lock,
   Zap,
   TrendingUp,
   Globe,
   Clock
 } from 'lucide-react';
-import { ThemeToggle } from '@/components/theme-toggle';
 
 const InvistaLanding = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -683,7 +681,7 @@ const InvistaLanding = () => {
                   ))}
                 </div>
               </div>
-              <p className="text-muted-foreground mb-6 text-lg leading-relaxed">"Invista transformed our inventory management. We reduced stockouts by 80% and improved our cash flow significantly."</p>
+              <p className="text-muted-foreground mb-6 text-lg leading-relaxed">&quot;Invista transformed our inventory management. We reduced stockouts by 80% and improved our cash flow significantly.&quot;</p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-lg mr-4">
                   SC
@@ -706,7 +704,7 @@ const InvistaLanding = () => {
                   ))}
                 </div>
               </div>
-              <p className="text-muted-foreground mb-6 text-lg leading-relaxed">"The real-time visibility across our 5 warehouses has been a game-changer. No more manual spreadsheets!"</p>
+              <p className="text-muted-foreground mb-6 text-lg leading-relaxed">&quot;The real-time visibility across our 5 warehouses has been a game-changer. No more manual spreadsheets!&quot;</p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-600 rounded-full flex items-center justify-center text-white font-semibold text-lg mr-4">
                   MR
@@ -729,7 +727,7 @@ const InvistaLanding = () => {
                   ))}
                 </div>
               </div>
-              <p className="text-muted-foreground mb-6 text-lg leading-relaxed">"As a supplier, Invista made it so much easier to manage orders and communicate with our partners."</p>
+              <p className="text-muted-foreground mb-6 text-lg leading-relaxed">&quot;As a supplier, Invista made it so much easier to manage orders and communicate with our partners.&quot;</p>
               <div className="flex items-center">
                 <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center text-white font-semibold text-lg mr-4">
                   DK

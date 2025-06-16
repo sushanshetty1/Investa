@@ -18,7 +18,6 @@ import {
   Clock,
   ArrowUpRight,
   ArrowDownRight,
-  Zap,
   RefreshCw,
   Plus,
   Search,
@@ -50,9 +49,7 @@ import {
   PieChart, 
   Pie, 
   Cell,
-  LineChart,
-  Line,
-  Legend
+  Line
 } from "recharts";
 
 // Sample data for charts and tables
@@ -543,7 +540,7 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent className="pt-0">
                   <div className="space-y-3">
-                    {recentOrders.map((order, index) => (
+                    {recentOrders.map((order) => (
                       <div key={order.id} className="flex items-center justify-between p-4 rounded-xl border border-border/50 hover:bg-muted/30 transition-all duration-200 hover:shadow-sm">
                         <div className="flex items-center space-x-4">
                           <Avatar className="h-10 w-10 border-2 border-background shadow-sm">
