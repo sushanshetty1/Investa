@@ -1,5 +1,8 @@
-// This is your Prisma schema file for Neon DB
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// ===================================================================
+// NEON DATABASE SCHEMA - Inventory & Supply Chain Management
+// ===================================================================
+// This schema handles all business logic, inventory management,
+// supply chain operations, and analytics for the Invista system.
 
 generator neonClient {
   provider        = "prisma-client-js"
@@ -12,13 +15,1594 @@ datasource neonDb {
   url      = env("NEON_DATABASE_URL")
 }
 
+// ===================================================================
+// CORE PRODUCT & INVENTORY MODELS
+// ===================================================================
+
 model Product {
-  id        Int    @id @default(autoincrement())
-  name      String
-  inventory Int
+  id String @id @default(uuid())
+
+  // Basic Information
+  name        String
+  description String?
+  sku         String  @unique
+  barcode     String? @unique
+  slug        String? @unique
+
+  // Categorization
+  categoryId String?
+  brandId    String?
+
+  // Physical Properties
+  weight     Decimal?
+  dimensions Json? // {length, width, height, unit}
+  color      String?
+  size       String?
+  material   String?
+
+  // Pricing
+  costPrice      Decimal? // Purchase cost
+  sellingPrice   Decimal? // Retail price
+  wholesalePrice Decimal? // Bulk pricing
+
+  // Inventory Settings
+  minStockLevel   Int  @default(0)
+  maxStockLevel   Int?
+  reorderPoint    Int?
+  reorderQuantity Int?
+
+  // Status & Visibility
+  status       ProductStatus @default(ACTIVE)
+  isTrackable  Boolean       @default(true)
+  isSerialized Boolean       @default(false)
+
+  // Images & Media
+  images       Json? // Array of image URLs
+  primaryImage String?
+
+  // SEO & Marketing
+  metaTitle       String?
+  metaDescription String?
+  tags            Json? // Array of tags
+
+  // Supply Chain
+  leadTimeSupply Int? // Days to restock
+  shelfLife      Int? // Days before expiry
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String // User ID from Supabase
+
+  // Relations
+  category          Category?            @relation(fields: [categoryId], references: [id])
+  brand             Brand?               @relation(fields: [brandId], references: [id])
+  inventoryItems    InventoryItem[]
+  variants          ProductVariant[]
+  suppliers         ProductSupplier[]
+  orderItems        OrderItem[]
+  purchaseItems     PurchaseOrderItem[]
+  movements         InventoryMovement[]
+  audits            InventoryAudit[]
+  reviews           ProductReview[]
+  bundles           ProductBundle[]      @relation("BundleProducts")
+  bundleItems       ProductBundle[]      @relation("BundleItems")
+  goodsReceiptItems GoodsReceiptItem[]
+  transferItems     StockTransferItem[]
+  auditItems        InventoryAuditItem[]
+
+  @@map("products")
 }
 
+model ProductVariant {
+  id        String @id @default(uuid())
+  productId String
+
+  // Variant Details
+  name    String
+  sku     String  @unique
+  barcode String? @unique
+
+  // Variant Properties
+  attributes Json // {color: "red", size: "L", etc.}
+
+  // Pricing Override
+  costPrice    Decimal?
+  sellingPrice Decimal?
+
+  // Inventory Override
+  minStockLevel Int?
+  reorderPoint  Int?
+
+  // Status
+  isActive Boolean @default(true)
+
+  // Metadata
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  // Relations
+  product           Product              @relation(fields: [productId], references: [id], onDelete: Cascade)
+  inventoryItems    InventoryItem[]
+  movements         InventoryMovement[]
+  purchaseItems     PurchaseOrderItem[]
+  goodsReceiptItems GoodsReceiptItem[]
+  orderItems        OrderItem[]
+  transferItems     StockTransferItem[]
+  auditItems        InventoryAuditItem[]
+
+  @@map("product_variants")
+}
+
+model Category {
+  id String @id @default(uuid())
+
+  // Category Information
+  name        String
+  description String?
+  slug        String  @unique
+
+  // Hierarchy
+  parentId String?
+  level    Int     @default(0)
+  path     String? // e.g., "/electronics/computers/laptops"
+
+  // Visual
+  icon  String?
+  color String?
+  image String?
+
+  // Status
+  isActive Boolean @default(true)
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  parent   Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryHierarchy")
+  products Product[]
+
+  @@map("categories")
+}
+
+model Brand {
+  id String @id @default(uuid())
+
+  // Brand Information
+  name        String  @unique
+  description String?
+  logo        String?
+  website     String?
+
+  // Contact
+  contactEmail String?
+  contactPhone String?
+
+  // Status
+  isActive Boolean @default(true)
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  products Product[]
+
+  @@map("brands")
+}
+
+model ProductBundle {
+  id String @id @default(uuid())
+
+  // Bundle Information
+  name        String
+  description String?
+  sku         String  @unique
+
+  // Pricing
+  bundlePrice Decimal
+  discount    Decimal? // Amount or percentage
+
+  // Status
+  isActive Boolean @default(true)
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  products    Product[] @relation("BundleProducts")
+  bundleItems Product[] @relation("BundleItems")
+
+  @@map("product_bundles")
+}
+
+enum ProductStatus {
+  ACTIVE
+  INACTIVE
+  DISCONTINUED
+  DRAFT
+}
+
+// ===================================================================
+// INVENTORY MANAGEMENT MODELS
+// ===================================================================
+
+model Warehouse {
+  id String @id @default(uuid())
+
+  // Basic Information
+  name        String
+  code        String  @unique
+  description String?
+
+  // Location
+  address     Json // Street, city, state, country, zip
+  coordinates Json? // {lat, lng}
+  timezone    String?
+
+  // Contact
+  managerName  String?
+  managerEmail String?
+  managerPhone String?
+  phone        String?
+  email        String?
+
+  // Configuration
+  type     WarehouseType @default(STANDARD)
+  capacity Json? // {volume, weight, pallets}
+  isActive Boolean       @default(true)
+
+  // Features
+  hasRfid            Boolean @default(false)
+  hasBarcode         Boolean @default(true)
+  temperatureControl Boolean @default(false)
+  securityLevel      String? // LOW, MEDIUM, HIGH
+
+  // Metadata
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+  // Relations
+  inventoryItems    InventoryItem[]
+  movements         InventoryMovement[]
+  transfers         StockTransfer[]      @relation("TransferFrom")
+  receivedTransfers StockTransfer[]      @relation("TransferTo")
+  orders            Order[]
+  purchaseOrders    PurchaseOrder[]
+  audits            InventoryAudit[]
+  goodsReceipts     GoodsReceipt[]
+  shipments         Shipment[]
+  auditItems        InventoryAuditItem[]
+
+  @@map("warehouses")
+}
+
+enum WarehouseType {
+  STANDARD
+  DISTRIBUTION_CENTER
+  RETAIL_STORE
+  FULFILLMENT_CENTER
+  CROSS_DOCK
+  COLD_STORAGE
+}
+
+model InventoryItem {
+  id String @id @default(uuid())
+
+  // Product Reference
+  productId   String
+  variantId   String?
+  warehouseId String
+
+  // Location
+  zone         String? // A, B, C zones
+  aisle        String? // Aisle number
+  shelf        String? // Shelf position
+  bin          String? // Bin location
+  locationCode String? // Complete location code
+
+  // Quantity
+  quantity          Int @default(0)
+  reservedQuantity  Int @default(0) // For pending orders
+  availableQuantity Int @default(0) // quantity - reserved
+
+  // Cost Tracking
+  averageCost Decimal? // Weighted average cost
+  lastCost    Decimal? // Most recent purchase cost
+
+  // Lot/Batch Tracking
+  lotNumber     String?
+  batchNumber   String?
+  serialNumbers Json? // Array of serial numbers
+  expiryDate    DateTime?
+
+  // Status
+  status InventoryStatus @default(AVAILABLE)
+
+  // Quality Control
+  qcStatus         QualityStatus @default(PASSED)
+  quarantineReason String?
+
+  // Metadata
+  lastMovement DateTime?
+  lastCount    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  product      Product             @relation(fields: [productId], references: [id])
+  variant      ProductVariant?     @relation(fields: [variantId], references: [id])
+  warehouse    Warehouse           @relation(fields: [warehouseId], references: [id])
+  movements    InventoryMovement[]
+  reservations StockReservation[]
+
+  @@unique([productId, variantId, warehouseId, lotNumber])
+  @@map("inventory_items")
+}
+
+enum InventoryStatus {
+  AVAILABLE
+  RESERVED
+  QUARANTINE
+  DAMAGED
+  EXPIRED
+  RECALLED
+}
+
+enum QualityStatus {
+  PASSED
+  FAILED
+  PENDING
+  QUARANTINE
+}
+
+model InventoryMovement {
+  id String @id @default(uuid())
+
+  // Movement Details
+  type    MovementType
+  subtype String? // More specific categorization
+
+  // Product Reference
+  productId       String
+  variantId       String?
+  warehouseId     String
+  inventoryItemId String?
+
+  // Quantity
+  quantity       Int
+  quantityBefore Int // Stock before movement
+  quantityAfter  Int // Stock after movement
+
+  // Cost
+  unitCost  Decimal?
+  totalCost Decimal?
+
+  // References
+  referenceType String? // ORDER, PURCHASE_ORDER, TRANSFER, etc.
+  referenceId   String? // ID of the related record
+
+  // Location
+  fromLocation String?
+  toLocation   String?
+
+  // Lot/Batch
+  lotNumber   String?
+  batchNumber String?
+  expiryDate  DateTime?
+
+  // User & Reason
+  reason String?
+  notes  String?
+  userId String // User who performed the movement
+
+  // Approval (for adjustments)
+  approvedBy String?
+  approvedAt DateTime?
+
+  // Metadata
+  occurredAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  // Relations
+  product       Product         @relation(fields: [productId], references: [id])
+  variant       ProductVariant? @relation(fields: [variantId], references: [id])
+  warehouse     Warehouse       @relation(fields: [warehouseId], references: [id])
+  inventoryItem InventoryItem?  @relation(fields: [inventoryItemId], references: [id])
+
+  @@map("inventory_movements")
+}
+
+enum MovementType {
+  RECEIPT // Goods received
+  SHIPMENT // Goods shipped
+  ADJUSTMENT // Manual adjustment
+  TRANSFER_OUT // Transfer to another location
+  TRANSFER_IN // Transfer from another location
+  RETURN // Customer return
+  DAMAGE // Damaged goods
+  EXPIRED // Expired goods
+  PROMOTION // Promotional usage
+  SAMPLE // Sample usage
+  THEFT // Loss due to theft
+  COUNT // Cycle count adjustment
+}
+
+// ===================================================================
+// SUPPLIER MANAGEMENT MODELS
+// ===================================================================
+
 model Supplier {
-  id   Int    @id @default(autoincrement())
-  name String
+  id String @id @default(uuid())
+
+  // Basic Information
+  name    String
+  code    String  @unique
+  email   String?
+  phone   String?
+  website String?
+
+  // Business Information
+  companyType        CompanyType?
+  taxId              String?
+  vatNumber          String?
+  registrationNumber String?
+
+  // Address
+  billingAddress  Json // Complete address object
+  shippingAddress Json? // If different from billing
+
+  // Contact Person
+  contactName  String?
+  contactEmail String?
+  contactPhone String?
+  contactTitle String?
+
+  // Financial
+  paymentTerms String? // NET30, NET60, etc.
+  creditLimit  Decimal?
+  currency     String   @default("USD")
+
+  // Performance Metrics
+  rating         Decimal? // 1-5 rating
+  onTimeDelivery Decimal? // Percentage
+  qualityRating  Decimal? // 1-5 rating
+
+  // Status
+  status SupplierStatus @default(ACTIVE)
+
+  // Certifications
+  certifications Json? // Array of certifications
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String // User ID from Supabase
+
+  // Relations
+  products       ProductSupplier[]
+  purchaseOrders PurchaseOrder[]
+  invoices       SupplierInvoice[]
+  contacts       SupplierContact[]
+  documents      SupplierDocument[]
+
+  @@map("suppliers")
+}
+
+enum CompanyType {
+  CORPORATION
+  LLC
+  PARTNERSHIP
+  SOLE_PROPRIETORSHIP
+  NON_PROFIT
+  GOVERNMENT
+  OTHER
+}
+
+enum SupplierStatus {
+  ACTIVE
+  INACTIVE
+  PENDING_APPROVAL
+  SUSPENDED
+  BLACKLISTED
+}
+
+model ProductSupplier {
+  id String @id @default(uuid())
+
+  // References
+  productId  String
+  supplierId String
+
+  // Supplier Product Info
+  supplierSku  String? // Supplier's SKU for this product
+  supplierName String? // Supplier's name for this product
+
+  // Pricing
+  unitCost    Decimal
+  currency    String  @default("USD")
+  minOrderQty Int?
+  maxOrderQty Int?
+
+  // Lead Times
+  leadTimeDays Int?
+
+  // Status
+  isPreferred Boolean @default(false)
+  isActive    Boolean @default(true)
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  product  Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  supplier Supplier @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, supplierId])
+  @@map("product_suppliers")
+}
+
+model SupplierContact {
+  id         String @id @default(uuid())
+  supplierId String
+
+  // Contact Information
+  name   String
+  title  String?
+  email  String?
+  phone  String?
+  mobile String?
+
+  // Preferences
+  isPrimary  Boolean @default(false)
+  department String? // Sales, Support, Accounting, etc.
+
+  // Status
+  isActive Boolean @default(true)
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  supplier Supplier @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+
+  @@map("supplier_contacts")
+}
+
+model SupplierDocument {
+  id         String @id @default(uuid())
+  supplierId String
+
+  // Document Information
+  name     String
+  type     DocumentType
+  category String? // Contract, Invoice, Certificate, etc.
+
+  // File Information
+  fileName String
+  fileSize Int?
+  fileType String? // MIME type
+  filePath String // URL or path to file
+
+  // Metadata
+  uploadedBy String // User ID
+  uploadedAt DateTime  @default(now())
+  expiresAt  DateTime?
+
+  // Status
+  isActive Boolean @default(true)
+
+  // Relations
+  supplier Supplier @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+
+  @@map("supplier_documents")
+}
+
+enum DocumentType {
+  CONTRACT
+  INVOICE
+  CERTIFICATE
+  INSURANCE
+  TAX_FORM
+  COMPLIANCE
+  OTHER
+}
+
+// ===================================================================
+// PURCHASE ORDER MODELS
+// ===================================================================
+
+model PurchaseOrder {
+  id String @id @default(uuid())
+
+  // Order Information
+  orderNumber String  @unique
+  supplierId  String
+  warehouseId String? // Receiving warehouse
+
+  // Financial
+  subtotal       Decimal @default(0)
+  taxAmount      Decimal @default(0)
+  shippingCost   Decimal @default(0)
+  discountAmount Decimal @default(0)
+  totalAmount    Decimal @default(0)
+  currency       String  @default("USD")
+
+  // Status
+  status PurchaseOrderStatus @default(DRAFT)
+
+  // Dates
+  orderDate    DateTime  @default(now())
+  expectedDate DateTime?
+  deliveryDate DateTime?
+
+  // Terms
+  paymentTerms  String?
+  shippingTerms String?
+
+  // Tracking
+  trackingNumber String?
+  carrier        String?
+
+  // Approval
+  approvedBy String?
+  approvedAt DateTime?
+
+  // Metadata
+  notes         String?
+  internalNotes String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  createdBy     String // User ID from Supabase
+
+  // Relations
+  supplier  Supplier            @relation(fields: [supplierId], references: [id])
+  warehouse Warehouse?          @relation(fields: [warehouseId], references: [id])
+  items     PurchaseOrderItem[]
+  receipts  GoodsReceipt[]
+  invoices  SupplierInvoice[]
+
+  @@map("purchase_orders")
+}
+
+enum PurchaseOrderStatus {
+  DRAFT
+  PENDING_APPROVAL
+  APPROVED
+  SENT
+  ACKNOWLEDGED
+  PARTIALLY_RECEIVED
+  RECEIVED
+  INVOICED
+  PAID
+  CANCELLED
+  CLOSED
+}
+
+model PurchaseOrderItem {
+  id String @id @default(uuid())
+
+  // References
+  purchaseOrderId String
+  productId       String
+  variantId       String?
+
+  // Quantities
+  orderedQty   Int
+  receivedQty  Int @default(0)
+  remainingQty Int // orderedQty - receivedQty
+
+  // Pricing
+  unitCost  Decimal
+  totalCost Decimal // unitCost * orderedQty
+
+  // Product Details (snapshot)
+  productName String
+  productSku  String
+  supplierSku String?
+
+  // Dates
+  expectedDate DateTime?
+
+  // Status
+  status PurchaseItemStatus @default(PENDING)
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  purchaseOrder PurchaseOrder   @relation(fields: [purchaseOrderId], references: [id], onDelete: Cascade)
+  product       Product         @relation(fields: [productId], references: [id])
+  variant       ProductVariant? @relation(fields: [variantId], references: [id])
+
+  @@map("purchase_order_items")
+}
+
+enum PurchaseItemStatus {
+  PENDING
+  PARTIALLY_RECEIVED
+  RECEIVED
+  CANCELLED
+}
+
+model GoodsReceipt {
+  id String @id @default(uuid())
+
+  // References
+  purchaseOrderId String
+  warehouseId     String
+
+  // Receipt Information
+  receiptNumber String @unique
+
+  // Dates
+  receivedDate DateTime @default(now())
+
+  // Quality Control
+  qcStatus QualityStatus @default(PENDING)
+  qcNotes  String?
+  qcBy     String? // User ID
+  qcDate   DateTime?
+
+  // Status
+  status ReceiptStatus @default(PENDING)
+
+  // Metadata
+  notes      String?
+  receivedBy String // User ID from Supabase
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  // Relations
+  purchaseOrder PurchaseOrder      @relation(fields: [purchaseOrderId], references: [id])
+  warehouse     Warehouse          @relation(fields: [warehouseId], references: [id])
+  items         GoodsReceiptItem[]
+
+  @@map("goods_receipts")
+}
+
+enum ReceiptStatus {
+  PENDING
+  INSPECTING
+  ACCEPTED
+  REJECTED
+  PARTIALLY_ACCEPTED
+}
+
+model GoodsReceiptItem {
+  id String @id @default(uuid())
+
+  // References
+  goodsReceiptId String
+  productId      String
+  variantId      String?
+
+  // Quantities
+  expectedQty Int
+  receivedQty Int
+  acceptedQty Int
+  rejectedQty Int
+
+  // Quality Issues
+  qcStatus        QualityStatus @default(PENDING)
+  qcNotes         String?
+  rejectionReason String?
+
+  // Lot/Batch Information
+  lotNumber     String?
+  batchNumber   String?
+  expiryDate    DateTime?
+  serialNumbers Json? // Array of serial numbers
+
+  // Location
+  receivedLocation String?
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  goodsReceipt GoodsReceipt    @relation(fields: [goodsReceiptId], references: [id], onDelete: Cascade)
+  product      Product         @relation(fields: [productId], references: [id])
+  variant      ProductVariant? @relation(fields: [variantId], references: [id])
+
+  @@map("goods_receipt_items")
+}
+
+// ===================================================================
+// CUSTOMER & ORDER MODELS
+// ===================================================================
+
+model Customer {
+  id String @id @default(uuid())
+
+  // Basic Information
+  customerNumber String       @unique
+  type           CustomerType @default(INDIVIDUAL)
+
+  // Individual Fields
+  firstName String?
+  lastName  String?
+
+  // Company Fields
+  companyName String?
+  taxId       String?
+
+  // Contact Information
+  email  String?
+  phone  String?
+  mobile String?
+
+  // Address
+  billingAddress  Json? // Complete address object
+  shippingAddress Json? // If different from billing
+
+  // Financial
+  creditLimit  Decimal?
+  paymentTerms String?
+  currency     String   @default("USD")
+
+  // Preferences
+  preferredLanguage String?
+  timezone          String?
+
+  // Marketing
+  allowMarketing Boolean @default(true)
+  source         String? // How they found us
+
+  // Status
+  status CustomerStatus @default(ACTIVE)
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String // User ID from Supabase
+
+  // Relations
+  orders   Order[]
+  invoices CustomerInvoice[]
+  contacts CustomerContact[]
+
+  @@map("customers")
+}
+
+enum CustomerType {
+  INDIVIDUAL
+  BUSINESS
+  RESELLER
+  DISTRIBUTOR
+}
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+  PROSPECT
+  SUSPENDED
+}
+
+model CustomerContact {
+  id         String @id @default(uuid())
+  customerId String
+
+  // Contact Information
+  name   String
+  title  String?
+  email  String?
+  phone  String?
+  mobile String?
+
+  // Preferences
+  isPrimary  Boolean @default(false)
+  department String?
+
+  // Status
+  isActive Boolean @default(true)
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@map("customer_contacts")
+}
+
+model Order {
+  id String @id @default(uuid())
+
+  // Order Information
+  orderNumber String @unique
+  customerId  String
+  warehouseId String // Fulfillment warehouse
+
+  // Order Type
+  type    OrderType    @default(SALES)
+  channel OrderChannel @default(DIRECT)
+
+  // Financial
+  subtotal       Decimal @default(0)
+  taxAmount      Decimal @default(0)
+  shippingCost   Decimal @default(0)
+  discountAmount Decimal @default(0)
+  totalAmount    Decimal @default(0)
+  currency       String  @default("USD")
+
+  // Status
+  status            OrderStatus       @default(PENDING)
+  fulfillmentStatus FulfillmentStatus @default(PENDING)
+  paymentStatus     PaymentStatus     @default(PENDING)
+
+  // Dates
+  orderDate     DateTime  @default(now())
+  requiredDate  DateTime?
+  promisedDate  DateTime?
+  shippedDate   DateTime?
+  deliveredDate DateTime?
+
+  // Shipping
+  shippingMethod  String?
+  trackingNumber  String?
+  carrier         String?
+  shippingAddress Json?
+
+  // Priority
+  priority  OrderPriority @default(NORMAL)
+  rushOrder Boolean       @default(false)
+
+  // Metadata
+  notes         String?
+  internalNotes String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  createdBy     String // User ID from Supabase
+
+  // Relations
+  customer  Customer          @relation(fields: [customerId], references: [id])
+  warehouse Warehouse         @relation(fields: [warehouseId], references: [id])
+  items     OrderItem[]
+  shipments Shipment[]
+  invoices  CustomerInvoice[]
+
+  @@map("orders")
+}
+
+enum OrderType {
+  SALES
+  RETURN
+  EXCHANGE
+  SAMPLE
+  REPLACEMENT
+}
+
+enum OrderChannel {
+  DIRECT
+  ONLINE
+  PHONE
+  EMAIL
+  RETAIL
+  WHOLESALE
+  B2B_PORTAL
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  RETURNED
+  COMPLETED
+}
+
+enum FulfillmentStatus {
+  PENDING
+  PICKING
+  PACKED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  PAID
+  PARTIALLY_PAID
+  REFUNDED
+  FAILED
+}
+
+enum OrderPriority {
+  LOW
+  NORMAL
+  HIGH
+  URGENT
+}
+
+model OrderItem {
+  id String @id @default(uuid())
+
+  // References
+  orderId   String
+  productId String
+  variantId String?
+
+  // Quantities
+  orderedQty   Int
+  shippedQty   Int @default(0)
+  remainingQty Int // orderedQty - shippedQty
+
+  // Pricing
+  unitPrice      Decimal
+  totalPrice     Decimal // unitPrice * orderedQty
+  discountAmount Decimal @default(0)
+
+  // Product Details (snapshot)
+  productName String
+  productSku  String
+
+  // Status
+  status OrderItemStatus @default(PENDING)
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product         @relation(fields: [productId], references: [id])
+  variant ProductVariant? @relation(fields: [variantId], references: [id])
+
+  @@map("order_items")
+}
+
+enum OrderItemStatus {
+  PENDING
+  RESERVED
+  PICKING
+  PICKED
+  PACKED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+// ===================================================================
+// SHIPPING & LOGISTICS MODELS
+// ===================================================================
+
+model Shipment {
+  id String @id @default(uuid())
+
+  // Shipment Information
+  shipmentNumber String  @unique
+  orderId        String? // Can be null for transfers
+  warehouseId    String
+
+  // Shipping Details
+  carrier        String
+  service        String? // Ground, Express, Overnight
+  trackingNumber String?
+
+  // Addresses
+  fromAddress Json
+  toAddress   Json
+
+  // Package Information
+  packageCount Int      @default(1)
+  weight       Decimal?
+  dimensions   Json? // {length, width, height, unit}
+
+  // Costs
+  shippingCost   Decimal?
+  insuranceValue Decimal?
+
+  // Status
+  status ShipmentStatus @default(CREATED)
+
+  // Dates
+  shipDate          DateTime?
+  estimatedDelivery DateTime?
+  actualDelivery    DateTime?
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String // User ID from Supabase
+
+  // Relations
+  order     Order?             @relation(fields: [orderId], references: [id])
+  warehouse Warehouse          @relation(fields: [warehouseId], references: [id])
+  packages  ShipmentPackage[]
+  tracking  ShipmentTracking[]
+
+  @@map("shipments")
+}
+
+enum ShipmentStatus {
+  CREATED
+  PICKED_UP
+  IN_TRANSIT
+  OUT_FOR_DELIVERY
+  DELIVERED
+  EXCEPTION
+  RETURNED
+  CANCELLED
+}
+
+model ShipmentPackage {
+  id         String @id @default(uuid())
+  shipmentId String
+
+  // Package Information
+  packageNumber  String
+  trackingNumber String?
+
+  // Physical Properties
+  weight     Decimal?
+  dimensions Json? // {length, width, height, unit}
+
+  // Contents
+  contents Json? // Array of items with quantities
+
+  // Status
+  status String?
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+
+  @@map("shipment_packages")
+}
+
+model ShipmentTracking {
+  id         String @id @default(uuid())
+  shipmentId String
+
+  // Tracking Information
+  status      String
+  description String?
+  location    String?
+
+  // Timing
+  eventDate DateTime
+
+  // Metadata
+  rawData   Json? // Original tracking data from carrier
+  createdAt DateTime @default(now())
+
+  // Relations
+  shipment Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
+
+  @@map("shipment_tracking")
+}
+
+// ===================================================================
+// STOCK MANAGEMENT MODELS
+// ===================================================================
+
+model StockTransfer {
+  id String @id @default(uuid())
+
+  // Transfer Information
+  transferNumber  String @unique
+  fromWarehouseId String
+  toWarehouseId   String
+
+  // Status
+  status TransferStatus @default(PENDING)
+
+  // Dates
+  requestedDate DateTime  @default(now())
+  shippedDate   DateTime?
+  receivedDate  DateTime?
+
+  // Approval
+  approvedBy String?
+  approvedAt DateTime?
+
+  // Metadata
+  reason    String?
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  createdBy String // User ID from Supabase
+
+  // Relations
+  fromWarehouse Warehouse           @relation("TransferFrom", fields: [fromWarehouseId], references: [id])
+  toWarehouse   Warehouse           @relation("TransferTo", fields: [toWarehouseId], references: [id])
+  items         StockTransferItem[]
+
+  @@map("stock_transfers")
+}
+
+enum TransferStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  IN_TRANSIT
+  RECEIVED
+  CANCELLED
+}
+
+model StockTransferItem {
+  id String @id @default(uuid())
+
+  // References
+  transferId String
+  productId  String
+  variantId  String?
+
+  // Quantities
+  requestedQty Int
+  shippedQty   Int @default(0)
+  receivedQty  Int @default(0)
+
+  // Product Details
+  productName String
+  productSku  String
+
+  // Lot/Batch
+  lotNumber   String?
+  batchNumber String?
+
+  // Status
+  status TransferItemStatus @default(PENDING)
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  transfer StockTransfer   @relation(fields: [transferId], references: [id], onDelete: Cascade)
+  product  Product         @relation(fields: [productId], references: [id])
+  variant  ProductVariant? @relation(fields: [variantId], references: [id])
+
+  @@map("stock_transfer_items")
+}
+
+enum TransferItemStatus {
+  PENDING
+  SHIPPED
+  RECEIVED
+  CANCELLED
+}
+
+model StockReservation {
+  id String @id @default(uuid())
+
+  // References
+  inventoryItemId String
+
+  // Reservation Details
+  reservationType ReservationType
+  referenceType   String // ORDER, TRANSFER, etc.
+  referenceId     String // ID of the related record
+
+  // Quantity
+  quantity Int
+
+  // Status
+  status ReservationStatus @default(ACTIVE)
+
+  // Dates
+  reservedAt DateTime  @default(now())
+  expiresAt  DateTime?
+  releasedAt DateTime?
+
+  // User
+  reservedBy String // User ID from Supabase
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  inventoryItem InventoryItem @relation(fields: [inventoryItemId], references: [id])
+
+  @@map("stock_reservations")
+}
+
+enum ReservationType {
+  ORDER
+  TRANSFER
+  MANUAL
+  QUALITY_HOLD
+}
+
+enum ReservationStatus {
+  ACTIVE
+  FULFILLED
+  CANCELLED
+  EXPIRED
+}
+
+// ===================================================================
+// FINANCIAL MODELS
+// ===================================================================
+
+model SupplierInvoice {
+  id String @id @default(uuid())
+
+  // Invoice Information
+  invoiceNumber   String  @unique
+  supplierId      String
+  purchaseOrderId String?
+
+  // Financial
+  subtotal    Decimal
+  taxAmount   Decimal @default(0)
+  totalAmount Decimal
+  currency    String  @default("USD")
+
+  // Dates
+  invoiceDate DateTime
+  dueDate     DateTime
+  paidDate    DateTime?
+
+  // Status
+  status InvoiceStatus @default(PENDING)
+
+  // Payment
+  paymentMethod    String?
+  paymentReference String?
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  supplier      Supplier       @relation(fields: [supplierId], references: [id])
+  purchaseOrder PurchaseOrder? @relation(fields: [purchaseOrderId], references: [id])
+
+  @@map("supplier_invoices")
+}
+
+model CustomerInvoice {
+  id String @id @default(uuid())
+
+  // Invoice Information
+  invoiceNumber String  @unique
+  customerId    String
+  orderId       String?
+
+  // Financial
+  subtotal      Decimal
+  taxAmount     Decimal @default(0)
+  totalAmount   Decimal
+  paidAmount    Decimal @default(0)
+  balanceAmount Decimal // totalAmount - paidAmount
+  currency      String  @default("USD")
+
+  // Dates
+  invoiceDate DateTime  @default(now())
+  dueDate     DateTime
+  paidDate    DateTime?
+
+  // Status
+  status InvoiceStatus @default(PENDING)
+
+  // Payment
+  paymentMethod    String?
+  paymentReference String?
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  customer Customer @relation(fields: [customerId], references: [id])
+  order    Order?   @relation(fields: [orderId], references: [id])
+
+  @@map("customer_invoices")
+}
+
+enum InvoiceStatus {
+  DRAFT
+  PENDING
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+// ===================================================================
+// AUDIT & QUALITY CONTROL MODELS
+// ===================================================================
+
+model InventoryAudit {
+  id String @id @default(uuid())
+
+  // Audit Information
+  auditNumber String  @unique
+  warehouseId String? // If warehouse-specific
+  productId   String? // If product-specific
+
+  // Audit Details
+  type   AuditType
+  method AuditMethod @default(FULL_COUNT)
+
+  // Status
+  status AuditStatus @default(PLANNED)
+
+  // Dates
+  plannedDate   DateTime
+  startedDate   DateTime?
+  completedDate DateTime?
+
+  // Team
+  auditedBy    String // User ID from Supabase
+  supervisedBy String? // User ID from Supabase
+
+  // Results
+  totalItems      Int?
+  itemsCounted    Int?
+  discrepancies   Int?
+  adjustmentValue Decimal?
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  warehouse Warehouse?           @relation(fields: [warehouseId], references: [id])
+  product   Product?             @relation(fields: [productId], references: [id])
+  items     InventoryAuditItem[]
+
+  @@map("inventory_audits")
+}
+
+enum AuditType {
+  CYCLE_COUNT
+  FULL_COUNT
+  SPOT_CHECK
+  ANNUAL_COUNT
+  INVESTIGATION
+}
+
+enum AuditMethod {
+  FULL_COUNT
+  SAMPLE_COUNT
+  ABC_ANALYSIS
+  PERPETUAL
+}
+
+enum AuditStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model InventoryAuditItem {
+  id String @id @default(uuid())
+
+  // References
+  auditId     String
+  productId   String
+  variantId   String?
+  warehouseId String
+
+  // Count Information
+  systemQty     Int // Quantity per system
+  countedQty    Int? // Actual counted quantity
+  adjustmentQty Int? // Difference (countedQty - systemQty)
+
+  // Location
+  location String?
+
+  // Lot/Batch
+  lotNumber   String?
+  batchNumber String?
+
+  // Audit Details
+  countedBy  String? // User ID
+  countedAt  DateTime?
+  verifiedBy String? // User ID
+  verifiedAt DateTime?
+
+  // Status
+  status AuditItemStatus @default(PENDING)
+
+  // Issues
+  discrepancyReason     String?
+  requiresInvestigation Boolean @default(false)
+
+  // Metadata
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  audit     InventoryAudit  @relation(fields: [auditId], references: [id], onDelete: Cascade)
+  product   Product         @relation(fields: [productId], references: [id])
+  variant   ProductVariant? @relation(fields: [variantId], references: [id])
+  warehouse Warehouse       @relation(fields: [warehouseId], references: [id])
+
+  @@map("inventory_audit_items")
+}
+
+enum AuditItemStatus {
+  PENDING
+  COUNTED
+  VERIFIED
+  ADJUSTED
+  EXCEPTION
+}
+
+// ===================================================================
+// REPORTING & ANALYTICS MODELS
+// ===================================================================
+
+model ProductReview {
+  id        String @id @default(uuid())
+  productId String
+
+  // Review Information
+  rating Int // 1-5 stars
+  title  String?
+  review String?
+
+  // Reviewer (anonymous)
+  reviewerName  String?
+  reviewerEmail String?
+
+  // Status
+  isApproved Boolean @default(false)
+  isVisible  Boolean @default(true)
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_reviews")
+}
+
+// ===================================================================
+// SYSTEM & CONFIGURATION MODELS
+// ===================================================================
+
+model SystemConfiguration {
+  id String @id @default(uuid())
+
+  // Configuration
+  category String // inventory, orders, suppliers, etc.
+  key      String // specific setting name
+  value    Json // flexible value storage
+
+  // Metadata
+  description String?
+  dataType    String? // string, number, boolean, json
+
+  // Timing
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([category, key])
+  @@map("system_configurations")
 }

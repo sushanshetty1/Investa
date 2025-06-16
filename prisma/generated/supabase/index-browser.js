@@ -123,7 +123,196 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  password: 'password'
+  emailVerified: 'emailVerified',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  displayName: 'displayName',
+  avatar: 'avatar',
+  phone: 'phone',
+  password: 'password',
+  twoFactorEnabled: 'twoFactorEnabled',
+  twoFactorSecret: 'twoFactorSecret',
+  timezone: 'timezone',
+  language: 'language',
+  theme: 'theme',
+  isActive: 'isActive',
+  isVerified: 'isVerified',
+  isSuspended: 'isSuspended',
+  suspendedReason: 'suspendedReason',
+  lastLoginAt: 'lastLoginAt',
+  lastLoginIp: 'lastLoginIp',
+  failedLoginCount: 'failedLoginCount',
+  lockedUntil: 'lockedUntil',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RoleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  displayName: 'displayName',
+  description: 'description',
+  color: 'color',
+  permissions: 'permissions',
+  level: 'level',
+  isSystem: 'isSystem',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserRoleScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  roleId: 'roleId',
+  assignedBy: 'assignedBy',
+  assignedAt: 'assignedAt',
+  expiresAt: 'expiresAt',
+  isActive: 'isActive'
+};
+
+exports.Prisma.UserSessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  refreshToken: 'refreshToken',
+  userAgent: 'userAgent',
+  ipAddress: 'ipAddress',
+  deviceId: 'deviceId',
+  deviceType: 'deviceType',
+  browser: 'browser',
+  location: 'location',
+  lastActivity: 'lastActivity',
+  expiresAt: 'expiresAt',
+  isActive: 'isActive',
+  isRevoked: 'isRevoked',
+  revokedAt: 'revokedAt',
+  revokedBy: 'revokedBy',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.LoginHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  successful: 'successful',
+  failReason: 'failReason',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  location: 'location',
+  deviceType: 'deviceType',
+  attemptedAt: 'attemptedAt'
+};
+
+exports.Prisma.PasswordResetScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  isUsed: 'isUsed',
+  usedAt: 'usedAt',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.UserInvitationScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  roleId: 'roleId',
+  token: 'token',
+  invitedById: 'invitedById',
+  invitedByName: 'invitedByName',
+  invitedUserId: 'invitedUserId',
+  message: 'message',
+  status: 'status',
+  expiresAt: 'expiresAt',
+  sentAt: 'sentAt',
+  acceptedAt: 'acceptedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserPreferenceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  category: 'category',
+  key: 'key',
+  value: 'value',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserNotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  title: 'title',
+  message: 'message',
+  type: 'type',
+  category: 'category',
+  priority: 'priority',
+  icon: 'icon',
+  color: 'color',
+  actionUrl: 'actionUrl',
+  actionText: 'actionText',
+  isRead: 'isRead',
+  readAt: 'readAt',
+  channels: 'channels',
+  sentAt: 'sentAt',
+  deliveredAt: 'deliveredAt',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AuditLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  userEmail: 'userEmail',
+  action: 'action',
+  resource: 'resource',
+  resourceId: 'resourceId',
+  oldValues: 'oldValues',
+  newValues: 'newValues',
+  changes: 'changes',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  sessionId: 'sessionId',
+  metadata: 'metadata',
+  severity: 'severity',
+  timestamp: 'timestamp'
+};
+
+exports.Prisma.SystemSettingScalarFieldEnum = {
+  id: 'id',
+  category: 'category',
+  key: 'key',
+  value: 'value',
+  description: 'description',
+  isPublic: 'isPublic',
+  isSystem: 'isSystem',
+  dataType: 'dataType',
+  validation: 'validation',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ApiKeyScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  name: 'name',
+  keyHash: 'keyHash',
+  keyPrefix: 'keyPrefix',
+  scopes: 'scopes',
+  lastUsedAt: 'lastUsedAt',
+  usageCount: 'usageCount',
+  rateLimit: 'rateLimit',
+  expiresAt: 'expiresAt',
+  isActive: 'isActive',
+  isRevoked: 'isRevoked',
+  revokedAt: 'revokedAt',
+  revokedBy: 'revokedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -131,14 +320,75 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+exports.InvitationStatus = exports.$Enums.InvitationStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.NotificationType = exports.$Enums.NotificationType = {
+  INFO: 'INFO',
+  SUCCESS: 'SUCCESS',
+  WARNING: 'WARNING',
+  ERROR: 'ERROR',
+  ALERT: 'ALERT',
+  REMINDER: 'REMINDER'
+};
+
+exports.NotificationPriority = exports.$Enums.NotificationPriority = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+exports.AuditSeverity = exports.$Enums.AuditSeverity = {
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  ERROR: 'ERROR',
+  CRITICAL: 'CRITICAL'
+};
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Role: 'Role',
+  UserRole: 'UserRole',
+  UserSession: 'UserSession',
+  LoginHistory: 'LoginHistory',
+  PasswordReset: 'PasswordReset',
+  UserInvitation: 'UserInvitation',
+  UserPreference: 'UserPreference',
+  UserNotification: 'UserNotification',
+  AuditLog: 'AuditLog',
+  SystemSetting: 'SystemSetting',
+  ApiKey: 'ApiKey'
 };
 
 /**
