@@ -99,22 +99,21 @@ const Navbar = () => {
     };
   }, [openDropdown]);
   // Show loading state while auth is being determined
-  if (loading) {
-    return (
+  if (loading) {    return (
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border/30">
-        <div className="container mx-auto px-4 max-w-7xl">
+        <div className="container mx-auto px-2 sm:px-3 lg:px-4 max-w-7xl">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <Package className="h-5 w-5 text-white" />
+            <Link href="/" className="flex items-center space-x-1 sm:space-x-2">
+              <div className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
+                <Package className="h-3 w-3 sm:h-4 sm:w-4 lg:h-5 lg:w-5 text-white" />
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                 Invista
               </span>
             </Link>
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-1 sm:space-x-2">
               <ThemeToggle />
-              <div className="w-8 h-8 bg-muted rounded-full animate-pulse" />
+              <div className="w-5 h-5 sm:w-6 sm:h-6 bg-muted rounded-full animate-pulse" />
             </div>
           </div>
         </div>
@@ -232,17 +231,16 @@ const Navbar = () => {
             dropdownRefs.current[item.href] = el;
           }
         }}
-      >
-        <button
+      >        <button
           onClick={() => onToggle(item.href)}
-          className={`flex items-center h-9 px-2 text-xs rounded-md transition-colors whitespace-nowrap hover:bg-accent/50 focus:outline-none focus:ring-2 focus:ring-primary/20 ${
+          className={`flex items-center h-8 px-1.5 text-xs rounded-md transition-colors whitespace-nowrap hover:bg-accent/50 focus:outline-none focus:ring-2 focus:ring-primary/20 ${
             isOpen ? 'bg-accent/60' : 'bg-transparent'
           }`}
         >
-          <item.icon className="h-4 w-4 mr-1" />
-          <span className="hidden 2xl:inline">{item.title}</span>
-          <span className="2xl:hidden">{item.title.substring(0, 4)}</span>
-          <ChevronDown className={`h-3 w-3 ml-1 transition-transform duration-200 ${
+          <item.icon className="h-3 w-3 mr-1 flex-shrink-0" />
+          <span className="hidden xl:inline text-xs">{item.title}</span>
+          <span className="xl:hidden text-xs">{item.title.length > 6 ? item.title.substring(0, 6) : item.title}</span>
+          <ChevronDown className={`h-2 w-2 ml-0.5 flex-shrink-0 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`} />
         </button>
@@ -267,11 +265,10 @@ const Navbar = () => {
   };
 
   return (
-    <>
-      {/* Mobile Menu Backdrop */}
+    <>      {/* Mobile Menu Backdrop */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-30 xl:hidden"
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -279,26 +276,21 @@ const Navbar = () => {
         isScrolled 
           ? "bg-background/95 backdrop-blur-xl border-b border-border/60 shadow-lg shadow-black/5" 
           : "bg-background/80 backdrop-blur-sm border-b border-border/30"
-      }`}>
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="flex items-center justify-between h-16 gap-4">
-            {/* Logo */}
-            <Link href="/" className="flex items-center space-x-3 group flex-shrink-0">
+      }`}>        <div className="container mx-auto px-2 sm:px-3 lg:px-4 max-w-7xl">
+          <div className="flex mx-1   sm:justify-between h-16 gap-32 sm:gap-2">            {/* Logo */}
+            <Link href="/" className="flex items-center space-x-1 sm:space-x-2 group flex-shrink-0 min-w-0">
               <div className="relative">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                  <Package className="h-5 w-5 text-white" />
+                <div className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                  <Package className="h-3 w-3 sm:h-4 sm:w-4 lg:h-5 lg:w-5 text-white" />
                 </div>
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-background animate-pulse" />
+                <div className="absolute -top-1 -right-1 w-2 h-2 bg-emerald-500 rounded-full border border-background animate-pulse" />
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <span className="text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent truncate">
                 Invista
               </span>
-            </Link>
-
-            {/* Desktop Navigation */}
-            {isDashboard ? (
-              <div className="hidden xl:flex items-center flex-1 justify-center max-w-4xl">
-                <div className="flex items-center space-x-1">
+            </Link>{/* Desktop Navigation */}
+            {isDashboard ? (              <div className="hidden lg:flex items-center flex-1 justify-center max-w-3xl mx-2">
+                <div className="flex items-center space-x-0.5 lg:space-x-1">
                   {dashboardNavItems.map((item) => (
                     <CustomDropdown
                       key={item.href}
@@ -310,7 +302,7 @@ const Navbar = () => {
                 </div>
               </div>
             ) : (
-              <div className="hidden xl:flex items-center gap-6 space-x-4 flex-1 justify-center">
+              <div className="hidden lg:flex items-center gap-2 lg:gap-3 flex-1 justify-center">
                 <Link href="#features" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
                   Features
                 </Link>
@@ -324,25 +316,23 @@ const Navbar = () => {
                   Contact
                 </Link>
               </div>
-            )}
-
-            {/* Right Side Actions */}
-            <div className="flex items-center space-x-1 flex-shrink-0">
+            )}            {/* Right Side Actions */}
+            <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
               {isDashboard && (
                 <>
-                  {/* Search */}
-                  <div className="hidden lg:flex relative">
+                  {/* Search - Hidden on mobile */}
+                  <div className="hidden md:flex relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                       placeholder="Search..."
-                      className="pl-9 pr-4 w-32 xl:w-48 h-9 bg-background/50 border-border/60 focus:border-primary/60 focus:bg-background text-sm"
+                      className="pl-9 pr-4 w-28 lg:w-32 xl:w-48 h-9 bg-background/50 border-border/60 focus:border-primary/60 focus:bg-background text-sm"
                     />
                   </div>
 
                   {/* Notifications */}
                   <Button variant="ghost" size="sm" className="relative h-9 w-9 p-0 hover:bg-accent/60 flex-shrink-0">
                     <Bell className="h-4 w-4" />
-                    <Badge className="absolute -top-1 -right-1 h-4 w-4 rounded-full p-0 flex items-center justify-center text-[9px] bg-red-500 hover:bg-red-500">
+                    <Badge className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 rounded-full p-0 flex items-center justify-center text-[8px] sm:text-[9px] bg-red-500 hover:bg-red-500">
                       3
                     </Badge>
                   </Button>
@@ -352,20 +342,18 @@ const Navbar = () => {
               {/* Theme Toggle */}
               <div className="flex-shrink-0">
                 <ThemeToggle />
-              </div>
-
-              {/* User Menu / Auth Buttons */}
+              </div>              {/* User Menu / Auth Buttons */}
               {isDashboard ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-9 px-2 space-x-1 hover:bg-accent/60 flex-shrink-0">
-                      <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                        <User className="h-3 w-3 text-white" />
+                    <Button variant="ghost" className="h-8 px-1 space-x-1 hover:bg-accent/60 flex-shrink-0">
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                        <User className="h-2 w-2 sm:h-3 sm:w-3 text-white" />
                       </div>
-                      <span className="hidden lg:block text-sm truncate max-w-[80px]">
+                      <span className="hidden lg:block text-xs truncate max-w-[50px]">
                         {user?.email?.split('@')[0] || 'User'}
                       </span>
-                      <ChevronDown className="h-3 w-3 hidden lg:block" />
+                      <ChevronDown className="h-2 w-2 sm:h-3 sm:w-3 hidden lg:block" />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56 mt-2">
@@ -391,41 +379,39 @@ const Navbar = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              ) : (
-                <div className="hidden sm:flex items-center space-x-2">
+              ) : (                <div className="hidden sm:flex items-center space-x-1">
                   <Button 
                     variant="ghost" 
                     size="sm"
                     onClick={() => handleAuthAction("login")}
-                    className="h-9 hover:bg-accent/60"
+                    className="h-8 text-xs hover:bg-accent/60"
                   >
                     Sign In
                   </Button>
                   <Button 
                     size="sm"
                     onClick={() => handleAuthAction("signup")}
-                    className="h-9 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                    className="h-8 text-xs bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
                   >
-                    Get Started
+                    <span className="hidden sm:inline">Get Started</span>
+                    <span className="sm:hidden">Start</span>
                   </Button>
                 </div>
-              )}
-
-              {/* Mobile Menu Button */}
+              )}              {/* Mobile Menu Button */}
               <Button
                 variant="ghost"
                 size="sm"
-                className="lg:hidden h-9 w-9 p-0 hover:bg-accent/60"
+                className="lg:hidden h-8 w-8 p-0 hover:bg-accent/60 ml-1"
                 onClick={() => setIsOpen(!isOpen)}
               >
-                {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+                {isOpen ? <X className="h-3 w-3" /> : <Menu className="h-3 w-3" />}
               </Button>
             </div>
           </div>          {/* Mobile Menu */}
-          <div className={`xl:hidden absolute top-full left-0 right-0 border-t border-border/60 bg-background/95 backdrop-blur-xl transition-all duration-300 ease-in-out z-40 ${
+          <div className={`lg:hidden absolute top-full left-0 right-0 border-t border-border/60 bg-background/95 backdrop-blur-xl transition-all duration-300 ease-in-out z-40 ${
             isOpen ? 'max-h-screen opacity-100 visible' : 'max-h-0 opacity-0 invisible'
           }`}>
-            <div className="container mx-auto px-4 max-w-7xl">
+            <div className="container mx-auto px-3 sm:px-4 max-w-7xl">
               <div className="py-2 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
                 {isDashboard ? (
                   <>

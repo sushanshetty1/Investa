@@ -137,7 +137,8 @@ export default function DashboardPage() {
     return variants[status as keyof typeof variants] || variants.pending;
   };
 
-  return (    <div className="min-h-screen bg-background pt-20">
+  return (
+    <div className="min-h-screen bg-background pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 lg:mb-10">
@@ -176,49 +177,30 @@ export default function DashboardPage() {
               Export
             </Button>
             <Button size="sm" className="h-9 px-4">
-              <Plus className="h-4 w-4 mr-2" />
+          
               Add Product
             </Button>
           </div>
-        </div>        {/* Alert Section */}
+        </div>        {/* Alert Section - Custom Implementation */}
         <div className="mb-6">
-          <Alert className="relative border-l-4 border-l-amber-500 bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
-          <div className="flex items-start gap-3 p-4 w-full">
-  {/* Icon */}
-  <div className="flex-shrink-0">
-    <div className="flex items-center justify-center w-8 h-8 bg-amber-500 rounded-lg">
-      <AlertTriangle className="h-4 w-4 text-white" />
-    </div>
-  </div>
-
-  {/* Text content */}
-  <div className="flex flex-col w-full min-w-0">
-   <div className="text-base min-w-md font-semibold text-amber-900 dark:text-amber-100">
-  Attention Required
-</div>
-
-   <AlertDescription className="text-sm sm:text-md text-amber-800 dark:text-amber-200 mt-1">
-  <span className="block sm:inline break-words sm:min-w-max max-w-full">
-    You have 23 products with low stock levels. Consider restocking to avoid shortages.
-  </span>
-</AlertDescription>
-
-  </div>
-
-
-              <div className=" hidden">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="bg-white dark:bg-gray-800 border-amber-300 text-amber-900 dark:text-amber-100 hover:bg-amber-100 dark:hover:bg-amber-900/30"
-                >
-                  <Eye className="h-4 w-4 mr-1" />
-                  View
-                </Button>
+          <div className="rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50/50 dark:bg-amber-950/20 border-l-4 border-l-amber-500 p-4">
+            <div className="flex gap-3">
+              <div className="flex-shrink-0">
+                <div className="bg-amber-500 rounded-lg w-8 h-8 flex items-center justify-center">
+                  <AlertTriangle className="h-4 w-4 text-white" />
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold text-amber-900 dark:text-amber-100 mb-1">Attention Required</h3>
+                <p className="text-sm text-amber-800 dark:text-amber-200">
+                  You have <strong>23 products</strong> with low stock levels. Consider restocking to avoid shortages.
+                </p>
               </div>
             </div>
-          </Alert>
-        </div>{/* Quick Stats Grid */}
+          </div>
+        </div>
+
+        {/* Quick Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-6 mb-8 lg:mb-10">
           <Card className="relative overflow-hidden hover:shadow-lg transition-all duration-300 border-l-4 border-l-emerald-500">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
@@ -283,11 +265,12 @@ export default function DashboardPage() {
               <div className="flex items-center text-xs">
                 <ArrowDownRight className="h-3 w-3 text-amber-500 mr-1" />
                 <span className="text-amber-600 font-medium">-3</span>
-                <span className="text-muted-foreground ml-1">from yesterday</span>
-              </div>
+                <span className="text-muted-foreground ml-1">from yesterday</span>              </div>
             </CardContent>
           </Card>
-        </div>        {/* Main Content Tabs */}
+        </div>
+
+        {/* Main Content Tabs */}
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-8">
           <div className="border-b border-border">
             <TabsList className="grid w-full max-w-md grid-cols-4 bg-muted/50 p-1 h-12">
