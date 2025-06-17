@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { supabase } from '@/lib/supabaseClient'
-import { Package, Eye, EyeOff, Mail, Lock, TrendingUp, Shield, Users, Star, CheckCircle, ArrowRight } from 'lucide-react'
+import { Package, Eye, EyeOff, Mail, Lock, TrendingUp, Shield, Users, CheckCircle, ArrowRight } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 
