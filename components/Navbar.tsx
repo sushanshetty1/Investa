@@ -310,7 +310,7 @@ const Navbar = () => {
                 </div>
               </div>
             ) : (
-              <div className="hidden xl:flex items-center space-x-4 flex-1 justify-center">
+              <div className="hidden xl:flex items-center gap-6 space-x-4 flex-1 justify-center">
                 <Link href="#features" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
                   Features
                 </Link>

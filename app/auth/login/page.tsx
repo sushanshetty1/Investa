@@ -79,10 +79,11 @@ export default function LoginPage() {
             setLoading(false)        }
     }
 
-    return (        <div className="min-h-screen bg-gradient-to-br from-slate-50/90 via-blue-50/40 to-indigo-50/60 dark:from-background dark:via-muted/20 dark:to-chart-3/10 pt-16">            <div className="container mx-auto px-4 py-8 lg:py-12">
-                <div className="flex flex-col lg:flex-row lg:items-center gap-8 lg:gap-16 xl:gap-20 min-h-[calc(100vh-8rem)]">
+    return (   
+             <div className="min-h-max bg-gradient-to-br from-slate-50/90 via-blue-50/40 to-indigo-50/60 dark:from-background dark:via-muted/20 dark:to-chart-3/10 pt-16">            <div className="container mx-auto px-4 py-8 lg:py-12">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-center gap-8 lg:gap-2  ">
                     {/* Left Side - Marketing Content */}
-                    <div className="hidden lg:block lg:flex-1 lg:pr-8 xl:pr-12">
+                    <div className="hidden lg:flex justify-center  lg:flex-1 lg:ml-8 xl:ml-12">
                         <div className="max-w-xl space-y-8">                            {/* Hero Section */}
                             <div className="space-y-6">
                                 <h2 className="text-4xl xl:text-5xl font-bold text-foreground leading-tight">
@@ -95,7 +96,7 @@ export default function LoginPage() {
 
                             {/* Quick Stats */}
                             <div className="grid grid-cols-1 gap-6">
-                                <Card className="p-6 border-0 bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur-sm">
+                                <Card className="p-3 border-0 bg-gradient-to-br from-primary/5 to-primary/10 backdrop-blur-sm">
                                     <div className="flex items-center space-x-4">
                                         <div className="p-3 bg-primary/10 rounded-xl">
                                             <TrendingUp className="h-6 w-6 text-primary" />
@@ -143,27 +144,8 @@ export default function LoginPage() {
                                 </div>
                             </div>
 
-                            {/* Testimonial */}
-                            <Card className="p-6 border-0 bg-card/50 backdrop-blur-sm">
-                                <div className="space-y-4">
-                                    <div className="flex items-center space-x-1">
-                                        {[...Array(5)].map((_, i) => (
-                                            <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                                        ))}
-                                    </div>                                    <p className="text-muted-foreground italic">
-                                        &quot;Since using Invista, we&apos;ve reduced inventory costs by 30% while improving stock availability. The real-time visibility is game-changing.&quot;
-                                    </p>
-                                    <div className="flex items-center space-x-3">
-                                        <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full flex items-center justify-center text-white font-semibold">
-                                            S
-                                        </div>
-                                        <div>
-                                            <p className="font-medium text-foreground">Sarah Martinez</p>
-                                            <p className="text-sm text-muted-foreground">Supply Chain Director, TechCorp</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Card>                            {/* Recent Activity */}
+                       
+                                                        {/* Recent Activity */}
                             <div className="space-y-4">
                                 <h3 className="text-lg font-semibold text-foreground">Recent Platform Updates:</h3>
                                 <div className="space-y-2">
@@ -200,7 +182,9 @@ export default function LoginPage() {
                         </div>
 
                         {/* Desktop Header */}
-                        <div className="hidden lg:block text-left mb-8">                            <div className="flex items-center space-x-2 mb-4">
+                        
+                        <div className="hidden lg:block text-left mb-8">  
+                             <div className="flex items-center space-x-2 mb-4">                         
                                 <Badge variant="secondary" className="text-xs">
                                     <Users className="h-3 w-3 mr-1" />
                                     500+ companies

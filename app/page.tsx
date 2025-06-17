@@ -358,7 +358,8 @@ const InvistaLanding = () => {
                 </div>
               </div>
                 {/* Floating Cards - Better Positioned */}
-              <div className="hidden sm:block absolute -top-2 -right-2 sm:-top-4 sm:-right-4 lg:-top-6 lg:-right-6 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-lg transform rotate-2 hover:rotate-0 transition-transform duration-300">
+                <div className='flex flex-row mt-2 justify-center   gap-28 '>
+              <div className="hidden sm:block  bg-gradient-to-r from-emerald-500 to-emerald-600 text-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-lg transform rotate0 hover:rotate-2 transition-transform duration-300">
                 <div className="flex items-center space-x-1 sm:space-x-2">
                   <Truck className="h-3 w-3 sm:h-4 sm:w-4 lg:h-6 lg:w-6" />
                   <div>
@@ -368,7 +369,7 @@ const InvistaLanding = () => {
                 </div>
               </div>
 
-              <div className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 lg:-bottom-6 lg:-left-6 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-lg transform -rotate-2 hover:rotate-0 transition-transform duration-300">
+              <div className="mr-28   bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-lg transform -rotate-0 hover:rotate-2 transition-transform duration-300">
                 <div className="flex items-center space-x-1 sm:space-x-2">
                   <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 lg:h-6 lg:w-6" />
                   <div>
@@ -376,6 +377,7 @@ const InvistaLanding = () => {
                     <div className="text-xs opacity-90">Growth</div>
                   </div>
                 </div>
+              </div>
               </div>
             </div>
           </div>

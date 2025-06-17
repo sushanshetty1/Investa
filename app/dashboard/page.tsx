@@ -183,21 +183,30 @@ export default function DashboardPage() {
         </div>        {/* Alert Section */}
         <div className="mb-6">
           <Alert className="relative border-l-4 border-l-amber-500 bg-amber-50/50 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800">
-            <div className="flex items-center gap-3 p-4">
-              <div className="flex-shrink-0">
-                <div className="flex items-center justify-center w-8 h-8 bg-amber-500 rounded-lg">
-                  <AlertTriangle className="h-4 w-4 text-white" />
-                </div>
-              </div>
-              <div className="flex-1 min-w-0">
-                <AlertTitle className="text-base font-semibold text-amber-900 dark:text-amber-100">
-                  Attention Required
-                </AlertTitle>
-                <AlertDescription className="text-sm text-amber-800 dark:text-amber-200 mt-1">
-                  You have <span className="font-medium">23 products</span> with low stock levels. Consider restocking to avoid shortages.
-                </AlertDescription>
-              </div>
-              <div className="flex-shrink-0">
+          <div className="flex items-start gap-3 p-4 w-full">
+  {/* Icon */}
+  <div className="flex-shrink-0">
+    <div className="flex items-center justify-center w-8 h-8 bg-amber-500 rounded-lg">
+      <AlertTriangle className="h-4 w-4 text-white" />
+    </div>
+  </div>
+
+  {/* Text content */}
+  <div className="flex flex-col w-full min-w-0">
+   <div className="text-base min-w-md font-semibold text-amber-900 dark:text-amber-100">
+  Attention Required
+</div>
+
+   <AlertDescription className="text-sm sm:text-md text-amber-800 dark:text-amber-200 mt-1">
+  <span className="block sm:inline break-words sm:min-w-max max-w-full">
+    You have 23 products with low stock levels. Consider restocking to avoid shortages.
+  </span>
+</AlertDescription>
+
+  </div>
+
+
+              <div className=" hidden">
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -476,7 +485,7 @@ export default function DashboardPage() {
                       </ResponsiveContainer>
                       
                       {/* Center Info */}
-                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="absolute inset-0 lg:mb-36  flex items-center justify-center pointer-events-none">
                         <div className="text-center">
                           <div className="text-2xl font-bold text-foreground">100%</div>
                           <div className="text-xs text-muted-foreground">Categories</div>
@@ -704,7 +713,7 @@ export default function DashboardPage() {
                       />
                       <Tooltip 
                         contentStyle={{
-                          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                          backgroundColor: 'rgba(30, 41, 59, 0.8)',
                           border: 'none',
                           borderRadius: '16px',
                           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
@@ -985,7 +994,7 @@ export default function DashboardPage() {
                         <stop offset="100%" stopColor="#059669" stopOpacity={0.7}/>
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="2 2" stroke="#e2e8f0" opacity={0.5} />
+                    <CartesianGrid strokeDasharray="2 2" stroke="#969fab" opacity={0.5} />
                     <XAxis 
                       dataKey="name" 
                       tick={{ fontSize: 12, fill: '#64748b' }}
@@ -998,18 +1007,20 @@ export default function DashboardPage() {
                       tickLine={false}
                     />
                     <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                        border: 'none',
-                        borderRadius: '12px',
-                        boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)',
-                        backdropFilter: 'blur(10px)',
-                      }}
-                      formatter={(value, name) => [
-                        `${value}${name === 'reliability' ? '%' : ' days'}`,
-                        name === 'reliability' ? 'Reliability' : 'Avg Delivery Time'
-                      ]}
-                    />
+                  contentStyle={{ 
+                  backgroundColor: 'rgba(30, 41, 59, 0.8)',  // hover background color
+                  color: '#ffffff',                         // text color
+                  border: 'none',
+                  borderRadius: '12px',
+                  boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.2)',
+                  backdropFilter: 'blur(10px)',
+                }}
+                formatter={(value, name) => [
+                  `${value}${name === 'reliability' ? '%' : ' days'}`,
+                  name === 'reliability' ? 'Reliability' : 'Avg Delivery Time'
+                ]}
+              />
+
                     <Bar 
                       dataKey="reliability" 
                       fill="url(#reliabilityGradient)" 

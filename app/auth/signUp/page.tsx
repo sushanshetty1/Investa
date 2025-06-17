@@ -259,6 +259,46 @@ export default function SignUpPage() {
                                 </div>
                             </div>
                         </div>
+                        <div className="p-4 bg-white/40 dark:bg-card/30 backdrop-blur-sm rounded-2xl border border-white/30 dark:border-border/30 shadow-lg">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center space-x-2">
+                                    {[...Array(5)].map((_, i) => (
+                                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                                    ))}
+                                    <span className="text-sm font-semibold text-foreground ml-2">4.9/5</span>
+                                </div>
+                                <span className="text-sm text-muted-foreground">10,000+ businesses</span>
+                            </div>
+                            
+                            <div>
+                                <p className="text-sm text-muted-foreground mb-3">Trusted by leading companies</p>
+                                <div className="flex items-center space-x-4">
+                                    <Badge variant="outline" className="px-3 py-1 bg-white/50 dark:bg-card/50">TechCorp</Badge>
+                                    <Badge variant="outline" className="px-3 py-1 bg-white/50 dark:bg-card/50">GlobalTrade</Badge>
+                                    <Badge variant="outline" className="px-3 py-1 bg-white/50 dark:bg-card/50">RetailPro</Badge>
+                                </div>
+                            </div>
+                        </div><div className="p-4 bg-white/40 dark:bg-card/30 backdrop-blur-sm rounded-2xl border border-white/30 dark:border-border/30 shadow-lg">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center space-x-2">
+                                    {[...Array(5)].map((_, i) => (
+                                        <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                                    ))}
+                                    <span className="text-sm font-semibold text-foreground ml-2">4.9/5</span>
+                                </div>
+                                <span className="text-sm text-muted-foreground">10,000+ businesses</span>
+                            </div>
+                            
+                            <div>
+                                <p className="text-sm text-muted-foreground mb-3">Trusted by leading companies</p>
+                                <div className="flex items-center space-x-4">
+                                    <Badge variant="outline" className="px-3 py-1 bg-white/50 dark:bg-card/50">TechCorp</Badge>
+                                    <Badge variant="outline" className="px-3 py-1 bg-white/50 dark:bg-card/50">GlobalTrade</Badge>
+                                    <Badge variant="outline" className="px-3 py-1 bg-white/50 dark:bg-card/50">RetailPro</Badge>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
 
                     {/* Right Side - Sign Up Form */}
