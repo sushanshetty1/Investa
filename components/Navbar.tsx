@@ -290,7 +290,7 @@ const Navbar = () => {
                 Invista
               </span>
             </Link>{/* Desktop Navigation */}
-            {isDashboard ? (              <div className="hidden lg:flex items-center flex-1 justify-center max-w-3xl mx-2">
+            {isDashboard ? (              <div className="hidden lg:flex items-center flex-1 max-w-3xl mx-2">
                 <div className="flex items-center space-x-0.5 lg:space-x-1">
                   {dashboardNavItems.map((item) => (
                     <CustomDropdown
@@ -318,7 +318,7 @@ const Navbar = () => {
                 </Link>
               </div>
             )}            {/* Right Side Actions */}
-            <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+            <div className="flex ml-10 items-center space-x-1 sm:space-x-2 flex-shrink-0">
               {isDashboard && (
                 <>
                   {/* Search - Hidden on mobile */}
