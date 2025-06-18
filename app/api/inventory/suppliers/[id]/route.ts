@@ -4,11 +4,13 @@ import { NextRequest, NextResponse } from 'next/server'
 // GET /api/inventory/suppliers/[id] - Get single supplier
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+    
     const supplier = await neonClient.supplier.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         purchaseOrders: {
           include: {
@@ -50,14 +52,15 @@ export async function GET(
 // PUT /api/inventory/suppliers/[id] - Update supplier
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json()
 
     // Check if supplier exists
     const existingSupplier = await neonClient.supplier.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingSupplier) {
@@ -72,7 +75,7 @@ export async function PUT(
       const codeConflict = await neonClient.supplier.findUnique({
         where: { 
           code: body.code,
-          NOT: { id: params.id }
+          NOT: { id }
         }
       })
 
@@ -86,7 +89,7 @@ export async function PUT(
 
     // Update supplier
     const supplier = await neonClient.supplier.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         name: body.name,
         code: body.code,
@@ -128,12 +131,14 @@ export async function PUT(
 // DELETE /api/inventory/suppliers/[id] - Delete supplier
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+    
     // Check if supplier exists
     const existingSupplier = await neonClient.supplier.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         purchaseOrders: true,
         products: true
@@ -157,9 +162,11 @@ export async function DELETE(
         { error: 'Cannot delete supplier with active purchase orders' },
         { status: 400 }
       )
-    }    // Soft delete by changing status to INACTIVE
+    }
+
+    // Soft delete by changing status to INACTIVE
     await neonClient.supplier.update({
-      where: { id: params.id },
+      where: { id },
       data: { status: 'INACTIVE' }
     })
 
