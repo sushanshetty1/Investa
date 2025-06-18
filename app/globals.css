@@ -125,7 +125,7 @@
   }
 }
 
-/* Super Thin Clean Scrollbar */
+/* Super Thin Clean Scrollbar - General (Y-axis) */
 ::-webkit-scrollbar {
   width: 4px;
   background: transparent;
@@ -167,7 +167,41 @@
   background: oklch(0.88 0.003 220 / 0.3);
 }
 
-/* Dark theme scrollbar */
+/* Additional styles for horizontal scrollbar (X-axis) */
+::-webkit-scrollbar:horizontal {
+  height: 4px;
+  width: auto;
+}
+
+::-webkit-scrollbar-track:horizontal {
+  margin: 0 2px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  background: linear-gradient(
+    90deg,
+    oklch(0.46 0.15 230 / 0.7) 0%,
+    oklch(0.58 0.16 260 / 0.8) 50%,
+    oklch(0.46 0.15 230 / 0.7) 100%
+  );
+  box-shadow: 
+    0 0 0 0.5px oklch(0.46 0.15 230 / 0.15),
+    1px 0 2px oklch(0.46 0.15 230 / 0.08);
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
+  background: linear-gradient(
+    90deg,
+    oklch(0.55 0.18 235 / 0.9) 0%,
+    oklch(0.68 0.16 165 / 0.95) 50%,
+    oklch(0.55 0.18 235 / 0.9) 100%
+  );
+  box-shadow: 
+    0 0 0 1px oklch(0.46 0.15 230 / 0.25),
+    2px 0 4px oklch(0.46 0.15 230 / 0.12);
+}
+
+/* Dark theme scrollbar - Keep original */
 .dark ::-webkit-scrollbar-track {
   background: oklch(0.22 0.008 220 / 0.3);
 }
@@ -198,6 +232,31 @@
 
 .dark ::-webkit-scrollbar-track:hover {
   background: oklch(0.26 0.01 220 / 0.4);
+}
+
+/* Additional dark theme styles for horizontal scrollbar */
+.dark ::-webkit-scrollbar-thumb:horizontal {
+  background: linear-gradient(
+    90deg,
+    oklch(0.58 0.18 235 / 0.8) 0%,
+    oklch(0.72 0.18 265 / 0.9) 50%,
+    oklch(0.58 0.18 235 / 0.8) 100%
+  );
+  box-shadow: 
+    0 0 0 0.5px oklch(0.68 0.12 230 / 0.25),
+    1px 0 2px oklch(0.11 0.005 220 / 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb:horizontal:hover {
+  background: linear-gradient(
+    90deg,
+    oklch(0.68 0.20 240 / 0.95) 0%,
+    oklch(0.68 0.16 165 / 0.95) 50%,
+    oklch(0.68 0.20 240 / 0.95) 100%
+  );
+  box-shadow: 
+    0 0 0 1px oklch(0.68 0.12 230 / 0.35),
+    2px 0 4px oklch(0.58 0.18 235 / 0.15);
 }
 
 /* Custom Animations for Enhanced UI */
