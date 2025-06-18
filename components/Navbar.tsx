@@ -132,16 +132,17 @@ const Navbar = () => {
         { title: "Notifications", href: "/dashboard/notifications" },
         { title: "Settings", href: "/dashboard/settings" },
       ]
-    },
-    {
+    },    {
       title: "Inventory",
       href: "/inventory",
       icon: Package,
       items: [
-        { title: "All Items", href: "/inventory" },
-        { title: "Add Item", href: "/inventory/add" },
-        { title: "Low Stock", href: "/inventory/low-stock" },
-        { title: "Adjustments", href: "/inventory/adjustments" },
+        { title: "Products", href: "/inventory/products" },
+        { title: "Stock Management", href: "/inventory/stock" },
+        { title: "Suppliers", href: "/inventory/suppliers" },
+        { title: "Categories", href: "/inventory/categories" },
+        { title: "Low Stock Alerts", href: "/inventory/alerts" },
+        { title: "Stock Adjustments", href: "/inventory/adjustments" },
         { title: "Reports", href: "/inventory/reports" },
       ]
     },
