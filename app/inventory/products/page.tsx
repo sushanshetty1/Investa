@@ -243,18 +243,17 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
       return <Badge variant="secondary">In Stock</Badge>
     }
   }
-
-  return (
-    <div className="container mx-auto py-8 space-y-8">
+    return (
+    <div className="py-16 px-6 mx-4 md:mx-8 space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between sm:items-center">
         <div>
           <h1 className="text-3xl font-bold">Products Management</h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Manage your product catalog, inventory, and variants
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 mt-2 sm:mt-0">
           <Button variant="outline" onClick={() => setShowCategoryManager(true)}>
             <Package className="h-4 w-4 mr-2" />
             Categories
@@ -275,10 +274,8 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
             Add Product
           </Button>
         </div>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      </div>      {/* Stats Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Products</CardTitle>
@@ -292,12 +289,12 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Products</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 p-2 sm:p-4">
+            <CardTitle className="text-xs sm:text-sm font-medium">Active Products</CardTitle>
+            <Package className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
+          <CardContent className="p-2 sm:p-4 pt-0">
+            <div className="text-lg sm:text-xl md:text-2xl font-bold">
               {products.filter(p => p.status === 'ACTIVE').length}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -306,12 +303,12 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Low Stock Items</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 p-2 sm:p-4">
+            <CardTitle className="text-xs sm:text-sm font-medium">Low Stock Items</CardTitle>
+            <Package className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">
+          <CardContent className="p-2 sm:p-4 pt-0">
+            <div className="text-lg sm:text-xl md:text-2xl font-bold text-yellow-600">
               {products.filter(p => p.availableStock <= p.minStockLevel).length}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -320,12 +317,12 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
           </CardContent>
         </Card>
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Out of Stock</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-1 p-2 sm:p-4">
+            <CardTitle className="text-xs sm:text-sm font-medium">Out of Stock</CardTitle>
+            <Package className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-red-600">
+          <CardContent className="p-2 sm:p-4 pt-0">
+            <div className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">
               {products.filter(p => p.availableStock <= 0).length}
             </div>
             <p className="text-xs text-muted-foreground">
@@ -333,9 +330,7 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
             </p>
           </CardContent>
         </Card>
-      </div>
-
-      {/* Search and Filters */}
+      </div>      {/* Search and Filters */}
       <Card>
         <CardContent className="pt-6">
           <div className="flex gap-4 mb-4">
@@ -357,9 +352,7 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
               <Filter className="h-4 w-4 mr-2" />
               Filters
             </Button>
-          </div>
-
-          {showFilters && (
+          </div>          {showFilters && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4 bg-muted/50 rounded-lg">
               <div>
                 <label className="text-sm font-medium mb-2 block">Category</label>
@@ -416,13 +409,14 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
       {/* Bulk Actions */}
       {selectedProducts.length > 0 && (
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="p-3 sm:p-6">
             <div className="flex items-center justify-between">
-              <span className="text-sm text-muted-foreground">
+              <span className="text-xs sm:text-sm text-muted-foreground">
                 {selectedProducts.length} product(s) selected
               </span>
               <Button 
                 variant="outline" 
+                size="sm"
                 onClick={() => setShowBulkActions(true)}
               >
                 Bulk Actions
@@ -430,9 +424,7 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
             </div>
           </CardContent>
         </Card>
-      )}
-
-      {/* Products Table */}
+      )}      {/* Products Table */}
       <Card>
         <CardHeader>
           <CardTitle>Products ({filteredProducts.length})</CardTitle>
@@ -440,7 +432,7 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
             Manage your product catalog and inventory levels
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
@@ -451,12 +443,12 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
                   />
                 </TableHead>
                 <TableHead>Product</TableHead>
-                <TableHead>SKU</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Brand</TableHead>
-                <TableHead>Stock Status</TableHead>
-                <TableHead>Available</TableHead>
-                <TableHead>Price</TableHead>
+                <TableHead className="hidden sm:table-cell">SKU</TableHead>
+                <TableHead className="hidden md:table-cell">Category</TableHead>
+                <TableHead className="hidden md:table-cell">Brand</TableHead>
+                <TableHead>Stock</TableHead>
+                <TableHead className="hidden sm:table-cell">Available</TableHead>
+                <TableHead className="hidden sm:table-cell">Price</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
@@ -473,54 +465,58 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
                     />
                   </TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-3">                      {product.primaryImage ? (
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      {product.primaryImage ? (
                         <Image
                           src={product.primaryImage}
                           alt={product.name}
                           width={40}
                           height={40}
-                          className="w-10 h-10 rounded object-cover"
+                          className="w-8 h-8 sm:w-10 sm:h-10 rounded object-cover"
                         />
                       ) : (
-                        <div className="w-10 h-10 bg-muted rounded flex items-center justify-center">
-                          <Package className="h-4 w-4 text-muted-foreground" />
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-muted rounded flex items-center justify-center">
+                          <Package className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
                         </div>
                       )}
                       <div>
-                        <div className="font-medium">{product.name}</div>
+                        <div className="font-medium text-sm sm:text-base truncate max-w-[120px] sm:max-w-[200px]">{product.name}</div>
                         {product.description && (
-                          <div className="text-sm text-muted-foreground line-clamp-1">
+                          <div className="text-xs sm:text-sm text-muted-foreground truncate max-w-[120px] sm:max-w-[200px]">
                             {product.description}
                           </div>
                         )}
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <code className="text-sm bg-muted px-2 py-1 rounded">
+                  <TableCell className="hidden sm:table-cell">
+                    <code className="text-xs sm:text-sm bg-muted px-1.5 py-0.5 sm:px-2 sm:py-1 rounded">
                       {product.sku}
                     </code>
                   </TableCell>
-                  <TableCell>{product.category?.name || '-'}</TableCell>
-                  <TableCell>{product.brand?.name || '-'}</TableCell>
+                  <TableCell className="hidden md:table-cell">{product.category?.name || '-'}</TableCell>
+                  <TableCell className="hidden md:table-cell">{product.brand?.name || '-'}</TableCell>
                   <TableCell>{getStockStatus(product)}</TableCell>
-                  <TableCell>
-                    <div className="text-sm">
+                  <TableCell className="hidden sm:table-cell">
+                    <div className="text-xs sm:text-sm">
                       <div>{product.availableStock}</div>
                       <div className="text-muted-foreground">
                         of {product.totalStock}
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     {product.sellingPrice ? `$${product.sellingPrice.toFixed(2)}` : '-'}
                   </TableCell>
                   <TableCell>{getStatusBadge(product.status)}</TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm">
-                          Actions
+                        <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-4 w-4">
+                            <path d="M3.625 7.5C3.625 8.12132 3.12132 8.625 2.5 8.625C1.87868 8.625 1.375 8.12132 1.375 7.5C1.375 6.87868 1.87868 6.375 2.5 6.375C3.12132 6.375 3.625 6.87868 3.625 7.5ZM8.625 7.5C8.625 8.12132 8.12132 8.625 7.5 8.625C6.87868 8.625 6.375 8.12132 6.375 7.5C6.375 6.87868 6.87868 6.375 7.5 6.375C8.12132 6.375 8.625 6.87868 8.625 7.5ZM12.5 8.625C13.1213 8.625 13.625 8.12132 13.625 7.5C13.625 6.87868 13.1213 6.375 12.5 6.375C11.8787 6.375 11.375 6.87868 11.375 7.5C11.375 8.12132 11.8787 8.625 12.5 8.625Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
+                          </svg>
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
@@ -542,9 +538,7 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
-
-          {/* Pagination */}
+          </Table>          {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex items-center justify-between mt-4">
               <div className="text-sm text-muted-foreground">
@@ -566,9 +560,12 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
                   variant="outline"
                   size="sm"
                   onClick={() => setCurrentPage(currentPage + 1)}
-                  disabled={currentPage === totalPages}>
+                  disabled={currentPage === totalPages}
+                >
+                  Next
                 </Button>
-              </div>            </div>
+              </div>
+            </div>
           )}
         </CardContent>
       </Card>

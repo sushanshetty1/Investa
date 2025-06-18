@@ -189,12 +189,12 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto space-y-6">
+    <div className="py-16 px-6 mx-4 md:mx-8 space-y-8">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Categories</h1>
-          <p className="text-gray-600 dark:text-gray-400">Organize your products with categories</p>
+          <p className="text-gray-600 py-4 dark:text-gray-400">Organize your products with categories</p>
         </div>
         <Button 
           onClick={() => {
@@ -255,7 +255,7 @@ export default function CategoriesPage() {
       </div>
 
       {/* Search and Filters */}
-      <Card>
+      <Card className='mt-6'>
         <CardHeader>
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="relative flex-1">

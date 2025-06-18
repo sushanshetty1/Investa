@@ -364,7 +364,7 @@ export default function SuppliersPage() {
   // }
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
+    <div className="py-16 px-6 mx-4 md:mx-8 space-y-8">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>

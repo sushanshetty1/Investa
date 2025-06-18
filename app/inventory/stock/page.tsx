@@ -367,18 +367,16 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
       minute: '2-digit'
     })
   }
-
+  
   return (
-    <div className="container mx-auto py-8 space-y-8">
-      {/* Header */}
-      <div className="flex justify-between items-center">
+    <div className="py-16 px-6 mx-4 md:mx-8 space-y-6">{/* Header */}
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:justify-between sm:items-center">
         <div>
           <h1 className="text-3xl font-bold">Stock Management</h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Monitor inventory levels, movements, and alerts across all warehouses
           </p>
-        </div>
-        <div className="flex gap-2">
+        </div>        <div className="flex gap-2 mt-2 sm:mt-0">
           <Button variant="outline" onClick={() => setShowTransferDialog(true)}>
             <MapPin className="h-4 w-4 mr-2" />
             Transfer Stock
@@ -389,17 +387,15 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
           </Button>
           <Button variant="outline">
             <Download className="h-4 w-4 mr-2" />
-            Export Report
+            Export
           </Button>
           <Button onClick={() => setShowMovementDialog(true)}>
             <Plus className="h-4 w-4 mr-2" />
-            Record Movement
+            Add Movement
           </Button>
         </div>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+      </div>      {/* Stats Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Stock Items</CardTitle>
@@ -411,8 +407,7 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
               Across {warehouses.length} warehouses
             </p>
           </CardContent>
-        </Card>
-        <Card>
+        </Card>        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Value</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
@@ -425,8 +420,7 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
               At average cost
             </p>
           </CardContent>
-        </Card>
-        <Card>
+        </Card>        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Low Stock Alerts</CardTitle>
             <AlertTriangle className="h-4 w-4 text-muted-foreground" />
@@ -439,8 +433,7 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
               Need attention
             </p>
           </CardContent>
-        </Card>
-        <Card>
+        </Card>        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Out of Stock</CardTitle>
             <TrendingDown className="h-4 w-4 text-muted-foreground" />
@@ -453,7 +446,7 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
               Require restocking
             </p>
           </CardContent>
-        </Card>
+        </Card>        
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Reserved Stock</CardTitle>
@@ -473,21 +466,18 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
       {/* Stock Alerts */}
       <LowStockAlerts alerts={stockAlerts} />
 
-      {/* Main Content Tabs */}
-      <Tabs defaultValue="stock" className="space-y-6">
+      {/* Main Content Tabs */}      <Tabs defaultValue="stock" className="space-y-6">
         <TabsList>
           <TabsTrigger value="stock">Current Stock</TabsTrigger>
           <TabsTrigger value="movements">Stock Movements</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
 
-        {/* Current Stock Tab */}
-        <TabsContent value="stock" className="space-y-6">
+        {/* Current Stock Tab */}        <TabsContent value="stock" className="space-y-4 sm:space-y-6">
           {/* Search and Filters */}
           <Card>
-            <CardContent className="pt-6">
-              <div className="flex gap-4 mb-4">
-                <div className="flex-1">
+            <CardContent className="p-3 sm:p-4 lg:p-6">
+              <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-3 sm:mb-4">                <div className="flex-1">
                   <div className="relative">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
@@ -503,11 +493,9 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
                   onClick={() => setShowFilters(!showFilters)}
                 >
                   <Filter className="h-4 w-4 mr-2" />
-                  Filters
+                  {showFilters ? 'Hide Filters' : 'Filters'}
                 </Button>
-              </div>
-
-              {showFilters && (
+              </div>              {showFilters && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-muted/50 rounded-lg">
                   <div>
                     <label className="text-sm font-medium mb-2 block">Warehouse</label>
@@ -546,100 +534,99 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
             </CardContent>
           </Card>
 
-          {/* Stock Items Table */}
-          <Card>
+          {/* Stock Items Table */}          <Card>
             <CardHeader>
               <CardTitle>Stock Levels ({filteredStockItems.length})</CardTitle>
               <CardDescription>
                 Current inventory levels across all warehouses
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Product</TableHead>
-                    <TableHead>Location</TableHead>
-                    <TableHead>Warehouse</TableHead>
-                    <TableHead>Available</TableHead>
-                    <TableHead>Reserved</TableHead>
-                    <TableHead>Total</TableHead>
-                    <TableHead>Value</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>QC Status</TableHead>
-                    <TableHead>Last Movement</TableHead>
-                  </TableRow>
-                </TableHeader>
+            <CardContent className="overflow-x-auto">
+              <Table>            <TableHeader>
+              <TableRow>
+                <TableHead>Product</TableHead>
+                <TableHead className="hidden sm:table-cell">Location</TableHead>
+                <TableHead className="hidden md:table-cell">Warehouse</TableHead>
+                <TableHead>Available</TableHead>
+                <TableHead className="hidden sm:table-cell">Reserved</TableHead>
+                <TableHead className="hidden sm:table-cell">Total</TableHead>
+                <TableHead className="hidden md:table-cell">Value</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="hidden lg:table-cell">QC Status</TableHead>
+                <TableHead className="hidden lg:table-cell">Last Movement</TableHead>
+              </TableRow>
+            </TableHeader>
                 <TableBody>
                   {paginatedStockItems.map((item) => {
                     const stockLevel = getStockLevel(item)
                     return (
                       <TableRow key={item.id}>
                         <TableCell>
-                          <div className="flex items-center gap-3">                            {item.product.primaryImage ? (
+                          <div className="flex items-center gap-2 sm:gap-3">
+                            {item.product.primaryImage ? (
                               <Image
                                 src={item.product.primaryImage}
                                 alt={item.product.name}
                                 width={40}
                                 height={40}
-                                className="w-10 h-10 rounded object-cover"
+                                className="w-8 h-8 sm:w-10 sm:h-10 rounded object-cover"
                               />
                             ) : (
-                              <div className="w-10 h-10 bg-muted rounded flex items-center justify-center">
-                                <Package className="h-4 w-4 text-muted-foreground" />
+                              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-muted rounded flex items-center justify-center">
+                                <Package className="h-3 w-3 sm:h-4 sm:w-4 text-muted-foreground" />
                               </div>
                             )}
                             <div>
-                              <div className="font-medium">{item.product.name}</div>
-                              <div className="text-sm text-muted-foreground">
+                              <div className="font-medium text-sm sm:text-base truncate max-w-[120px] sm:max-w-[200px]">{item.product.name}</div>
+                              <div className="text-xs sm:text-sm text-muted-foreground">
                                 {item.product.sku}
                                 {item.variant && ` • ${item.variant.name}`}
                               </div>
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="hidden sm:table-cell">
                           {item.locationCode ? (
-                            <code className="text-sm bg-muted px-2 py-1 rounded">
+                            <code className="text-xs sm:text-sm bg-muted px-1.5 py-0.5 sm:px-2 sm:py-1 rounded">
                               {item.locationCode}
                             </code>
                           ) : (
                             <span className="text-muted-foreground">Not assigned</span>
                           )}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="hidden md:table-cell">
                           <div>
                             <div className="font-medium">{item.warehouse.name}</div>
-                            <div className="text-sm text-muted-foreground">{item.warehouse.code}</div>
+                            <div className="text-xs sm:text-sm text-muted-foreground">{item.warehouse.code}</div>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <div className={`flex items-center gap-2 ${stockLevel.color}`}>
+                          <div className={`flex items-center gap-1 sm:gap-2 ${stockLevel.color}`}>
                             {stockLevel.icon}
-                            <span className="font-medium">{item.availableQuantity}</span>
+                            <span className="font-medium text-sm sm:text-base">{item.availableQuantity}</span>
                           </div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="hidden sm:table-cell">
                           {item.reservedQuantity > 0 ? (
                             <span className="text-blue-600 font-medium">{item.reservedQuantity}</span>
                           ) : (
                             <span className="text-muted-foreground">0</span>
                           )}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="hidden sm:table-cell">
                           <span className="font-medium">{item.quantity}</span>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="hidden md:table-cell">
                           {item.averageCost ? 
                             formatCurrency(item.quantity * item.averageCost) : 
                             <span className="text-muted-foreground">-</span>
                           }
                         </TableCell>
                         <TableCell>{getStatusBadge(item.status)}</TableCell>
-                        <TableCell>{getQualityBadge(item.qcStatus)}</TableCell>
-                        <TableCell>
+                        <TableCell className="hidden lg:table-cell">{getQualityBadge(item.qcStatus)}</TableCell>
+                        <TableCell className="hidden lg:table-cell">
                           {item.lastMovement ? (
-                            <span className="text-sm text-muted-foreground">
+                            <span className="text-xs sm:text-sm text-muted-foreground">
                               {formatDate(item.lastMovement)}
                             </span>
                           ) : (
@@ -650,57 +637,54 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
                     )
                   })}
                 </TableBody>
-              </Table>
-
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="flex items-center justify-between mt-4">
-                  <div className="text-sm text-muted-foreground">
-                    Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredStockItems.length)} of {filteredStockItems.length} items
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPage(currentPage - 1)}
-                      disabled={currentPage === 1}
-                    >
-                      Previous
-                    </Button>
-                    <span className="text-sm px-3 py-1">
-                      Page {currentPage} of {totalPages}
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPage(currentPage + 1)}
-                      disabled={currentPage === totalPages}
-                    >
-                      Next
-                    </Button>
-                  </div>
-                </div>
-              )}
+              </Table>          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between mt-4">
+              <div className="text-sm text-muted-foreground">
+                Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, filteredStockItems.length)} of {filteredStockItems.length} items
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </Button>
+                <span className="text-sm px-3 py-1">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </Button>
+              </div>
+            </div>
+          )}
             </CardContent>
           </Card>
         </TabsContent>
 
         {/* Stock Movements Tab */}
-        <TabsContent value="movements" className="space-y-6">
-          <Card>
+        <TabsContent value="movements" className="space-y-6">          <Card>
             <CardContent className="pt-6">
               <div className="flex gap-4 mb-4">
                 <div className="flex-1">
                   <div className="relative">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
                     <Input
                       placeholder="Search movements..."
-                      className="pl-10"
+                      className="pl-8 h-8 sm:h-9 text-sm"
                     />
                   </div>
                 </div>
                 <Select value={alertFilter} onValueChange={setAlertFilter}>
-                  <SelectTrigger className="w-48">
+                  <SelectTrigger className="h-8 sm:h-9 text-xs sm:text-sm w-full sm:w-48">
                     <SelectValue placeholder="All Movement Types" />
                   </SelectTrigger>
                   <SelectContent>
@@ -716,74 +700,71 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
                 </Select>
               </div>
             </CardContent>
-          </Card>
-
-          <Card>
+          </Card>          <Card>
             <CardHeader>
               <CardTitle>Recent Stock Movements</CardTitle>
               <CardDescription>
                 Track all inventory movements and transactions
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <Table>
+            <CardContent className="overflow-x-auto"><Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead>Type</TableHead>
                     <TableHead>Product</TableHead>
-                    <TableHead>Warehouse</TableHead>
+                    <TableHead className="hidden md:table-cell">Warehouse</TableHead>
                     <TableHead>Quantity</TableHead>
-                    <TableHead>Before/After</TableHead>
-                    <TableHead>Cost</TableHead>
-                    <TableHead>Reference</TableHead>
-                    <TableHead>User</TableHead>
-                    <TableHead>Date</TableHead>
+                    <TableHead className="hidden sm:table-cell">Before/After</TableHead>
+                    <TableHead className="hidden md:table-cell">Cost</TableHead>
+                    <TableHead className="hidden md:table-cell">Reference</TableHead>
+                    <TableHead className="hidden lg:table-cell">User</TableHead>
+                    <TableHead className="hidden sm:table-cell">Date</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredMovements.slice(0, 20).map((movement) => (
                     <TableRow key={movement.id}>
                       <TableCell>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1 sm:gap-2">
                           {getMovementTypeIcon(movement.type)}
-                          <span className="text-sm font-medium">
+                          <span className="text-xs sm:text-sm font-medium whitespace-nowrap">
                             {movement.type.replace('_', ' ')}
                           </span>
                         </div>
                       </TableCell>
                       <TableCell>
                         <div>
-                          <div className="font-medium">{movement.product.name}</div>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="font-medium text-sm truncate max-w-[120px] sm:max-w-[200px]">{movement.product.name}</div>
+                          <div className="text-xs text-muted-foreground truncate max-w-[120px] sm:max-w-[200px]">
                             {movement.product.sku}
                             {movement.variant && ` • ${movement.variant.name}`}
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         <div>
-                          <div className="font-medium">{movement.warehouse.name}</div>
-                          <div className="text-sm text-muted-foreground">{movement.warehouse.code}</div>
+                          <div className="font-medium text-sm">{movement.warehouse.name}</div>
+                          <div className="text-xs text-muted-foreground">{movement.warehouse.code}</div>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <span className={`font-medium ${
+                        <span className={`font-medium text-sm ${
                           ['RECEIPT', 'TRANSFER_IN', 'RETURN'].includes(movement.type) ? 'text-green-600' : 'text-red-600'
                         }`}>
                           {['RECEIPT', 'TRANSFER_IN', 'RETURN'].includes(movement.type) ? '+' : '-'}{movement.quantity}
                         </span>
                       </TableCell>
-                      <TableCell>
-                        <span className="text-sm text-muted-foreground">
+                      <TableCell className="hidden sm:table-cell">
+                        <span className="text-xs sm:text-sm text-muted-foreground">
                           {movement.quantityBefore} → {movement.quantityAfter}
                         </span>
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         {movement.unitCost ? (
                           <div>
-                            <div>{formatCurrency(movement.unitCost)}</div>
+                            <div className="text-sm">{formatCurrency(movement.unitCost)}</div>
                             {movement.totalCost && (
-                              <div className="text-sm text-muted-foreground">
+                              <div className="text-xs text-muted-foreground">
                                 Total: {formatCurrency(movement.totalCost)}
                               </div>
                             )}
@@ -792,9 +773,9 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
                           <span className="text-muted-foreground">-</span>
                         )}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="hidden md:table-cell">
                         {movement.referenceType && movement.referenceId ? (
-                          <div className="text-sm">
+                          <div className="text-xs sm:text-sm">
                             <div>{movement.referenceType}</div>
                             <div className="text-muted-foreground">{movement.referenceId}</div>
                           </div>
@@ -802,11 +783,11 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
                           <span className="text-muted-foreground">Manual</span>
                         )}
                       </TableCell>
-                      <TableCell>
-                        <span className="text-sm">{movement.user?.name || 'System'}</span>
+                      <TableCell className="hidden lg:table-cell">
+                        <span className="text-xs sm:text-sm">{movement.user?.name || 'System'}</span>
                       </TableCell>
-                      <TableCell>
-                        <span className="text-sm text-muted-foreground">
+                      <TableCell className="hidden sm:table-cell">
+                        <span className="text-xs text-muted-foreground">
                           {formatDate(movement.occurredAt)}
                         </span>
                       </TableCell>
@@ -818,19 +799,18 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
           </Card>
         </TabsContent>
 
-        {/* Analytics Tab */}
-        <TabsContent value="analytics" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Analytics Tab */}        <TabsContent value="analytics" className="space-y-4 sm:space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <StockHistoryChart />
             <Card>
-              <CardHeader>
-                <CardTitle>Top Moving Products</CardTitle>
-                <CardDescription>Products with highest movement volume</CardDescription>
+              <CardHeader className="p-3 sm:p-6 pb-0">
+                <CardTitle className="text-lg sm:text-xl">Top Moving Products</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">Products with highest movement volume</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              <CardContent className="p-3 sm:p-6 pt-3 sm:pt-4">
+                <div className="space-y-3 sm:space-y-4">
                   {/* TODO: Implement top moving products chart */}
-                  <div className="text-center text-muted-foreground py-8">
+                  <div className="text-center text-muted-foreground py-6 sm:py-8">
                     Analytics charts will be implemented here
                   </div>
                 </div>
@@ -848,7 +828,6 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
       />      <StockTransferDialog
         open={showTransferDialog}
         onOpenChange={setShowTransferDialog}
-        warehouses={warehouses}
         onSave={loadData}
       />
         <StockAdjustmentDialog
