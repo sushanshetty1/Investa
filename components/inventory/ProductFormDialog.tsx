@@ -3,8 +3,6 @@
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
@@ -17,43 +15,41 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Upload, X, Plus } from 'lucide-react'
 
-const productSchema = z.object({
-  name: z.string().min(1, 'Product name is required'),
-  description: z.string().optional(),
-  sku: z.string().min(1, 'SKU is required'),
-  barcode: z.string().optional(),
-  categoryId: z.string().optional(),
-  brandId: z.string().optional(),
-  weight: z.number().optional(),
-  dimensions: z.object({
-    length: z.number().optional(),
-    width: z.number().optional(),
-    height: z.number().optional(),
-    unit: z.string().optional()
-  }).optional(),
-  color: z.string().optional(),
-  size: z.string().optional(),
-  material: z.string().optional(),
-  costPrice: z.number().min(0, 'Cost price must be positive').optional(),
-  sellingPrice: z.number().min(0, 'Selling price must be positive').optional(),
-  wholesalePrice: z.number().min(0, 'Wholesale price must be positive').optional(),
-  minStockLevel: z.number().min(0, 'Minimum stock level must be positive').default(0),
-  maxStockLevel: z.number().optional(),
-  reorderPoint: z.number().optional(),
-  reorderQuantity: z.number().optional(),
-  status: z.enum(['ACTIVE', 'INACTIVE', 'DISCONTINUED', 'DRAFT']).default('ACTIVE'),
-  isTrackable: z.boolean().default(true),
-  isSerialized: z.boolean().default(false),
-  primaryImage: z.string().optional(),
-  images: z.array(z.string()).optional(),
-  metaTitle: z.string().optional(),
-  metaDescription: z.string().optional(),
-  tags: z.array(z.string()).optional(),
-  leadTimeSupply: z.number().optional(),
-  shelfLife: z.number().optional()
-})
-
-type ProductFormData = z.infer<typeof productSchema>
+interface ProductFormData {
+  name: string
+  description?: string
+  sku: string
+  barcode?: string
+  categoryId?: string
+  brandId?: string
+  weight?: number
+  dimensions?: {
+    length?: number
+    width?: number
+    height?: number
+    unit?: string
+  }
+  color?: string
+  size?: string
+  material?: string
+  costPrice?: number
+  sellingPrice?: number
+  wholesalePrice?: number
+  minStockLevel: number
+  maxStockLevel?: number
+  reorderPoint?: number
+  reorderQuantity?: number
+  status: 'ACTIVE' | 'INACTIVE' | 'DISCONTINUED' | 'DRAFT'
+  isTrackable: boolean
+  isSerialized: boolean
+  primaryImage?: string
+  images?: string[]
+  metaTitle?: string
+  metaDescription?: string
+  tags?: string[]
+  leadTimeSupply?: number
+  shelfLife?: number
+}
 
 interface Product {
   id: string
@@ -132,7 +128,6 @@ export function ProductFormDialog({
   const [newTag, setNewTag] = useState('')
 
   const form = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
     defaultValues: {
       name: '',
       description: '',
