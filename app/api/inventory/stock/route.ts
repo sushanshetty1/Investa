@@ -1,23 +1,24 @@
 import { NextRequest } from 'next/server'
-import { 
-  successResponse, 
-  errorResponse, 
-  handleError, 
-  checkRateLimit 
+import {
+  successResponse,
+  errorResponse,
+  handleError,
+  checkRateLimit
 } from '@/lib/api-utils'
-import { 
+import { authenticate } from '@/lib/auth'
+import {
   inventoryQuerySchema,
   stockAdjustmentSchema,
   stockTransferSchema,
   type InventoryQueryInput,
   type StockAdjustmentInput,
-  type StockTransferInput 
+  type StockTransferInput
 } from '@/lib/validations/inventory'
-import { 
+import {
   getInventory,
   adjustStock,
   transferStock,
-  getLowStockAlerts 
+  getLowStockAlerts
 } from '@/lib/actions/inventory'
 
 // Rate limiting: 200 requests per minute per IP (higher for read-heavy operations)
@@ -26,9 +27,9 @@ const RATE_WINDOW = 60 * 1000 // 1 minute
 
 function getClientIdentifier(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for')
-  const ip = forwarded ? forwarded.split(',')[0] : 
-             request.headers.get('x-real-ip') || 
-             'unknown'
+  const ip = forwarded ? forwarded.split(',')[0] :
+    request.headers.get('x-real-ip') ||
+    'unknown'
   return ip
 }
 
@@ -43,7 +44,7 @@ export async function GET(request: NextRequest) {
 
     // Parse and validate query parameters
     const { searchParams } = new URL(request.url)
-    
+
     // Check for special endpoints
     if (searchParams.get('alerts') === 'true') {
       const result = await getLowStockAlerts()
@@ -52,7 +53,7 @@ export async function GET(request: NextRequest) {
       }
       return successResponse(result.data, result.message)
     }
-    
+
     const queryInput: InventoryQueryInput = {
       page: parseInt(searchParams.get('page') || '1'),
       limit: Math.min(parseInt(searchParams.get('limit') || '20'), 100),
@@ -60,7 +61,7 @@ export async function GET(request: NextRequest) {
       warehouseId: searchParams.get('warehouseId') || undefined,
       productId: searchParams.get('productId') || undefined,
       categoryId: searchParams.get('categoryId') || undefined,
-      brandId: searchParams.get('brandId') || undefined,      status: (searchParams.get('status') as 'AVAILABLE' | 'RESERVED' | 'QUARANTINE' | 'DAMAGED' | 'EXPIRED' | 'RECALLED') || undefined,
+      brandId: searchParams.get('brandId') || undefined, status: (searchParams.get('status') as 'AVAILABLE' | 'RESERVED' | 'QUARANTINE' | 'DAMAGED' | 'EXPIRED' | 'RECALLED') || undefined,
       lowStock: searchParams.get('lowStock') === 'true' || undefined,
       sortBy: (searchParams.get('sortBy') as 'quantity' | 'product' | 'warehouse' | 'lastMovement' | 'createdAt') || 'createdAt',
       sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || 'desc',
@@ -89,14 +90,14 @@ export async function POST(request: NextRequest) {
     const clientId = getClientIdentifier(request)
     if (!checkRateLimit(`${clientId}:write`, 30, RATE_WINDOW)) {
       return errorResponse('Rate limit exceeded for write operations', 429)
-    }
-
-    // Parse request body
+    }    // Parse request body
     const body = await request.json()
 
-    // TODO: Add authentication check here
-    // const user = await authenticate(request)
-    // if (!user) return errorResponse('Unauthorized', 401)
+    // Authentication check
+    const user = await authenticate(request)
+    if (!user) {
+      return errorResponse('Unauthorized', 401)
+    }
 
     // Determine operation type
     const operation = body.operation

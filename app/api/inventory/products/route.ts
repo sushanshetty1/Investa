@@ -1,19 +1,20 @@
 import { NextRequest } from 'next/server'
-import { 
-  successResponse, 
-  errorResponse, 
-  handleError, 
+import {
+  successResponse,
+  errorResponse,
+  handleError,
   checkRateLimit
 } from '@/lib/api-utils'
-import { 
-  productQuerySchema, 
+import { authenticate } from '@/lib/auth'
+import {
+  productQuerySchema,
   createProductSchema,
   type ProductQueryInput,
-  type CreateProductInput 
+  type CreateProductInput
 } from '@/lib/validations/product'
-import { 
-  getProducts, 
-  createProduct 
+import {
+  getProducts,
+  createProduct
 } from '@/lib/actions/products'
 
 // Rate limiting: 100 requests per minute per IP
@@ -23,9 +24,9 @@ const RATE_WINDOW = 60 * 1000 // 1 minute
 function getClientIdentifier(request: NextRequest): string {
   // Get client IP for rate limiting
   const forwarded = request.headers.get('x-forwarded-for')
-  const ip = forwarded ? forwarded.split(',')[0] : 
-             request.headers.get('x-real-ip') || 
-             'unknown'
+  const ip = forwarded ? forwarded.split(',')[0] :
+    request.headers.get('x-real-ip') ||
+    'unknown'
   return ip
 }
 
@@ -40,12 +41,12 @@ export async function GET(request: NextRequest) {
 
     // Parse and validate query parameters
     const { searchParams } = new URL(request.url)
-    
+
     const queryInput: ProductQueryInput = {
       page: parseInt(searchParams.get('page') || '1'),
       limit: Math.min(parseInt(searchParams.get('limit') || '20'), 100), // Max 100 items
       search: searchParams.get('search') || undefined,
-      categoryId: searchParams.get('categoryId') || undefined,      brandId: searchParams.get('brandId') || undefined,
+      categoryId: searchParams.get('categoryId') || undefined, brandId: searchParams.get('brandId') || undefined,
       status: (searchParams.get('status') as 'ACTIVE' | 'INACTIVE' | 'DISCONTINUED' | 'DRAFT') || undefined,
       sortBy: (searchParams.get('sortBy') as 'name' | 'sku' | 'createdAt' | 'updatedAt') || 'createdAt',
       sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || 'desc',
@@ -83,14 +84,17 @@ export async function POST(request: NextRequest) {
     // Parse request body
     const body = await request.json()
 
-    // TODO: Add authentication check here
-    // const user = await authenticate(request)
-    // if (!user) return errorResponse('Unauthorized', 401)
-    
-    // For now, use a default user ID
+    // Authentication check
+    const authResult = await authenticate(request)
+    if (!authResult.success) {
+      return errorResponse('Unauthorized', 401)
+    }
+
+    // Use authenticated user ID
+    const userId = authResult.user?.id || 'system'
     const createInput: CreateProductInput = {
       ...body,
-      createdBy: body.createdBy || 'system' // This should come from authenticated user
+      createdBy: body.createdBy || userId
     }
 
     // Validate input

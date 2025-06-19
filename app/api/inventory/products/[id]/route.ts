@@ -1,19 +1,20 @@
 import { NextRequest } from 'next/server'
-import { 
-  successResponse, 
-  errorResponse, 
-  handleError, 
-  checkRateLimit 
+import {
+  successResponse,
+  errorResponse,
+  handleError,
+  checkRateLimit
 } from '@/lib/api-utils'
-import { 
+import {
   updateProductSchema,
-  type UpdateProductInput 
+  type UpdateProductInput
 } from '@/lib/validations/product'
-import { 
-  getProduct, 
-  updateProduct, 
-  deleteProduct 
+import {
+  getProduct,
+  updateProduct,
+  deleteProduct
 } from '@/lib/actions/products'
+import { authenticate } from '@/lib/auth'
 
 // Rate limiting
 const RATE_LIMIT = 60
@@ -21,9 +22,9 @@ const RATE_WINDOW = 60 * 1000 // 1 minute
 
 function getClientIdentifier(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for')
-  const ip = forwarded ? forwarded.split(',')[0] : 
-             request.headers.get('x-real-ip') || 
-             'unknown'
+  const ip = forwarded ? forwarded.split(',')[0] :
+    request.headers.get('x-real-ip') ||
+    'unknown'
   return ip
 }
 
@@ -72,17 +73,17 @@ export async function PUT(
     }
 
     const { id } = await params
-    const body = await request.json()
-
-    // Validate UUID format
+    const body = await request.json()    // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
     if (!uuidRegex.test(id)) {
       return errorResponse('Invalid product ID format', 400)
     }
 
-    // TODO: Add authentication check here
-    // const user = await authenticate(request)
-    // if (!user) return errorResponse('Unauthorized', 401)
+    // Authentication check
+    const user = await authenticate(request)
+    if (!user) {
+      return errorResponse('Unauthorized', 401)
+    }
 
     const updateInput: UpdateProductInput = {
       id,
@@ -117,18 +118,17 @@ export async function DELETE(
       return errorResponse('Rate limit exceeded for delete operations', 429)
     }
 
-    const { id } = await params
-
-    // Validate UUID format
+    const { id } = await params    // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
     if (!uuidRegex.test(id)) {
       return errorResponse('Invalid product ID format', 400)
     }
 
-    // TODO: Add authentication and authorization checks
-    // const user = await authenticate(request)
-    // if (!user) return errorResponse('Unauthorized', 401)
-    // if (!hasPermission(user, 'product:delete')) return errorResponse('Forbidden', 403)
+    // Authentication check
+    const user = await authenticate(request)
+    if (!user) {
+      return errorResponse('Unauthorized', 401)
+    }
 
     const result = await deleteProduct(id)
 

@@ -27,12 +27,9 @@ const InvistaLanding = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showFloatingCTA, setShowFloatingCTA] = useState(false);
   const { user, loading } = useAuth();
-  const router = useRouter();
-  // Redirect if user is already logged in
+  const router = useRouter();  // Redirect if user is already logged in
   useEffect(() => {
-    console.log('Home page auth state:', { user: !!user, loading, userEmail: user?.email });
     if (!loading && user) {
-      console.log('User is logged in, redirecting to dashboard');
       router.push('/dashboard');
     }
   }, [user, loading, router]);
@@ -240,7 +237,7 @@ const InvistaLanding = () => {
                 </div>
 
                 {/* Dashboard Content */}
-                <div className="space-y-4 sm:space-y-6">                  {/* Status Cards */}                  
+                <div className="space-y-4 sm:space-y-6">                  {/* Status Cards */}
                   <div className="grid grid-cols-2 gap-3 sm:gap-4">
                     <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-chart-2/20 dark:to-chart-2/10 p-3 sm:p-4 rounded-xl hover:shadow-md transition-all duration-300">
                       <div className="flex items-start justify-between h-full">
@@ -357,27 +354,27 @@ const InvistaLanding = () => {
                   </div>
                 </div>
               </div>
-                {/* Floating Cards - Better Positioned */}
-                <div className='flex flex-row mt-2 justify-center   gap-28 '>
-              <div className="hidden sm:block  bg-gradient-to-r from-emerald-500 to-emerald-600 text-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-lg transform rotate0 hover:rotate-2 transition-transform duration-300">
-                <div className="flex items-center space-x-1 sm:space-x-2">
-                  <Truck className="h-3 w-3 sm:h-4 sm:w-4 lg:h-6 lg:w-6" />
-                  <div>
-                    <div className="text-xs sm:text-sm lg:text-lg font-bold">34</div>
-                    <div className="text-xs opacity-90">In Transit</div>
+              {/* Floating Cards - Better Positioned */}
+              <div className='flex flex-row mt-2 justify-center   gap-28 '>
+                <div className="hidden sm:block  bg-gradient-to-r from-emerald-500 to-emerald-600 text-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-lg transform rotate0 hover:rotate-2 transition-transform duration-300">
+                  <div className="flex items-center space-x-1 sm:space-x-2">
+                    <Truck className="h-3 w-3 sm:h-4 sm:w-4 lg:h-6 lg:w-6" />
+                    <div>
+                      <div className="text-xs sm:text-sm lg:text-lg font-bold">34</div>
+                      <div className="text-xs opacity-90">In Transit</div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="mr-28   bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-lg transform -rotate-0 hover:rotate-2 transition-transform duration-300">
-                <div className="flex items-center space-x-1 sm:space-x-2">
-                  <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 lg:h-6 lg:w-6" />
-                  <div>
-                    <div className="text-xs sm:text-sm lg:text-lg font-bold">↗ 23%</div>
-                    <div className="text-xs opacity-90">Growth</div>
+                <div className="mr-28   bg-gradient-to-r from-indigo-500 to-indigo-600 text-white p-2 sm:p-3 lg:p-4 rounded-xl shadow-lg transform -rotate-0 hover:rotate-2 transition-transform duration-300">
+                  <div className="flex items-center space-x-1 sm:space-x-2">
+                    <BarChart3 className="h-3 w-3 sm:h-4 sm:w-4 lg:h-6 lg:w-6" />
+                    <div>
+                      <div className="text-xs sm:text-sm lg:text-lg font-bold">↗ 23%</div>
+                      <div className="text-xs opacity-90">Growth</div>
+                    </div>
                   </div>
                 </div>
-              </div>
               </div>
             </div>
           </div>
@@ -438,7 +435,7 @@ const InvistaLanding = () => {
               <div className="text-xs sm:text-sm text-muted-foreground">Support</div>
               <div className="text-xs text-emerald-600 dark:text-chart-2">Global coverage</div>
             </div>
-          </div>        
+          </div>
         </div>
       </section>
 
@@ -557,7 +554,7 @@ const InvistaLanding = () => {
               Why Traditional Inventory Systems Fail
             </h2>
             <p className="text-lg sm:text-xl text-muted-foreground">Common pain points that slow down growing businesses</p>
-          </div>          
+          </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-12 sm:mb-16">
             <div className="text-center p-4 sm:p-6">
@@ -575,7 +572,7 @@ const InvistaLanding = () => {
               <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-2">No Real-Time Visibility</h3>
               <p className="text-sm sm:text-base text-muted-foreground">Delayed insights preventing proactive decision making</p>
             </div>
-          </div>          
+          </div>
 
           <div className="text-center">
             <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-6 sm:mb-8">Invista Solves This</h3>

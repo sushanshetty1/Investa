@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { toast } from 'sonner'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -8,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface StockMovementDialogProps {
   open: boolean
@@ -15,13 +17,14 @@ interface StockMovementDialogProps {
   onSave: () => void
 }
 
-export function StockMovementDialog({
-  open,
+export function StockMovementDialog({ open,
   onOpenChange,
   onSave
-}: StockMovementDialogProps) {  const [loading, setLoading] = useState(false)
-  const [products, setProducts] = useState<{id: string; name: string; sku: string}[]>([])
-  const [warehouses, setWarehouses] = useState<{id: string; name: string; code?: string}[]>([])
+}: StockMovementDialogProps) {
+  const { user } = useAuth()
+  const [loading, setLoading] = useState(false)
+  const [products, setProducts] = useState<{ id: string; name: string; sku: string }[]>([])
+  const [warehouses, setWarehouses] = useState<{ id: string; name: string; code?: string }[]>([])
   const [formData, setFormData] = useState({
     type: 'IN',
     productId: '',
@@ -48,8 +51,9 @@ export function StockMovementDialog({
         const data = await response.json()
         setProducts(data.products || [])
       }
-    } catch (error) {
-      console.error('Error loading products:', error)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_error) {
+      toast.error('Error loading products')
     }
   }
 
@@ -60,26 +64,25 @@ export function StockMovementDialog({
         const data = await response.json()
         setWarehouses(data.warehouses || [])
       }
-    } catch (error) {
-      console.error('Error loading warehouses:', error)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_error) {
+      toast.error('Error loading warehouses')
     }
   }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!formData.productId || !formData.warehouseId || !formData.quantity) {
-      alert('Please fill in all required fields')
+      toast.error('Please fill in all required fields')
       return
     }
 
     try {
       setLoading(true)
-      
       const movementData = {
         ...formData,
         quantity: parseInt(formData.quantity),
-        userId: 'user-id-placeholder', // TODO: Get from auth context
+        userId: user?.id || 'anonymous-user',
         occurredAt: new Date().toISOString()
       }
 
@@ -94,25 +97,23 @@ export function StockMovementDialog({
       if (!response.ok) {
         const error = await response.json()
         throw new Error(error.message || 'Failed to save stock movement')
-      }
-
-      onSave()
+      } onSave()
       onOpenChange(false)
-      
+      toast.success('Stock movement saved successfully')
+
       // Reset form
       setFormData({
         type: 'IN',
         productId: '',
         warehouseId: '',
-        quantity: '',
-        reason: '',
+        quantity: '', reason: '',
         notes: '',
         referenceType: 'MANUAL',
         referenceId: ''
       })
-    } catch (error) {
-      console.error('Error saving stock movement:', error)
-      alert('Failed to save stock movement. Please try again.')
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_error) {
+      toast.error('Failed to save stock movement. Please try again.')
     } finally {
       setLoading(false)
     }

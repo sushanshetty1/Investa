@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { Plus, Search, Filter, Upload, Download, Edit, Trash2, Eye, Package } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -102,7 +103,8 @@ interface Brand {
   isActive: boolean
 }
 
-export default function ProductsPage() {const [products, setProducts] = useState<Product[]>([])
+export default function ProductsPage() {
+  const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [brands, setBrands] = useState<Brand[]>([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -113,102 +115,82 @@ export default function ProductsPage() {const [products, setProducts] = useState
   const [showFilters, setShowFilters] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [itemsPerPage] = useState(20)
-
   // Dialog states
   const [showProductForm, setShowProductForm] = useState(false)
   const [showCategoryManager, setShowCategoryManager] = useState(false)
+  const [showVariantsDialog, setShowVariantsDialog] = useState(false)
   const [showBulkActions, setShowBulkActions] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)  // Load data
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)// Load data
   useEffect(() => {
     loadData()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
   const loadData = async () => {
     try {
-      // TODO: Replace with actual API calls
+      // Load all necessary data for the products page
       await Promise.all([
         loadProducts(),
         loadCategories(),
         loadBrands()
-      ])    } catch (error) {
+      ])
+    } catch (error) {
       console.error('Error loading data:', error)
     }
   }
 
   const loadProducts = async () => {
-    // TODO: Implement API call to fetch products with inventory data
-    // This would use the neonClient to fetch from Product model with relations
-    const mockProducts: Product[] = [
-      {
-        id: '1',
-        name: 'Premium Laptop Stand',
-        sku: 'LPS-001',
-        barcode: '1234567890123',
-        description: 'Adjustable aluminum laptop stand with cooling vents',
-        categoryId: 'cat-1',
-        brandId: 'brand-1',
-        costPrice: 45.99,
-        sellingPrice: 89.99,
-        wholesalePrice: 65.99,
-        minStockLevel: 10,
-        maxStockLevel: 100,
-        reorderPoint: 15,
-        status: 'ACTIVE',
-        primaryImage: '/images/laptop-stand.jpg',
-        isTrackable: true,
-        isSerialized: false,
-        totalStock: 85,
-        availableStock: 78,
-        reservedStock: 7,
-        createdAt: '2024-01-15T10:00:00Z',
-        updatedAt: '2024-01-20T14:30:00Z',
-        category: { id: 'cat-1', name: 'Computer Accessories' },
-        brand: { id: 'brand-1', name: 'TechPro' }
-      },
-      // Add more mock products...
-    ]
-    setProducts(mockProducts)
+    try {
+      const response = await fetch('/api/inventory/products')
+      if (response.ok) {
+        const data = await response.json()
+        setProducts(data.data || [])
+      } else {
+        console.error('Failed to fetch products')
+        setProducts([])
+      }
+    } catch (error) {
+      console.error('Error loading products:', error)
+      setProducts([])
+    }
   }
   const loadCategories = async () => {
-    // TODO: Implement API call to fetch categories hierarchy
-    const mockCategories: Category[] = [
-      {
-        id: 'cat-1',
-        name: 'Computer Accessories',
-        description: 'Accessories for computers and laptops',
-        slug: 'computer-accessories',
-        level: 0,
-        parentId: undefined,
-        isActive: true,
-        createdAt: '2024-01-15T10:00:00Z',
-        updatedAt: '2024-01-20T14:30:00Z'
-      },
-      // Add more mock categories...
-    ]
-    setCategories(mockCategories)
+    try {
+      const response = await fetch('/api/inventory/categories')
+      if (response.ok) {
+        const data = await response.json()
+        setCategories(data.data || [])
+      } else {
+        console.error('Failed to fetch categories')
+        setCategories([])
+      }
+    } catch (error) {
+      console.error('Error loading categories:', error)
+      setCategories([])
+    }
   }
 
   const loadBrands = async () => {
-    // TODO: Implement API call to fetch brands
-    const mockBrands: Brand[] = [
-      {
-        id: 'brand-1',
-        name: 'TechPro',
-        description: 'Professional technology accessories',
-        isActive: true
-      },
-      // Add more mock brands...
-    ]
-    setBrands(mockBrands)
+    try {
+      const response = await fetch('/api/inventory/brands')
+      if (response.ok) {
+        const data = await response.json()
+        setBrands(data.data || [])
+      } else {
+        console.error('Failed to fetch brands')
+        setBrands([])
+      }
+    } catch (error) {
+      console.error('Error loading brands:', error)
+      setBrands([])
+    }
   }
 
   // Filter products based on search and filters
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         product.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (product.barcode && product.barcode.includes(searchTerm))
-    
+      product.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (product.barcode && product.barcode.includes(searchTerm))
+
     const matchesCategory = selectedCategory === 'all' || product.categoryId === selectedCategory
     const matchesBrand = selectedBrand === 'all' || product.brandId === selectedBrand
     const matchesStatus = statusFilter === 'all' || product.status === statusFilter
@@ -236,15 +218,14 @@ export default function ProductsPage() {const [products, setProducts] = useState
       setSelectedProducts([])
     }
   }
-
   const handleEditProduct = (product: Product) => {
     setSelectedProduct(product)
     setShowProductForm(true)
   }
+
   const handleManageVariants = (product: Product) => {
     setSelectedProduct(product)
-    // TODO: Implement variants manager
-    console.log('Manage variants for product:', product.id)
+    setShowVariantsDialog(true)
   }
 
   const getStatusBadge = (status: string) => {
@@ -271,7 +252,7 @@ export default function ProductsPage() {const [products, setProducts] = useState
       return <Badge variant="secondary">In Stock</Badge>
     }
   }
-    return (
+  return (
     <div className="py-16 px-6 mx-4 md:mx-8 space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between sm:items-center">
@@ -442,8 +423,8 @@ export default function ProductsPage() {const [products, setProducts] = useState
               <span className="text-xs sm:text-sm text-muted-foreground">
                 {selectedProducts.length} product(s) selected
               </span>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
                 onClick={() => setShowBulkActions(true)}
               >
@@ -487,7 +468,7 @@ export default function ProductsPage() {const [products, setProducts] = useState
                   <TableCell>
                     <Checkbox
                       checked={selectedProducts.includes(product.id)}
-                      onCheckedChange={(checked) => 
+                      onCheckedChange={(checked) =>
                         handleSelectProduct(product.id, checked as boolean)
                       }
                     />
@@ -610,41 +591,103 @@ export default function ProductsPage() {const [products, setProducts] = useState
         }}
       />      {selectedProduct && (
         <ProductVariantsManager
-          product={selectedProduct}          onVariantCreate={async (variant: Omit<ProductVariant, 'id' | 'stock'>) => {
-            // Implement variant creation
-            console.log('Creating variant:', variant)
+          product={selectedProduct} onVariantCreate={async (variant: Omit<ProductVariant, 'id' | 'stock'>) => {
+            try {
+              const response = await fetch('/api/inventory/products/variants', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...variant, productId: selectedProduct.id })
+              })
+              if (response.ok) {
+                await loadProducts()
+              } else {
+                console.error('Failed to create variant')
+              }
+            } catch (error) {
+              console.error('Error creating variant:', error)
+            }
           }}
           onVariantUpdate={async (variantId: string, data: Partial<ProductVariant>) => {
-            // Implement variant update
-            console.log('Updating variant:', variantId, data)
+            try {
+              const response = await fetch(`/api/inventory/products/variants/${variantId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+              })
+              if (response.ok) {
+                await loadProducts()
+              } else {
+                console.error('Failed to update variant')
+              }
+            } catch (error) {
+              console.error('Error updating variant:', error)
+            }
           }}
           onVariantDelete={async (variantId: string) => {
-            // Implement variant deletion
-            console.log('Deleting variant:', variantId)
+            try {
+              const response = await fetch(`/api/inventory/products/variants/${variantId}`, {
+                method: 'DELETE'
+              })
+              if (response.ok) {
+                await loadProducts()
+              } else {
+                console.error('Failed to delete variant')
+              }
+            } catch (error) {
+              console.error('Error deleting variant:', error)
+            }
           }}
         />
       )}      {showCategoryManager && (
         <CategoryManager
-          categories={categories}
-          onCategoryCreate={async (data) => {
-            // Implement category creation
-            console.log('Creating category:', data)
-            await loadCategories()
+          categories={categories} onCategoryCreate={async (data) => {
+            try {
+              const response = await fetch('/api/inventory/categories', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+              })
+              if (response.ok) {
+                await loadCategories()
+              } else {
+                console.error('Failed to create category')
+              }
+            } catch (error) {
+              console.error('Error creating category:', error)
+            }
           }}
           onCategoryUpdate={async (categoryId, data) => {
-            // Implement category update
-            console.log('Updating category:', categoryId, data)
-            await loadCategories()
+            try {
+              const response = await fetch(`/api/inventory/categories/${categoryId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+              })
+              if (response.ok) {
+                await loadCategories()
+              } else {
+                console.error('Failed to update category')
+              }
+            } catch (error) {
+              console.error('Error updating category:', error)
+            }
           }}
           onCategoryDelete={async (categoryId) => {
-            // Implement category deletion
-            console.log('Deleting category:', categoryId)
-            await loadCategories()
+            try {
+              const response = await fetch(`/api/inventory/categories/${categoryId}`, {
+                method: 'DELETE'
+              })
+              if (response.ok) {
+                await loadCategories()
+              } else {
+                console.error('Failed to delete category')
+              }
+            } catch (error) {
+              console.error('Error deleting category:', error)
+            }
           }}
         />
-      )}
-
-      <BulkActionsDialog
+      )}      <BulkActionsDialog
         open={showBulkActions}
         onOpenChange={setShowBulkActions}
         selectedProductIds={selectedProducts}
@@ -653,6 +696,36 @@ export default function ProductsPage() {const [products, setProducts] = useState
           loadProducts()
         }}
       />
+
+      {/* Product Variants Dialog */}
+      <Dialog open={showVariantsDialog} onOpenChange={setShowVariantsDialog}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Manage Product Variants - {selectedProduct?.name}</DialogTitle>
+            <DialogDescription>
+              Create and manage variants for this product (size, color, etc.)
+            </DialogDescription>
+          </DialogHeader>          {selectedProduct && (<ProductVariantsManager
+            product={selectedProduct}
+            onVariantCreate={async () => {
+              // Handle variant creation
+              setShowVariantsDialog(false)
+              loadProducts()
+            }}
+            onVariantUpdate={async () => {
+              // Handle variant update
+              setShowVariantsDialog(false)
+              loadProducts()
+            }}
+            onVariantDelete={async () => {
+              // Handle variant deletion
+              setShowVariantsDialog(false)
+              loadProducts()
+            }}
+          />
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

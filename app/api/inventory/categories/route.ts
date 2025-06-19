@@ -1,19 +1,20 @@
 import { NextRequest } from 'next/server'
-import { 
-  successResponse, 
-  errorResponse, 
-  handleError, 
-  checkRateLimit 
+import {
+  successResponse,
+  errorResponse,
+  handleError,
+  checkRateLimit
 } from '@/lib/api-utils'
-import { 
+import { authenticate } from '@/lib/auth'
+import {
   categoryQuerySchema,
   createCategorySchema,
   type CategoryQueryInput,
-  type CreateCategoryInput 
+  type CreateCategoryInput
 } from '@/lib/validations/category'
-import { 
-  getCategories, 
-  createCategory 
+import {
+  getCategories,
+  createCategory
 } from '@/lib/actions/categories'
 
 // Rate limiting: 100 requests per minute per IP
@@ -21,9 +22,9 @@ const RATE_LIMIT = 100
 const RATE_WINDOW = 60 * 1000 // 1 minute
 
 function getClientIdentifier(request: NextRequest): string {
-  return request.headers.get('x-forwarded-for') || 
-         request.headers.get('x-real-ip') || 
-         'unknown'
+  return request.headers.get('x-forwarded-for') ||
+    request.headers.get('x-real-ip') ||
+    'unknown'
 }
 
 // GET /api/inventory/categories - List categories
@@ -37,14 +38,14 @@ export async function GET(request: NextRequest) {
 
     // Parse and validate query parameters
     const { searchParams } = new URL(request.url)
-    
+
     const queryInput: CategoryQueryInput = {
       page: parseInt(searchParams.get('page') || '1'),
       limit: Math.min(parseInt(searchParams.get('limit') || '20'), 100), // Max 100 items
       search: searchParams.get('search') || undefined,
       parentId: searchParams.get('parentId') || undefined,
       level: searchParams.get('level') ? parseInt(searchParams.get('level')!) : undefined,
-      isActive: searchParams.get('isActive') ? searchParams.get('isActive') === 'true' : undefined,      sortBy: (searchParams.get('sortBy') as 'name' | 'level' | 'createdAt' | 'updatedAt') || 'level',
+      isActive: searchParams.get('isActive') ? searchParams.get('isActive') === 'true' : undefined, sortBy: (searchParams.get('sortBy') as 'name' | 'level' | 'createdAt' | 'updatedAt') || 'level',
       sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || 'asc',
     }
 
@@ -75,14 +76,14 @@ export async function POST(request: NextRequest) {
     const clientId = getClientIdentifier(request)
     if (!checkRateLimit(`${clientId}:write`, 20, RATE_WINDOW)) {
       return errorResponse('Rate limit exceeded for write operations', 429)
-    }
-
-    // Parse request body
+    }    // Parse request body
     const body = await request.json()
 
-    // TODO: Add authentication check here
-    // const user = await authenticate(request)
-    // if (!user) return errorResponse('Unauthorized', 401)
+    // Authentication check
+    const user = await authenticate(request)
+    if (!user) {
+      return errorResponse('Unauthorized', 401)
+    }
 
     const createInput: CreateCategoryInput = body
 
