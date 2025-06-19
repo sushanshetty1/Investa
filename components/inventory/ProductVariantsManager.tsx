@@ -24,7 +24,7 @@ interface ProductVariant {
   minStockLevel?: number
   reorderPoint?: number
   isActive: boolean
-  stock: {
+  stock?: {
     quantity: number
     reservedQuantity: number
     availableQuantity: number
@@ -163,7 +163,7 @@ export function ProductVariantsManager({
     }))
   }
   const getStockStatus = (variant: ProductVariant) => {
-    const { quantity, availableQuantity } = variant.stock
+    const { quantity = 0, availableQuantity = 0 } = variant.stock || {}
     
     if (quantity === 0) return { label: 'Out of Stock', color: 'destructive' as const }
     if (availableQuantity <= (variant.minStockLevel || 0)) return { label: 'Low Stock', color: 'secondary' as const }
@@ -398,11 +398,10 @@ export function ProductVariantsManager({
                           {stockStatus.label}
                         </Badge>
                         <div className="text-xs text-muted-foreground">
-                          Available: {variant.stock.availableQuantity}
-                        </div>
-                        {variant.stock.reservedQuantity > 0 && (
+                          Available: {variant.stock?.availableQuantity || 0}
+                        </div>                        {(variant.stock?.reservedQuantity || 0) > 0 && (
                           <div className="text-xs text-muted-foreground">
-                            Reserved: {variant.stock.reservedQuantity}
+                            Reserved: {variant.stock?.reservedQuantity || 0}
                           </div>
                         )}
                       </div>

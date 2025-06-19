@@ -1,165 +1,167 @@
-import { neonClient } from '@/lib/db'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+import { 
+  successResponse, 
+  errorResponse, 
+  handleError, 
+  checkRateLimit 
+} from '@/lib/api-utils'
+import { 
+  inventoryQuerySchema,
+  stockAdjustmentSchema,
+  stockTransferSchema,
+  type InventoryQueryInput,
+  type StockAdjustmentInput,
+  type StockTransferInput 
+} from '@/lib/validations/inventory'
+import { 
+  getInventory,
+  adjustStock,
+  transferStock,
+  getLowStockAlerts 
+} from '@/lib/actions/inventory'
 
-// GET /api/inventory/stock - List stock items with filters
+// Rate limiting: 200 requests per minute per IP (higher for read-heavy operations)
+const RATE_LIMIT = 200
+const RATE_WINDOW = 60 * 1000 // 1 minute
+
+function getClientIdentifier(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for')
+  const ip = forwarded ? forwarded.split(',')[0] : 
+             request.headers.get('x-real-ip') || 
+             'unknown'
+  return ip
+}
+
+// GET /api/inventory/stock - List inventory with filtering and pagination
 export async function GET(request: NextRequest) {
   try {
+    // Rate limiting
+    const clientId = getClientIdentifier(request)
+    if (!checkRateLimit(clientId, RATE_LIMIT, RATE_WINDOW)) {
+      return errorResponse('Rate limit exceeded', 429)
+    }
+
+    // Parse and validate query parameters
     const { searchParams } = new URL(request.url)
-    const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '20')
-    const search = searchParams.get('search') || ''
-    const warehouseId = searchParams.get('warehouseId') || ''
-    const status = searchParams.get('status') || ''
-    const alertsOnly = searchParams.get('alertsOnly') === 'true'
-
-    const skip = (page - 1) * limit    // Build where clause
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const where: any = {}
     
-    if (warehouseId) where.warehouseId = warehouseId
-    if (status) where.status = status
-    
-    if (search) {
-      where.OR = [
-        { product: { name: { contains: search, mode: 'insensitive' } } },
-        { product: { sku: { contains: search, mode: 'insensitive' } } },
-        { variant: { name: { contains: search, mode: 'insensitive' } } },
-        { variant: { sku: { contains: search, mode: 'insensitive' } } },
-        { locationCode: { contains: search, mode: 'insensitive' } }
-      ]
-    }
-
-    // Filter for alerts (low stock or out of stock)
-    if (alertsOnly) {
-      where.OR = [
-        { availableQuantity: { lte: 0 } }, // Out of stock
-        // Low stock will need a subquery to compare with product.minStockLevel
-      ]
-    }
-
-    // Fetch stock items with relations
-    const [stockItems, total] = await Promise.all([
-      neonClient.inventoryItem.findMany({
-        where,
-        include: {
-          product: {
-            select: {
-              id: true,
-              name: true,
-              sku: true,
-              primaryImage: true,
-              minStockLevel: true,
-              reorderPoint: true
-            }
-          },
-          variant: {
-            select: {
-              id: true,
-              name: true,
-              sku: true,
-              attributes: true
-            }
-          },
-          warehouse: {
-            select: {
-              id: true,
-              name: true,
-              code: true
-            }
-          }
-        },
-        orderBy: { lastMovement: 'desc' },
-        skip,
-        take: limit
-      }),
-      neonClient.inventoryItem.count({ where })
-    ])
-
-    return NextResponse.json({
-      stockItems,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit)
+    // Check for special endpoints
+    if (searchParams.get('alerts') === 'true') {
+      const result = await getLowStockAlerts()
+      if (!result.success) {
+        return errorResponse(result.error!, 400)
       }
-    })
+      return successResponse(result.data, result.message)
+    }
+    
+    const queryInput: InventoryQueryInput = {
+      page: parseInt(searchParams.get('page') || '1'),
+      limit: Math.min(parseInt(searchParams.get('limit') || '20'), 100),
+      search: searchParams.get('search') || undefined,
+      warehouseId: searchParams.get('warehouseId') || undefined,
+      productId: searchParams.get('productId') || undefined,
+      categoryId: searchParams.get('categoryId') || undefined,
+      brandId: searchParams.get('brandId') || undefined,      status: (searchParams.get('status') as 'AVAILABLE' | 'RESERVED' | 'QUARANTINE' | 'DAMAGED' | 'EXPIRED' | 'RECALLED') || undefined,
+      lowStock: searchParams.get('lowStock') === 'true' || undefined,
+      sortBy: (searchParams.get('sortBy') as 'quantity' | 'product' | 'warehouse' | 'lastMovement' | 'createdAt') || 'createdAt',
+      sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || 'desc',
+    }
+
+    // Validate query parameters
+    const validatedQuery = inventoryQuerySchema.parse(queryInput)
+
+    // Fetch inventory using server action
+    const result = await getInventory(validatedQuery)
+
+    if (!result.success) {
+      return errorResponse(result.error!, 400)
+    }
+
+    return successResponse(result.data, result.message)
   } catch (error) {
-    console.error('Error fetching stock items:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch stock items' },
-      { status: 500 }
-    )
+    return handleError(error)
   }
 }
 
-// POST /api/inventory/stock/adjust - Adjust stock levels
+// POST /api/inventory/stock - Stock operations (adjustments, transfers, etc.)
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting (stricter for write operations)
+    const clientId = getClientIdentifier(request)
+    if (!checkRateLimit(`${clientId}:write`, 30, RATE_WINDOW)) {
+      return errorResponse('Rate limit exceeded for write operations', 429)
+    }
+
+    // Parse request body
     const body = await request.json()
-    const { inventoryItemId, newQuantity, reason, notes, userId } = body
 
-    if (!inventoryItemId || newQuantity === undefined) {
-      return NextResponse.json(
-        { error: 'Inventory item ID and new quantity are required' },
-        { status: 400 }
-      )
+    // TODO: Add authentication check here
+    // const user = await authenticate(request)
+    // if (!user) return errorResponse('Unauthorized', 401)
+
+    // Determine operation type
+    const operation = body.operation
+
+    if (!operation) {
+      return errorResponse('Operation type is required', 400)
     }
 
-    // Get current inventory item
-    const inventoryItem = await neonClient.inventoryItem.findUnique({
-      where: { id: inventoryItemId },
-      include: { product: true, warehouse: true }
-    })
+    let result
 
-    if (!inventoryItem) {
-      return NextResponse.json(
-        { error: 'Inventory item not found' },
-        { status: 404 }
-      )
+    switch (operation) {
+      case 'adjust':
+        const adjustInput: StockAdjustmentInput = {
+          productId: body.productId,
+          variantId: body.variantId,
+          warehouseId: body.warehouseId,
+          adjustmentType: body.adjustmentType,
+          quantity: body.quantity,
+          reason: body.reason,
+          notes: body.notes,
+          userId: body.userId || 'system', // Should come from authenticated user
+          approvedBy: body.approvedBy,
+        }
+        const validatedAdjustInput = stockAdjustmentSchema.parse(adjustInput)
+        result = await adjustStock(validatedAdjustInput)
+        break
+
+      case 'transfer':
+        const transferInput: StockTransferInput = {
+          fromWarehouseId: body.fromWarehouseId,
+          toWarehouseId: body.toWarehouseId,
+          productId: body.productId,
+          variantId: body.variantId,
+          quantity: body.quantity,
+          reason: body.reason,
+          notes: body.notes,
+          requestedBy: body.requestedBy || 'system', // Should come from authenticated user
+          expectedDate: body.expectedDate,
+        }
+        const validatedTransferInput = stockTransferSchema.parse(transferInput)
+        result = await transferStock(validatedTransferInput)
+        break
+
+      default:
+        return errorResponse('Invalid operation type', 400)
     }
 
-    const quantityDifference = newQuantity - inventoryItem.quantity
-    const newAvailableQuantity = Math.max(0, newQuantity - inventoryItem.reservedQuantity)
+    if (!result.success) {
+      return errorResponse(result.error!, 400)
+    }
 
-    // Update inventory item and create movement record in a transaction
-    const result = await neonClient.$transaction(async (tx) => {
-      // Update inventory item
-      const updatedItem = await tx.inventoryItem.update({
-        where: { id: inventoryItemId },
-        data: {
-          quantity: newQuantity,
-          availableQuantity: newAvailableQuantity,
-          lastMovement: new Date()
-        }
-      })
-
-      // Create movement record
-      const movement = await tx.inventoryMovement.create({
-        data: {
-          type: 'ADJUSTMENT',
-          productId: inventoryItem.productId,
-          variantId: inventoryItem.variantId,
-          warehouseId: inventoryItem.warehouseId,
-          inventoryItemId: inventoryItemId,
-          quantity: Math.abs(quantityDifference),
-          quantityBefore: inventoryItem.quantity,
-          quantityAfter: newQuantity,
-          reason: reason || 'Manual adjustment',
-          notes,
-          userId: userId || 'system'
-        }
-      })
-
-      return { updatedItem, movement }
-    })
-
-    return NextResponse.json(result)
+    return successResponse(result.data, result.message)
   } catch (error) {
-    console.error('Error adjusting stock:', error)
-    return NextResponse.json(
-      { error: 'Failed to adjust stock' },
-      { status: 500 }
-    )
+    return handleError(error)
   }
+}
+
+// OPTIONS - CORS preflight
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  })
 }

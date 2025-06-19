@@ -6,14 +6,14 @@ import {
   checkRateLimit 
 } from '@/lib/api-utils'
 import { 
-  updateSupplierSchema,
-  type UpdateSupplierInput 
-} from '@/lib/validations/supplier'
+  updateWarehouseSchema,
+  type UpdateWarehouseInput 
+} from '@/lib/validations/warehouse'
 import { 
-  getSupplier, 
-  updateSupplier, 
-  deleteSupplier 
-} from '@/lib/actions/suppliers'
+  getWarehouse, 
+  updateWarehouse, 
+  deleteWarehouse 
+} from '@/lib/actions/warehouses'
 
 // Rate limiting
 const RATE_LIMIT = 60
@@ -25,7 +25,7 @@ function getClientIdentifier(request: NextRequest): string {
          'unknown'
 }
 
-// GET /api/inventory/suppliers/[id] - Get supplier by ID
+// GET /api/inventory/warehouses/[id] - Get warehouse by ID
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -42,13 +42,13 @@ export async function GET(
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
     if (!uuidRegex.test(id)) {
-      return errorResponse('Invalid supplier ID format', 400)
+      return errorResponse('Invalid warehouse ID format', 400)
     }
 
-    const result = await getSupplier(id)
+    const result = await getWarehouse(id)
 
     if (!result.success) {
-      return errorResponse(result.error!, result.error === 'Supplier not found' ? 404 : 400)
+      return errorResponse(result.error!, result.error === 'Warehouse not found' ? 404 : 400)
     }
 
     return successResponse(result.data, result.message)
@@ -57,7 +57,7 @@ export async function GET(
   }
 }
 
-// PUT /api/inventory/suppliers/[id] - Update supplier
+// PUT /api/inventory/warehouses/[id] - Update warehouse
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -74,7 +74,7 @@ export async function PUT(
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
     if (!uuidRegex.test(id)) {
-      return errorResponse('Invalid supplier ID format', 400)
+      return errorResponse('Invalid warehouse ID format', 400)
     }
 
     // Parse request body
@@ -84,19 +84,19 @@ export async function PUT(
     // const user = await authenticate(request)
     // if (!user) return errorResponse('Unauthorized', 401)
 
-    const updateInput: UpdateSupplierInput = {
+    const updateInput: UpdateWarehouseInput = {
       id,
       ...body,
     }
 
     // Validate input
-    const validatedInput = updateSupplierSchema.parse(updateInput)
+    const validatedInput = updateWarehouseSchema.parse(updateInput)
 
-    // Update supplier using server action
-    const result = await updateSupplier(validatedInput)
+    // Update warehouse using server action
+    const result = await updateWarehouse(validatedInput)
 
     if (!result.success) {
-      return errorResponse(result.error!, result.error === 'Supplier not found' ? 404 : 400)
+      return errorResponse(result.error!, result.error === 'Warehouse not found' ? 404 : 400)
     }
 
     return successResponse(result.data, result.message)
@@ -105,7 +105,7 @@ export async function PUT(
   }
 }
 
-// DELETE /api/inventory/suppliers/[id] - Delete supplier
+// DELETE /api/inventory/warehouses/[id] - Delete warehouse
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -122,18 +122,18 @@ export async function DELETE(
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
     if (!uuidRegex.test(id)) {
-      return errorResponse('Invalid supplier ID format', 400)
+      return errorResponse('Invalid warehouse ID format', 400)
     }
 
     // TODO: Add authentication check here
     // const user = await authenticate(request)
     // if (!user) return errorResponse('Unauthorized', 401)
 
-    // Delete supplier using server action
-    const result = await deleteSupplier(id)
+    // Delete warehouse using server action
+    const result = await deleteWarehouse(id)
 
     if (!result.success) {
-      return errorResponse(result.error!, result.error === 'Supplier not found' ? 404 : 400)
+      return errorResponse(result.error!, result.error === 'Warehouse not found' ? 404 : 400)
     }
 
     return successResponse(result.data, result.message)

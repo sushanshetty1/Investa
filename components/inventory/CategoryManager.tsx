@@ -25,7 +25,7 @@ const categorySchema = z.object({
   icon: z.string().optional(),
   color: z.string().optional(),
   image: z.string().optional(),
-  isActive: z.boolean().default(true)
+  isActive: z.boolean()
 })
 
 type CategoryFormData = z.infer<typeof categorySchema>
@@ -42,7 +42,7 @@ interface Category {
   color?: string
   image?: string
   isActive: boolean
-  productCount: number
+  productCount?: number
   parent?: Category
   children?: Category[]
   createdAt: string
@@ -250,7 +250,7 @@ export function CategoryManager({
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="">No parent (Top level)</SelectItem>
-                        {getParentOptions(selectedCategory).map(category => (
+                        {getParentOptions(selectedCategory || undefined).map(category => (
                           <SelectItem key={category.id} value={category.id}>
                             {category.name}
                           </SelectItem>
@@ -415,7 +415,7 @@ export function CategoryManager({
                         <DropdownMenuItem 
                           onClick={() => handleDelete(category.id)}
                           className="text-destructive"
-                          disabled={category.productCount > 0}
+                          disabled={!!category.productCount && category.productCount > 0}
                         >
                           <Trash2 className="h-4 w-4 mr-2" />
                           Delete

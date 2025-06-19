@@ -1,166 +1,127 @@
-import { neonClient } from '@/lib/db'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+import { 
+  successResponse, 
+  errorResponse, 
+  handleError, 
+  checkRateLimit
+} from '@/lib/api-utils'
+import { 
+  productQuerySchema, 
+  createProductSchema,
+  type ProductQueryInput,
+  type CreateProductInput 
+} from '@/lib/validations/product'
+import { 
+  getProducts, 
+  createProduct 
+} from '@/lib/actions/products'
 
-// GET /api/inventory/products - List products with optional filters
+// Rate limiting: 100 requests per minute per IP
+const RATE_LIMIT = 100
+const RATE_WINDOW = 60 * 1000 // 1 minute
+
+function getClientIdentifier(request: NextRequest): string {
+  // Get client IP for rate limiting
+  const forwarded = request.headers.get('x-forwarded-for')
+  const ip = forwarded ? forwarded.split(',')[0] : 
+             request.headers.get('x-real-ip') || 
+             'unknown'
+  return ip
+}
+
+// GET /api/inventory/products - List products with filtering and pagination
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
-    const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '20')
-    const search = searchParams.get('search') || ''
-    const categoryId = searchParams.get('categoryId') || ''
-    const brandId = searchParams.get('brandId') || ''
-    const status = searchParams.get('status') || ''
-
-    const skip = (page - 1) * limit    // Build where clause
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const where: any = {}
-    
-    if (search) {
-      where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
-        { sku: { contains: search, mode: 'insensitive' } },
-        { barcode: { contains: search, mode: 'insensitive' } }
-      ]
+    // Rate limiting
+    const clientId = getClientIdentifier(request)
+    if (!checkRateLimit(clientId, RATE_LIMIT, RATE_WINDOW)) {
+      return errorResponse('Rate limit exceeded', 429)
     }
+
+    // Parse and validate query parameters
+    const { searchParams } = new URL(request.url)
     
-    if (categoryId) where.categoryId = categoryId
-    if (brandId) where.brandId = brandId
-    if (status) where.status = status
+    const queryInput: ProductQueryInput = {
+      page: parseInt(searchParams.get('page') || '1'),
+      limit: Math.min(parseInt(searchParams.get('limit') || '20'), 100), // Max 100 items
+      search: searchParams.get('search') || undefined,
+      categoryId: searchParams.get('categoryId') || undefined,      brandId: searchParams.get('brandId') || undefined,
+      status: (searchParams.get('status') as 'ACTIVE' | 'INACTIVE' | 'DISCONTINUED' | 'DRAFT') || undefined,
+      sortBy: (searchParams.get('sortBy') as 'name' | 'sku' | 'createdAt' | 'updatedAt') || 'createdAt',
+      sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || 'desc',
+    }
 
-    // Fetch products with relations
-    const [products, total] = await Promise.all([
-      neonClient.product.findMany({
-        where,
-        include: {
-          category: true,
-          brand: true,
-          inventoryItems: {
-            select: {
-              quantity: true,
-              availableQuantity: true,
-              reservedQuantity: true
-            }
-          },
-          variants: {
-            select: {
-              id: true,
-              name: true,
-              sku: true,
-              attributes: true,
-              isActive: true
-            }
-          }
-        },
-        orderBy: { createdAt: 'desc' },
-        skip,
-        take: limit
-      }),
-      neonClient.product.count({ where })
-    ])
+    // Validate query parameters
+    const validatedQuery = productQuerySchema.parse(queryInput)
 
-    // Calculate stock totals for each product
-    const productsWithStock = products.map(product => {
-      const totalStock = product.inventoryItems.reduce((sum, item) => sum + item.quantity, 0)
-      const availableStock = product.inventoryItems.reduce((sum, item) => sum + item.availableQuantity, 0)
-      const reservedStock = product.inventoryItems.reduce((sum, item) => sum + item.reservedQuantity, 0)
+    // Fetch products using server action
+    const result = await getProducts(validatedQuery)
 
-      return {
-        ...product,
-        totalStock,
-        availableStock,
-        reservedStock
-      }
-    })
+    if (!result.success) {
+      return errorResponse(result.error!, 400)
+    }
 
-    return NextResponse.json({
-      products: productsWithStock,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit)
-      }
-    })
-  } catch (error) {
-    console.error('Error fetching products:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch products' },
-      { status: 500 }
+    return successResponse(
+      result.data,
+      result.message
     )
+
+  } catch (error) {
+    return handleError(error)
   }
 }
 
 // POST /api/inventory/products - Create new product
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting (stricter for write operations)
+    const clientId = getClientIdentifier(request)
+    if (!checkRateLimit(`${clientId}:write`, 20, RATE_WINDOW)) {
+      return errorResponse('Rate limit exceeded for write operations', 429)
+    }
+
+    // Parse request body
     const body = await request.json()
+
+    // TODO: Add authentication check here
+    // const user = await authenticate(request)
+    // if (!user) return errorResponse('Unauthorized', 401)
     
-    // Validate required fields
-    if (!body.name || !body.sku) {
-      return NextResponse.json(
-        { error: 'Name and SKU are required' },
-        { status: 400 }
-      )
+    // For now, use a default user ID
+    const createInput: CreateProductInput = {
+      ...body,
+      createdBy: body.createdBy || 'system' // This should come from authenticated user
     }
 
-    // Check if SKU already exists
-    const existingProduct = await neonClient.product.findUnique({
-      where: { sku: body.sku }
-    })
+    // Validate input
+    const validatedInput = createProductSchema.parse(createInput)
 
-    if (existingProduct) {
-      return NextResponse.json(
-        { error: 'SKU already exists' },
-        { status: 400 }
-      )
+    // Create product using server action
+    const result = await createProduct(validatedInput)
+
+    if (!result.success) {
+      return errorResponse(result.error!, 400)
     }
 
-    // Create product
-    const product = await neonClient.product.create({
-      data: {
-        name: body.name,
-        description: body.description,
-        sku: body.sku,
-        barcode: body.barcode,
-        categoryId: body.categoryId,
-        brandId: body.brandId,
-        costPrice: body.costPrice,
-        sellingPrice: body.sellingPrice,
-        wholesalePrice: body.wholesalePrice,
-        minStockLevel: body.minStockLevel || 0,
-        maxStockLevel: body.maxStockLevel,
-        reorderPoint: body.reorderPoint,
-        reorderQuantity: body.reorderQuantity,
-        weight: body.weight,
-        dimensions: body.dimensions,
-        color: body.color,
-        size: body.size,
-        material: body.material,
-        status: body.status || 'ACTIVE',
-        isTrackable: body.isTrackable ?? true,
-        isSerialized: body.isSerialized ?? false,
-        leadTimeSupply: body.leadTimeSupply,
-        shelfLife: body.shelfLife,
-        images: body.images,
-        primaryImage: body.primaryImage,
-        metaTitle: body.metaTitle,
-        metaDescription: body.metaDescription,
-        tags: body.tags,
-        createdBy: body.createdBy || 'system' // This should come from auth context
-      },
-      include: {
-        category: true,
-        brand: true
-      }
-    })
-
-    return NextResponse.json(product, { status: 201 })
-  } catch (error) {
-    console.error('Error creating product:', error)
-    return NextResponse.json(
-      { error: 'Failed to create product' },
-      { status: 500 }
+    return successResponse(
+      result.data,
+      result.message,
+      undefined
     )
+
+  } catch (error) {
+    return handleError(error)
   }
+}
+
+// OPTIONS - CORS preflight
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  })
 }

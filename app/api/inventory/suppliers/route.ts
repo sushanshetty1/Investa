@@ -1,159 +1,139 @@
-import { neonClient } from '@/lib/db'
-import { NextRequest, NextResponse } from 'next/server'
+/**
+ * API Route: Suppliers Management
+ * 
+ * Handles CRUD operations for suppliers with validation,
+ * authentication, rate limiting, and standardized responses.
+ */
 
-// GET /api/inventory/suppliers - List suppliers
-export async function GET(request: NextRequest) {
-  try {
+import { NextRequest, NextResponse } from 'next/server'
+import { 
+  successResponse, 
+  errorResponse,
+  checkRateLimit
+} from '@/lib/api-utils'
+import { createSupplier, getSuppliers } from '@/lib/actions/suppliers'
+import { createSupplierSchema } from '@/lib/validations/supplier'
+
+// CORS headers for cross-origin requests
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-API-Key',
+}
+
+// Rate limiting: 100 requests per 15 minutes per IP
+const RATE_LIMIT_MAX = 100
+const RATE_LIMIT_WINDOW = 15 * 60 * 1000 // 15 minutes
+
+/**
+ * GET /api/inventory/suppliers
+ * Retrieve suppliers with pagination and filtering
+ */
+export async function GET(request: NextRequest) {  try {
+    // Apply rate limiting
+    const clientIp = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+    if (!checkRateLimit(clientIp, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW)) {
+      return errorResponse('Rate limit exceeded', 429)
+    }
+
+    // Parse and validate query parameters
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '20')
-    const search = searchParams.get('search') || ''
-    const status = searchParams.get('status') || ''
+    const search = searchParams.get('search') || undefined
+    const status = searchParams.get('status') as 'ACTIVE' | 'INACTIVE' | 'PENDING_APPROVAL' | 'SUSPENDED' | 'BLACKLISTED' | undefined
+    const companyType = searchParams.get('companyType') as 'CORPORATION' | 'LLC' | 'PARTNERSHIP' | 'SOLE_PROPRIETORSHIP' | 'NON_PROFIT' | 'GOVERNMENT' | 'OTHER' | undefined
+    const sortBy = searchParams.get('sortBy') as 'name' | 'code' | 'createdAt' | 'updatedAt' | 'rating' || 'createdAt'
+    const sortOrder = searchParams.get('sortOrder') as 'asc' | 'desc' || 'desc'
 
-    const skip = (page - 1) * limit    // Build where clause
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const where: any = {}
-    
-    if (search) {
-      where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
-        { code: { contains: search, mode: 'insensitive' } },
-        { email: { contains: search, mode: 'insensitive' } }
-      ]
+    // Validate pagination parameters
+    if (page < 1 || limit < 1 || limit > 100) {
+      return errorResponse('Invalid pagination parameters. Page must be >= 1 and limit must be between 1 and 100', 400)
     }
-    
-    if (status) where.status = status
 
-    // Fetch suppliers with aggregated data
-    const [suppliers, total] = await Promise.all([
-      neonClient.supplier.findMany({
-        where,
-        include: {
-          purchaseOrders: {
-            select: {
-              id: true,
-              totalAmount: true,
-              orderDate: true,
-              status: true
-            }
-          },
-          products: {
-            include: {
-              product: {
-                select: {
-                  id: true,
-                  name: true,
-                  status: true
-                }
-              }
-            }
-          }
-        },
-        orderBy: { createdAt: 'desc' },
-        skip,
-        take: limit
-      }),
-      neonClient.supplier.count({ where })
-    ])
+    // Validate sort parameters
+    const validSortFields = ['name', 'code', 'createdAt', 'updatedAt', 'rating']
+    if (sortBy && !validSortFields.includes(sortBy)) {
+      return errorResponse(`Invalid sortBy field. Must be one of: ${validSortFields.join(', ')}`, 400)
+    }
 
-    // Calculate performance metrics for each supplier
-    const suppliersWithMetrics = suppliers.map(supplier => {
-      const totalPurchaseOrders = supplier.purchaseOrders.length
-      const totalSpent = supplier.purchaseOrders.reduce((sum, po) => sum + po.totalAmount.toNumber(), 0)
-      const activeProducts = supplier.products.filter(p => p.product.status === 'ACTIVE').length
-      const lastOrderDate = supplier.purchaseOrders.length > 0 
-        ? supplier.purchaseOrders.sort((a, b) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime())[0].orderDate
-        : null
-
-      return {
-        ...supplier,
-        totalPurchaseOrders,
-        totalSpent,
-        activeProducts,
-        lastOrderDate
-      }
+    // Call server action
+    const result = await getSuppliers({
+      page,
+      limit,
+      search,
+      status,
+      companyType,
+      sortBy,
+      sortOrder
     })
 
-    return NextResponse.json({
-      suppliers: suppliersWithMetrics,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit)
-      }
-    })
+    if (!result.success) {
+      return errorResponse(result.error || 'Failed to fetch suppliers', 500)
+    }
+
+    return successResponse(result.data, 'Suppliers retrieved successfully')
+
   } catch (error) {
-    console.error('Error fetching suppliers:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch suppliers' },
-      { status: 500 }
-    )
+    console.error('GET /api/inventory/suppliers error:', error)
+    return errorResponse('Internal server error', 500)
   }
 }
 
-// POST /api/inventory/suppliers - Create new supplier
-export async function POST(request: NextRequest) {
-  try {
-    const body = await request.json()
-    
-    // Validate required fields
-    if (!body.name || !body.code) {
-      return NextResponse.json(
-        { error: 'Name and code are required' },
-        { status: 400 }
-      )
+/**
+ * POST /api/inventory/suppliers
+ * Create a new supplier
+ */
+export async function POST(request: NextRequest) {  try {
+    // Apply rate limiting
+    const clientIp = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+    if (!checkRateLimit(clientIp, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW)) {
+      return errorResponse('Rate limit exceeded', 429)
     }
 
-    // Check if code already exists
-    const existingSupplier = await neonClient.supplier.findUnique({
-      where: { code: body.code }
-    })
-
-    if (existingSupplier) {
-      return NextResponse.json(
-        { error: 'Supplier code already exists' },
-        { status: 400 }
-      )
+    // Parse and validate request body
+    let body
+    try {
+      body = await request.json()    } catch {
+      return errorResponse('Invalid JSON in request body', 400)
     }
 
-    // Create supplier
-    const supplier = await neonClient.supplier.create({
-      data: {
-        name: body.name,
-        code: body.code,
-        email: body.email,
-        phone: body.phone,
-        website: body.website,
-        companyType: body.companyType,
-        taxId: body.taxId,
-        vatNumber: body.vatNumber,
-        registrationNumber: body.registrationNumber,
-        billingAddress: body.billingAddress,
-        shippingAddress: body.shippingAddress,
-        contactName: body.contactName,
-        contactEmail: body.contactEmail,
-        contactPhone: body.contactPhone,
-        contactTitle: body.contactTitle,
-        paymentTerms: body.paymentTerms,
-        creditLimit: body.creditLimit,
-        currency: body.currency || 'USD',
-        rating: body.rating,
-        onTimeDelivery: body.onTimeDelivery,
-        qualityRating: body.qualityRating,
-        status: body.status || 'ACTIVE',
-        certifications: body.certifications,
-        notes: body.notes,
-        createdBy: body.createdBy || 'system' // This should come from auth context
-      }
-    })
+    // Add a default createdBy if not provided (should come from auth context in real app)
+    if (!body.createdBy) {
+      body.createdBy = '00000000-0000-0000-0000-000000000000' // Placeholder UUID
+    }
 
-    return NextResponse.json(supplier, { status: 201 })
+    // Validate supplier data
+    const validation = createSupplierSchema.safeParse(body)
+    if (!validation.success) {
+      const errorMessage = validation.error.errors
+        .map(err => `${err.path.join('.')}: ${err.message}`)
+        .join(', ')
+      return errorResponse(`Validation failed: ${errorMessage}`, 400)
+    }
+
+    // Call server action
+    const result = await createSupplier(validation.data)
+
+    if (!result.success) {
+      return errorResponse(result.error || 'Failed to create supplier', 400)
+    }
+
+    return successResponse(result.data, 'Supplier created successfully')
+
   } catch (error) {
-    console.error('Error creating supplier:', error)
-    return NextResponse.json(
-      { error: 'Failed to create supplier' },
-      { status: 500 }
-    )
+    console.error('POST /api/inventory/suppliers error:', error)
+    return errorResponse('Internal server error', 500)
   }
+}
+
+/**
+ * OPTIONS /api/inventory/suppliers
+ * Handle preflight requests for CORS
+ */
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 200,
+    headers: corsHeaders
+  })
 }

@@ -1,102 +1,120 @@
-import { neonClient } from '@/lib/db'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+import { 
+  successResponse, 
+  errorResponse, 
+  handleError, 
+  checkRateLimit 
+} from '@/lib/api-utils'
+import { 
+  categoryQuerySchema,
+  createCategorySchema,
+  type CategoryQueryInput,
+  type CreateCategoryInput 
+} from '@/lib/validations/category'
+import { 
+  getCategories, 
+  createCategory 
+} from '@/lib/actions/categories'
+
+// Rate limiting: 100 requests per minute per IP
+const RATE_LIMIT = 100
+const RATE_WINDOW = 60 * 1000 // 1 minute
+
+function getClientIdentifier(request: NextRequest): string {
+  return request.headers.get('x-forwarded-for') || 
+         request.headers.get('x-real-ip') || 
+         'unknown'
+}
 
 // GET /api/inventory/categories - List categories
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const categories = await neonClient.category.findMany({
-      where: { isActive: true },
-      include: {
-        children: {
-          where: { isActive: true },
-          include: {
-            children: {
-              where: { isActive: true }
-            }
-          }
-        },
-        _count: {
-          select: {
-            products: true
-          }
-        }
-      },
-      orderBy: [{ level: 'asc' }, { name: 'asc' }]
-    })
+    // Rate limiting
+    const clientId = getClientIdentifier(request)
+    if (!checkRateLimit(clientId, RATE_LIMIT, RATE_WINDOW)) {
+      return errorResponse('Rate limit exceeded', 429)
+    }
 
-    return NextResponse.json(categories)
-  } catch (error) {
-    console.error('Error fetching categories:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch categories' },
-      { status: 500 }
+    // Parse and validate query parameters
+    const { searchParams } = new URL(request.url)
+    
+    const queryInput: CategoryQueryInput = {
+      page: parseInt(searchParams.get('page') || '1'),
+      limit: Math.min(parseInt(searchParams.get('limit') || '20'), 100), // Max 100 items
+      search: searchParams.get('search') || undefined,
+      parentId: searchParams.get('parentId') || undefined,
+      level: searchParams.get('level') ? parseInt(searchParams.get('level')!) : undefined,
+      isActive: searchParams.get('isActive') ? searchParams.get('isActive') === 'true' : undefined,      sortBy: (searchParams.get('sortBy') as 'name' | 'level' | 'createdAt' | 'updatedAt') || 'level',
+      sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || 'asc',
+    }
+
+    // Validate query parameters
+    const validatedQuery = categoryQuerySchema.parse(queryInput)
+
+    // Fetch categories using server action
+    const result = await getCategories(validatedQuery)
+
+    if (!result.success) {
+      return errorResponse(result.error!, 400)
+    }
+
+    return successResponse(
+      result.data,
+      result.message
     )
+
+  } catch (error) {
+    return handleError(error)
   }
 }
 
 // POST /api/inventory/categories - Create category
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting (stricter for write operations)
+    const clientId = getClientIdentifier(request)
+    if (!checkRateLimit(`${clientId}:write`, 20, RATE_WINDOW)) {
+      return errorResponse('Rate limit exceeded for write operations', 429)
+    }
+
+    // Parse request body
     const body = await request.json()
-    
-    if (!body.name) {
-      return NextResponse.json(
-        { error: 'Category name is required' },
-        { status: 400 }
-      )
+
+    // TODO: Add authentication check here
+    // const user = await authenticate(request)
+    // if (!user) return errorResponse('Unauthorized', 401)
+
+    const createInput: CreateCategoryInput = body
+
+    // Validate input
+    const validatedInput = createCategorySchema.parse(createInput)
+
+    // Create category using server action
+    const result = await createCategory(validatedInput)
+
+    if (!result.success) {
+      return errorResponse(result.error!, 400)
     }
 
-    // Generate slug from name
-    const slug = body.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
-
-    // Check if slug already exists
-    const existingCategory = await neonClient.category.findUnique({
-      where: { slug }
-    })
-
-    if (existingCategory) {
-      return NextResponse.json(
-        { error: 'Category with this name already exists' },
-        { status: 400 }
-      )
-    }
-
-    // Calculate level and path
-    let level = 0
-    let path = `/${slug}`
-    
-    if (body.parentId) {
-      const parent = await neonClient.category.findUnique({
-        where: { id: body.parentId }
-      })
-      
-      if (parent) {
-        level = parent.level + 1
-        path = `${parent.path}/${slug}`
-      }
-    }
-
-    const category = await neonClient.category.create({
-      data: {
-        name: body.name,
-        description: body.description,
-        slug,
-        parentId: body.parentId,
-        level,
-        path,
-        icon: body.icon,
-        color: body.color,
-        image: body.image,
-        isActive: body.isActive ?? true
-      }
-    })
-
-    return NextResponse.json(category, { status: 201 })
-  } catch (error) {
-    console.error('Error creating category:', error)
-    return NextResponse.json(
-      { error: 'Failed to create category' },
-      { status: 500 }
+    return successResponse(
+      result.data,
+      result.message,
+      undefined
     )
+
+  } catch (error) {
+    return handleError(error)
   }
+}
+
+// OPTIONS - CORS preflight
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  })
 }

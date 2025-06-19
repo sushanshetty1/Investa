@@ -6,14 +6,14 @@ import {
   checkRateLimit 
 } from '@/lib/api-utils'
 import { 
-  updateSupplierSchema,
-  type UpdateSupplierInput 
-} from '@/lib/validations/supplier'
+  updateBrandSchema,
+  type UpdateBrandInput 
+} from '@/lib/validations/brand'
 import { 
-  getSupplier, 
-  updateSupplier, 
-  deleteSupplier 
-} from '@/lib/actions/suppliers'
+  getBrand, 
+  updateBrand, 
+  deleteBrand 
+} from '@/lib/actions/brands'
 
 // Rate limiting
 const RATE_LIMIT = 60
@@ -25,7 +25,7 @@ function getClientIdentifier(request: NextRequest): string {
          'unknown'
 }
 
-// GET /api/inventory/suppliers/[id] - Get supplier by ID
+// GET /api/inventory/brands/[id] - Get brand by ID
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -42,13 +42,13 @@ export async function GET(
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
     if (!uuidRegex.test(id)) {
-      return errorResponse('Invalid supplier ID format', 400)
+      return errorResponse('Invalid brand ID format', 400)
     }
 
-    const result = await getSupplier(id)
+    const result = await getBrand(id)
 
     if (!result.success) {
-      return errorResponse(result.error!, result.error === 'Supplier not found' ? 404 : 400)
+      return errorResponse(result.error!, result.error === 'Brand not found' ? 404 : 400)
     }
 
     return successResponse(result.data, result.message)
@@ -57,7 +57,7 @@ export async function GET(
   }
 }
 
-// PUT /api/inventory/suppliers/[id] - Update supplier
+// PUT /api/inventory/brands/[id] - Update brand
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -74,7 +74,7 @@ export async function PUT(
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
     if (!uuidRegex.test(id)) {
-      return errorResponse('Invalid supplier ID format', 400)
+      return errorResponse('Invalid brand ID format', 400)
     }
 
     // Parse request body
@@ -84,19 +84,19 @@ export async function PUT(
     // const user = await authenticate(request)
     // if (!user) return errorResponse('Unauthorized', 401)
 
-    const updateInput: UpdateSupplierInput = {
+    const updateInput: UpdateBrandInput = {
       id,
       ...body,
     }
 
     // Validate input
-    const validatedInput = updateSupplierSchema.parse(updateInput)
+    const validatedInput = updateBrandSchema.parse(updateInput)
 
-    // Update supplier using server action
-    const result = await updateSupplier(validatedInput)
+    // Update brand using server action
+    const result = await updateBrand(validatedInput)
 
     if (!result.success) {
-      return errorResponse(result.error!, result.error === 'Supplier not found' ? 404 : 400)
+      return errorResponse(result.error!, result.error === 'Brand not found' ? 404 : 400)
     }
 
     return successResponse(result.data, result.message)
@@ -105,7 +105,7 @@ export async function PUT(
   }
 }
 
-// DELETE /api/inventory/suppliers/[id] - Delete supplier
+// DELETE /api/inventory/brands/[id] - Delete brand
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -122,18 +122,18 @@ export async function DELETE(
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
     if (!uuidRegex.test(id)) {
-      return errorResponse('Invalid supplier ID format', 400)
+      return errorResponse('Invalid brand ID format', 400)
     }
 
     // TODO: Add authentication check here
     // const user = await authenticate(request)
     // if (!user) return errorResponse('Unauthorized', 401)
 
-    // Delete supplier using server action
-    const result = await deleteSupplier(id)
+    // Delete brand using server action
+    const result = await deleteBrand(id)
 
     if (!result.success) {
-      return errorResponse(result.error!, result.error === 'Supplier not found' ? 404 : 400)
+      return errorResponse(result.error!, result.error === 'Brand not found' ? 404 : 400)
     }
 
     return successResponse(result.data, result.message)

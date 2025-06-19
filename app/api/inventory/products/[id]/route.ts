@@ -1,5 +1,31 @@
-import { neonClient } from '@/lib/db'
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
+import { 
+  successResponse, 
+  errorResponse, 
+  handleError, 
+  checkRateLimit 
+} from '@/lib/api-utils'
+import { 
+  updateProductSchema,
+  type UpdateProductInput 
+} from '@/lib/validations/product'
+import { 
+  getProduct, 
+  updateProduct, 
+  deleteProduct 
+} from '@/lib/actions/products'
+
+// Rate limiting
+const RATE_LIMIT = 60
+const RATE_WINDOW = 60 * 1000 // 1 minute
+
+function getClientIdentifier(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for')
+  const ip = forwarded ? forwarded.split(',')[0] : 
+             request.headers.get('x-real-ip') || 
+             'unknown'
+  return ip
+}
 
 // GET /api/inventory/products/[id] - Get single product
 export async function GET(
@@ -7,41 +33,29 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params;
-    
-    const product = await neonClient.product.findUnique({
-      where: { id },
-      include: {
-        category: true,
-        brand: true,
-        variants: true,
-        inventoryItems: {
-          include: {
-            warehouse: true
-          }
-        },
-        suppliers: {
-          include: {
-            supplier: true
-          }
-        }
-      }
-    })
-
-    if (!product) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      )
+    // Rate limiting
+    const clientId = getClientIdentifier(request)
+    if (!checkRateLimit(clientId, RATE_LIMIT, RATE_WINDOW)) {
+      return errorResponse('Rate limit exceeded', 429)
     }
 
-    return NextResponse.json(product)
+    const { id } = await params
+
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (!uuidRegex.test(id)) {
+      return errorResponse('Invalid product ID format', 400)
+    }
+
+    const result = await getProduct(id)
+
+    if (!result.success) {
+      return errorResponse(result.error!, result.error === 'Product not found' ? 404 : 400)
+    }
+
+    return successResponse(result.data, result.message)
   } catch (error) {
-    console.error('Error fetching product:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch product' },
-      { status: 500 }
-    )
+    return handleError(error)
   }
 }
 
@@ -51,84 +65,43 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params;
+    // Rate limiting (stricter for write operations)
+    const clientId = getClientIdentifier(request)
+    if (!checkRateLimit(`${clientId}:write`, 20, RATE_WINDOW)) {
+      return errorResponse('Rate limit exceeded for write operations', 429)
+    }
+
+    const { id } = await params
     const body = await request.json()
 
-    // Check if product exists
-    const existingProduct = await neonClient.product.findUnique({
-      where: { id }
-    })
-
-    if (!existingProduct) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      )
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (!uuidRegex.test(id)) {
+      return errorResponse('Invalid product ID format', 400)
     }
 
-    // Check if SKU is being changed and if it conflicts
-    if (body.sku && body.sku !== existingProduct.sku) {
-      const skuConflict = await neonClient.product.findUnique({
-        where: { 
-          sku: body.sku,
-          NOT: { id }
-        }
-      })
+    // TODO: Add authentication check here
+    // const user = await authenticate(request)
+    // if (!user) return errorResponse('Unauthorized', 401)
 
-      if (skuConflict) {
-        return NextResponse.json(
-          { error: 'SKU already exists' },
-          { status: 400 }
-        )
-      }
+    const updateInput: UpdateProductInput = {
+      id,
+      ...body
     }
 
-    // Update product
-    const product = await neonClient.product.update({
-      where: { id },
-      data: {
-        name: body.name,
-        description: body.description,
-        sku: body.sku,
-        barcode: body.barcode,
-        categoryId: body.categoryId,
-        brandId: body.brandId,
-        costPrice: body.costPrice,
-        sellingPrice: body.sellingPrice,
-        wholesalePrice: body.wholesalePrice,
-        minStockLevel: body.minStockLevel,
-        maxStockLevel: body.maxStockLevel,
-        reorderPoint: body.reorderPoint,
-        reorderQuantity: body.reorderQuantity,
-        weight: body.weight,
-        dimensions: body.dimensions,
-        color: body.color,
-        size: body.size,
-        material: body.material,
-        status: body.status,
-        isTrackable: body.isTrackable,
-        isSerialized: body.isSerialized,
-        leadTimeSupply: body.leadTimeSupply,
-        shelfLife: body.shelfLife,
-        images: body.images,
-        primaryImage: body.primaryImage,
-        metaTitle: body.metaTitle,
-        metaDescription: body.metaDescription,
-        tags: body.tags
-      },
-      include: {
-        category: true,
-        brand: true
-      }
-    })
+    // Validate input
+    const validatedInput = updateProductSchema.parse(updateInput)
 
-    return NextResponse.json(product)
+    // Update product using server action
+    const result = await updateProduct(validatedInput)
+
+    if (!result.success) {
+      return errorResponse(result.error!, result.error === 'Product not found' ? 404 : 400)
+    }
+
+    return successResponse(result.data, result.message)
   } catch (error) {
-    console.error('Error updating product:', error)
-    return NextResponse.json(
-      { error: 'Failed to update product' },
-      { status: 500 }
-    )
+    return handleError(error)
   }
 }
 
@@ -138,52 +111,45 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = await params;
-    
-    // Check if product exists
-    const existingProduct = await neonClient.product.findUnique({
-      where: { id },
-      include: {
-        inventoryItems: true,
-        orderItems: true,
-        purchaseItems: true
-      }
-    })
-
-    if (!existingProduct) {
-      return NextResponse.json(
-        { error: 'Product not found' },
-        { status: 404 }
-      )
+    // Rate limiting (stricter for delete operations)
+    const clientId = getClientIdentifier(request)
+    if (!checkRateLimit(`${clientId}:delete`, 10, RATE_WINDOW)) {
+      return errorResponse('Rate limit exceeded for delete operations', 429)
     }
 
-    // Check if product has inventory or is referenced in orders
-    if (existingProduct.inventoryItems.length > 0) {
-      return NextResponse.json(
-        { error: 'Cannot delete product with existing inventory' },
-        { status: 400 }
-      )
+    const { id } = await params
+
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (!uuidRegex.test(id)) {
+      return errorResponse('Invalid product ID format', 400)
     }
 
-    if (existingProduct.orderItems.length > 0 || existingProduct.purchaseItems.length > 0) {
-      return NextResponse.json(
-        { error: 'Cannot delete product that is referenced in orders' },
-        { status: 400 }
-      )
+    // TODO: Add authentication and authorization checks
+    // const user = await authenticate(request)
+    // if (!user) return errorResponse('Unauthorized', 401)
+    // if (!hasPermission(user, 'product:delete')) return errorResponse('Forbidden', 403)
+
+    const result = await deleteProduct(id)
+
+    if (!result.success) {
+      return errorResponse(result.error!, result.error === 'Product not found' ? 404 : 400)
     }
 
-    // Soft delete by changing status to DISCONTINUED
-    await neonClient.product.update({
-      where: { id },
-      data: { status: 'DISCONTINUED' }
-    })
-
-    return NextResponse.json({ message: 'Product deleted successfully' })
+    return successResponse(null, result.message)
   } catch (error) {
-    console.error('Error deleting product:', error)
-    return NextResponse.json(
-      { error: 'Failed to delete product' },
-      { status: 500 }
-    )
+    return handleError(error)
   }
+}
+
+// OPTIONS - CORS preflight
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  })
 }

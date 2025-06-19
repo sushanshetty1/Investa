@@ -16,6 +16,25 @@ import { ProductVariantsManager } from '@/components/inventory/ProductVariantsMa
 import { CategoryManager } from '@/components/inventory/CategoryManager'
 import { BulkActionsDialog } from '@/components/inventory/BulkActionsDialog'
 
+// Local interfaces that match component expectations
+interface ProductVariant {
+  id: string
+  name: string
+  sku: string
+  barcode?: string
+  attributes: Record<string, string>
+  costPrice?: number
+  sellingPrice?: number
+  minStockLevel?: number
+  reorderPoint?: number
+  isActive: boolean
+  stock?: {
+    quantity: number
+    reservedQuantity: number
+    availableQuantity: number
+  }
+}
+
 interface Product {
   id: string
   name: string
@@ -50,24 +69,23 @@ interface Product {
   variants?: ProductVariant[]
 }
 
-interface ProductVariant {
-  id: string
-  name: string
-  sku: string
-  attributes: Record<string, string>
-  costPrice?: number
-  sellingPrice?: number
-  isActive: boolean
-  stock: number
-}
-
 interface Category {
   id: string
   name: string
   description?: string
-  level: number
+  slug: string
   parentId?: string
+  level: number
+  path?: string
+  icon?: string
+  color?: string
+  image?: string
+  isActive: boolean
+  productCount?: number
+  parent?: Category
   children?: Category[]
+  createdAt: string
+  updatedAt: string
 }
 
 interface Brand {
@@ -77,7 +95,14 @@ interface Brand {
   isActive: boolean
 }
 
-export default function ProductsPage() {  const [products, setProducts] = useState<Product[]>([])
+interface Brand {
+  id: string
+  name: string
+  description?: string
+  isActive: boolean
+}
+
+export default function ProductsPage() {const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
   const [brands, setBrands] = useState<Brand[]>([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -145,7 +170,6 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
     ]
     setProducts(mockProducts)
   }
-
   const loadCategories = async () => {
     // TODO: Implement API call to fetch categories hierarchy
     const mockCategories: Category[] = [
@@ -153,8 +177,12 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
         id: 'cat-1',
         name: 'Computer Accessories',
         description: 'Accessories for computers and laptops',
+        slug: 'computer-accessories',
         level: 0,
-        parentId: undefined
+        parentId: undefined,
+        isActive: true,
+        createdAt: '2024-01-15T10:00:00Z',
+        updatedAt: '2024-01-20T14:30:00Z'
       },
       // Add more mock categories...
     ]
@@ -237,7 +265,7 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
   const getStockStatus = (product: Product) => {
     if (product.availableStock <= 0) {
       return <Badge variant="destructive">Out of Stock</Badge>
-    } else if (product.availableStock <= product.minStockLevel) {
+    } else if (product.minStockLevel && product.availableStock <= product.minStockLevel) {
       return <Badge variant="outline" className="border-yellow-500 text-yellow-600">Low Stock</Badge>
     } else {
       return <Badge variant="secondary">In Stock</Badge>
@@ -309,7 +337,7 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
           </CardHeader>
           <CardContent className="p-2 sm:p-4 pt-0">
             <div className="text-lg sm:text-xl md:text-2xl font-bold text-yellow-600">
-              {products.filter(p => p.availableStock <= p.minStockLevel).length}
+              {products.filter(p => p.minStockLevel && p.availableStock <= p.minStockLevel).length}
             </div>
             <p className="text-xs text-muted-foreground">
               Require attention
@@ -595,14 +623,26 @@ export default function ProductsPage() {  const [products, setProducts] = useSta
             console.log('Deleting variant:', variantId)
           }}
         />
+      )}      {showCategoryManager && (
+        <CategoryManager
+          categories={categories}
+          onCategoryCreate={async (data) => {
+            // Implement category creation
+            console.log('Creating category:', data)
+            await loadCategories()
+          }}
+          onCategoryUpdate={async (categoryId, data) => {
+            // Implement category update
+            console.log('Updating category:', categoryId, data)
+            await loadCategories()
+          }}
+          onCategoryDelete={async (categoryId) => {
+            // Implement category deletion
+            console.log('Deleting category:', categoryId)
+            await loadCategories()
+          }}
+        />
       )}
-
-      <CategoryManager
-        open={showCategoryManager}
-        onOpenChange={setShowCategoryManager}
-        categories={categories}
-        onSave={loadCategories}
-      />
 
       <BulkActionsDialog
         open={showBulkActions}
