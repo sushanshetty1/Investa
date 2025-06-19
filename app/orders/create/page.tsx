@@ -38,7 +38,21 @@ interface Product {
   id: string;
   name: string;
   sku: string;
-  price: number;
+  sellingPrice: number | string | null | undefined;
+  costPrice?: number | string | null;
+  wholesalePrice?: number | string | null;
+  inventoryItems?: Array<{
+    availableQuantity: number;
+    quantity?: number;
+    reservedQuantity?: number;
+    warehouse?: {
+      id: string;
+      name: string;
+      code: string;
+    };
+  }>;
+  // Legacy support for existing price field
+  price?: number | string | null;
   inventory?: {
     availableQuantity: number;
   };
@@ -48,6 +62,7 @@ export default function CreateOrderPage() {
   const router = useRouter();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [selectedCustomerId, setSelectedCustomerId] = useState('');
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
   const [requiredDate, setRequiredDate] = useState('');
@@ -61,34 +76,52 @@ export default function CreateOrderPage() {
     loadCustomers();
     loadProducts();
   }, []);
-
   const loadCustomers = async () => {
     try {
       const response = await fetch('/api/customers');
       const data = await response.json();
       
       if (response.ok) {
-        setCustomers(data.customers || []);
+        setCustomers(Array.isArray(data.customers) ? data.customers : []);
+      } else {
+        console.error('Failed to load customers:', data.error);
+        toast.error('Failed to load customers');
+        setCustomers([]);
       }
     } catch (error) {
       console.error('Error loading customers:', error);
+      toast.error('Failed to load customers');
+      setCustomers([]);
     }
-  };
-
-  const loadProducts = async () => {
+  };const loadProducts = async () => {
     try {
+      setIsLoadingProducts(true);
       const response = await fetch('/api/products');
       const data = await response.json();
       
       if (response.ok) {
-        setProducts(data.products || []);
+        // data now contains { products: [...], pagination: {...} }
+        setProducts(Array.isArray(data.products) ? data.products : []);
+      } else {
+        console.error('Failed to load products:', data.error);
+        toast.error('Failed to load products');
+        setProducts([]);
       }
     } catch (error) {
       console.error('Error loading products:', error);
+      toast.error('Failed to load products');
+      setProducts([]); // Ensure products is always an array
+    } finally {
+      setIsLoadingProducts(false);
     }
-  };
+  };  const addProduct = (product: Product) => {
+    // Check if product has a valid price
+    const price = getProductPrice(product);
+    if (price <= 0) {
+      toast.error('Cannot add product with invalid price');
+      return;
+    }
 
-  const addProduct = (product: Product) => {
     const existingItem = orderItems.find(item => item.productId === product.id);
     
     if (existingItem) {
@@ -103,8 +136,8 @@ export default function CreateOrderPage() {
         productName: product.name,
         productSku: product.sku,
         quantity: 1,
-        unitPrice: product.price,
-        totalPrice: product.price
+        unitPrice: price,
+        totalPrice: price
       };
       setOrderItems(prev => [...prev, newItem]);
     }
@@ -200,6 +233,44 @@ export default function CreateOrderPage() {
     } finally {
       setIsSubmitting(false);
     }
+  };  // Helper function to safely convert price values to numbers
+  const convertToNumber = (value: any): number => {
+    if (value == null) return 0;
+    if (typeof value === 'number') return isNaN(value) ? 0 : value;
+    if (typeof value === 'string') {
+      const parsed = parseFloat(value);
+      return isNaN(parsed) ? 0 : parsed;
+    }
+    return 0;
+  };  // Helper function to safely format currency
+  const formatCurrency = (value: number | string | null | undefined): string => {
+    const numValue = convertToNumber(value);
+    if (numValue <= 0) {
+      return '$0.00';
+    }
+    return `$${numValue.toFixed(2)}`;
+  };
+
+  // Helper function to get the price for a product
+  const getProductPrice = (product: Product): number => {
+    // Try price first (for legacy support), then sellingPrice, then costPrice
+    const priceValue = product.price || product.sellingPrice || product.costPrice;
+    return convertToNumber(priceValue);
+  };
+
+  // Helper function to get total available quantity
+  const getTotalAvailableQuantity = (product: Product): number => {
+    // Support legacy inventory structure first
+    if (product.inventory?.availableQuantity) {
+      return product.inventory.availableQuantity;
+    }
+    
+    // Then sum up all inventory items
+    if (product.inventoryItems && Array.isArray(product.inventoryItems)) {
+      return product.inventoryItems.reduce((total, item) => total + (item.availableQuantity || 0), 0);
+    }
+    
+    return 0;
   };
 
   return (
@@ -264,37 +335,54 @@ export default function CreateOrderPage() {
                       <DialogTitle>Select Product</DialogTitle>
                     </DialogHeader>
                     <div className="space-y-4">
-                      <Input placeholder="Search products..." />
-                      <div className="max-h-96 overflow-y-auto">
-                        <Table>
-                          <TableHeader>
-                            <TableRow>
-                              <TableHead>Product</TableHead>
-                              <TableHead>SKU</TableHead>
-                              <TableHead>Price</TableHead>
-                              <TableHead>Stock</TableHead>
-                              <TableHead></TableHead>
-                            </TableRow>
-                          </TableHeader>
-                          <TableBody>
-                            {products.map((product) => (
-                              <TableRow key={product.id}>
-                                <TableCell>{product.name}</TableCell>
-                                <TableCell>{product.sku}</TableCell>
-                                <TableCell>${product.price.toFixed(2)}</TableCell>
-                                <TableCell>{product.inventory?.availableQuantity || 0}</TableCell>
-                                <TableCell>
-                                  <Button
-                                    size="sm"
-                                    onClick={() => addProduct(product)}
-                                  >
-                                    Add
-                                  </Button>
-                                </TableCell>
+                      <Input placeholder="Search products..." />                      <div className="max-h-96 overflow-y-auto">
+                        {isLoadingProducts ? (
+                          <div className="text-center py-8 text-muted-foreground">
+                            Loading products...
+                          </div>
+                        ) : products.length === 0 ? (
+                          <div className="text-center py-8 text-muted-foreground">
+                            No products available
+                          </div>
+                        ) : (
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Product</TableHead>
+                                <TableHead>SKU</TableHead>
+                                <TableHead>Price</TableHead>
+                                <TableHead>Stock</TableHead>
+                                <TableHead></TableHead>
                               </TableRow>
-                            ))}
+                            </TableHeader>                          <TableBody>                            {Array.isArray(products) && products.map((product) => {
+                              const price = getProductPrice(product);
+                              const availableQuantity = getTotalAvailableQuantity(product);
+                              return (
+                                <TableRow key={product.id}>
+                                  <TableCell>{product.name}</TableCell>
+                                  <TableCell>{product.sku}</TableCell>                                  <TableCell>
+                                    {price > 0 ? (
+                                      formatCurrency(price)
+                                    ) : (
+                                      <span className="text-muted-foreground">No price set</span>
+                                    )}
+                                  </TableCell>
+                                  <TableCell>{availableQuantity}</TableCell>
+                                  <TableCell>
+                                    <Button
+                                      size="sm"
+                                      onClick={() => addProduct(product)}
+                                      disabled={price <= 0}
+                                    >
+                                      Add
+                                    </Button>
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
                           </TableBody>
                         </Table>
+                        )}
                       </div>
                     </div>
                   </DialogContent>
@@ -335,8 +423,7 @@ export default function CreateOrderPage() {
                             onChange={(e) => updateItemQuantity(item.productId, parseInt(e.target.value) || 0)}
                             className="w-20"
                           />
-                        </TableCell>
-                        <TableCell>${item.unitPrice.toFixed(2)}</TableCell>
+                        </TableCell>                        <TableCell>{formatCurrency(item.unitPrice)}</TableCell>
                         <TableCell>
                           <Input
                             type="number"
@@ -348,7 +435,7 @@ export default function CreateOrderPage() {
                             placeholder="0.00"
                           />
                         </TableCell>
-                        <TableCell>${item.totalPrice.toFixed(2)}</TableCell>
+                        <TableCell>{formatCurrency(item.totalPrice)}</TableCell>
                         <TableCell>
                           <Button
                             variant="ghost"
@@ -373,16 +460,15 @@ export default function CreateOrderPage() {
           <Card>
             <CardHeader>
               <CardTitle>Order Summary</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
+            </CardHeader>            <CardContent className="space-y-2">
               <div className="flex justify-between">
                 <span>Subtotal:</span>
-                <span>${calculateSubtotal().toFixed(2)}</span>
+                <span>{formatCurrency(calculateSubtotal())}</span>
               </div>
               <Separator />
               <div className="flex justify-between font-medium">
                 <span>Total:</span>
-                <span>${calculateSubtotal().toFixed(2)}</span>
+                <span>{formatCurrency(calculateSubtotal())}</span>
               </div>
             </CardContent>
           </Card>

@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "db:generate": "prisma generate --schema=prisma/schema-neon.prisma && prisma generate --schema=prisma/schema-supabase.prisma",
+    "lint": "next lint",    "db:generate": "prisma generate --schema=prisma/schema-neon.prisma && prisma generate --schema=prisma/schema-supabase.prisma",
     "db:migrate:neon": "prisma migrate dev --schema=prisma/schema-neon.prisma",
     "db:migrate:supabase": "prisma migrate dev --schema=prisma/schema-supabase.prisma",
     "db:migrate:deploy:neon": "prisma migrate deploy --schema=prisma/schema-neon.prisma",
@@ -15,7 +14,9 @@
     "db:push:neon": "prisma db push --schema=prisma/schema-neon.prisma",
     "db:push:supabase": "prisma db push --schema=prisma/schema-supabase.prisma",
     "db:studio:neon": "prisma studio --schema=prisma/schema-neon.prisma",
-    "db:studio:supabase": "prisma studio --schema=prisma/schema-supabase.prisma"
+    "db:studio:supabase": "prisma studio --schema=prisma/schema-supabase.prisma",
+    "seed:customers": "npx tsx scripts/seed-customers.ts",
+    "seed:inventory": "npx tsx scripts/seed-inventory.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",

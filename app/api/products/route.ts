@@ -15,15 +15,15 @@ export async function GET(request: NextRequest) {
       sortBy: 'name',
       sortOrder: 'asc'
     });
-    
-    if (!result.success) {
+      if (!result.success) {
       return NextResponse.json(
         { error: result.error },
         { status: 400 }
       );
     }
     
-    return NextResponse.json({ products: result.data });
+    // result.data contains { products, pagination }
+    return NextResponse.json(result.data);
   } catch (error) {
     console.error('Error fetching products:', error);
     return NextResponse.json(

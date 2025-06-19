@@ -289,17 +289,18 @@ export default function PurchaseOrdersPage() {
       </div>
     );
   }
-
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Purchase Orders</h1>
-          <p className="text-muted-foreground">
-            Manage purchase orders, supplier relationships, and inventory procurement
-          </p>
-        </div>        <Button asChild>
+    <div className="min-h-screen bg-background pt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+        <div className="space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight">Purchase Orders</h1>
+              <p className="text-muted-foreground">
+                Manage purchase orders, supplier relationships, and inventory procurement
+              </p>
+            </div><Button asChild>
           <Link href="/purchase-orders/create">
             <Plus className="mr-2 h-4 w-4" />
             New Purchase Order
@@ -781,9 +782,10 @@ export default function PurchaseOrdersPage() {
                 </CardContent>
               </Card>
             </div>
-          )}
-        </DialogContent>
+          )}        </DialogContent>
       </Dialog>
+        </div>
+      </div>
     </div>
   );
 }
