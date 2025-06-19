@@ -145,17 +145,30 @@ const Navbar = () => {
         { title: "Stock Adjustments", href: "/inventory/adjustments" },
         { title: "Reports", href: "/inventory/reports" },
       ]
-    },
-    {
+    },    {
       title: "Orders",
       href: "/orders",
       icon: FileText,
       items: [
-        { title: "All Orders", href: "/orders" },
+        { title: "Customer Orders", href: "/orders" },
         { title: "Create Order", href: "/orders/create" },
-        { title: "Pending", href: "/orders/pending" },
-        { title: "Shipped", href: "/orders/shipped" },
-        { title: "Delivered", href: "/orders/delivered" },
+        { title: "Pending Orders", href: "/orders?status=PENDING" },
+        { title: "Processing", href: "/orders?status=PROCESSING" },
+        { title: "Shipped Orders", href: "/orders?status=SHIPPED" },
+        { title: "Order Analytics", href: "/orders/analytics" },
+      ]
+    },
+    {
+      title: "Purchase Orders",
+      href: "/purchase-orders",
+      icon: Truck,
+      items: [
+        { title: "All Purchase Orders", href: "/purchase-orders" },
+        { title: "Create PO", href: "/purchase-orders/create" },
+        { title: "Pending Approval", href: "/purchase-orders?status=PENDING_APPROVAL" },
+        { title: "Awaiting Delivery", href: "/purchase-orders?status=APPROVED" },
+        { title: "Reorder Suggestions", href: "/purchase-orders?tab=reorder" },
+        { title: "Goods Receipt", href: "/purchase-orders/goods-receipt" },
       ]
     },
     {
