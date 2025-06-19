@@ -3,15 +3,10 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { 
-  Package, 
-  TrendingUp, 
+import {
+  TrendingUp,
   TrendingDown,
-  BarChart3, 
-  PieChart as PieChartIcon,
-  Calendar,
   Download,
-  Filter,
   RefreshCw,
   AlertTriangle,
   Clock,
@@ -25,22 +20,21 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { 
-  LineChart, 
-  Line, 
-  AreaChart, 
-  Area, 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer, 
-  PieChart, 
-  Pie, 
+import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
   Cell,
   ScatterChart,
   Scatter
@@ -157,585 +151,584 @@ export default function InventoryAnalyticsPage() {
     <div className="min-h-screen bg-background pt-20">
       <div className="container mx-auto p-6 space-y-8">
         {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold">Inventory Analytics</h1>
-          <p className="text-muted-foreground">
-            Comprehensive inventory analysis and insights
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Select value={selectedWarehouse} onValueChange={setSelectedWarehouse}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Warehouses</SelectItem>
-              <SelectItem value="main">Main Warehouse</SelectItem>
-              <SelectItem value="secondary">Secondary Warehouse</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={selectedDateRange} onValueChange={setSelectedDateRange}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7d">Last 7 days</SelectItem>
-              <SelectItem value="30d">Last 30 days</SelectItem>
-              <SelectItem value="90d">Last 90 days</SelectItem>
-              <SelectItem value="1y">Last year</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button variant="outline" size="sm">
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </Button>
-        </div>
-      </div>      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Stock Value</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              ${analyticsData?.stats.data.stats.totalStockValue.value.toLocaleString() || '1,420,000'}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              <span className={`flex items-center ${
-                (analyticsData?.stats.data.stats.totalStockValue.trend || 'up') === 'up' ? 'text-green-600' : 'text-red-600'
-              }`}>
-                {(analyticsData?.stats.data.stats.totalStockValue.trend || 'up') === 'up' ? (
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold">Inventory Analytics</h1>
+            <p className="text-muted-foreground">
+              Comprehensive inventory analysis and insights
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Select value={selectedWarehouse} onValueChange={setSelectedWarehouse}>
+              <SelectTrigger className="w-40">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Warehouses</SelectItem>
+                <SelectItem value="main">Main Warehouse</SelectItem>
+                <SelectItem value="secondary">Secondary Warehouse</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={selectedDateRange} onValueChange={setSelectedDateRange}>
+              <SelectTrigger className="w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="7d">Last 7 days</SelectItem>
+                <SelectItem value="30d">Last 30 days</SelectItem>
+                <SelectItem value="90d">Last 90 days</SelectItem>
+                <SelectItem value="1y">Last year</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button variant="outline" size="sm">
+              <Download className="w-4 h-4 mr-2" />
+              Export
+            </Button>
+          </div>
+        </div>      {/* Key Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Stock Value</CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                ${analyticsData?.stats.data.stats.totalStockValue.value.toLocaleString() || '1,420,000'}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                <span className={`flex items-center ${(analyticsData?.stats.data.stats.totalStockValue.trend || 'up') === 'up' ? 'text-green-600' : 'text-red-600'
+                  }`}>
+                  {(analyticsData?.stats.data.stats.totalStockValue.trend || 'up') === 'up' ? (
+                    <TrendingUp className="w-3 h-3 mr-1" />
+                  ) : (
+                    <TrendingDown className="w-3 h-3 mr-1" />
+                  )}
+                  +{analyticsData?.stats.data.stats.totalStockValue.change || 5.2}%
+                </span>
+                from last month
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Stock Turnover</CardTitle>
+              <Activity className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {analyticsData?.stats.data.stats.stockTurnover.value || 6.8}x
+              </div>
+              <p className="text-xs text-muted-foreground">
+                <span className="text-green-600 flex items-center">
                   <TrendingUp className="w-3 h-3 mr-1" />
-                ) : (
+                  +{analyticsData?.stats.data.stats.stockTurnover.change || 0.3}x
+                </span>
+                from last period
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Days on Hand</CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {analyticsData?.stats.data.stats.daysOnHand.value || 53.7}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                <span className="text-red-600 flex items-center">
                   <TrendingDown className="w-3 h-3 mr-1" />
-                )}
-                +{analyticsData?.stats.data.stats.totalStockValue.change || 5.2}%
-              </span>
-              from last month
-            </p>
-          </CardContent>
-        </Card>
+                  {analyticsData?.stats.data.stats.daysOnHand.change || -2.1} days
+                </span>
+                improvement
+              </p>
+            </CardContent>
+          </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Stock Turnover</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {analyticsData?.stats.data.stats.stockTurnover.value || 6.8}x
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Stockout Risk</CardTitle>
+              <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {analyticsData?.stats.data.stats.stockoutRisk.value || 12}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Items below reorder point
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Analytics Tabs */}
+        <Tabs defaultValue="movements" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="movements">Stock Movements</TabsTrigger>
+            <TabsTrigger value="abc">ABC Analysis</TabsTrigger>
+            <TabsTrigger value="aging">Inventory Aging</TabsTrigger>
+            <TabsTrigger value="forecast">Forecasting</TabsTrigger>
+          </TabsList>
+
+          {/* Stock Movement Reports */}
+          <TabsContent value="movements" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Stock Movement Trends</CardTitle>
+                  <CardDescription>Daily inbound vs outbound movements</CardDescription>
+                </CardHeader>              <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <AreaChart data={analyticsData?.movements.data.movements || stockMovementData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis
+                        dataKey="date"
+                        tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      />
+                      <YAxis />
+                      <Tooltip
+                        labelFormatter={(value) => new Date(value).toLocaleDateString()}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="inbound"
+                        stackId="1"
+                        stroke="#10b981"
+                        fill="#10b981"
+                        fillOpacity={0.6}
+                      />
+                      <Area
+                        type="monotone"
+                        dataKey="outbound"
+                        stackId="2"
+                        stroke="#ef4444"
+                        fill="#ef4444"
+                        fillOpacity={0.6}
+                      />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Net Stock Changes</CardTitle>
+                  <CardDescription>Running stock levels with net changes</CardDescription>
+                </CardHeader>              <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={analyticsData?.movements.data.movements || stockMovementData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis
+                        dataKey="date"
+                        tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      />
+                      <YAxis yAxisId="left" />
+                      <YAxis yAxisId="right" orientation="right" />
+                      <Tooltip />
+                      <Bar yAxisId="left" dataKey="net" fill="#3b82f6" />
+                      <Line
+                        yAxisId="right"
+                        type="monotone"
+                        dataKey="stock"
+                        stroke="#8b5cf6"
+                        strokeWidth={3}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
             </div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-green-600 flex items-center">
-                <TrendingUp className="w-3 h-3 mr-1" />
-                +{analyticsData?.stats.data.stats.stockTurnover.change || 0.3}x
-              </span>
-              from last period
-            </p>
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Days on Hand</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {analyticsData?.stats.data.stats.daysOnHand.value || 53.7}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Top Moving Items</CardTitle>
+                  <CardDescription>Highest velocity products</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {topMovingItems.map((item) => (
+                      <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex-1">
+                          <div className="font-medium">{item.name}</div>
+                          <div className="text-sm text-muted-foreground">{item.sku}</div>
+                        </div>
+                        <div className="text-right space-y-1">
+                          <div className="font-medium">{item.velocity}% velocity</div>
+                          <Badge variant={
+                            item.status === 'critical' ? 'destructive' :
+                              item.status === 'low' ? 'secondary' : 'default'
+                          }>
+                            {item.stock} in stock
+                          </Badge>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Slow Moving Items</CardTitle>
+                  <CardDescription>Items with low turnover</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {slowMovingItems.map((item) => (
+                      <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex-1">
+                          <div className="font-medium">{item.name}</div>
+                          <div className="text-sm text-muted-foreground">{item.sku}</div>
+                        </div>
+                        <div className="text-right space-y-1">
+                          <div className="text-sm font-medium">{item.daysInStock} days</div>
+                          <div className="text-xs text-muted-foreground">
+                            Last sold: {new Date(item.lastSold).toLocaleDateString()}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-red-600 flex items-center">
-                <TrendingDown className="w-3 h-3 mr-1" />
-                {analyticsData?.stats.data.stats.daysOnHand.change || -2.1} days
-              </span>
-              improvement
-            </p>
-          </CardContent>
-        </Card>
+          </TabsContent>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Stockout Risk</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {analyticsData?.stats.data.stats.stockoutRisk.value || 12}
+          {/* ABC Analysis */}
+          <TabsContent value="abc" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>ABC Distribution</CardTitle>
+                  <CardDescription>Inventory value distribution by category</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={abcAnalysisData}
+                        dataKey="value"
+                        nameKey="category"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        label={({ category, percentage }) => `${category}: ${percentage}%`}
+                      >
+                        {abcAnalysisData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, 'Value']} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>ABC Categories Detail</CardTitle>
+                  <CardDescription>Detailed breakdown by category</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {abcAnalysisData.map((category, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="w-3 h-3 rounded-full"
+                              style={{ backgroundColor: category.color }}
+                            />
+                            <span className="font-medium">{category.category}</span>
+                          </div>
+                          <span className="text-sm text-muted-foreground">
+                            {category.items} items
+                          </span>
+                        </div>
+                        <div className="space-y-1">
+                          <div className="flex justify-between text-sm">
+                            <span>Value: ${category.value.toLocaleString()}</span>
+                            <span>{category.percentage}% of total</span>
+                          </div>
+                          <Progress value={category.percentage} className="h-2" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Items below reorder point
-            </p>
-          </CardContent>
-        </Card>
-      </div>
 
-      {/* Main Analytics Tabs */}
-      <Tabs defaultValue="movements" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="movements">Stock Movements</TabsTrigger>
-          <TabsTrigger value="abc">ABC Analysis</TabsTrigger>
-          <TabsTrigger value="aging">Inventory Aging</TabsTrigger>
-          <TabsTrigger value="forecast">Forecasting</TabsTrigger>
-        </TabsList>
-
-        {/* Stock Movement Reports */}
-        <TabsContent value="movements" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Stock Movement Trends</CardTitle>
-                <CardDescription>Daily inbound vs outbound movements</CardDescription>
-              </CardHeader>              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <AreaChart data={analyticsData?.movements.data.movements || stockMovementData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="date" 
-                      tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    />
-                    <YAxis />
-                    <Tooltip 
-                      labelFormatter={(value) => new Date(value).toLocaleDateString()}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="inbound" 
-                      stackId="1"
-                      stroke="#10b981" 
-                      fill="#10b981"
-                      fillOpacity={0.6}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="outbound" 
-                      stackId="2"
-                      stroke="#ef4444" 
-                      fill="#ef4444"
-                      fillOpacity={0.6}
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+                <CardTitle>ABC Strategy Recommendations</CardTitle>
+                <CardDescription>Management strategies for each category</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-3 h-3 bg-red-500 rounded-full" />
+                      <h4 className="font-semibold">Category A (High Value)</h4>
+                    </div>
+                    <ul className="text-sm space-y-1 text-muted-foreground">
+                      <li>• Tight inventory control</li>
+                      <li>• Frequent monitoring</li>
+                      <li>• Just-in-time ordering</li>
+                      <li>• Accurate forecasting</li>
+                    </ul>
+                  </div>
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full" />
+                      <h4 className="font-semibold">Category B (Medium Value)</h4>
+                    </div>
+                    <ul className="text-sm space-y-1 text-muted-foreground">
+                      <li>• Moderate control</li>
+                      <li>• Regular monitoring</li>
+                      <li>• Safety stock buffer</li>
+                      <li>• Periodic review</li>
+                    </ul>
+                  </div>
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-3 h-3 bg-green-500 rounded-full" />
+                      <h4 className="font-semibold">Category C (Low Value)</h4>
+                    </div>
+                    <ul className="text-sm space-y-1 text-muted-foreground">
+                      <li>• Basic control</li>
+                      <li>• Bulk ordering</li>
+                      <li>• Larger safety stocks</li>
+                      <li>• Simple systems</li>
+                    </ul>
+                  </div>
+                </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          {/* Inventory Aging */}
+          <TabsContent value="aging" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Inventory Age Distribution</CardTitle>
+                  <CardDescription>Stock aging by time periods</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={inventoryAgingData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="range" />
+                      <YAxis />
+                      <Tooltip />
+                      <Bar dataKey="quantity" fill="#3b82f6" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Aging Value Analysis</CardTitle>
+                  <CardDescription>Financial impact of aged inventory</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {inventoryAgingData.map((range, index) => (
+                      <div key={index} className="space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="font-medium">{range.range}</span>
+                          <span className="text-sm font-medium">
+                            ${range.value.toLocaleString()}
+                          </span>
+                        </div>
+                        <div className="flex justify-between text-sm text-muted-foreground">
+                          <span>{range.quantity} items</span>
+                          <span>{range.percentage}% of total</span>
+                        </div>
+                        <Progress value={range.percentage} className="h-2" />
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
             <Card>
               <CardHeader>
-                <CardTitle>Net Stock Changes</CardTitle>
-                <CardDescription>Running stock levels with net changes</CardDescription>
-              </CardHeader>              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={analyticsData?.movements.data.movements || stockMovementData}>
+                <CardTitle>Aging Analysis Insights</CardTitle>
+                <CardDescription>Key findings and recommendations</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <h4 className="font-semibold flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 text-yellow-500" />
+                      Risk Areas
+                    </h4>
+                    <ul className="space-y-2 text-sm">
+                      <li className="flex justify-between">
+                        <span>Items over 90 days:</span>
+                        <Badge variant="destructive">70 items</Badge>
+                      </li>
+                      <li className="flex justify-between">
+                        <span>High-value aged items:</span>
+                        <Badge variant="secondary">$22,000</Badge>
+                      </li>
+                      <li className="flex justify-between">
+                        <span>Potential obsolescence:</span>
+                        <Badge variant="outline">15 items</Badge>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="space-y-4">
+                    <h4 className="font-semibold flex items-center gap-2">
+                      <Target className="w-4 h-4 text-green-500" />
+                      Action Items
+                    </h4>
+                    <ul className="space-y-2 text-sm">
+                      <li>• Review pricing strategy for aged items</li>
+                      <li>• Consider promotional campaigns</li>
+                      <li>• Evaluate supplier relationships</li>
+                      <li>• Implement aging alerts</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Forecasting & Demand Planning */}
+          <TabsContent value="forecast" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Demand Forecasting</CardTitle>
+                <CardDescription>Predicted vs actual demand patterns</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={forecastData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="date" 
-                      tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    />
-                    <YAxis yAxisId="left" />
-                    <YAxis yAxisId="right" orientation="right" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
                     <Tooltip />
-                    <Bar yAxisId="left" dataKey="net" fill="#3b82f6" />
-                    <Line 
-                      yAxisId="right"
-                      type="monotone" 
-                      dataKey="stock" 
-                      stroke="#8b5cf6" 
+                    <Line
+                      type="monotone"
+                      dataKey="actual"
+                      stroke="#10b981"
                       strokeWidth={3}
+                      name="Actual"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="predicted"
+                      stroke="#3b82f6"
+                      strokeWidth={2}
+                      strokeDasharray="5 5"
+                      name="Predicted"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="demand"
+                      stroke="#ef4444"
+                      strokeWidth={2}
+                      name="Market Demand"
                     />
                   </LineChart>
                 </ResponsiveContainer>
+                <div className="flex items-center justify-center gap-6 mt-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-0.5 bg-green-500"></div>
+                    <span>Actual</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-0.5 bg-blue-500 border-dashed border-blue-500"></div>
+                    <span>Predicted</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-0.5 bg-red-500"></div>
+                    <span>Market Demand</span>
+                  </div>
+                </div>
               </CardContent>
             </Card>
-          </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Moving Items</CardTitle>
-                <CardDescription>Highest velocity products</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {topMovingItems.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex-1">
-                        <div className="font-medium">{item.name}</div>
-                        <div className="text-sm text-muted-foreground">{item.sku}</div>
-                      </div>
-                      <div className="text-right space-y-1">
-                        <div className="font-medium">{item.velocity}% velocity</div>
-                        <Badge variant={
-                          item.status === 'critical' ? 'destructive' : 
-                          item.status === 'low' ? 'secondary' : 'default'
-                        }>
-                          {item.stock} in stock
-                        </Badge>
-                      </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Forecast Accuracy</CardTitle>
+                  <CardDescription>Model performance metrics</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span>Overall Accuracy</span>
+                      <span className="font-semibold">87.3%</span>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    <Progress value={87.3} className="h-2" />
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Slow Moving Items</CardTitle>
-                <CardDescription>Items with low turnover</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {slowMovingItems.map((item) => (
-                    <div key={item.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex-1">
-                        <div className="font-medium">{item.name}</div>
-                        <div className="text-sm text-muted-foreground">{item.sku}</div>
-                      </div>
-                      <div className="text-right space-y-1">
-                        <div className="text-sm font-medium">{item.daysInStock} days</div>
-                        <div className="text-xs text-muted-foreground">
-                          Last sold: {new Date(item.lastSold).toLocaleDateString()}
-                        </div>
-                      </div>
+                    <div className="flex justify-between items-center">
+                      <span>Mean Absolute Error</span>
+                      <span className="font-semibold">4.2%</span>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
+                    <Progress value={4.2} className="h-2" />
 
-        {/* ABC Analysis */}
-        <TabsContent value="abc" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>ABC Distribution</CardTitle>
-                <CardDescription>Inventory value distribution by category</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={abcAnalysisData}
-                      dataKey="value"
-                      nameKey="category"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={100}
-                      label={({category, percentage}) => `${category}: ${percentage}%`}
-                    >
-                      {abcAnalysisData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, 'Value']} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+                    <div className="flex justify-between items-center">
+                      <span>Trend Accuracy</span>
+                      <span className="font-semibold">91.8%</span>
+                    </div>
+                    <Progress value={91.8} className="h-2" />
+                  </div>
+                </CardContent>
+              </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>ABC Categories Detail</CardTitle>
-                <CardDescription>Detailed breakdown by category</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {abcAnalysisData.map((category, index) => (
-                    <div key={index} className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <div className="flex items-center gap-2">
-                          <div 
-                            className="w-3 h-3 rounded-full" 
-                            style={{ backgroundColor: category.color }}
-                          />
-                          <span className="font-medium">{category.category}</span>
-                        </div>
-                        <span className="text-sm text-muted-foreground">
-                          {category.items} items
-                        </span>
+              <Card>
+                <CardHeader>
+                  <CardTitle>Planning Recommendations</CardTitle>
+                  <CardDescription>Suggested actions based on forecast</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <TrendingUp className="w-4 h-4 text-green-600" />
+                        <span className="font-medium text-green-800">Increase Orders</span>
                       </div>
-                      <div className="space-y-1">
-                        <div className="flex justify-between text-sm">
-                          <span>Value: ${category.value.toLocaleString()}</span>
-                          <span>{category.percentage}% of total</span>
-                        </div>
-                        <Progress value={category.percentage} className="h-2" />
+                      <p className="text-sm text-green-700">
+                        July forecast shows 15% demand increase. Consider increasing orders by 12%.
+                      </p>
+                    </div>
+
+                    <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <AlertTriangle className="w-4 h-4 text-yellow-600" />
+                        <span className="font-medium text-yellow-800">Monitor Closely</span>
                       </div>
+                      <p className="text-sm text-yellow-700">
+                        Seasonal variation detected. Track performance weekly during peak period.
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>ABC Strategy Recommendations</CardTitle>
-              <CardDescription>Management strategies for each category</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 border rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-3 h-3 bg-red-500 rounded-full" />
-                    <h4 className="font-semibold">Category A (High Value)</h4>
-                  </div>
-                  <ul className="text-sm space-y-1 text-muted-foreground">
-                    <li>• Tight inventory control</li>
-                    <li>• Frequent monitoring</li>
-                    <li>• Just-in-time ordering</li>
-                    <li>• Accurate forecasting</li>
-                  </ul>
-                </div>
-                <div className="p-4 border rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-3 h-3 bg-yellow-500 rounded-full" />
-                    <h4 className="font-semibold">Category B (Medium Value)</h4>
-                  </div>
-                  <ul className="text-sm space-y-1 text-muted-foreground">
-                    <li>• Moderate control</li>
-                    <li>• Regular monitoring</li>
-                    <li>• Safety stock buffer</li>
-                    <li>• Periodic review</li>
-                  </ul>
-                </div>
-                <div className="p-4 border rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-3 h-3 bg-green-500 rounded-full" />
-                    <h4 className="font-semibold">Category C (Low Value)</h4>
-                  </div>
-                  <ul className="text-sm space-y-1 text-muted-foreground">
-                    <li>• Basic control</li>
-                    <li>• Bulk ordering</li>
-                    <li>• Larger safety stocks</li>
-                    <li>• Simple systems</li>
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Inventory Aging */}
-        <TabsContent value="aging" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Inventory Age Distribution</CardTitle>
-                <CardDescription>Stock aging by time periods</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={inventoryAgingData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="range" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="quantity" fill="#3b82f6" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Aging Value Analysis</CardTitle>
-                <CardDescription>Financial impact of aged inventory</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {inventoryAgingData.map((range, index) => (
-                    <div key={index} className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">{range.range}</span>
-                        <span className="text-sm font-medium">
-                          ${range.value.toLocaleString()}
-                        </span>
+                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Clock className="w-4 h-4 text-blue-600" />
+                        <span className="font-medium text-blue-800">Lead Time Adjustment</span>
                       </div>
-                      <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>{range.quantity} items</span>
-                        <span>{range.percentage}% of total</span>
-                      </div>
-                      <Progress value={range.percentage} className="h-2" />
+                      <p className="text-sm text-blue-700">
+                        Consider reducing lead times for fast-moving items to improve service levels.
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Aging Analysis Insights</CardTitle>
-              <CardDescription>Key findings and recommendations</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <h4 className="font-semibold flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4 text-yellow-500" />
-                    Risk Areas
-                  </h4>
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex justify-between">
-                      <span>Items over 90 days:</span>
-                      <Badge variant="destructive">70 items</Badge>
-                    </li>
-                    <li className="flex justify-between">
-                      <span>High-value aged items:</span>
-                      <Badge variant="secondary">$22,000</Badge>
-                    </li>
-                    <li className="flex justify-between">
-                      <span>Potential obsolescence:</span>
-                      <Badge variant="outline">15 items</Badge>
-                    </li>
-                  </ul>
-                </div>
-                <div className="space-y-4">
-                  <h4 className="font-semibold flex items-center gap-2">
-                    <Target className="w-4 h-4 text-green-500" />
-                    Action Items
-                  </h4>
-                  <ul className="space-y-2 text-sm">
-                    <li>• Review pricing strategy for aged items</li>
-                    <li>• Consider promotional campaigns</li>
-                    <li>• Evaluate supplier relationships</li>
-                    <li>• Implement aging alerts</li>
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Forecasting & Demand Planning */}
-        <TabsContent value="forecast" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Demand Forecasting</CardTitle>
-              <CardDescription>Predicted vs actual demand patterns</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={forecastData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line 
-                    type="monotone" 
-                    dataKey="actual" 
-                    stroke="#10b981" 
-                    strokeWidth={3}
-                    name="Actual"
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="predicted" 
-                    stroke="#3b82f6" 
-                    strokeWidth={2}
-                    strokeDasharray="5 5"
-                    name="Predicted"
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="demand" 
-                    stroke="#ef4444" 
-                    strokeWidth={2}
-                    name="Market Demand"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-              <div className="flex items-center justify-center gap-6 mt-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-green-500"></div>
-                  <span>Actual</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-blue-500 border-dashed border-blue-500"></div>
-                  <span>Predicted</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-red-500"></div>
-                  <span>Market Demand</span>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Forecast Accuracy</CardTitle>
-                <CardDescription>Model performance metrics</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span>Overall Accuracy</span>
-                    <span className="font-semibold">87.3%</span>
                   </div>
-                  <Progress value={87.3} className="h-2" />
-                  
-                  <div className="flex justify-between items-center">
-                    <span>Mean Absolute Error</span>
-                    <span className="font-semibold">4.2%</span>
-                  </div>
-                  <Progress value={4.2} className="h-2" />
-                  
-                  <div className="flex justify-between items-center">
-                    <span>Trend Accuracy</span>
-                    <span className="font-semibold">91.8%</span>
-                  </div>
-                  <Progress value={91.8} className="h-2" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Planning Recommendations</CardTitle>
-                <CardDescription>Suggested actions based on forecast</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <div className="flex items-center gap-2 mb-1">
-                      <TrendingUp className="w-4 h-4 text-green-600" />
-                      <span className="font-medium text-green-800">Increase Orders</span>
-                    </div>
-                    <p className="text-sm text-green-700">
-                      July forecast shows 15% demand increase. Consider increasing orders by 12%.
-                    </p>
-                  </div>
-                  
-                  <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <div className="flex items-center gap-2 mb-1">
-                      <AlertTriangle className="w-4 h-4 text-yellow-600" />
-                      <span className="font-medium text-yellow-800">Monitor Closely</span>
-                    </div>
-                    <p className="text-sm text-yellow-700">
-                      Seasonal variation detected. Track performance weekly during peak period.
-                    </p>
-                  </div>
-                  
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Clock className="w-4 h-4 text-blue-600" />
-                      <span className="font-medium text-blue-800">Lead Time Adjustment</span>
-                    </div>
-                    <p className="text-sm text-blue-700">
-                      Consider reducing lead times for fast-moving items to improve service levels.
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>      </Tabs>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>      </Tabs>
       </div>
     </div>
   );

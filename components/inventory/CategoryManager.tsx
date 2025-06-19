@@ -62,6 +62,9 @@ export function CategoryManager({
   onCategoryUpdate,
   onCategoryDelete
 }: CategoryManagerProps) {
+  // Ensure categories is always an array
+  const safeCategories = categories || []
+
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [showEditDialog, setShowEditDialog] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
@@ -151,7 +154,8 @@ export function CategoryManager({
 
   const flattenCategories = (cats: Category[], level = 0): Category[] => {
     const result: Category[] = []
-    cats.forEach(cat => {
+    const categoriesArray = Array.isArray(cats) ? cats : []
+    categoriesArray.forEach(cat => {
       result.push({ ...cat, level })
       if (cat.children && cat.children.length > 0) {
         result.push(...flattenCategories(cat.children, level + 1))
@@ -161,8 +165,8 @@ export function CategoryManager({
   }
 
   const getParentOptions = (currentCategory?: Category) => {
-    return categories.filter(cat => 
-      cat.id !== currentCategory?.id && 
+    return safeCategories.filter(cat =>
+      cat.id !== currentCategory?.id &&
       !cat.parentId // Only top-level categories can be parents for now
     )
   }
@@ -191,8 +195,8 @@ export function CategoryManager({
                   <FormItem>
                     <FormLabel>Category Name *</FormLabel>
                     <FormControl>
-                      <Input 
-                        placeholder="Enter category name" 
+                      <Input
+                        placeholder="Enter category name"
                         {...field}
                         onChange={(e) => handleNameChange(e.target.value)}
                       />
@@ -224,10 +228,10 @@ export function CategoryManager({
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Enter category description" 
+                    <Textarea
+                      placeholder="Enter category description"
                       className="min-h-[80px]"
-                      {...field} 
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />
@@ -269,10 +273,10 @@ export function CategoryManager({
                   <FormItem>
                     <FormLabel>Color</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="color" 
-                        placeholder="#000000" 
-                        {...field} 
+                      <Input
+                        type="color"
+                        placeholder="#000000"
+                        {...field}
                         className="h-10"
                       />
                     </FormControl>
@@ -358,7 +362,7 @@ export function CategoryManager({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {flattenCategories(categories).map((category) => (
+              {flattenCategories(safeCategories).map((category) => (
                 <TableRow key={category.id}>
                   <TableCell>
                     <div className="flex items-center gap-2">
@@ -368,8 +372,8 @@ export function CategoryManager({
                         )}
                         <div className="flex items-center gap-2">
                           {category.color && (
-                            <div 
-                              className="w-3 h-3 rounded-full border" 
+                            <div
+                              className="w-3 h-3 rounded-full border"
                               style={{ backgroundColor: category.color }}
                             />
                           )}
@@ -412,7 +416,7 @@ export function CategoryManager({
                           <Edit className="h-4 w-4 mr-2" />
                           Edit
                         </DropdownMenuItem>
-                        <DropdownMenuItem 
+                        <DropdownMenuItem
                           onClick={() => handleDelete(category.id)}
                           className="text-destructive"
                           disabled={!!category.productCount && category.productCount > 0}

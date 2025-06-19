@@ -137,13 +137,20 @@ export default function ProductsPage() {
       console.error('Error loading data:', error)
     }
   }
-
   const loadProducts = async () => {
     try {
       const response = await fetch('/api/inventory/products')
       if (response.ok) {
         const data = await response.json()
-        setProducts(data.data || [])
+        const productsData = data.data || data.products || []
+
+        // Ensure we always set an array
+        if (Array.isArray(productsData)) {
+          setProducts(productsData)
+        } else {
+          console.warn('Products API returned non-array data:', productsData)
+          setProducts([])
+        }
       } else {
         console.error('Failed to fetch products')
         setProducts([])
@@ -184,9 +191,8 @@ export default function ProductsPage() {
       setBrands([])
     }
   }
-
   // Filter products based on search and filters
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = (products || []).filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
       (product.barcode && product.barcode.includes(searchTerm))

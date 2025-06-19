@@ -122,19 +122,22 @@ export function ProductFormDialog({
   categories,
   brands
 }: ProductFormDialogProps) {
+  // Ensure props are always arrays
+  const safeCategories = Array.isArray(categories) ? categories : []
+  const safeBrands = Array.isArray(brands) ? brands : []
+
   const [loading, setLoading] = useState(false)
   const [selectedImages, setSelectedImages] = useState<string[]>([])
   const [currentTags, setCurrentTags] = useState<string[]>([])
   const [newTag, setNewTag] = useState('')
-
   const form = useForm<ProductFormData>({
     defaultValues: {
       name: '',
       description: '',
       sku: '',
       barcode: '',
-      categoryId: '',
-      brandId: '',
+      categoryId: undefined,
+      brandId: undefined,
       weight: 0,
       dimensions: {
         length: 0,
@@ -171,9 +174,8 @@ export function ProductFormDialog({
         name: product.name,
         description: product.description || '',
         sku: product.sku,
-        barcode: product.barcode || '',
-        categoryId: product.categoryId || '',
-        brandId: product.brandId || '',
+        barcode: product.barcode || '', categoryId: product.categoryId || undefined,
+        brandId: product.brandId || undefined,
         weight: product.weight || 0,
         dimensions: product.dimensions || { length: 0, width: 0, height: 0, unit: 'cm' },
         color: product.color || '',
@@ -309,10 +311,10 @@ export function ProductFormDialog({
                     <FormItem>
                       <FormLabel>Description</FormLabel>
                       <FormControl>
-                        <Textarea 
-                          placeholder="Enter product description" 
+                        <Textarea
+                          placeholder="Enter product description"
                           className="min-h-[100px]"
-                          {...field} 
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
@@ -332,13 +334,14 @@ export function ProductFormDialog({
                             <SelectTrigger>
                               <SelectValue placeholder="Select category" />
                             </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {categories.map(category => (
-                              <SelectItem key={category.id} value={category.id}>
-                                {category.name}
-                              </SelectItem>
-                            ))}
+                          </FormControl>                          <SelectContent>
+                            {safeCategories
+                              .filter(category => category.id && category.id.trim() !== '')
+                              .map(category => (
+                                <SelectItem key={category.id} value={category.id}>
+                                  {category.name}
+                                </SelectItem>
+                              ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -357,13 +360,14 @@ export function ProductFormDialog({
                             <SelectTrigger>
                               <SelectValue placeholder="Select brand" />
                             </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {brands.map(brand => (
-                              <SelectItem key={brand.id} value={brand.id}>
-                                {brand.name}
-                              </SelectItem>
-                            ))}
+                          </FormControl>                          <SelectContent>
+                            {safeBrands
+                              .filter(brand => brand.id && brand.id.trim() !== '')
+                              .map(brand => (
+                                <SelectItem key={brand.id} value={brand.id}>
+                                  {brand.name}
+                                </SelectItem>
+                              ))}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -450,10 +454,10 @@ export function ProductFormDialog({
                       <FormItem>
                         <FormLabel>Cost Price</FormLabel>
                         <FormControl>
-                          <Input 
-                            type="number" 
-                            step="0.01" 
-                            placeholder="0.00" 
+                          <Input
+                            type="number"
+                            step="0.01"
+                            placeholder="0.00"
                             {...field}
                             onChange={e => field.onChange(parseFloat(e.target.value) || 0)}
                           />
@@ -470,10 +474,10 @@ export function ProductFormDialog({
                       <FormItem>
                         <FormLabel>Selling Price</FormLabel>
                         <FormControl>
-                          <Input 
-                            type="number" 
-                            step="0.01" 
-                            placeholder="0.00" 
+                          <Input
+                            type="number"
+                            step="0.01"
+                            placeholder="0.00"
                             {...field}
                             onChange={e => field.onChange(parseFloat(e.target.value) || 0)}
                           />
@@ -490,10 +494,10 @@ export function ProductFormDialog({
                       <FormItem>
                         <FormLabel>Wholesale Price</FormLabel>
                         <FormControl>
-                          <Input 
-                            type="number" 
-                            step="0.01" 
-                            placeholder="0.00" 
+                          <Input
+                            type="number"
+                            step="0.01"
+                            placeholder="0.00"
                             {...field}
                             onChange={e => field.onChange(parseFloat(e.target.value) || 0)}
                           />
@@ -519,9 +523,9 @@ export function ProductFormDialog({
                           <FormItem>
                             <FormLabel>Minimum Stock Level *</FormLabel>
                             <FormControl>
-                              <Input 
-                                type="number" 
-                                placeholder="0" 
+                              <Input
+                                type="number"
+                                placeholder="0"
                                 {...field}
                                 onChange={e => field.onChange(parseInt(e.target.value) || 0)}
                               />
@@ -538,9 +542,9 @@ export function ProductFormDialog({
                           <FormItem>
                             <FormLabel>Maximum Stock Level</FormLabel>
                             <FormControl>
-                              <Input 
-                                type="number" 
-                                placeholder="0" 
+                              <Input
+                                type="number"
+                                placeholder="0"
                                 {...field}
                                 onChange={e => field.onChange(parseInt(e.target.value) || 0)}
                               />
@@ -557,9 +561,9 @@ export function ProductFormDialog({
                           <FormItem>
                             <FormLabel>Reorder Point</FormLabel>
                             <FormControl>
-                              <Input 
-                                type="number" 
-                                placeholder="0" 
+                              <Input
+                                type="number"
+                                placeholder="0"
                                 {...field}
                                 onChange={e => field.onChange(parseInt(e.target.value) || 0)}
                               />
@@ -625,9 +629,9 @@ export function ProductFormDialog({
                           <FormItem>
                             <FormLabel>Lead Time (Days)</FormLabel>
                             <FormControl>
-                              <Input 
-                                type="number" 
-                                placeholder="0" 
+                              <Input
+                                type="number"
+                                placeholder="0"
                                 {...field}
                                 onChange={e => field.onChange(parseInt(e.target.value) || 0)}
                               />
@@ -668,12 +672,12 @@ export function ProductFormDialog({
                         <div className="grid grid-cols-4 gap-4">
                           {selectedImages.map((image, index) => (
                             <div key={index} className="relative">                              <Image
-                                src={image}
-                                alt={`Product image ${index + 1}`}
-                                width={96}
-                                height={96}
-                                className="w-full h-24 object-cover rounded-lg border"
-                              />
+                              src={image}
+                              alt={`Product image ${index + 1}`}
+                              width={96}
+                              height={96}
+                              className="w-full h-24 object-cover rounded-lg border"
+                            />
                               <Button
                                 type="button"
                                 variant="destructive"
@@ -714,8 +718,8 @@ export function ProductFormDialog({
                           {currentTags.map((tag) => (
                             <Badge key={tag} variant="secondary" className="cursor-pointer">
                               {tag}
-                              <X 
-                                className="h-3 w-3 ml-1" 
+                              <X
+                                className="h-3 w-3 ml-1"
                                 onClick={() => removeTag(tag)}
                               />
                             </Badge>
@@ -748,9 +752,9 @@ export function ProductFormDialog({
                       <FormItem>
                         <FormLabel>Meta Description (SEO)</FormLabel>
                         <FormControl>
-                          <Textarea 
-                            placeholder="SEO description for search engines" 
-                            {...field} 
+                          <Textarea
+                            placeholder="SEO description for search engines"
+                            {...field}
                           />
                         </FormControl>
                         <FormMessage />

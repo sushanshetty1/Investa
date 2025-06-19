@@ -3,13 +3,13 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { 
-  Menu, 
-  X, 
-  User, 
-  Settings, 
-  LogOut, 
-  Bell, 
+import {
+  Menu,
+  X,
+  User,
+  Settings,
+  LogOut,
+  Bell,
   Search,
   ChevronDown,
   Package,
@@ -99,7 +99,8 @@ const Navbar = () => {
     };
   }, [openDropdown]);
   // Show loading state while auth is being determined
-  if (loading) {    return (
+  if (loading) {
+    return (
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border/30">
         <div className="container mx-auto px-2 sm:px-3 lg:px-4 max-w-7xl">
           <div className="flex items-center justify-between h-16">
@@ -120,7 +121,7 @@ const Navbar = () => {
       </nav>
     );
   }
-  
+
   const dashboardNavItems = [
     {
       title: "Dashboard",
@@ -129,10 +130,9 @@ const Navbar = () => {
       items: [
         { title: "Overview", href: "/dashboard" },
         { title: "Analytics", href: "/dashboard/analytics" },
-        { title: "Notifications", href: "/dashboard/notifications" },
         { title: "Settings", href: "/dashboard/settings" },
       ]
-    },    {
+    }, {
       title: "Inventory",
       href: "/inventory",
       icon: Package,
@@ -143,9 +143,8 @@ const Navbar = () => {
         { title: "Categories", href: "/inventory/categories" },
         { title: "Low Stock Alerts", href: "/inventory/alerts" },
         { title: "Stock Adjustments", href: "/inventory/adjustments" },
-        { title: "Reports", href: "/inventory/reports" },
       ]
-    },    {
+    }, {
       title: "Orders",
       href: "/orders",
       icon: FileText,
@@ -205,20 +204,20 @@ const Navbar = () => {
   ];
 
   // Check if we're in dashboard routes AND user is authenticated
-  const isDashboard = user && (pathname?.startsWith("/dashboard") || 
-                     pathname?.startsWith("/inventory") ||
-                     pathname?.startsWith("/orders") ||
-                     pathname?.startsWith("/profile") ||
-                     pathname?.startsWith("/suppliers") ||
-                     pathname?.startsWith("/shipments") ||
-                     pathname?.startsWith("/reports") ||
-                     pathname?.startsWith("/products") ||
-                     pathname?.startsWith("/customers") ||
-                     pathname?.startsWith("/employees") ||
-                     pathname?.startsWith("/warehouses") ||
-                     pathname?.startsWith("/invoices") ||
-                     pathname?.startsWith("/purchase-orders") ||
-                     pathname?.startsWith("/audit"));
+  const isDashboard = user && (pathname?.startsWith("/dashboard") ||
+    pathname?.startsWith("/inventory") ||
+    pathname?.startsWith("/orders") ||
+    pathname?.startsWith("/profile") ||
+    pathname?.startsWith("/suppliers") ||
+    pathname?.startsWith("/shipments") ||
+    pathname?.startsWith("/reports") ||
+    pathname?.startsWith("/products") ||
+    pathname?.startsWith("/customers") ||
+    pathname?.startsWith("/employees") ||
+    pathname?.startsWith("/warehouses") ||
+    pathname?.startsWith("/invoices") ||
+    pathname?.startsWith("/purchase-orders") ||
+    pathname?.startsWith("/audit"));
   const handleAuthAction = async (action: string) => {
     if (action === "login") {
       router.push("/auth/login");
@@ -238,7 +237,7 @@ const Navbar = () => {
     onToggle: (href: string) => void;
   }) => {
     return (
-      <div 
+      <div
         className="relative"
         ref={(el) => {
           if (el) {
@@ -246,33 +245,31 @@ const Navbar = () => {
           }
         }}
       >        <button
-          onClick={() => onToggle(item.href)}
-          className={`flex items-center h-8 px-1.5 text-xs rounded-md transition-colors whitespace-nowrap hover:bg-accent/50 focus:outline-none focus:ring-2 focus:ring-primary/20 ${
-            isOpen ? 'bg-accent/60' : 'bg-transparent'
+        onClick={() => onToggle(item.href)}
+        className={`flex items-center h-8 px-1.5 text-xs rounded-md transition-colors whitespace-nowrap hover:bg-accent/50 focus:outline-none focus:ring-2 focus:ring-primary/20 ${isOpen ? 'bg-accent/60' : 'bg-transparent'
           }`}
-        >
+      >
           <item.icon className="h-3 w-3 mr-1 flex-shrink-0" />
           <span className="hidden xl:inline text-xs">{item.title}</span>
           <span className="xl:hidden text-xs">{item.title.length > 6 ? item.title.substring(0, 6) : item.title}</span>
-          <ChevronDown className={`h-2 w-2 ml-0.5 flex-shrink-0 transition-transform duration-200 ${
-            isOpen ? 'rotate-180' : ''
-          }`} />
+          <ChevronDown className={`h-2 w-2 ml-0.5 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''
+            }`} />
         </button>
-        
-        {isOpen && (          <div className="absolute top-full left-0 mt-1 p-2 min-w-[200px] bg-background border border-border rounded-md shadow-lg z-50 animate-in fade-in-0 zoom-in-95 duration-200">
-            <div className="grid gap-1 w-48">
-              {item.items.map((subItem: SubNavItem) => (
-                <Link
-                  key={subItem.href}
-                  href={subItem.href}
-                  onClick={() => setOpenDropdown(null)}
-                  className="block px-3 py-2 text-sm rounded-md hover:bg-accent/60 transition-colors"
-                >
-                  {subItem.title}
-                </Link>
-              ))}
-            </div>
+
+        {isOpen && (<div className="absolute top-full left-0 mt-1 p-2 min-w-[200px] bg-background border border-border rounded-md shadow-lg z-50 animate-in fade-in-0 zoom-in-95 duration-200">
+          <div className="grid gap-1 w-48">
+            {item.items.map((subItem: SubNavItem) => (
+              <Link
+                key={subItem.href}
+                href={subItem.href}
+                onClick={() => setOpenDropdown(null)}
+                className="block px-3 py-2 text-sm rounded-md hover:bg-accent/60 transition-colors"
+              >
+                {subItem.title}
+              </Link>
+            ))}
           </div>
+        </div>
         )}
       </div>
     );
@@ -281,16 +278,15 @@ const Navbar = () => {
   return (
     <>      {/* Mobile Menu Backdrop */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-30 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
-        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? "bg-background/95 backdrop-blur-xl border-b border-border/60 shadow-lg shadow-black/5" 
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
+          ? "bg-background/95 backdrop-blur-xl border-b border-border/60 shadow-lg shadow-black/5"
           : "bg-background/80 backdrop-blur-sm border-b border-border/30"
-      }`}>        <div className="container mx-auto px-2 sm:px-3 lg:px-4 max-w-7xl">
+        }`}>        <div className="container mx-auto px-2 sm:px-3 lg:px-4 max-w-7xl">
           <div className="flex mx-1   sm:justify-between h-16 gap-32 sm:gap-2">            {/* Logo */}
             <Link href="/" className="flex items-center space-x-1 sm:space-x-2 group flex-shrink-0 min-w-0">
               <div className="relative">
@@ -303,18 +299,18 @@ const Navbar = () => {
                 Invista
               </span>
             </Link>{/* Desktop Navigation */}
-            {isDashboard ? (              <div className="hidden lg:flex items-center flex-1 max-w-3xl mx-2">
-                <div className="flex items-center space-x-0.5 lg:space-x-1">
-                  {dashboardNavItems.map((item) => (
-                    <CustomDropdown
-                      key={item.href}
-                      item={item}
-                      isOpen={openDropdown === item.href}
-                      onToggle={handleDropdownToggle}
-                    />
-                  ))}
-                </div>
+            {isDashboard ? (<div className="hidden lg:flex items-center flex-1 max-w-3xl mx-2">
+              <div className="flex items-center space-x-0.5 lg:space-x-1">
+                {dashboardNavItems.map((item) => (
+                  <CustomDropdown
+                    key={item.href}
+                    item={item}
+                    isOpen={openDropdown === item.href}
+                    onToggle={handleDropdownToggle}
+                  />
+                ))}
               </div>
+            </div>
             ) : (
               <div className="hidden lg:flex items-center gap-2 lg:gap-3 flex-1 justify-center">
                 <Link href="#features" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
@@ -384,7 +380,7 @@ const Navbar = () => {
                       Settings
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem 
+                    <DropdownMenuItem
                       onClick={() => handleAuthAction("logout")}
                       className="cursor-pointer text-red-600 focus:text-red-600"
                     >
@@ -393,24 +389,24 @@ const Navbar = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              ) : (                <div className="hidden sm:flex items-center space-x-1">
-                  <Button 
-                    variant="ghost" 
-                    size="sm"
-                    onClick={() => handleAuthAction("login")}
-                    className="h-8 text-xs hover:bg-accent/60"
-                  >
-                    Sign In
-                  </Button>
-                  <Button 
-                    size="sm"
-                    onClick={() => handleAuthAction("signup")}
-                    className="h-8 text-xs bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                  >
-                    <span className="hidden sm:inline">Get Started</span>
-                    <span className="sm:hidden">Start</span>
-                  </Button>
-                </div>
+              ) : (<div className="hidden sm:flex items-center space-x-1">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => handleAuthAction("login")}
+                  className="h-8 text-xs hover:bg-accent/60"
+                >
+                  Sign In
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => handleAuthAction("signup")}
+                  className="h-8 text-xs bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                >
+                  <span className="hidden sm:inline">Get Started</span>
+                  <span className="sm:hidden">Start</span>
+                </Button>
+              </div>
               )}              {/* Mobile Menu Button */}
               <Button
                 variant="ghost"
@@ -422,9 +418,8 @@ const Navbar = () => {
               </Button>
             </div>
           </div>          {/* Mobile Menu */}
-          <div className={`lg:hidden absolute top-full left-0 right-0 border-t border-border/60 bg-background/95 backdrop-blur-xl transition-all duration-300 ease-in-out z-40 ${
-            isOpen ? 'max-h-screen opacity-100 visible' : 'max-h-0 opacity-0 invisible'
-          }`}>
+          <div className={`lg:hidden absolute top-full left-0 right-0 border-t border-border/60 bg-background/95 backdrop-blur-xl transition-all duration-300 ease-in-out z-40 ${isOpen ? 'max-h-screen opacity-100 visible' : 'max-h-0 opacity-0 invisible'
+            }`}>
             <div className="container mx-auto px-3 sm:px-4 max-w-7xl">
               <div className="py-2 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
                 {isDashboard ? (
@@ -439,7 +434,7 @@ const Navbar = () => {
                         />
                       </div>
                     </div>
-                  
+
                     {/* Dashboard Navigation Items */}
                     {dashboardNavItems.map((item) => (
                       <div key={item.href} className="space-y-1">
@@ -466,7 +461,7 @@ const Navbar = () => {
                         </div>
                       </div>
                     ))}
-                    
+
                     {/* Mobile User Actions */}
                     <div className="border-t border-border/40 mt-4 pt-4 px-3">
                       <div className="flex items-center space-x-3 py-2">
@@ -479,22 +474,22 @@ const Navbar = () => {
                         </div>
                       </div>
                       <div className="space-y-1 mt-2">
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           className="w-full justify-start text-sm h-10"
                         >
                           <User className="mr-2 h-4 w-4" />
                           Profile
                         </Button>
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           className="w-full justify-start text-sm h-10"
                         >
                           <Settings className="mr-2 h-4 w-4" />
                           Settings
                         </Button>
-                        <Button 
-                          variant="ghost" 
+                        <Button
+                          variant="ghost"
                           className="w-full justify-start text-sm h-10 text-red-600 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20"
                           onClick={() => {
                             handleAuthAction("logout");
@@ -538,8 +533,8 @@ const Navbar = () => {
                       Contact
                     </Link>
                     <div className="border-t border-border/40 mt-4 pt-4 px-3 space-y-2">
-                      <Button 
-                        variant="ghost" 
+                      <Button
+                        variant="ghost"
                         className="w-full justify-start h-10"
                         onClick={() => {
                           handleAuthAction("login");
@@ -548,7 +543,7 @@ const Navbar = () => {
                       >
                         Sign In
                       </Button>
-                      <Button 
+                      <Button
                         className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 h-10"
                         onClick={() => {
                           handleAuthAction("signup");

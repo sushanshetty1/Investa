@@ -3,10 +3,10 @@ import { neonClient } from '@/lib/db'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const auditId = params.id
+    const { id: auditId } = await params
 
     const auditItems = await neonClient.inventoryAuditItem.findMany({
       where: { auditId },

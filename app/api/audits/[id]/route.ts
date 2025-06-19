@@ -3,10 +3,10 @@ import { neonClient } from '@/lib/db'
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const auditId = params.id
+    const { id: auditId } = await params
     const body = await request.json()
     const { plannedDate, supervisedBy, notes, status } = body
 
@@ -44,27 +44,27 @@ export async function PATCH(
     if (plannedDate) updateData.plannedDate = new Date(plannedDate)
     if (supervisedBy !== undefined) updateData.supervisedBy = supervisedBy
     if (notes !== undefined) updateData.notes = notes
-    
+
     // Handle status changes
     if (status && status !== existingAudit.status) {
       updateData.status = status
-      
+
       if (status === 'IN_PROGRESS' && !existingAudit.startedDate) {
         updateData.startedDate = new Date()
       }
-      
+
       if (status === 'COMPLETED') {
         updateData.completedDate = new Date()
         // Calculate final statistics
         const auditItems = await neonClient.inventoryAuditItem.findMany({
           where: { auditId }
         })
-        
+
         const itemsCounted = auditItems.filter(item => item.countedQty !== null).length
-        const discrepancies = auditItems.filter(item => 
+        const discrepancies = auditItems.filter(item =>
           item.adjustmentQty !== null && item.adjustmentQty !== 0
         ).length
-        
+
         updateData.itemsCounted = itemsCounted
         updateData.discrepancies = discrepancies
       }
@@ -89,10 +89,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const auditId = params.id
+    const { id: auditId } = await params
 
     // Check if audit can be deleted (not in progress)
     const audit = await neonClient.inventoryAudit.findUnique({

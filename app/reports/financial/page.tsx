@@ -3,20 +3,15 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { 
-  DollarSign, 
-  TrendingUp, 
+import {
+  TrendingUp,
   TrendingDown,
-  BarChart3, 
-  PieChart as PieChartIcon,
   Calculator,
   Download,
-  Filter,
   RefreshCw,
   Target,
   Activity,
   Percent,
-  ShoppingCart,
   Package
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,22 +20,19 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { 
-  LineChart, 
-  Line, 
-  AreaChart, 
-  Area, 
-  BarChart, 
-  Bar, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer, 
-  PieChart, 
-  Pie, 
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
   Cell,
   ComposedChart
 } from "recharts";
@@ -102,7 +94,7 @@ export default function FinancialReportsPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [selectedDateRange, setSelectedDateRange] = useState("6m");
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+  const [selectedCurrency] = useState("USD");
   const [valuationMethod, setValuationMethod] = useState("fifo");
   const [financialData, setFinancialData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -147,589 +139,587 @@ export default function FinancialReportsPage() {
     <div className="min-h-screen bg-background pt-20">
       <div className="container mx-auto p-6 space-y-8">
         {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold">Financial Reports</h1>
-          <p className="text-muted-foreground">
-            Comprehensive financial analysis and inventory valuation
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Select value={valuationMethod} onValueChange={setValuationMethod}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="fifo">FIFO</SelectItem>
-              <SelectItem value="lifo">LIFO</SelectItem>
-              <SelectItem value="weighted">Weighted Avg</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={selectedDateRange} onValueChange={setSelectedDateRange}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="3m">Last 3 months</SelectItem>
-              <SelectItem value="6m">Last 6 months</SelectItem>
-              <SelectItem value="1y">Last year</SelectItem>
-              <SelectItem value="2y">Last 2 years</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button variant="outline" size="sm">
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </Button>
-        </div>
-      </div>      {/* Key Financial Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Inventory Value</CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              ${(financialData?.data.metrics.cogs.value * 2.2 || 1450000).toLocaleString()}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-green-600 flex items-center">
-                <TrendingUp className="w-3 h-3 mr-1" />
-                +8.2%
-              </span>
-              from last month
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-bold">Financial Reports</h1>
+            <p className="text-muted-foreground">
+              Comprehensive financial analysis and inventory valuation
             </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Gross Margin</CardTitle>
-            <Percent className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {financialData?.data.metrics.grossMargin.value || 38.1}%
-            </div>
-            <p className="text-xs text-muted-foreground">
-              <span className={`flex items-center ${
-                (financialData?.data.metrics.grossMargin.trend || 'up') === 'up' ? 'text-green-600' : 'text-red-600'
-              }`}>
-                {(financialData?.data.metrics.grossMargin.trend || 'up') === 'up' ? (
-                  <TrendingUp className="w-3 h-3 mr-1" />
-                ) : (
-                  <TrendingDown className="w-3 h-3 mr-1" />
-                )}
-                +{financialData?.data.metrics.grossMargin.change || 1.2}%
-              </span>
-              improvement
-            </p>
-          </CardContent>
-        </Card>        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">COGS</CardTitle>
-            <Calculator className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              ${financialData?.data.metrics.cogs.value.toLocaleString() || '650,000'}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              <span className={`flex items-center ${
-                (financialData?.data.metrics.cogs.trend || 'up') === 'up' ? 'text-red-600' : 'text-green-600'
-              }`}>
-                <TrendingUp className="w-3 h-3 mr-1" />
-                +{financialData?.data.metrics.cogs.change || 12.1}%
-              </span>
-              from last month
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Inventory ROI</CardTitle>
-            <Target className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {financialData?.data.metrics.roi.value || 24.7}%
-            </div>
-            <p className="text-xs text-muted-foreground">
-              <span className="text-green-600 flex items-center">
-                <TrendingUp className="w-3 h-3 mr-1" />
-                +{financialData?.data.metrics.roi.change || 2.3}%
-              </span>
-              annual improvement
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Main Financial Reports Tabs */}
-      <Tabs defaultValue="valuation" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="valuation">Inventory Valuation</TabsTrigger>
-          <TabsTrigger value="cogs">COGS Analysis</TabsTrigger>
-          <TabsTrigger value="margins">Profit Margins</TabsTrigger>
-          <TabsTrigger value="analytics">Purchase Analytics</TabsTrigger>
-        </TabsList>
-
-        {/* Inventory Valuation Reports */}
-        <TabsContent value="valuation" className="space-y-6">
+          </div>
+          <div className="flex items-center gap-2">
+            <Select value={valuationMethod} onValueChange={setValuationMethod}>
+              <SelectTrigger className="w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="fifo">FIFO</SelectItem>
+                <SelectItem value="lifo">LIFO</SelectItem>
+                <SelectItem value="weighted">Weighted Avg</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select value={selectedDateRange} onValueChange={setSelectedDateRange}>
+              <SelectTrigger className="w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="3m">Last 3 months</SelectItem>
+                <SelectItem value="6m">Last 6 months</SelectItem>
+                <SelectItem value="1y">Last year</SelectItem>
+                <SelectItem value="2y">Last 2 years</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button variant="outline" size="sm">
+              <Download className="w-4 h-4 mr-2" />
+              Export
+            </Button>
+          </div>
+        </div>      {/* Key Financial Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Inventory Valuation Trends</CardTitle>
-              <CardDescription>Comparison of valuation methods over time</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Inventory Value</CardTitle>
+              <Package className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart data={inventoryValuationData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis tickFormatter={(value) => `$${(value / 1000)}K`} />
-                  <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, '']} />
-                  <Line 
-                    type="monotone" 
-                    dataKey="fifo" 
-                    stroke="#10b981" 
-                    strokeWidth={3}
-                    name="FIFO"
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="lifo" 
-                    stroke="#ef4444" 
-                    strokeWidth={3}
-                    name="LIFO"
-                  />
-                  <Line 
-                    type="monotone" 
-                    dataKey="weighted" 
-                    stroke="#3b82f6" 
-                    strokeWidth={3}
-                    name="Weighted Average"
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-              <div className="flex items-center justify-center gap-6 mt-4 text-sm">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-green-500"></div>
-                  <span>FIFO</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-red-500"></div>
-                  <span>LIFO</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-0.5 bg-blue-500"></div>
-                  <span>Weighted Average</span>
-                </div>
+              <div className="text-2xl font-bold">
+                ${(financialData?.data.metrics.cogs.value * 2.2 || 1450000).toLocaleString()}
               </div>
+              <p className="text-xs text-muted-foreground">
+                <span className="text-green-600 flex items-center">
+                  <TrendingUp className="w-3 h-3 mr-1" />
+                  +8.2%
+                </span>
+                from last month
+              </p>
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Valuation Method Comparison</CardTitle>
-                <CardDescription>Current month differences</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center p-3 border rounded-lg">
-                    <div>
-                      <div className="font-medium">FIFO (First In, First Out)</div>
-                      <div className="text-sm text-muted-foreground">Higher inflation periods</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-bold text-green-600">$1,450,000</div>
-                      <div className="text-sm text-muted-foreground">+2.8% vs LIFO</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-between items-center p-3 border rounded-lg">
-                    <div>
-                      <div className="font-medium">LIFO (Last In, First Out)</div>
-                      <div className="text-sm text-muted-foreground">Tax advantages</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-bold text-red-600">$1,410,000</div>
-                      <div className="text-sm text-muted-foreground">Base method</div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex justify-between items-center p-3 border rounded-lg">
-                    <div>
-                      <div className="font-medium">Weighted Average</div>
-                      <div className="text-sm text-muted-foreground">Smoothed values</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-bold text-blue-600">$1,430,000</div>
-                      <div className="text-sm text-muted-foreground">+1.4% vs LIFO</div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Category Value Breakdown</CardTitle>
-                <CardDescription>Inventory value by category</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <PieChart>
-                    <Pie
-                      data={topValueCategories}
-                      dataKey="value"
-                      nameKey="category"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={100}
-                      label={({category, percentage}) => `${percentage}%`}
-                    >
-                      {topValueCategories.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={`hsl(${index * 60}, 70%, 50%)`} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, 'Value']} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        {/* COGS Analysis */}
-        <TabsContent value="cogs" className="space-y-6">
           <Card>
-            <CardHeader>
-              <CardTitle>Cost of Goods Sold Trends</CardTitle>
-              <CardDescription>COGS vs Revenue with margin analysis</CardDescription>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Gross Margin</CardTitle>
+              <Percent className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={400}>
-                <ComposedChart data={cogsData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis yAxisId="left" tickFormatter={(value) => `$${(value / 1000)}K`} />
-                  <YAxis yAxisId="right" orientation="right" tickFormatter={(value) => `${value}%`} />
-                  <Tooltip />
-                  <Bar yAxisId="left" dataKey="cogs" fill="#ef4444" name="COGS" />
-                  <Bar yAxisId="left" dataKey="revenue" fill="#10b981" name="Revenue" />
-                  <Line 
-                    yAxisId="right"
-                    type="monotone" 
-                    dataKey="margin" 
-                    stroke="#3b82f6" 
-                    strokeWidth={3}
-                    name="Gross Margin %"
-                  />
-                </ComposedChart>
-              </ResponsiveContainer>
+              <div className="text-2xl font-bold">
+                {financialData?.data.metrics.grossMargin.value || 38.1}%
+              </div>
+              <p className="text-xs text-muted-foreground">
+                <span className={`flex items-center ${(financialData?.data.metrics.grossMargin.trend || 'up') === 'up' ? 'text-green-600' : 'text-red-600'
+                  }`}>
+                  {(financialData?.data.metrics.grossMargin.trend || 'up') === 'up' ? (
+                    <TrendingUp className="w-3 h-3 mr-1" />
+                  ) : (
+                    <TrendingDown className="w-3 h-3 mr-1" />
+                  )}
+                  +{financialData?.data.metrics.grossMargin.change || 1.2}%
+                </span>
+                improvement
+              </p>
+            </CardContent>
+          </Card>        <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">COGS</CardTitle>
+              <Calculator className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                ${financialData?.data.metrics.cogs.value.toLocaleString() || '650,000'}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                <span className={`flex items-center ${(financialData?.data.metrics.cogs.trend || 'up') === 'up' ? 'text-red-600' : 'text-green-600'
+                  }`}>
+                  <TrendingUp className="w-3 h-3 mr-1" />
+                  +{financialData?.data.metrics.cogs.change || 12.1}%
+                </span>
+                from last month
+              </p>
             </CardContent>
           </Card>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>COGS Breakdown</CardTitle>
-                <CardDescription>Cost components analysis</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span>Direct Materials</span>
-                    <span className="font-semibold">$390,000 (60%)</span>
-                  </div>
-                  <Progress value={60} className="h-2" />
-                  
-                  <div className="flex justify-between items-center">
-                    <span>Direct Labor</span>
-                    <span className="font-semibold">$130,000 (20%)</span>
-                  </div>
-                  <Progress value={20} className="h-2" />
-                  
-                  <div className="flex justify-between items-center">
-                    <span>Manufacturing Overhead</span>
-                    <span className="font-semibold">$91,000 (14%)</span>
-                  </div>
-                  <Progress value={14} className="h-2" />
-                  
-                  <div className="flex justify-between items-center">
-                    <span>Other Costs</span>
-                    <span className="font-semibold">$39,000 (6%)</span>
-                  </div>
-                  <Progress value={6} className="h-2" />
-                </div>
-              </CardContent>
-            </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Inventory ROI</CardTitle>
+              <Target className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {financialData?.data.metrics.roi.value || 24.7}%
+              </div>
+              <p className="text-xs text-muted-foreground">
+                <span className="text-green-600 flex items-center">
+                  <TrendingUp className="w-3 h-3 mr-1" />
+                  +{financialData?.data.metrics.roi.change || 2.3}%
+                </span>
+                annual improvement
+              </p>
+            </CardContent>
+          </Card>
+        </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>COGS Performance Metrics</CardTitle>
-                <CardDescription>Key efficiency indicators</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="p-3 border rounded-lg">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">COGS as % of Revenue</span>
-                      <Badge variant="secondary">61.9%</Badge>
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Target: &lt;60% | Previous: 63.0%
-                    </div>
-                  </div>
-                  
-                  <div className="p-3 border rounded-lg">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">YoY COGS Growth</span>
-                      <Badge variant="outline">+12.5%</Badge>
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Revenue growth: +18.2%
-                    </div>
-                  </div>
-                  
-                  <div className="p-3 border rounded-lg">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="font-medium">Inventory Turns</span>
-                      <Badge variant="default">4.8x</Badge>
-                    </div>
-                    <div className="text-sm text-muted-foreground">
-                      Industry average: 4.2x
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
+        {/* Main Financial Reports Tabs */}
+        <Tabs defaultValue="valuation" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="valuation">Inventory Valuation</TabsTrigger>
+            <TabsTrigger value="cogs">COGS Analysis</TabsTrigger>
+            <TabsTrigger value="margins">Profit Margins</TabsTrigger>
+            <TabsTrigger value="analytics">Purchase Analytics</TabsTrigger>
+          </TabsList>
 
-        {/* Profit Margin Analysis */}
-        <TabsContent value="margins" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Inventory Valuation Reports */}
+          <TabsContent value="valuation" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Margin by Category</CardTitle>
-                <CardDescription>Profitability across product categories</CardDescription>
+                <CardTitle>Inventory Valuation Trends</CardTitle>
+                <CardDescription>Comparison of valuation methods over time</CardDescription>
               </CardHeader>
               <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={profitMarginData} layout="horizontal">
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={inventoryValuationData}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" tickFormatter={(value) => `${value}%`} />
-                    <YAxis type="category" dataKey="category" width={80} />
-                    <Tooltip formatter={(value) => [`${value}%`, 'Margin']} />
-                    <Bar dataKey="margin" fill="#10b981" />
-                  </BarChart>
+                    <XAxis dataKey="month" />
+                    <YAxis tickFormatter={(value) => `$${(value / 1000)}K`} />
+                    <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, '']} />
+                    <Line
+                      type="monotone"
+                      dataKey="fifo"
+                      stroke="#10b981"
+                      strokeWidth={3}
+                      name="FIFO"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="lifo"
+                      stroke="#ef4444"
+                      strokeWidth={3}
+                      name="LIFO"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="weighted"
+                      stroke="#3b82f6"
+                      strokeWidth={3}
+                      name="Weighted Average"
+                    />
+                  </LineChart>
                 </ResponsiveContainer>
+                <div className="flex items-center justify-center gap-6 mt-4 text-sm">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-0.5 bg-green-500"></div>
+                    <span>FIFO</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-0.5 bg-red-500"></div>
+                    <span>LIFO</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-0.5 bg-blue-500"></div>
+                    <span>Weighted Average</span>
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Profitable Products</CardTitle>
-                <CardDescription>Highest margin products</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {profitabilityAnalysis.map((product, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex-1">
-                        <div className="font-medium">{product.product}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {product.units} units sold
-                        </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Valuation Method Comparison</CardTitle>
+                  <CardDescription>Current month differences</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center p-3 border rounded-lg">
+                      <div>
+                        <div className="font-medium">FIFO (First In, First Out)</div>
+                        <div className="text-sm text-muted-foreground">Higher inflation periods</div>
                       </div>
                       <div className="text-right">
-                        <div className="font-semibold">{product.margin}%</div>
-                        <div className="text-sm text-muted-foreground">
-                          ${product.revenue.toLocaleString()} revenue
-                        </div>
+                        <div className="font-bold text-green-600">$1,450,000</div>
+                        <div className="text-sm text-muted-foreground">+2.8% vs LIFO</div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Margin Analysis Insights</CardTitle>
-              <CardDescription>Profitability trends and recommendations</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-4">
-                  <h4 className="font-semibold text-green-600">High Performers</h4>
-                  <ul className="space-y-2 text-sm">
-                    <li>• Software products: 70% margin</li>
-                    <li>• Services: 60% margin</li>
-                    <li>• Accessories: 50% margin</li>
-                    <li>• Premium items performing well</li>
-                  </ul>
-                </div>
-                <div className="space-y-4">
-                  <h4 className="font-semibold text-yellow-600">Opportunities</h4>
-                  <ul className="space-y-2 text-sm">
-                    <li>• Review hardware pricing</li>
-                    <li>• Negotiate better supplier terms</li>
-                    <li>• Bundle low-margin items</li>
-                    <li>• Focus on high-margin categories</li>
-                  </ul>
-                </div>
-                <div className="space-y-4">
-                  <h4 className="font-semibold text-red-600">Action Items</h4>
-                  <ul className="space-y-2 text-sm">
-                    <li>• Discontinue low-margin products</li>
-                    <li>• Implement dynamic pricing</li>
-                    <li>• Optimize product mix</li>
-                    <li>• Regular margin reviews</li>
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                    <div className="flex justify-between items-center p-3 border rounded-lg">
+                      <div>
+                        <div className="font-medium">LIFO (Last In, First Out)</div>
+                        <div className="text-sm text-muted-foreground">Tax advantages</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-red-600">$1,410,000</div>
+                        <div className="text-sm text-muted-foreground">Base method</div>
+                      </div>
+                    </div>
 
-        {/* Purchase vs Sales Analytics */}
-        <TabsContent value="analytics" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Purchase vs Sales Analysis</CardTitle>
-              <CardDescription>Buying patterns and sales correlation</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={400}>
-                <ComposedChart data={purchaseVsSalesData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="month" />
-                  <YAxis yAxisId="left" tickFormatter={(value) => `$${(value / 1000)}K`} />
-                  <YAxis yAxisId="right" orientation="right" />
-                  <Tooltip />
-                  <Bar yAxisId="left" dataKey="purchases" fill="#3b82f6" name="Purchases" />
-                  <Bar yAxisId="left" dataKey="sales" fill="#10b981" name="Sales" />
-                  <Line 
-                    yAxisId="right"
-                    type="monotone" 
-                    dataKey="ratio" 
-                    stroke="#ef4444" 
-                    strokeWidth={3}
-                    name="Sales/Purchase Ratio"
-                  />
-                </ComposedChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
+                    <div className="flex justify-between items-center p-3 border rounded-lg">
+                      <div>
+                        <div className="font-medium">Weighted Average</div>
+                        <div className="text-sm text-muted-foreground">Smoothed values</div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-blue-600">$1,430,000</div>
+                        <div className="text-sm text-muted-foreground">+1.4% vs LIFO</div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Category Value Breakdown</CardTitle>
+                  <CardDescription>Inventory value by category</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={topValueCategories}
+                        dataKey="value"
+                        nameKey="category"
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={100}
+                        label={({ category, percentage }) => `${percentage}%`}
+                      >
+                        {topValueCategories.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={`hsl(${index * 60}, 70%, 50%)`} />
+                        ))}
+                      </Pie>
+                      <Tooltip formatter={(value) => [`$${value.toLocaleString()}`, 'Value']} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* COGS Analysis */}
+          <TabsContent value="cogs" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Purchase Efficiency Metrics</CardTitle>
-                <CardDescription>Key performance indicators</CardDescription>
+                <CardTitle>Cost of Goods Sold Trends</CardTitle>
+                <CardDescription>COGS vs Revenue with margin analysis</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span>Average Purchase Ratio</span>
-                    <Badge variant="default">1.34x</Badge>
-                  </div>
-                  <Progress value={67} className="h-2" />
-                  
-                  <div className="flex justify-between items-center">
-                    <span>Purchase Lead Time</span>
-                    <Badge variant="secondary">12.5 days</Badge>
-                  </div>
-                  <Progress value={75} className="h-2" />
-                  
-                  <div className="flex justify-between items-center">
-                    <span>Order Fulfillment Rate</span>
-                    <Badge variant="default">94.2%</Badge>
-                  </div>
-                  <Progress value={94.2} className="h-2" />
-                  
-                  <div className="flex justify-between items-center">
-                    <span>Supplier Performance</span>
-                    <Badge variant="default">91.8%</Badge>
-                  </div>
-                  <Progress value={91.8} className="h-2" />
-                </div>
+                <ResponsiveContainer width="100%" height={400}>
+                  <ComposedChart data={cogsData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis yAxisId="left" tickFormatter={(value) => `$${(value / 1000)}K`} />
+                    <YAxis yAxisId="right" orientation="right" tickFormatter={(value) => `${value}%`} />
+                    <Tooltip />
+                    <Bar yAxisId="left" dataKey="cogs" fill="#ef4444" name="COGS" />
+                    <Bar yAxisId="left" dataKey="revenue" fill="#10b981" name="Revenue" />
+                    <Line
+                      yAxisId="right"
+                      type="monotone"
+                      dataKey="margin"
+                      stroke="#3b82f6"
+                      strokeWidth={3}
+                      name="Gross Margin %"
+                    />
+                  </ComposedChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>COGS Breakdown</CardTitle>
+                  <CardDescription>Cost components analysis</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span>Direct Materials</span>
+                      <span className="font-semibold">$390,000 (60%)</span>
+                    </div>
+                    <Progress value={60} className="h-2" />
+
+                    <div className="flex justify-between items-center">
+                      <span>Direct Labor</span>
+                      <span className="font-semibold">$130,000 (20%)</span>
+                    </div>
+                    <Progress value={20} className="h-2" />
+
+                    <div className="flex justify-between items-center">
+                      <span>Manufacturing Overhead</span>
+                      <span className="font-semibold">$91,000 (14%)</span>
+                    </div>
+                    <Progress value={14} className="h-2" />
+
+                    <div className="flex justify-between items-center">
+                      <span>Other Costs</span>
+                      <span className="font-semibold">$39,000 (6%)</span>
+                    </div>
+                    <Progress value={6} className="h-2" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>COGS Performance Metrics</CardTitle>
+                  <CardDescription>Key efficiency indicators</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="p-3 border rounded-lg">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-medium">COGS as % of Revenue</span>
+                        <Badge variant="secondary">61.9%</Badge>
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Target: &lt;60% | Previous: 63.0%
+                      </div>
+                    </div>
+
+                    <div className="p-3 border rounded-lg">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-medium">YoY COGS Growth</span>
+                        <Badge variant="outline">+12.5%</Badge>
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Revenue growth: +18.2%
+                      </div>
+                    </div>
+
+                    <div className="p-3 border rounded-lg">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="font-medium">Inventory Turns</span>
+                        <Badge variant="default">4.8x</Badge>
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        Industry average: 4.2x
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Profit Margin Analysis */}
+          <TabsContent value="margins" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Margin by Category</CardTitle>
+                  <CardDescription>Profitability across product categories</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <BarChart data={profitMarginData} layout="horizontal">
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis type="number" tickFormatter={(value) => `${value}%`} />
+                      <YAxis type="category" dataKey="category" width={80} />
+                      <Tooltip formatter={(value) => [`${value}%`, 'Margin']} />
+                      <Bar dataKey="margin" fill="#10b981" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Top Profitable Products</CardTitle>
+                  <CardDescription>Highest margin products</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {profitabilityAnalysis.map((product, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex-1">
+                          <div className="font-medium">{product.product}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {product.units} units sold
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="font-semibold">{product.margin}%</div>
+                          <div className="text-sm text-muted-foreground">
+                            ${product.revenue.toLocaleString()} revenue
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
 
             <Card>
               <CardHeader>
-                <CardTitle>Purchase Optimization</CardTitle>
-                <CardDescription>Recommendations for better efficiency</CardDescription>
+                <CardTitle>Margin Analysis Insights</CardTitle>
+                <CardDescription>Profitability trends and recommendations</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <div className="flex items-center gap-2 mb-1">
-                      <TrendingUp className="w-4 h-4 text-blue-600" />
-                      <span className="font-medium text-blue-800">Volume Discounts</span>
-                    </div>
-                    <p className="text-sm text-blue-700">
-                      Consolidate purchases to achieve 15% volume discounts on electronics.
-                    </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="space-y-4">
+                    <h4 className="font-semibold text-green-600">High Performers</h4>
+                    <ul className="space-y-2 text-sm">
+                      <li>• Software products: 70% margin</li>
+                      <li>• Services: 60% margin</li>
+                      <li>• Accessories: 50% margin</li>
+                      <li>• Premium items performing well</li>
+                    </ul>
                   </div>
-                  
-                  <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Target className="w-4 h-4 text-green-600" />
-                      <span className="font-medium text-green-800">Timing Optimization</span>
-                    </div>
-                    <p className="text-sm text-green-700">
-                      Shift 20% of purchases to Q1 for better seasonal pricing.
-                    </p>
+                  <div className="space-y-4">
+                    <h4 className="font-semibold text-yellow-600">Opportunities</h4>
+                    <ul className="space-y-2 text-sm">
+                      <li>• Review hardware pricing</li>
+                      <li>• Negotiate better supplier terms</li>
+                      <li>• Bundle low-margin items</li>
+                      <li>• Focus on high-margin categories</li>
+                    </ul>
                   </div>
-                  
-                  <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Activity className="w-4 h-4 text-yellow-600" />
-                      <span className="font-medium text-yellow-800">Supplier Diversification</span>
-                    </div>
-                    <p className="text-sm text-yellow-700">
-                      Add 2-3 alternative suppliers to reduce dependency and improve terms.
-                    </p>
+                  <div className="space-y-4">
+                    <h4 className="font-semibold text-red-600">Action Items</h4>
+                    <ul className="space-y-2 text-sm">
+                      <li>• Discontinue low-margin products</li>
+                      <li>• Implement dynamic pricing</li>
+                      <li>• Optimize product mix</li>
+                      <li>• Regular margin reviews</li>
+                    </ul>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </TabsContent>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Financial Summary</CardTitle>
-              <CardDescription>Overall financial performance metrics</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="text-center p-4 border rounded-lg">
-                  <div className="text-2xl font-bold text-green-600">$1.45M</div>
-                  <div className="text-sm text-muted-foreground">Total Inventory Value</div>
+          {/* Purchase vs Sales Analytics */}
+          <TabsContent value="analytics" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Purchase vs Sales Analysis</CardTitle>
+                <CardDescription>Buying patterns and sales correlation</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <ComposedChart data={purchaseVsSalesData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis yAxisId="left" tickFormatter={(value) => `$${(value / 1000)}K`} />
+                    <YAxis yAxisId="right" orientation="right" />
+                    <Tooltip />
+                    <Bar yAxisId="left" dataKey="purchases" fill="#3b82f6" name="Purchases" />
+                    <Bar yAxisId="left" dataKey="sales" fill="#10b981" name="Sales" />
+                    <Line
+                      yAxisId="right"
+                      type="monotone"
+                      dataKey="ratio"
+                      stroke="#ef4444"
+                      strokeWidth={3}
+                      name="Sales/Purchase Ratio"
+                    />
+                  </ComposedChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Purchase Efficiency Metrics</CardTitle>
+                  <CardDescription>Key performance indicators</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span>Average Purchase Ratio</span>
+                      <Badge variant="default">1.34x</Badge>
+                    </div>
+                    <Progress value={67} className="h-2" />
+
+                    <div className="flex justify-between items-center">
+                      <span>Purchase Lead Time</span>
+                      <Badge variant="secondary">12.5 days</Badge>
+                    </div>
+                    <Progress value={75} className="h-2" />
+
+                    <div className="flex justify-between items-center">
+                      <span>Order Fulfillment Rate</span>
+                      <Badge variant="default">94.2%</Badge>
+                    </div>
+                    <Progress value={94.2} className="h-2" />
+
+                    <div className="flex justify-between items-center">
+                      <span>Supplier Performance</span>
+                      <Badge variant="default">91.8%</Badge>
+                    </div>
+                    <Progress value={91.8} className="h-2" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Purchase Optimization</CardTitle>
+                  <CardDescription>Recommendations for better efficiency</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <TrendingUp className="w-4 h-4 text-blue-600" />
+                        <span className="font-medium text-blue-800">Volume Discounts</span>
+                      </div>
+                      <p className="text-sm text-blue-700">
+                        Consolidate purchases to achieve 15% volume discounts on electronics.
+                      </p>
+                    </div>
+
+                    <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Target className="w-4 h-4 text-green-600" />
+                        <span className="font-medium text-green-800">Timing Optimization</span>
+                      </div>
+                      <p className="text-sm text-green-700">
+                        Shift 20% of purchases to Q1 for better seasonal pricing.
+                      </p>
+                    </div>
+
+                    <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                      <div className="flex items-center gap-2 mb-1">
+                        <Activity className="w-4 h-4 text-yellow-600" />
+                        <span className="font-medium text-yellow-800">Supplier Diversification</span>
+                      </div>
+                      <p className="text-sm text-yellow-700">
+                        Add 2-3 alternative suppliers to reduce dependency and improve terms.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Financial Summary</CardTitle>
+                <CardDescription>Overall financial performance metrics</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="text-center p-4 border rounded-lg">
+                    <div className="text-2xl font-bold text-green-600">$1.45M</div>
+                    <div className="text-sm text-muted-foreground">Total Inventory Value</div>
+                  </div>
+                  <div className="text-center p-4 border rounded-lg">
+                    <div className="text-2xl font-bold text-blue-600">38.1%</div>
+                    <div className="text-sm text-muted-foreground">Gross Margin</div>
+                  </div>
+                  <div className="text-center p-4 border rounded-lg">
+                    <div className="text-2xl font-bold text-purple-600">4.8x</div>
+                    <div className="text-sm text-muted-foreground">Inventory Turns</div>
+                  </div>
+                  <div className="text-center p-4 border rounded-lg">
+                    <div className="text-2xl font-bold text-orange-600">24.7%</div>
+                    <div className="text-sm text-muted-foreground">ROI</div>
+                  </div>
                 </div>
-                <div className="text-center p-4 border rounded-lg">
-                  <div className="text-2xl font-bold text-blue-600">38.1%</div>
-                  <div className="text-sm text-muted-foreground">Gross Margin</div>
-                </div>
-                <div className="text-center p-4 border rounded-lg">
-                  <div className="text-2xl font-bold text-purple-600">4.8x</div>
-                  <div className="text-sm text-muted-foreground">Inventory Turns</div>
-                </div>
-                <div className="text-center p-4 border rounded-lg">
-                  <div className="text-2xl font-bold text-orange-600">24.7%</div>
-                  <div className="text-sm text-muted-foreground">ROI</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>      </Tabs>
+              </CardContent>
+            </Card>
+          </TabsContent>      </Tabs>
       </div>
     </div>
   );
