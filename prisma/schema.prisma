@@ -13,3 +13,12 @@
 // Each database will have its own generated client in:
 // - ./generated/neon/    - Neon Prisma client
 // - ./generated/supabase/ - Supabase Prisma client
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("SUPABASE_DATABASE_URL")
+}
