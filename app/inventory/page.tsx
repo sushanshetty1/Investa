@@ -52,85 +52,56 @@ export default function InventoryDashboard() {
     recentMovements: 0,
     pendingOrders: 0
   })
-    const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([])
+  const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([])
   const [topProducts, setTopProducts] = useState<TopProduct[]>([])
 
   useEffect(() => {
     loadDashboardData()
   }, [])
-
   const loadDashboardData = async () => {
     try {
-      // TODO: Replace with actual API calls
-      
-      // Mock data for demonstration
-      setStats({
-        totalProducts: 1247,
-        activeProducts: 1198,
-        lowStockItems: 23,
-        outOfStockItems: 7,
-        totalSuppliers: 45,
-        activeSuppliers: 42,
-        totalWarehouses: 3,
-        totalStockValue: 2456780,
-        recentMovements: 156,
-        pendingOrders: 12
-      })
+      // Load dashboard statistics from multiple API endpoints
+      const [statsResponse, activityResponse, productsResponse] = await Promise.allSettled([
+        fetch('/api/inventory/dashboard/stats'),
+        fetch('/api/inventory/dashboard/activity'),
+        fetch('/api/inventory/dashboard/top-products')
+      ])      // Handle stats
+      if (statsResponse.status === 'fulfilled' && statsResponse.value.ok) {
+        const statsData = await statsResponse.value.json()
+        setStats(statsData.data)
+      } else {
+        console.error('Failed to load stats')
+        setStats({
+          totalProducts: 0,
+          activeProducts: 0,
+          lowStockItems: 0,
+          outOfStockItems: 0,
+          totalSuppliers: 0,
+          activeSuppliers: 0,
+          totalWarehouses: 0,
+          totalStockValue: 0,
+          recentMovements: 0,
+          pendingOrders: 0
+        })
+      }
 
-      setRecentActivity([
-        {
-          id: '1',
-          type: 'low_stock_alert',
-          message: 'Wireless Mouse (WM-001) is running low in Main Warehouse',
-          timestamp: '2024-01-20T10:30:00Z',
-          severity: 'high'
-        },
-        {
-          id: '2',
-          type: 'product_created',
-          message: 'New product "Gaming Keyboard" added to catalog',
-          timestamp: '2024-01-20T09:15:00Z'
-        },
-        {
-          id: '3',
-          type: 'stock_adjusted',
-          message: 'Stock adjusted for Premium Laptop Stand (+50 units)',
-          timestamp: '2024-01-20T08:45:00Z'
-        },
-        {
-          id: '4',
-          type: 'supplier_added',
-          message: 'New supplier "TechSupply Plus" added to system',
-          timestamp: '2024-01-19T16:20:00Z'
-        }
-      ])
+      // Handle recent activity
+      if (activityResponse.status === 'fulfilled' && activityResponse.value.ok) {
+        const activityData = await activityResponse.value.json()
+        setRecentActivity(activityData.data)
+      } else {
+        console.error('Failed to load recent activity')
+        setRecentActivity([])
+      }      // Handle top products
+      if (productsResponse.status === 'fulfilled' && productsResponse.value.ok) {
+        const productsData = await productsResponse.value.json()
+        setTopProducts(productsData.data)
+      } else {
+        console.error('Failed to load top products')
+        setTopProducts([])
+      }
 
-      setTopProducts([
-        {
-          id: '1',
-          name: 'Premium Laptop Stand',
-          sku: 'LPS-001',
-          currentStock: 125,
-          value: 11237.50,
-          status: 'healthy'
-        },
-        {
-          id: '2',
-          name: 'Wireless Mouse',
-          sku: 'WM-001',
-          currentStock: 8,
-          value: 2400.00,
-          status: 'low'
-        },
-        {
-          id: '3',
-          name: 'USB-C Hub',
-          sku: 'UCH-001',
-          currentStock: 0,
-          value: 0,
-          status: 'critical'
-        }
-      ])    } catch (error) {
+    } catch (error) {
       console.error('Error loading dashboard data:', error)
     }
   }
@@ -168,7 +139,7 @@ export default function InventoryDashboard() {
 
   const getSeverityBadge = (severity?: string) => {
     if (!severity) return null
-    
+
     const variants = {
       low: 'secondary',
       medium: 'outline',
@@ -195,8 +166,8 @@ export default function InventoryDashboard() {
     }
   }
 
-  const stockHealthPercentage = stats.totalProducts > 0 
-    ? ((stats.totalProducts - stats.lowStockItems - stats.outOfStockItems) / stats.totalProducts) * 100 
+  const stockHealthPercentage = stats.totalProducts > 0
+    ? ((stats.totalProducts - stats.lowStockItems - stats.outOfStockItems) / stats.totalProducts) * 100
     : 0
 
   return (
@@ -389,9 +360,9 @@ export default function InventoryDashboard() {
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-medium">{formatCurrency(product.value)}</p>
-                    <Badge 
-                      variant={product.status === 'critical' ? 'destructive' : 
-                              product.status === 'low' ? 'outline' : 'secondary'}
+                    <Badge
+                      variant={product.status === 'critical' ? 'destructive' :
+                        product.status === 'low' ? 'outline' : 'secondary'}
                       className="text-xs"
                     >
                       {product.status}
@@ -439,7 +410,7 @@ export default function InventoryDashboard() {
                   </Button>
                 </div>
               )}
-              
+
               {stats.outOfStockItems > 0 && (
                 <div className="flex items-center justify-between p-3 bg-white dark:bg-gray-900 rounded-lg">
                   <div>
@@ -476,7 +447,7 @@ export default function InventoryDashboard() {
             </Link>
           </Button>
         </div>
-        
+
         <InventoryAnalytics />
       </div>
     </div>

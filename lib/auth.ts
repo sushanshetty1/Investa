@@ -1,4 +1,5 @@
 import { NextRequest } from 'next/server'
+import { createHash } from 'crypto'
 
 // Types for authentication
 export interface AuthenticatedUser {
@@ -21,30 +22,70 @@ export async function authenticate(request: NextRequest): Promise<Authentication
     const authHeader = request.headers.get('authorization')
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return { success: false, error: 'Missing or invalid authorization header' }
-    }
+    } const token = authHeader.substring(7) // Remove 'Bearer ' prefix
 
-    const token = authHeader.substring(7) // Remove 'Bearer ' prefix
+    // Validate JWT token with Supabase
+    try {
+      const { createClient } = await import('@supabase/supabase-js')
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+      const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-    // TODO: Implement actual JWT validation with your auth provider
-    // This is a placeholder implementation
-    if (token === 'dev-token') {
+      if (!supabaseUrl || !supabaseAnonKey) {
+        throw new Error('Missing Supabase configuration')
+      }
+
+      const supabase = createClient(supabaseUrl, supabaseAnonKey)
+      const { data, error } = await supabase.auth.getUser(token)
+
+      if (error || !data.user) {
+        return { success: false, error: 'Invalid or expired token' }
+      }
+
+      // Get user profile from database
+      const { data: profile, error: profileError } = await supabase
+        .from('User')
+        .select('id, email, role, permissions')
+        .eq('id', data.user.id)
+        .single()
+
+      if (profileError || !profile) {
+        // Create default user profile if not exists
+        const defaultProfile = {
+          id: data.user.id,
+          email: data.user.email || '',
+          role: 'user',
+          permissions: ['inventory:read']
+        }
+
+        const { error: insertError } = await supabase
+          .from('User')
+          .insert(defaultProfile)
+
+        if (insertError) {
+          console.error('Failed to create user profile:', insertError)
+        }
+
+        return {
+          success: true,
+          user: defaultProfile
+        }
+      }
+
       return {
         success: true,
         user: {
-          id: 'dev-user-id',
-          email: 'dev@example.com',
-          role: 'admin',
-          permissions: ['*'] // Admin has all permissions
+          id: profile.id,
+          email: profile.email,
+          role: profile.role || 'user',
+          permissions: Array.isArray(profile.permissions)
+            ? profile.permissions
+            : ['inventory:read']
         }
       }
+    } catch (jwtError) {
+      console.error('JWT validation error:', jwtError)
+      return { success: false, error: 'Authentication service unavailable' }
     }
-
-    // Example: Validate JWT token
-    // const payload = await validateJWT(token)
-    // const user = await getUserFromDatabase(payload.sub)
-    // return { success: true, user }
-
-    return { success: false, error: 'Invalid token' }
   } catch (error) {
     console.error('Authentication error:', error)
     return { success: false, error: 'Authentication failed' }
@@ -66,26 +107,65 @@ export async function authenticateApiKey(request: NextRequest): Promise<Authenti
     const apiKey = request.headers.get('x-api-key')
     if (!apiKey) {
       return { success: false, error: 'Missing API key' }
-    }
+    }    // Validate API key against database
+    try {
+      const { createClient } = await import('@supabase/supabase-js')
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-    // TODO: Validate API key against database
-    // const keyRecord = await validateApiKey(apiKey)
-    // if (!keyRecord) return { success: false, error: 'Invalid API key' }
+      if (!supabaseUrl || !supabaseServiceKey) {
+        throw new Error('Missing Supabase configuration')
+      }
 
-    // For demo purposes, accept a dev API key
-    if (apiKey === 'dev-api-key') {
+      const supabase = createClient(supabaseUrl, supabaseServiceKey)
+      // Query the APIKey table for valid key
+      const { data: keyRecord, error } = await supabase
+        .from('APIKey')
+        .select(`
+          id, 
+          name, 
+          permissions, 
+          isActive, 
+          expiresAt,
+          userId,
+          User!inner(id, email, role)
+        `)
+        .eq('keyHash', await hashApiKey(apiKey))
+        .eq('isActive', true)
+        .single()
+
+      if (error || !keyRecord) {
+        return { success: false, error: 'Invalid API key' }
+      }
+
+      // Check if key has expired
+      if (keyRecord.expiresAt && new Date(keyRecord.expiresAt) < new Date()) {
+        return { success: false, error: 'API key has expired' }
+      }
+
+      // Update last used timestamp
+      await supabase
+        .from('APIKey')
+        .update({ lastUsedAt: new Date().toISOString() })
+        .eq('id', keyRecord.id)
+
+      const user = Array.isArray(keyRecord.User) ? keyRecord.User[0] : keyRecord.User
+
       return {
         success: true,
         user: {
-          id: 'api-user',
-          email: 'api@example.com',
+          id: user?.id || 'api-user',
+          email: user?.email || 'api@system.com',
           role: 'api',
-          permissions: ['inventory:read', 'inventory:write']
+          permissions: Array.isArray(keyRecord.permissions)
+            ? keyRecord.permissions
+            : ['inventory:read', 'inventory:write']
         }
       }
+    } catch (dbError) {
+      console.error('API key validation error:', dbError)
+      return { success: false, error: 'API key validation service unavailable' }
     }
-
-    return { success: false, error: 'Invalid API key' }
   } catch (error) {
     console.error('API key authentication error:', error)
     return { success: false, error: 'API key authentication failed' }
@@ -130,11 +210,11 @@ export function sanitizeInput(input: any): any {
       .replace(/<[^>]*>/g, '') // Remove HTML tags
       .trim()
   }
-  
+
   if (Array.isArray(input)) {
     return input.map(item => sanitizeInput(item))
   }
-    if (input && typeof input === 'object') {
+  if (input && typeof input === 'object') {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const sanitized: any = {}
     for (const [key, value] of Object.entries(input)) {
@@ -142,7 +222,7 @@ export function sanitizeInput(input: any): any {
     }
     return sanitized
   }
-  
+
   return input
 }
 
@@ -158,27 +238,32 @@ export const PERMISSIONS = {
   PRODUCT_READ: 'product:read',
   PRODUCT_WRITE: 'product:write',
   PRODUCT_DELETE: 'product:delete',
-  
+
   // Inventory
   INVENTORY_READ: 'inventory:read',
   INVENTORY_WRITE: 'inventory:write',
   INVENTORY_ADJUST: 'inventory:adjust',
   INVENTORY_TRANSFER: 'inventory:transfer',
-  
+
   // Suppliers
   SUPPLIER_READ: 'supplier:read',
   SUPPLIER_WRITE: 'supplier:write',
   SUPPLIER_DELETE: 'supplier:delete',
-  
+
   // Orders
   ORDER_READ: 'order:read',
   ORDER_WRITE: 'order:write',
   ORDER_APPROVE: 'order:approve',
-  
+
   // Reports
   REPORT_VIEW: 'report:view',
   REPORT_EXPORT: 'report:export',
-  
+
   // Admin
   ADMIN_ALL: '*',
 } as const
+
+// Utility function to hash API keys for secure storage
+async function hashApiKey(apiKey: string): Promise<string> {
+  return createHash('sha256').update(apiKey).digest('hex')
+}

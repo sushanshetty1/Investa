@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react'
 import { Plus, Search, Filter, Download, Edit, Trash2, Eye, Phone, Mail, Star, TrendingUp, Package, DollarSign } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -126,10 +129,16 @@ export default function SuppliersPage() {
   const [showFilters, setShowFilters] = useState(false)
   const [selectedSuppliers, setSelectedSuppliers] = useState<string[]>([])
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage] = useState(20)  // Load data
+  const [itemsPerPage] = useState(20)
+  // Dialog states
+  const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null)
+  const [showEditDialog, setShowEditDialog] = useState(false)
+  const [showAddDialog, setShowAddDialog] = useState(false)
+  const [showContactsDialog, setShowContactsDialog] = useState(false)
+  const [showPurchaseOrderDialog, setShowPurchaseOrderDialog] = useState(false)// Load data
   useEffect(() => {
     loadData()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const loadData = async () => {
@@ -137,115 +146,61 @@ export default function SuppliersPage() {
       await Promise.all([
         loadSuppliers(),
         loadPurchaseOrders()
-      ])    } catch (error) {
+      ])
+    } catch (error) {
       console.error('Error loading data:', error)
     }
   }
-
   const loadSuppliers = async () => {
-    // TODO: Implement API call to fetch suppliers with performance metrics
-    const mockSuppliers: Supplier[] = [
-      {
-        id: '1',
-        name: 'TechSupply Pro',
-        code: 'TSP-001',
-        email: 'orders@techsupplypro.com',
-        phone: '+1-555-0123',
-        website: 'https://techsupplypro.com',
-        companyType: 'CORPORATION',
-        taxId: '12-3456789',
-        vatNumber: 'US123456789',
-        registrationNumber: 'CORP-2020-001',
-        billingAddress: {
-          street: '123 Technology Ave',
-          city: 'San Francisco',
-          state: 'CA',
-          country: 'United States',
-          zipCode: '94105'
-        },
-        contactName: 'John Smith',
-        contactEmail: 'john.smith@techsupplypro.com',
-        contactPhone: '+1-555-0124',
-        contactTitle: 'Sales Manager',
-        paymentTerms: 'NET30',
-        creditLimit: 50000,
-        currency: 'USD',
-        rating: 4.8,
-        onTimeDelivery: 95.5,
-        qualityRating: 4.7,
-        status: 'ACTIVE',
-        certifications: ['ISO 9001', 'CE Marking'],
-        notes: 'Reliable supplier for electronics components',
-        createdAt: '2024-01-15T10:00:00Z',
-        updatedAt: '2024-01-20T14:30:00Z',
-        totalPurchaseOrders: 45,
-        totalSpent: 125000,
-        activeProducts: 78,
-        lastOrderDate: '2024-01-18T09:00:00Z'
-      },
-      // Add more mock suppliers...
-    ]
-    setSuppliers(mockSuppliers)
+    try {
+      const response = await fetch('/api/inventory/suppliers')
+      if (response.ok) {
+        const data = await response.json()
+        setSuppliers(data.data || [])
+      } else {
+        console.error('Failed to fetch suppliers')
+        setSuppliers([])
+      }
+    } catch (error) {
+      console.error('Error loading suppliers:', error)
+      setSuppliers([])
+    }
   }
 
   const loadPurchaseOrders = async () => {
-    // TODO: Implement API call to fetch purchase orders
-    const mockPurchaseOrders: PurchaseOrder[] = [
-      {
-        id: '1',
-        orderNumber: 'PO-2024-001',
-        supplierId: '1',
-        status: 'APPROVED',
-        orderDate: '2024-01-18T09:00:00Z',
-        expectedDate: '2024-01-25T09:00:00Z',
-        subtotal: 5000,
-        taxAmount: 400,
-        shippingCost: 150,
-        discountAmount: 0,
-        totalAmount: 5550,
-        currency: 'USD',
-        paymentTerms: 'NET30',
-        shippingTerms: 'FOB Origin',
-        createdAt: '2024-01-18T09:00:00Z',
-        supplier: {
-          id: '1',
-          name: 'TechSupply Pro',
-          code: 'TSP-001'
-        },
-        items: []
-      },
-      // Add more mock purchase orders...
-    ]
-    setPurchaseOrders(mockPurchaseOrders)
-  }  // Utility function to load supplier contacts - currently unused but kept for future implementation
+    try {
+      const response = await fetch('/api/inventory/purchase-orders')
+      if (response.ok) {
+        const data = await response.json()
+        setPurchaseOrders(data.data || [])
+      } else {
+        console.error('Failed to fetch purchase orders')
+        setPurchaseOrders([])
+      }
+    } catch (error) {
+      console.error('Error loading purchase orders:', error)
+      setPurchaseOrders([])
+    }
+  }
+  // Utility function to load supplier contacts - for future implementation
   // const loadSupplierContacts = async () => {
-  //   // TODO: Implement API call to fetch supplier contacts
-  //   const mockContacts: SupplierContact[] = [
-  //     {
-  //       id: '1',
-  //       supplierId: '1',
-  //       name: 'John Smith',
-  //       title: 'Sales Manager',
-  //       email: 'john.smith@techsupplypro.com',
-  //       phone: '+1-555-0124',
-  //       mobile: '+1-555-0125',
-  //       isPrimary: true,
-  //       department: 'Sales',
-  //       isActive: true,
-  //       notes: 'Primary contact for all orders'
-  //     },
-  //     // Add more mock contacts...
-  //   ]
-  //   // setSupplierContacts(mockContacts) - commented out as supplierContacts state was removed
-  //   console.log('Loaded supplier contacts:', mockContacts)
+  //   try {
+  //     const response = await fetch('/api/inventory/suppliers/contacts')
+  //     if (response.ok) {
+  //       const data = await response.json()
+  //       // Supplier contacts loaded successfully
+  //     }
+  //   } catch (error) {
+  //     console.error('Error loading supplier contacts:', error)
+  //   }
   // }
 
   // Filter suppliers
   const filteredSuppliers = suppliers.filter(supplier => {
     const matchesSearch = supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         supplier.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (supplier.email && supplier.email.toLowerCase().includes(searchTerm.toLowerCase()))
-    
+      supplier.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (supplier.email && supplier.email.toLowerCase().includes(searchTerm.toLowerCase()))
+
     const matchesStatus = statusFilter === 'all' || supplier.status === statusFilter
 
     return matchesSearch && matchesStatus
@@ -271,19 +226,20 @@ export default function SuppliersPage() {
       setSelectedSuppliers([])
     }
   }
+
   const handleEditSupplier = (supplier: Supplier) => {
-    // TODO: Implement supplier editing
-    console.log('Edit supplier:', supplier.id)
+    setSelectedSupplier(supplier)
+    setShowEditDialog(true)
   }
 
   const handleManageContacts = (supplier: Supplier) => {
-    // TODO: Implement contact management
-    console.log('Manage contacts for supplier:', supplier.id)
+    setSelectedSupplier(supplier)
+    setShowContactsDialog(true)
   }
 
   const handleCreatePurchaseOrder = (supplier: Supplier) => {
-    // TODO: Implement purchase order creation
-    console.log('Create purchase order for supplier:', supplier.id)
+    setSelectedSupplier(supplier)
+    setShowPurchaseOrderDialog(true)
   }
 
   const getStatusBadge = (status: string) => {
@@ -378,8 +334,8 @@ export default function SuppliersPage() {
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>          <Button onClick={() => {
-            // TODO: Implement add supplier functionality
-            console.log('Add new supplier')
+            setSelectedSupplier(null)
+            setShowAddDialog(true)
           }}>
             <Plus className="h-4 w-4 mr-2" />
             Add Supplier
@@ -555,7 +511,7 @@ export default function SuppliersPage() {
                       <TableCell>
                         <Checkbox
                           checked={selectedSuppliers.includes(supplier.id)}
-                          onCheckedChange={(checked) => 
+                          onCheckedChange={(checked) =>
                             handleSelectSupplier(supplier.id, checked as boolean)
                           }
                         />
@@ -839,14 +795,327 @@ export default function SuppliersPage() {
             </Card>
           </div>
         </TabsContent>
-      </Tabs>
+      </Tabs>      {/* Supplier Form Dialog */}
+      <Dialog open={showAddDialog || showEditDialog} onOpenChange={(open) => {
+        if (!open) {
+          setShowAddDialog(false)
+          setShowEditDialog(false)
+          setSelectedSupplier(null)
+        }
+      }}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>
+              {selectedSupplier ? 'Edit Supplier' : 'Add New Supplier'}
+            </DialogTitle>
+            <DialogDescription>
+              {selectedSupplier ? 'Update supplier information' : 'Create a new supplier record'}
+            </DialogDescription>
+          </DialogHeader>
+          <SupplierForm supplier={selectedSupplier} onSave={() => {
+            // Handle save logic here
+            setShowAddDialog(false)
+            setShowEditDialog(false)
+            setSelectedSupplier(null)
+            loadData() // Reload data
+          }}
+            onCancel={() => {
+              setShowAddDialog(false)
+              setShowEditDialog(false)
+              setSelectedSupplier(null)
+            }}
+          />
+        </DialogContent>
+      </Dialog>
 
-      {/* TODO: Add Dialog Components */}
-      {/* These would be implemented as separate components:
-          - SupplierFormDialog
-          - SupplierContactsManager
-          - PurchaseOrderFormDialog
-      */}
+      {/* Supplier Contacts Dialog */}
+      <Dialog open={showContactsDialog} onOpenChange={setShowContactsDialog}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Manage Contacts - {selectedSupplier?.name}</DialogTitle>
+            <DialogDescription>
+              Manage contact information for this supplier
+            </DialogDescription>
+          </DialogHeader>
+          <div className="p-4">
+            <p>Contact management functionality will be implemented here.</p>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Purchase Order Dialog */}
+      <Dialog open={showPurchaseOrderDialog} onOpenChange={setShowPurchaseOrderDialog}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Create Purchase Order - {selectedSupplier?.name}</DialogTitle>
+            <DialogDescription>
+              Create a new purchase order for this supplier
+            </DialogDescription>
+          </DialogHeader>
+          <div className="p-4">
+            <p>Purchase order creation functionality will be implemented here.</p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
+  )
+}
+
+// Simple Supplier Form Component
+function SupplierForm({
+  supplier,
+  onSave,
+  onCancel
+}: {
+  supplier?: Supplier | null
+  onSave: () => void
+  onCancel: () => void
+}) {
+  const [formData, setFormData] = useState({
+    name: supplier?.name || '',
+    code: supplier?.code || '',
+    email: supplier?.email || '',
+    phone: supplier?.phone || '',
+    website: supplier?.website || '',
+    address: supplier?.billingAddress?.street || '',
+    city: supplier?.billingAddress?.city || '',
+    state: supplier?.billingAddress?.state || '',
+    country: supplier?.billingAddress?.country || '',
+    postalCode: supplier?.billingAddress?.zipCode || '',
+    taxId: supplier?.taxId || '',
+    companyType: supplier?.companyType || 'CORPORATION' as const,
+    status: supplier?.status || 'ACTIVE' as const,
+    paymentTerms: supplier?.paymentTerms || '',
+    creditLimit: supplier?.creditLimit?.toString() || '',
+    currency: supplier?.currency || 'USD',
+    notes: supplier?.notes || ''
+  })
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    try {
+      const url = supplier
+        ? `/api/inventory/suppliers/${supplier.id}`
+        : '/api/inventory/suppliers'
+
+      const method = supplier ? 'PUT' : 'POST'
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          code: formData.code,
+          email: formData.email,
+          phone: formData.phone,
+          website: formData.website,
+          companyType: formData.companyType,
+          taxId: formData.taxId,
+          billingAddress: {
+            street: formData.address,
+            city: formData.city,
+            state: formData.state,
+            country: formData.country,
+            zipCode: formData.postalCode
+          },
+          paymentTerms: formData.paymentTerms,
+          creditLimit: formData.creditLimit ? parseFloat(formData.creditLimit) : null,
+          currency: formData.currency,
+          notes: formData.notes,
+          status: formData.status
+        }),
+      })
+
+      if (response.ok) {
+        onSave()
+      } else {
+        console.error('Failed to save supplier')
+      }
+    } catch (error) {
+      console.error('Error saving supplier:', error)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="name">Company Name *</Label>
+          <Input
+            id="name"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="code">Supplier Code</Label>
+          <Input
+            id="code"
+            value={formData.code}
+            onChange={(e) => setFormData({ ...formData, code: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
+            type="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label htmlFor="phone">Phone</Label>
+          <Input
+            id="phone"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label htmlFor="website">Website</Label>
+          <Input
+            id="website"
+            value={formData.website}
+            onChange={(e) => setFormData({ ...formData, website: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label htmlFor="companyType">Company Type</Label>          <Select
+            value={formData.companyType}
+            onValueChange={(value: 'CORPORATION' | 'LLC' | 'PARTNERSHIP' | 'SOLE_PROPRIETORSHIP' | 'NON_PROFIT' | 'GOVERNMENT' | 'OTHER') =>
+              setFormData({ ...formData, companyType: value })
+            }>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="CORPORATION">Corporation</SelectItem>
+              <SelectItem value="LLC">LLC</SelectItem>
+              <SelectItem value="PARTNERSHIP">Partnership</SelectItem>
+              <SelectItem value="SOLE_PROPRIETORSHIP">Sole Proprietorship</SelectItem>
+              <SelectItem value="NON_PROFIT">Non-Profit</SelectItem>
+              <SelectItem value="GOVERNMENT">Government</SelectItem>
+              <SelectItem value="OTHER">Other</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="address">Address</Label>
+        <Input
+          id="address"
+          value={formData.address}
+          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+        />
+      </div>
+
+      <div className="grid grid-cols-3 gap-4">
+        <div>
+          <Label htmlFor="city">City</Label>
+          <Input
+            id="city"
+            value={formData.city}
+            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label htmlFor="state">State/Province</Label>
+          <Input
+            id="state"
+            value={formData.state}
+            onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label htmlFor="postalCode">Postal Code</Label>
+          <Input
+            id="postalCode"
+            value={formData.postalCode}
+            onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="country">Country</Label>
+          <Input
+            id="country"
+            value={formData.country}
+            onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label htmlFor="taxId">Tax ID</Label>
+          <Input
+            id="taxId"
+            value={formData.taxId}
+            onChange={(e) => setFormData({ ...formData, taxId: e.target.value })}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="creditLimit">Credit Limit</Label>
+          <Input
+            id="creditLimit"
+            type="number"
+            step="0.01"
+            value={formData.creditLimit}
+            onChange={(e) => setFormData({ ...formData, creditLimit: e.target.value })}
+          />
+        </div>
+        <div>
+          <Label htmlFor="currency">Currency</Label>
+          <Select value={formData.currency} onValueChange={(value) => setFormData({ ...formData, currency: value })}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="USD">USD - US Dollar</SelectItem>
+              <SelectItem value="EUR">EUR - Euro</SelectItem>
+              <SelectItem value="GBP">GBP - British Pound</SelectItem>
+              <SelectItem value="CAD">CAD - Canadian Dollar</SelectItem>
+              <SelectItem value="AUD">AUD - Australian Dollar</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="paymentTerms">Payment Terms</Label>
+        <Input
+          id="paymentTerms"
+          value={formData.paymentTerms}
+          onChange={(e) => setFormData({ ...formData, paymentTerms: e.target.value })}
+          placeholder="e.g., Net 30, 2/10 Net 30"
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="notes">Notes</Label>
+        <Textarea
+          id="notes"
+          value={formData.notes}
+          onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+          rows={3}
+        />
+      </div>
+
+      <div className="flex justify-end gap-2 pt-4">
+        <Button type="button" variant="outline" onClick={onCancel}>
+          Cancel
+        </Button>
+        <Button type="submit">
+          {supplier ? 'Update' : 'Create'} Supplier
+        </Button>
+      </div>
+    </form>
   )
 }

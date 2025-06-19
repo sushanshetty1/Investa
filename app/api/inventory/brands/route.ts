@@ -1,19 +1,20 @@
 import { NextRequest } from 'next/server'
-import { 
-  successResponse, 
-  errorResponse, 
-  handleError, 
-  checkRateLimit 
+import {
+  successResponse,
+  errorResponse,
+  handleError,
+  checkRateLimit
 } from '@/lib/api-utils'
-import { 
+import { authenticate } from '@/lib/auth'
+import {
   brandQuerySchema,
   createBrandSchema,
   type BrandQueryInput,
-  type CreateBrandInput 
+  type CreateBrandInput
 } from '@/lib/validations/brand'
-import { 
-  getBrands, 
-  createBrand 
+import {
+  getBrands,
+  createBrand
 } from '@/lib/actions/brands'
 
 // Rate limiting: 100 requests per minute per IP
@@ -21,9 +22,9 @@ const RATE_LIMIT = 100
 const RATE_WINDOW = 60 * 1000 // 1 minute
 
 function getClientIdentifier(request: NextRequest): string {
-  return request.headers.get('x-forwarded-for') || 
-         request.headers.get('x-real-ip') || 
-         'unknown'
+  return request.headers.get('x-forwarded-for') ||
+    request.headers.get('x-real-ip') ||
+    'unknown'
 }
 
 // GET /api/inventory/brands - List brands
@@ -37,12 +38,12 @@ export async function GET(request: NextRequest) {
 
     // Parse and validate query parameters
     const { searchParams } = new URL(request.url)
-    
+
     const queryInput: BrandQueryInput = {
       page: parseInt(searchParams.get('page') || '1'),
       limit: Math.min(parseInt(searchParams.get('limit') || '20'), 100), // Max 100 items
       search: searchParams.get('search') || undefined,
-      isActive: searchParams.get('isActive') ? searchParams.get('isActive') === 'true' : undefined,      sortBy: (searchParams.get('sortBy') as 'name' | 'createdAt' | 'updatedAt') || 'name',
+      isActive: searchParams.get('isActive') ? searchParams.get('isActive') === 'true' : undefined, sortBy: (searchParams.get('sortBy') as 'name' | 'createdAt' | 'updatedAt') || 'name',
       sortOrder: (searchParams.get('sortOrder') as 'asc' | 'desc') || 'asc',
     }
 
@@ -73,14 +74,14 @@ export async function POST(request: NextRequest) {
     const clientId = getClientIdentifier(request)
     if (!checkRateLimit(`${clientId}:write`, 20, RATE_WINDOW)) {
       return errorResponse('Rate limit exceeded for write operations', 429)
-    }
-
-    // Parse request body
+    }    // Parse request body
     const body = await request.json()
 
-    // TODO: Add authentication check here
-    // const user = await authenticate(request)
-    // if (!user) return errorResponse('Unauthorized', 401)
+    // Authentication check
+    const user = await authenticate(request)
+    if (!user) {
+      return errorResponse('Unauthorized', 401)
+    }
 
     const createInput: CreateBrandInput = body
 

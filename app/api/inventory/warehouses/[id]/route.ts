@@ -1,18 +1,19 @@
 import { NextRequest } from 'next/server'
-import { 
-  successResponse, 
-  errorResponse, 
-  handleError, 
-  checkRateLimit 
+import {
+  successResponse,
+  errorResponse,
+  handleError,
+  checkRateLimit
 } from '@/lib/api-utils'
-import { 
+import { authenticate } from '@/lib/auth'
+import {
   updateWarehouseSchema,
-  type UpdateWarehouseInput 
+  type UpdateWarehouseInput
 } from '@/lib/validations/warehouse'
-import { 
-  getWarehouse, 
-  updateWarehouse, 
-  deleteWarehouse 
+import {
+  getWarehouse,
+  updateWarehouse,
+  deleteWarehouse
 } from '@/lib/actions/warehouses'
 
 // Rate limiting
@@ -20,9 +21,9 @@ const RATE_LIMIT = 60
 const RATE_WINDOW = 60 * 1000 // 1 minute
 
 function getClientIdentifier(request: NextRequest): string {
-  return request.headers.get('x-forwarded-for') || 
-         request.headers.get('x-real-ip') || 
-         'unknown'
+  return request.headers.get('x-forwarded-for') ||
+    request.headers.get('x-real-ip') ||
+    'unknown'
 }
 
 // GET /api/inventory/warehouses/[id] - Get warehouse by ID
@@ -75,14 +76,14 @@ export async function PUT(
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
     if (!uuidRegex.test(id)) {
       return errorResponse('Invalid warehouse ID format', 400)
-    }
-
-    // Parse request body
+    }    // Parse request body
     const body = await request.json()
 
-    // TODO: Add authentication check here
-    // const user = await authenticate(request)
-    // if (!user) return errorResponse('Unauthorized', 401)
+    // Authentication check
+    const user = await authenticate(request)
+    if (!user) {
+      return errorResponse('Unauthorized', 401)
+    }
 
     const updateInput: UpdateWarehouseInput = {
       id,
@@ -117,17 +118,17 @@ export async function DELETE(
       return errorResponse('Rate limit exceeded for delete operations', 429)
     }
 
-    const { id } = await params
-
-    // Validate UUID format
+    const { id } = await params    // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
     if (!uuidRegex.test(id)) {
       return errorResponse('Invalid warehouse ID format', 400)
     }
 
-    // TODO: Add authentication check here
-    // const user = await authenticate(request)
-    // if (!user) return errorResponse('Unauthorized', 401)
+    // Authentication check
+    const user = await authenticate(request)
+    if (!user) {
+      return errorResponse('Unauthorized', 401)
+    }
 
     // Delete warehouse using server action
     const result = await deleteWarehouse(id)
