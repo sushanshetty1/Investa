@@ -16,6 +16,302 @@ datasource supabaseDb {
 }
 
 // ===================================================================
+// COMPANY & ORGANIZATION MODELS
+// ===================================================================
+
+model Company {
+    id String @id @default(uuid())
+
+    // Basic Information
+    name        String
+    displayName String?
+    description String?
+    website     String?
+    industry    String?
+    size        CompanySize @default(SMALL)
+
+    // Contact Information
+    email   String?
+    phone   String?
+    address Json? // {street, city, state, country, zipCode}
+
+    // Business Details
+    registrationNumber String?      @unique
+    taxId              String?      @unique
+    vatNumber          String?
+    businessType       BusinessType @default(PRIVATE)
+
+    // Branding
+    logo         String? // URL to logo
+    primaryColor String? // Hex color
+    theme        Json? // Custom theme settings
+
+    // Subscription & Billing
+    subscriptionPlan   SubscriptionPlan   @default(FREE)
+    subscriptionStatus SubscriptionStatus @default(ACTIVE)
+    billingEmail       String?
+    paymentMethodId    String?
+
+    // Features & Limits
+    maxUsers      Int   @default(5)
+    maxWarehouses Int   @default(1)
+    maxProducts   Int   @default(100)
+    features      Json? // Array of enabled features
+
+    // Security Settings
+    enforceSSO            Boolean @default(false)
+    requireTwoFactor      Boolean @default(false)
+    passwordPolicy        Json? // Password requirements
+    sessionTimeoutMinutes Int     @default(480) // 8 hours
+
+    // Status & Control
+    isActive    Boolean @default(true)
+    isSuspended Boolean @default(false)
+    isDeleted   Boolean @default(false)
+
+    // Trial & Onboarding
+    trialEndsAt    DateTime?
+    onboardingStep String? // Current onboarding step
+    setupComplete  Boolean   @default(false)
+
+    // Metadata
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    createdBy String // User ID who created the company
+
+    // Relations
+    companyUsers   CompanyUser[]
+    departments    Department[]
+    locations      CompanyLocation[]
+    integrations   CompanyIntegration[]
+    auditLogs      CompanyAuditLog[]
+    billingHistory BillingHistory[]
+
+    @@map("companies")
+}
+
+model CompanyUser {
+    id        String @id @default(uuid())
+    companyId String
+    userId    String
+
+    // Role & Permissions within Company
+    role         CompanyRole @default(EMPLOYEE)
+    title        String? // Job title
+    departmentId String?
+
+    // Employment Details
+    employeeId String? // Company's internal employee ID
+    startDate  DateTime  @default(now())
+    endDate    DateTime? // For terminated employees
+
+    // Access Control
+    permissions      Json? // Company-specific permissions
+    isActive         Boolean @default(true)
+    isOwner          Boolean @default(false) // Company owner/admin
+    canInvite        Boolean @default(false)
+    canManageBilling Boolean @default(false)
+
+    // Hierarchy
+    managerId     String? // References another CompanyUser
+    directReports Json? // Array of user IDs reporting to this user
+
+    // Status
+    status EmploymentStatus @default(ACTIVE)
+
+    // Metadata
+    invitedBy    String? // User ID who invited them
+    invitedAt    DateTime?
+    joinedAt     DateTime  @default(now())
+    lastActiveAt DateTime?
+
+    // Relations
+    company    Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+    user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    department Department?   @relation(fields: [departmentId], references: [id])
+    manager    CompanyUser?  @relation("CompanyHierarchy", fields: [managerId], references: [id])
+    reports    CompanyUser[] @relation("CompanyHierarchy")
+
+    @@unique([companyId, userId])
+    @@map("company_users")
+}
+
+model Department {
+    id        String @id @default(uuid())
+    companyId String
+
+    // Basic Information
+    name        String
+    description String?
+    code        String? // Department code (HR, IT, OPS, etc.)
+
+    // Hierarchy
+    parentId String? // For nested departments
+    level    Int     @default(0)
+
+    // Management
+    headOfDepartment String? // User ID
+    budget           Decimal?
+    costCenter       String?
+
+    // Status
+    isActive Boolean @default(true)
+
+    // Metadata
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    company   Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+    parent    Department?   @relation("DepartmentHierarchy", fields: [parentId], references: [id])
+    children  Department[]  @relation("DepartmentHierarchy")
+    employees CompanyUser[]
+
+    @@unique([companyId, name])
+    @@map("departments")
+}
+
+model CompanyLocation {
+    id        String @id @default(uuid())
+    companyId String
+
+    // Location Details
+    name        String
+    type        LocationType @default(OFFICE)
+    address     Json // {street, city, state, country, zipCode}
+    coordinates Json? // {lat, lng}
+    timezone    String       @default("UTC")
+
+    // Contact Information
+    phone       String?
+    email       String?
+    managerName String?
+
+    // Business Hours
+    businessHours Json? // {monday: {open: "09:00", close: "17:00"}, ...}
+
+    // Status
+    isPrimary Boolean @default(false)
+    isActive  Boolean @default(true)
+
+    // Metadata
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+    @@map("company_locations")
+}
+
+model CompanyIntegration {
+    id        String @id @default(uuid())
+    companyId String
+
+    // Integration Details
+    name     String // Shopify, WooCommerce, QuickBooks, etc.
+    type     IntegrationType
+    provider String
+
+    // Configuration
+    config      Json // Integration-specific settings
+    credentials Json // Encrypted credentials
+    mappings    Json? // Field mappings
+
+    // Sync Settings
+    autoSync     Boolean   @default(true)
+    syncInterval Int       @default(60) // Minutes
+    lastSyncAt   DateTime?
+    nextSyncAt   DateTime?
+
+    // Status
+    status   IntegrationStatus @default(DISCONNECTED)
+    isActive Boolean           @default(true)
+
+    // Error Handling
+    lastError  String?
+    errorCount Int     @default(0)
+
+    // Metadata
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Relations
+    company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+    @@unique([companyId, name])
+    @@map("company_integrations")
+}
+
+model CompanyAuditLog {
+    id        String @id @default(uuid())
+    companyId String
+
+    // User Context
+    userId    String?
+    userEmail String?
+
+    // Action Details
+    action     String
+    resource   String
+    resourceId String?
+
+    // Changes
+    oldValues Json?
+    newValues Json?
+    changes   Json?
+
+    // Context
+    ipAddress String?
+    userAgent String?
+
+    // Metadata
+    metadata Json?
+    severity AuditSeverity @default(INFO)
+
+    // Timing
+    timestamp DateTime @default(now())
+
+    // Relations
+    company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+    @@map("company_audit_logs")
+}
+
+model BillingHistory {
+    id        String @id @default(uuid())
+    companyId String
+
+    // Billing Period
+    periodStart DateTime
+    periodEnd   DateTime
+
+    // Amounts
+    amount   Decimal
+    tax      Decimal @default(0)
+    total    Decimal
+    currency String  @default("USD")
+
+    // Details
+    description   String?
+    invoiceNumber String? @unique
+
+    // Payment
+    paymentStatus PaymentStatus @default(PENDING)
+    paymentMethod String?
+    paidAt        DateTime?
+
+    // Metadata
+    metadata  Json?
+    createdAt DateTime @default(now())
+
+    // Relations
+    company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+    @@map("billing_history")
+}
+
+// ===================================================================
 // AUTHENTICATION & USER MODELS
 // ===================================================================
 
@@ -68,6 +364,7 @@ model User {
     preferences     UserPreference[]
     notifications   UserNotification[]
     apiKeys         ApiKey[]
+    companyUsers    CompanyUser[] // Company memberships
 
     @@map("users")
 }
@@ -248,15 +545,6 @@ model UserInvitation {
     @@map("user_invitations")
 }
 
-enum InvitationStatus {
-    PENDING
-    SENT
-    ACCEPTED
-    DECLINED
-    EXPIRED
-    CANCELLED
-}
-
 // ===================================================================
 // PREFERENCES & SETTINGS MODELS
 // ===================================================================
@@ -326,22 +614,6 @@ model UserNotification {
     @@map("user_notifications")
 }
 
-enum NotificationType {
-    INFO
-    SUCCESS
-    WARNING
-    ERROR
-    ALERT
-    REMINDER
-}
-
-enum NotificationPriority {
-    LOW
-    MEDIUM
-    HIGH
-    URGENT
-}
-
 // ===================================================================
 // AUDIT & LOGGING MODELS
 // ===================================================================
@@ -379,13 +651,6 @@ model AuditLog {
     user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
     @@map("audit_logs")
-}
-
-enum AuditSeverity {
-    INFO
-    WARNING
-    ERROR
-    CRITICAL
 }
 
 // ===================================================================
@@ -455,4 +720,129 @@ model ApiKey {
     user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("api_keys")
+}
+
+// ===================================================================
+// ENUMS
+// ===================================================================
+
+enum CompanySize {
+    STARTUP // 1-10 employees
+    SMALL // 11-50 employees
+    MEDIUM // 51-200 employees
+    LARGE // 201-1000 employees
+    ENTERPRISE // 1000+ employees
+}
+
+enum BusinessType {
+    PRIVATE
+    PUBLIC
+    NONPROFIT
+    GOVERNMENT
+    PARTNERSHIP
+    SOLE_PROPRIETORSHIP
+}
+
+enum SubscriptionPlan {
+    FREE
+    BASIC
+    PROFESSIONAL
+    ENTERPRISE
+    CUSTOM
+}
+
+enum SubscriptionStatus {
+    ACTIVE
+    TRIAL
+    PAST_DUE
+    CANCELLED
+    SUSPENDED
+    EXPIRED
+}
+
+enum CompanyRole {
+    OWNER // Full access, billing, company settings
+    ADMIN // Most access, user management
+    MANAGER // Department/team management
+    SUPERVISOR // Limited management access
+    EMPLOYEE // Standard user access
+    CONTRACTOR // Limited temporary access
+    VIEWER // Read-only access
+}
+
+enum EmploymentStatus {
+    ACTIVE
+    INACTIVE
+    TERMINATED
+    SUSPENDED
+    ON_LEAVE
+}
+
+enum LocationType {
+    HEADQUARTERS
+    OFFICE
+    WAREHOUSE
+    STORE
+    FACTORY
+    REMOTE
+    OTHER
+}
+
+enum IntegrationType {
+    ECOMMERCE // Shopify, WooCommerce, etc.
+    ACCOUNTING // QuickBooks, Xero, etc.
+    CRM // Salesforce, HubSpot, etc.
+    ERP // SAP, Oracle, etc.
+    SHIPPING // FedEx, UPS, DHL, etc.
+    PAYMENT // Stripe, PayPal, etc.
+    EMAIL // SendGrid, Mailchimp, etc.
+    OTHER
+}
+
+enum IntegrationStatus {
+    CONNECTED
+    DISCONNECTED
+    ERROR
+    SYNCING
+    PAUSED
+}
+
+enum PaymentStatus {
+    PENDING
+    PAID
+    FAILED
+    REFUNDED
+    CANCELLED
+}
+
+enum InvitationStatus {
+    PENDING
+    SENT
+    ACCEPTED
+    DECLINED
+    EXPIRED
+    CANCELLED
+}
+
+enum NotificationType {
+    INFO
+    SUCCESS
+    WARNING
+    ERROR
+    ALERT
+    REMINDER
+}
+
+enum NotificationPriority {
+    LOW
+    MEDIUM
+    HIGH
+    URGENT
+}
+
+enum AuditSeverity {
+    INFO
+    WARNING
+    ERROR
+    CRITICAL
 }

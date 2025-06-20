@@ -387,10 +387,11 @@ export type FulfillmentStatus = (typeof FulfillmentStatus)[keyof typeof Fulfillm
 
 export const PaymentStatus: {
   PENDING: 'PENDING',
-  AUTHORIZED: 'AUTHORIZED',
+  PROCESSING: 'PROCESSING',
   PAID: 'PAID',
   PARTIALLY_PAID: 'PARTIALLY_PAID',
   REFUNDED: 'REFUNDED',
+  CANCELLED: 'CANCELLED',
   FAILED: 'FAILED'
 };
 
@@ -5041,6 +5042,7 @@ export namespace Prisma {
 
   export type ProductMinAggregateOutputType = {
     id: string | null
+    companyId: string | null
     name: string | null
     description: string | null
     sku: string | null
@@ -5074,6 +5076,7 @@ export namespace Prisma {
 
   export type ProductMaxAggregateOutputType = {
     id: string | null
+    companyId: string | null
     name: string | null
     description: string | null
     sku: string | null
@@ -5107,6 +5110,7 @@ export namespace Prisma {
 
   export type ProductCountAggregateOutputType = {
     id: number
+    companyId: number
     name: number
     description: number
     sku: number
@@ -5171,6 +5175,7 @@ export namespace Prisma {
 
   export type ProductMinAggregateInputType = {
     id?: true
+    companyId?: true
     name?: true
     description?: true
     sku?: true
@@ -5204,6 +5209,7 @@ export namespace Prisma {
 
   export type ProductMaxAggregateInputType = {
     id?: true
+    companyId?: true
     name?: true
     description?: true
     sku?: true
@@ -5237,6 +5243,7 @@ export namespace Prisma {
 
   export type ProductCountAggregateInputType = {
     id?: true
+    companyId?: true
     name?: true
     description?: true
     sku?: true
@@ -5360,6 +5367,7 @@ export namespace Prisma {
 
   export type ProductGroupByOutputType = {
     id: string
+    companyId: string
     name: string
     description: string | null
     sku: string
@@ -5415,6 +5423,7 @@ export namespace Prisma {
 
   export type ProductSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     name?: boolean
     description?: boolean
     sku?: boolean
@@ -5467,6 +5476,7 @@ export namespace Prisma {
 
   export type ProductSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     name?: boolean
     description?: boolean
     sku?: boolean
@@ -5505,6 +5515,7 @@ export namespace Prisma {
 
   export type ProductSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     name?: boolean
     description?: boolean
     sku?: boolean
@@ -5543,6 +5554,7 @@ export namespace Prisma {
 
   export type ProductSelectScalar = {
     id?: boolean
+    companyId?: boolean
     name?: boolean
     description?: boolean
     sku?: boolean
@@ -5577,7 +5589,7 @@ export namespace Prisma {
     createdBy?: boolean
   }
 
-  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "sku" | "barcode" | "slug" | "categoryId" | "brandId" | "weight" | "dimensions" | "color" | "size" | "material" | "costPrice" | "sellingPrice" | "wholesalePrice" | "minStockLevel" | "maxStockLevel" | "reorderPoint" | "reorderQuantity" | "status" | "isTrackable" | "isSerialized" | "images" | "primaryImage" | "metaTitle" | "metaDescription" | "tags" | "leadTimeSupply" | "shelfLife" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["product"]>
+  export type ProductOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "name" | "description" | "sku" | "barcode" | "slug" | "categoryId" | "brandId" | "weight" | "dimensions" | "color" | "size" | "material" | "costPrice" | "sellingPrice" | "wholesalePrice" | "minStockLevel" | "maxStockLevel" | "reorderPoint" | "reorderQuantity" | "status" | "isTrackable" | "isSerialized" | "images" | "primaryImage" | "metaTitle" | "metaDescription" | "tags" | "leadTimeSupply" | "shelfLife" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["product"]>
   export type ProductInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     category?: boolean | Product$categoryArgs<ExtArgs>
     brand?: boolean | Product$brandArgs<ExtArgs>
@@ -5626,6 +5638,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      companyId: string
       name: string
       description: string | null
       sku: string
@@ -6097,6 +6110,7 @@ export namespace Prisma {
    */
   interface ProductFieldRefs {
     readonly id: FieldRef<"Product", 'String'>
+    readonly companyId: FieldRef<"Product", 'String'>
     readonly name: FieldRef<"Product", 'String'>
     readonly description: FieldRef<"Product", 'String'>
     readonly sku: FieldRef<"Product", 'String'>
@@ -11903,6 +11917,7 @@ export namespace Prisma {
 
   export type WarehouseMinAggregateOutputType = {
     id: string | null
+    companyId: string | null
     name: string | null
     code: string | null
     description: string | null
@@ -11924,6 +11939,7 @@ export namespace Prisma {
 
   export type WarehouseMaxAggregateOutputType = {
     id: string | null
+    companyId: string | null
     name: string | null
     code: string | null
     description: string | null
@@ -11945,6 +11961,7 @@ export namespace Prisma {
 
   export type WarehouseCountAggregateOutputType = {
     id: number
+    companyId: number
     name: number
     code: number
     description: number
@@ -11971,6 +11988,7 @@ export namespace Prisma {
 
   export type WarehouseMinAggregateInputType = {
     id?: true
+    companyId?: true
     name?: true
     code?: true
     description?: true
@@ -11992,6 +12010,7 @@ export namespace Prisma {
 
   export type WarehouseMaxAggregateInputType = {
     id?: true
+    companyId?: true
     name?: true
     code?: true
     description?: true
@@ -12013,6 +12032,7 @@ export namespace Prisma {
 
   export type WarehouseCountAggregateInputType = {
     id?: true
+    companyId?: true
     name?: true
     code?: true
     description?: true
@@ -12110,6 +12130,7 @@ export namespace Prisma {
 
   export type WarehouseGroupByOutputType = {
     id: string
+    companyId: string
     name: string
     code: string
     description: string | null
@@ -12151,6 +12172,7 @@ export namespace Prisma {
 
   export type WarehouseSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     name?: boolean
     code?: boolean
     description?: boolean
@@ -12186,6 +12208,7 @@ export namespace Prisma {
 
   export type WarehouseSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     name?: boolean
     code?: boolean
     description?: boolean
@@ -12210,6 +12233,7 @@ export namespace Prisma {
 
   export type WarehouseSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     name?: boolean
     code?: boolean
     description?: boolean
@@ -12234,6 +12258,7 @@ export namespace Prisma {
 
   export type WarehouseSelectScalar = {
     id?: boolean
+    companyId?: boolean
     name?: boolean
     code?: boolean
     description?: boolean
@@ -12256,7 +12281,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type WarehouseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "description" | "address" | "coordinates" | "timezone" | "managerName" | "managerEmail" | "managerPhone" | "phone" | "email" | "type" | "capacity" | "isActive" | "hasRfid" | "hasBarcode" | "temperatureControl" | "securityLevel" | "createdAt" | "updatedAt", ExtArgs["result"]["warehouse"]>
+  export type WarehouseOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "name" | "code" | "description" | "address" | "coordinates" | "timezone" | "managerName" | "managerEmail" | "managerPhone" | "phone" | "email" | "type" | "capacity" | "isActive" | "hasRfid" | "hasBarcode" | "temperatureControl" | "securityLevel" | "createdAt" | "updatedAt", ExtArgs["result"]["warehouse"]>
   export type WarehouseInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     inventoryItems?: boolean | Warehouse$inventoryItemsArgs<ExtArgs>
     movements?: boolean | Warehouse$movementsArgs<ExtArgs>
@@ -12289,6 +12314,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      companyId: string
       name: string
       code: string
       description: string | null
@@ -12743,6 +12769,7 @@ export namespace Prisma {
    */
   interface WarehouseFieldRefs {
     readonly id: FieldRef<"Warehouse", 'String'>
+    readonly companyId: FieldRef<"Warehouse", 'String'>
     readonly name: FieldRef<"Warehouse", 'String'>
     readonly code: FieldRef<"Warehouse", 'String'>
     readonly description: FieldRef<"Warehouse", 'String'>
@@ -16337,6 +16364,7 @@ export namespace Prisma {
 
   export type SupplierMinAggregateOutputType = {
     id: string | null
+    companyId: string | null
     name: string | null
     code: string | null
     email: string | null
@@ -16365,6 +16393,7 @@ export namespace Prisma {
 
   export type SupplierMaxAggregateOutputType = {
     id: string | null
+    companyId: string | null
     name: string | null
     code: string | null
     email: string | null
@@ -16393,6 +16422,7 @@ export namespace Prisma {
 
   export type SupplierCountAggregateOutputType = {
     id: number
+    companyId: number
     name: number
     code: number
     email: number
@@ -16440,6 +16470,7 @@ export namespace Prisma {
 
   export type SupplierMinAggregateInputType = {
     id?: true
+    companyId?: true
     name?: true
     code?: true
     email?: true
@@ -16468,6 +16499,7 @@ export namespace Prisma {
 
   export type SupplierMaxAggregateInputType = {
     id?: true
+    companyId?: true
     name?: true
     code?: true
     email?: true
@@ -16496,6 +16528,7 @@ export namespace Prisma {
 
   export type SupplierCountAggregateInputType = {
     id?: true
+    companyId?: true
     name?: true
     code?: true
     email?: true
@@ -16614,6 +16647,7 @@ export namespace Prisma {
 
   export type SupplierGroupByOutputType = {
     id: string
+    companyId: string
     name: string
     code: string
     email: string | null
@@ -16664,6 +16698,7 @@ export namespace Prisma {
 
   export type SupplierSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     name?: boolean
     code?: boolean
     email?: boolean
@@ -16701,6 +16736,7 @@ export namespace Prisma {
 
   export type SupplierSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     name?: boolean
     code?: boolean
     email?: boolean
@@ -16732,6 +16768,7 @@ export namespace Prisma {
 
   export type SupplierSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     name?: boolean
     code?: boolean
     email?: boolean
@@ -16763,6 +16800,7 @@ export namespace Prisma {
 
   export type SupplierSelectScalar = {
     id?: boolean
+    companyId?: boolean
     name?: boolean
     code?: boolean
     email?: boolean
@@ -16792,7 +16830,7 @@ export namespace Prisma {
     createdBy?: boolean
   }
 
-  export type SupplierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "email" | "phone" | "website" | "companyType" | "taxId" | "vatNumber" | "registrationNumber" | "billingAddress" | "shippingAddress" | "contactName" | "contactEmail" | "contactPhone" | "contactTitle" | "paymentTerms" | "creditLimit" | "currency" | "rating" | "onTimeDelivery" | "qualityRating" | "status" | "certifications" | "notes" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["supplier"]>
+  export type SupplierOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "name" | "code" | "email" | "phone" | "website" | "companyType" | "taxId" | "vatNumber" | "registrationNumber" | "billingAddress" | "shippingAddress" | "contactName" | "contactEmail" | "contactPhone" | "contactTitle" | "paymentTerms" | "creditLimit" | "currency" | "rating" | "onTimeDelivery" | "qualityRating" | "status" | "certifications" | "notes" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["supplier"]>
   export type SupplierInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     products?: boolean | Supplier$productsArgs<ExtArgs>
     purchaseOrders?: boolean | Supplier$purchaseOrdersArgs<ExtArgs>
@@ -16815,6 +16853,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      companyId: string
       name: string
       code: string
       email: string | null
@@ -17271,6 +17310,7 @@ export namespace Prisma {
    */
   interface SupplierFieldRefs {
     readonly id: FieldRef<"Supplier", 'String'>
+    readonly companyId: FieldRef<"Supplier", 'String'>
     readonly name: FieldRef<"Supplier", 'String'>
     readonly code: FieldRef<"Supplier", 'String'>
     readonly email: FieldRef<"Supplier", 'String'>
@@ -26743,6 +26783,7 @@ export namespace Prisma {
 
   export type CustomerMinAggregateOutputType = {
     id: string | null
+    companyId: string | null
     customerNumber: string | null
     type: $Enums.CustomerType | null
     firstName: string | null
@@ -26768,6 +26809,7 @@ export namespace Prisma {
 
   export type CustomerMaxAggregateOutputType = {
     id: string | null
+    companyId: string | null
     customerNumber: string | null
     type: $Enums.CustomerType | null
     firstName: string | null
@@ -26793,6 +26835,7 @@ export namespace Prisma {
 
   export type CustomerCountAggregateOutputType = {
     id: number
+    companyId: number
     customerNumber: number
     type: number
     firstName: number
@@ -26830,6 +26873,7 @@ export namespace Prisma {
 
   export type CustomerMinAggregateInputType = {
     id?: true
+    companyId?: true
     customerNumber?: true
     type?: true
     firstName?: true
@@ -26855,6 +26899,7 @@ export namespace Prisma {
 
   export type CustomerMaxAggregateInputType = {
     id?: true
+    companyId?: true
     customerNumber?: true
     type?: true
     firstName?: true
@@ -26880,6 +26925,7 @@ export namespace Prisma {
 
   export type CustomerCountAggregateInputType = {
     id?: true
+    companyId?: true
     customerNumber?: true
     type?: true
     firstName?: true
@@ -26994,6 +27040,7 @@ export namespace Prisma {
 
   export type CustomerGroupByOutputType = {
     id: string
+    companyId: string
     customerNumber: string
     type: $Enums.CustomerType
     firstName: string | null
@@ -27040,6 +27087,7 @@ export namespace Prisma {
 
   export type CustomerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     customerNumber?: boolean
     type?: boolean
     firstName?: boolean
@@ -27071,6 +27119,7 @@ export namespace Prisma {
 
   export type CustomerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     customerNumber?: boolean
     type?: boolean
     firstName?: boolean
@@ -27098,6 +27147,7 @@ export namespace Prisma {
 
   export type CustomerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     customerNumber?: boolean
     type?: boolean
     firstName?: boolean
@@ -27125,6 +27175,7 @@ export namespace Prisma {
 
   export type CustomerSelectScalar = {
     id?: boolean
+    companyId?: boolean
     customerNumber?: boolean
     type?: boolean
     firstName?: boolean
@@ -27150,7 +27201,7 @@ export namespace Prisma {
     createdBy?: boolean
   }
 
-  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerNumber" | "type" | "firstName" | "lastName" | "companyName" | "taxId" | "email" | "phone" | "mobile" | "billingAddress" | "shippingAddress" | "creditLimit" | "paymentTerms" | "currency" | "preferredLanguage" | "timezone" | "allowMarketing" | "source" | "status" | "notes" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["customer"]>
+  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "customerNumber" | "type" | "firstName" | "lastName" | "companyName" | "taxId" | "email" | "phone" | "mobile" | "billingAddress" | "shippingAddress" | "creditLimit" | "paymentTerms" | "currency" | "preferredLanguage" | "timezone" | "allowMarketing" | "source" | "status" | "notes" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["customer"]>
   export type CustomerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     orders?: boolean | Customer$ordersArgs<ExtArgs>
     invoices?: boolean | Customer$invoicesArgs<ExtArgs>
@@ -27169,6 +27220,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      companyId: string
       customerNumber: string
       type: $Enums.CustomerType
       firstName: string | null
@@ -27619,6 +27671,7 @@ export namespace Prisma {
    */
   interface CustomerFieldRefs {
     readonly id: FieldRef<"Customer", 'String'>
+    readonly companyId: FieldRef<"Customer", 'String'>
     readonly customerNumber: FieldRef<"Customer", 'String'>
     readonly type: FieldRef<"Customer", 'CustomerType'>
     readonly firstName: FieldRef<"Customer", 'String'>
@@ -29312,6 +29365,7 @@ export namespace Prisma {
 
   export type OrderMinAggregateOutputType = {
     id: string | null
+    companyId: string | null
     orderNumber: string | null
     customerId: string | null
     warehouseId: string | null
@@ -29345,6 +29399,7 @@ export namespace Prisma {
 
   export type OrderMaxAggregateOutputType = {
     id: string | null
+    companyId: string | null
     orderNumber: string | null
     customerId: string | null
     warehouseId: string | null
@@ -29378,6 +29433,7 @@ export namespace Prisma {
 
   export type OrderCountAggregateOutputType = {
     id: number
+    companyId: number
     orderNumber: number
     customerId: number
     warehouseId: number
@@ -29430,6 +29486,7 @@ export namespace Prisma {
 
   export type OrderMinAggregateInputType = {
     id?: true
+    companyId?: true
     orderNumber?: true
     customerId?: true
     warehouseId?: true
@@ -29463,6 +29520,7 @@ export namespace Prisma {
 
   export type OrderMaxAggregateInputType = {
     id?: true
+    companyId?: true
     orderNumber?: true
     customerId?: true
     warehouseId?: true
@@ -29496,6 +29554,7 @@ export namespace Prisma {
 
   export type OrderCountAggregateInputType = {
     id?: true
+    companyId?: true
     orderNumber?: true
     customerId?: true
     warehouseId?: true
@@ -29617,6 +29676,7 @@ export namespace Prisma {
 
   export type OrderGroupByOutputType = {
     id: string
+    companyId: string
     orderNumber: string
     customerId: string
     warehouseId: string
@@ -29670,6 +29730,7 @@ export namespace Prisma {
 
   export type OrderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     orderNumber?: boolean
     customerId?: boolean
     warehouseId?: boolean
@@ -29710,6 +29771,7 @@ export namespace Prisma {
 
   export type OrderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     orderNumber?: boolean
     customerId?: boolean
     warehouseId?: boolean
@@ -29746,6 +29808,7 @@ export namespace Prisma {
 
   export type OrderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    companyId?: boolean
     orderNumber?: boolean
     customerId?: boolean
     warehouseId?: boolean
@@ -29782,6 +29845,7 @@ export namespace Prisma {
 
   export type OrderSelectScalar = {
     id?: boolean
+    companyId?: boolean
     orderNumber?: boolean
     customerId?: boolean
     warehouseId?: boolean
@@ -29814,7 +29878,7 @@ export namespace Prisma {
     createdBy?: boolean
   }
 
-  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orderNumber" | "customerId" | "warehouseId" | "type" | "channel" | "subtotal" | "taxAmount" | "shippingCost" | "discountAmount" | "totalAmount" | "currency" | "status" | "fulfillmentStatus" | "paymentStatus" | "orderDate" | "requiredDate" | "promisedDate" | "shippedDate" | "deliveredDate" | "shippingMethod" | "trackingNumber" | "carrier" | "shippingAddress" | "priority" | "rushOrder" | "notes" | "internalNotes" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["order"]>
+  export type OrderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "orderNumber" | "customerId" | "warehouseId" | "type" | "channel" | "subtotal" | "taxAmount" | "shippingCost" | "discountAmount" | "totalAmount" | "currency" | "status" | "fulfillmentStatus" | "paymentStatus" | "orderDate" | "requiredDate" | "promisedDate" | "shippedDate" | "deliveredDate" | "shippingMethod" | "trackingNumber" | "carrier" | "shippingAddress" | "priority" | "rushOrder" | "notes" | "internalNotes" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["order"]>
   export type OrderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
     warehouse?: boolean | WarehouseDefaultArgs<ExtArgs>
@@ -29843,6 +29907,7 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      companyId: string
       orderNumber: string
       customerId: string
       warehouseId: string
@@ -30302,6 +30367,7 @@ export namespace Prisma {
    */
   interface OrderFieldRefs {
     readonly id: FieldRef<"Order", 'String'>
+    readonly companyId: FieldRef<"Order", 'String'>
     readonly orderNumber: FieldRef<"Order", 'String'>
     readonly customerId: FieldRef<"Order", 'String'>
     readonly warehouseId: FieldRef<"Order", 'String'>
@@ -46977,6 +47043,7 @@ export namespace Prisma {
 
   export const ProductScalarFieldEnum: {
     id: 'id',
+    companyId: 'companyId',
     name: 'name',
     description: 'description',
     sku: 'sku',
@@ -47085,6 +47152,7 @@ export namespace Prisma {
 
   export const WarehouseScalarFieldEnum: {
     id: 'id',
+    companyId: 'companyId',
     name: 'name',
     code: 'code',
     description: 'description',
@@ -47175,6 +47243,7 @@ export namespace Prisma {
 
   export const SupplierScalarFieldEnum: {
     id: 'id',
+    companyId: 'companyId',
     name: 'name',
     code: 'code',
     email: 'email',
@@ -47366,6 +47435,7 @@ export namespace Prisma {
 
   export const CustomerScalarFieldEnum: {
     id: 'id',
+    companyId: 'companyId',
     customerNumber: 'customerNumber',
     type: 'type',
     firstName: 'firstName',
@@ -47415,6 +47485,7 @@ export namespace Prisma {
 
   export const OrderScalarFieldEnum: {
     id: 'id',
+    companyId: 'companyId',
     orderNumber: 'orderNumber',
     customerId: 'customerId',
     warehouseId: 'warehouseId',
@@ -48295,6 +48366,7 @@ export namespace Prisma {
     OR?: ProductWhereInput[]
     NOT?: ProductWhereInput | ProductWhereInput[]
     id?: StringFilter<"Product"> | string
+    companyId?: StringFilter<"Product"> | string
     name?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     sku?: StringFilter<"Product"> | string
@@ -48346,6 +48418,7 @@ export namespace Prisma {
 
   export type ProductOrderByWithRelationInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     sku?: SortOrder
@@ -48403,6 +48476,7 @@ export namespace Prisma {
     AND?: ProductWhereInput | ProductWhereInput[]
     OR?: ProductWhereInput[]
     NOT?: ProductWhereInput | ProductWhereInput[]
+    companyId?: StringFilter<"Product"> | string
     name?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     categoryId?: StringNullableFilter<"Product"> | string | null
@@ -48451,6 +48525,7 @@ export namespace Prisma {
 
   export type ProductOrderByWithAggregationInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     sku?: SortOrder
@@ -48495,6 +48570,7 @@ export namespace Prisma {
     OR?: ProductScalarWhereWithAggregatesInput[]
     NOT?: ProductScalarWhereWithAggregatesInput | ProductScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Product"> | string
+    companyId?: StringWithAggregatesFilter<"Product"> | string
     name?: StringWithAggregatesFilter<"Product"> | string
     description?: StringNullableWithAggregatesFilter<"Product"> | string | null
     sku?: StringWithAggregatesFilter<"Product"> | string
@@ -48915,6 +48991,7 @@ export namespace Prisma {
     OR?: WarehouseWhereInput[]
     NOT?: WarehouseWhereInput | WarehouseWhereInput[]
     id?: StringFilter<"Warehouse"> | string
+    companyId?: StringFilter<"Warehouse"> | string
     name?: StringFilter<"Warehouse"> | string
     code?: StringFilter<"Warehouse"> | string
     description?: StringNullableFilter<"Warehouse"> | string | null
@@ -48949,6 +49026,7 @@ export namespace Prisma {
 
   export type WarehouseOrderByWithRelationInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     code?: SortOrder
     description?: SortOrderInput | SortOrder
@@ -48987,6 +49065,7 @@ export namespace Prisma {
     AND?: WarehouseWhereInput | WarehouseWhereInput[]
     OR?: WarehouseWhereInput[]
     NOT?: WarehouseWhereInput | WarehouseWhereInput[]
+    companyId?: StringFilter<"Warehouse"> | string
     name?: StringFilter<"Warehouse"> | string
     description?: StringNullableFilter<"Warehouse"> | string | null
     address?: JsonFilter<"Warehouse">
@@ -49020,6 +49099,7 @@ export namespace Prisma {
 
   export type WarehouseOrderByWithAggregationInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     code?: SortOrder
     description?: SortOrderInput | SortOrder
@@ -49050,6 +49130,7 @@ export namespace Prisma {
     OR?: WarehouseScalarWhereWithAggregatesInput[]
     NOT?: WarehouseScalarWhereWithAggregatesInput | WarehouseScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Warehouse"> | string
+    companyId?: StringWithAggregatesFilter<"Warehouse"> | string
     name?: StringWithAggregatesFilter<"Warehouse"> | string
     code?: StringWithAggregatesFilter<"Warehouse"> | string
     description?: StringNullableWithAggregatesFilter<"Warehouse"> | string | null
@@ -49418,6 +49499,7 @@ export namespace Prisma {
     OR?: SupplierWhereInput[]
     NOT?: SupplierWhereInput | SupplierWhereInput[]
     id?: StringFilter<"Supplier"> | string
+    companyId?: StringFilter<"Supplier"> | string
     name?: StringFilter<"Supplier"> | string
     code?: StringFilter<"Supplier"> | string
     email?: StringNullableFilter<"Supplier"> | string | null
@@ -49454,6 +49536,7 @@ export namespace Prisma {
 
   export type SupplierOrderByWithRelationInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     code?: SortOrder
     email?: SortOrderInput | SortOrder
@@ -49494,6 +49577,7 @@ export namespace Prisma {
     AND?: SupplierWhereInput | SupplierWhereInput[]
     OR?: SupplierWhereInput[]
     NOT?: SupplierWhereInput | SupplierWhereInput[]
+    companyId?: StringFilter<"Supplier"> | string
     name?: StringFilter<"Supplier"> | string
     email?: StringNullableFilter<"Supplier"> | string | null
     phone?: StringNullableFilter<"Supplier"> | string | null
@@ -49529,6 +49613,7 @@ export namespace Prisma {
 
   export type SupplierOrderByWithAggregationInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     code?: SortOrder
     email?: SortOrderInput | SortOrder
@@ -49568,6 +49653,7 @@ export namespace Prisma {
     OR?: SupplierScalarWhereWithAggregatesInput[]
     NOT?: SupplierScalarWhereWithAggregatesInput | SupplierScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Supplier"> | string
+    companyId?: StringWithAggregatesFilter<"Supplier"> | string
     name?: StringWithAggregatesFilter<"Supplier"> | string
     code?: StringWithAggregatesFilter<"Supplier"> | string
     email?: StringNullableWithAggregatesFilter<"Supplier"> | string | null
@@ -50431,6 +50517,7 @@ export namespace Prisma {
     OR?: CustomerWhereInput[]
     NOT?: CustomerWhereInput | CustomerWhereInput[]
     id?: StringFilter<"Customer"> | string
+    companyId?: StringFilter<"Customer"> | string
     customerNumber?: StringFilter<"Customer"> | string
     type?: EnumCustomerTypeFilter<"Customer"> | $Enums.CustomerType
     firstName?: StringNullableFilter<"Customer"> | string | null
@@ -50461,6 +50548,7 @@ export namespace Prisma {
 
   export type CustomerOrderByWithRelationInput = {
     id?: SortOrder
+    companyId?: SortOrder
     customerNumber?: SortOrder
     type?: SortOrder
     firstName?: SortOrderInput | SortOrder
@@ -50495,6 +50583,7 @@ export namespace Prisma {
     AND?: CustomerWhereInput | CustomerWhereInput[]
     OR?: CustomerWhereInput[]
     NOT?: CustomerWhereInput | CustomerWhereInput[]
+    companyId?: StringFilter<"Customer"> | string
     type?: EnumCustomerTypeFilter<"Customer"> | $Enums.CustomerType
     firstName?: StringNullableFilter<"Customer"> | string | null
     lastName?: StringNullableFilter<"Customer"> | string | null
@@ -50524,6 +50613,7 @@ export namespace Prisma {
 
   export type CustomerOrderByWithAggregationInput = {
     id?: SortOrder
+    companyId?: SortOrder
     customerNumber?: SortOrder
     type?: SortOrder
     firstName?: SortOrderInput | SortOrder
@@ -50559,6 +50649,7 @@ export namespace Prisma {
     OR?: CustomerScalarWhereWithAggregatesInput[]
     NOT?: CustomerScalarWhereWithAggregatesInput | CustomerScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Customer"> | string
+    companyId?: StringWithAggregatesFilter<"Customer"> | string
     customerNumber?: StringWithAggregatesFilter<"Customer"> | string
     type?: EnumCustomerTypeWithAggregatesFilter<"Customer"> | $Enums.CustomerType
     firstName?: StringNullableWithAggregatesFilter<"Customer"> | string | null
@@ -50684,6 +50775,7 @@ export namespace Prisma {
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
     id?: StringFilter<"Order"> | string
+    companyId?: StringFilter<"Order"> | string
     orderNumber?: StringFilter<"Order"> | string
     customerId?: StringFilter<"Order"> | string
     warehouseId?: StringFilter<"Order"> | string
@@ -50723,6 +50815,7 @@ export namespace Prisma {
 
   export type OrderOrderByWithRelationInput = {
     id?: SortOrder
+    companyId?: SortOrder
     orderNumber?: SortOrder
     customerId?: SortOrder
     warehouseId?: SortOrder
@@ -50766,6 +50859,7 @@ export namespace Prisma {
     AND?: OrderWhereInput | OrderWhereInput[]
     OR?: OrderWhereInput[]
     NOT?: OrderWhereInput | OrderWhereInput[]
+    companyId?: StringFilter<"Order"> | string
     customerId?: StringFilter<"Order"> | string
     warehouseId?: StringFilter<"Order"> | string
     type?: EnumOrderTypeFilter<"Order"> | $Enums.OrderType
@@ -50804,6 +50898,7 @@ export namespace Prisma {
 
   export type OrderOrderByWithAggregationInput = {
     id?: SortOrder
+    companyId?: SortOrder
     orderNumber?: SortOrder
     customerId?: SortOrder
     warehouseId?: SortOrder
@@ -50846,6 +50941,7 @@ export namespace Prisma {
     OR?: OrderScalarWhereWithAggregatesInput[]
     NOT?: OrderScalarWhereWithAggregatesInput | OrderScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Order"> | string
+    companyId?: StringWithAggregatesFilter<"Order"> | string
     orderNumber?: StringWithAggregatesFilter<"Order"> | string
     customerId?: StringWithAggregatesFilter<"Order"> | string
     warehouseId?: StringWithAggregatesFilter<"Order"> | string
@@ -52311,6 +52407,7 @@ export namespace Prisma {
 
   export type ProductCreateInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -52360,6 +52457,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -52409,6 +52507,7 @@ export namespace Prisma {
 
   export type ProductUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -52458,6 +52557,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -52507,6 +52607,7 @@ export namespace Prisma {
 
   export type ProductCreateManyInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -52543,6 +52644,7 @@ export namespace Prisma {
 
   export type ProductUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -52577,6 +52679,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -53058,6 +53161,7 @@ export namespace Prisma {
 
   export type WarehouseCreateInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -53092,6 +53196,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedCreateInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -53126,6 +53231,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53160,6 +53266,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53194,6 +53301,7 @@ export namespace Prisma {
 
   export type WarehouseCreateManyInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -53218,6 +53326,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53242,6 +53351,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53666,6 +53776,7 @@ export namespace Prisma {
 
   export type SupplierCreateInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -53702,6 +53813,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedCreateInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -53738,6 +53850,7 @@ export namespace Prisma {
 
   export type SupplierUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53774,6 +53887,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53810,6 +53924,7 @@ export namespace Prisma {
 
   export type SupplierCreateManyInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -53841,6 +53956,7 @@ export namespace Prisma {
 
   export type SupplierUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -53872,6 +53988,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -54857,6 +54974,7 @@ export namespace Prisma {
 
   export type CustomerCreateInput = {
     id?: string
+    companyId: string
     customerNumber: string
     type?: $Enums.CustomerType
     firstName?: string | null
@@ -54887,6 +55005,7 @@ export namespace Prisma {
 
   export type CustomerUncheckedCreateInput = {
     id?: string
+    companyId: string
     customerNumber: string
     type?: $Enums.CustomerType
     firstName?: string | null
@@ -54917,6 +55036,7 @@ export namespace Prisma {
 
   export type CustomerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     customerNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -54947,6 +55067,7 @@ export namespace Prisma {
 
   export type CustomerUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     customerNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -54977,6 +55098,7 @@ export namespace Prisma {
 
   export type CustomerCreateManyInput = {
     id?: string
+    companyId: string
     customerNumber: string
     type?: $Enums.CustomerType
     firstName?: string | null
@@ -55004,6 +55126,7 @@ export namespace Prisma {
 
   export type CustomerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     customerNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55031,6 +55154,7 @@ export namespace Prisma {
 
   export type CustomerUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     customerNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55169,6 +55293,7 @@ export namespace Prisma {
 
   export type OrderCreateInput = {
     id?: string
+    companyId: string
     orderNumber: string
     type?: $Enums.OrderType
     channel?: $Enums.OrderChannel
@@ -55206,6 +55331,7 @@ export namespace Prisma {
 
   export type OrderUncheckedCreateInput = {
     id?: string
+    companyId: string
     orderNumber: string
     customerId: string
     warehouseId: string
@@ -55243,6 +55369,7 @@ export namespace Prisma {
 
   export type OrderUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
     channel?: EnumOrderChannelFieldUpdateOperationsInput | $Enums.OrderChannel
@@ -55280,6 +55407,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     customerId?: StringFieldUpdateOperationsInput | string
     warehouseId?: StringFieldUpdateOperationsInput | string
@@ -55317,6 +55445,7 @@ export namespace Prisma {
 
   export type OrderCreateManyInput = {
     id?: string
+    companyId: string
     orderNumber: string
     customerId: string
     warehouseId: string
@@ -55351,6 +55480,7 @@ export namespace Prisma {
 
   export type OrderUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
     channel?: EnumOrderChannelFieldUpdateOperationsInput | $Enums.OrderChannel
@@ -55383,6 +55513,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     customerId?: StringFieldUpdateOperationsInput | string
     warehouseId?: StringFieldUpdateOperationsInput | string
@@ -57291,6 +57422,7 @@ export namespace Prisma {
 
   export type ProductCountOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     sku?: SortOrder
@@ -57340,6 +57472,7 @@ export namespace Prisma {
 
   export type ProductMaxOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     sku?: SortOrder
@@ -57373,6 +57506,7 @@ export namespace Prisma {
 
   export type ProductMinOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     description?: SortOrder
     sku?: SortOrder
@@ -57920,6 +58054,7 @@ export namespace Prisma {
 
   export type WarehouseCountOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     code?: SortOrder
     description?: SortOrder
@@ -57944,6 +58079,7 @@ export namespace Prisma {
 
   export type WarehouseMaxOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     code?: SortOrder
     description?: SortOrder
@@ -57965,6 +58101,7 @@ export namespace Prisma {
 
   export type WarehouseMinOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     code?: SortOrder
     description?: SortOrder
@@ -58349,6 +58486,7 @@ export namespace Prisma {
 
   export type SupplierCountOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     code?: SortOrder
     email?: SortOrder
@@ -58387,6 +58525,7 @@ export namespace Prisma {
 
   export type SupplierMaxOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     code?: SortOrder
     email?: SortOrder
@@ -58415,6 +58554,7 @@ export namespace Prisma {
 
   export type SupplierMinOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     name?: SortOrder
     code?: SortOrder
     email?: SortOrder
@@ -59071,6 +59211,7 @@ export namespace Prisma {
 
   export type CustomerCountOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     customerNumber?: SortOrder
     type?: SortOrder
     firstName?: SortOrder
@@ -59102,6 +59243,7 @@ export namespace Prisma {
 
   export type CustomerMaxOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     customerNumber?: SortOrder
     type?: SortOrder
     firstName?: SortOrder
@@ -59127,6 +59269,7 @@ export namespace Prisma {
 
   export type CustomerMinOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     customerNumber?: SortOrder
     type?: SortOrder
     firstName?: SortOrder
@@ -59271,6 +59414,7 @@ export namespace Prisma {
 
   export type OrderCountOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     orderNumber?: SortOrder
     customerId?: SortOrder
     warehouseId?: SortOrder
@@ -59313,6 +59457,7 @@ export namespace Prisma {
 
   export type OrderMaxOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     orderNumber?: SortOrder
     customerId?: SortOrder
     warehouseId?: SortOrder
@@ -59346,6 +59491,7 @@ export namespace Prisma {
 
   export type OrderMinOrderByAggregateInput = {
     id?: SortOrder
+    companyId?: SortOrder
     orderNumber?: SortOrder
     customerId?: SortOrder
     warehouseId?: SortOrder
@@ -65855,6 +66001,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutVariantsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -65903,6 +66050,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutVariantsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -66347,6 +66495,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutVariantsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -66395,6 +66544,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutVariantsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -66638,6 +66788,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutCategoryInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -66686,6 +66837,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutCategoryInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -66843,6 +66995,7 @@ export namespace Prisma {
     OR?: ProductScalarWhereInput[]
     NOT?: ProductScalarWhereInput | ProductScalarWhereInput[]
     id?: StringFilter<"Product"> | string
+    companyId?: StringFilter<"Product"> | string
     name?: StringFilter<"Product"> | string
     description?: StringNullableFilter<"Product"> | string | null
     sku?: StringFilter<"Product"> | string
@@ -66879,6 +67032,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutBrandInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -66927,6 +67081,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutBrandInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -67001,6 +67156,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutBundlesInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -67049,6 +67205,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutBundlesInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -67102,6 +67259,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutBundleItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -67150,6 +67308,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutBundleItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -67461,6 +67620,7 @@ export namespace Prisma {
 
   export type OrderCreateWithoutWarehouseInput = {
     id?: string
+    companyId: string
     orderNumber: string
     type?: $Enums.OrderType
     channel?: $Enums.OrderChannel
@@ -67497,6 +67657,7 @@ export namespace Prisma {
 
   export type OrderUncheckedCreateWithoutWarehouseInput = {
     id?: string
+    companyId: string
     orderNumber: string
     customerId: string
     type?: $Enums.OrderType
@@ -67933,6 +68094,7 @@ export namespace Prisma {
     OR?: OrderScalarWhereInput[]
     NOT?: OrderScalarWhereInput | OrderScalarWhereInput[]
     id?: StringFilter<"Order"> | string
+    companyId?: StringFilter<"Order"> | string
     orderNumber?: StringFilter<"Order"> | string
     customerId?: StringFilter<"Order"> | string
     warehouseId?: StringFilter<"Order"> | string
@@ -68126,6 +68288,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutInventoryItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -68174,6 +68337,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutInventoryItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -68276,6 +68440,7 @@ export namespace Prisma {
 
   export type WarehouseCreateWithoutInventoryItemsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -68309,6 +68474,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedCreateWithoutInventoryItemsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -68466,6 +68632,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutInventoryItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -68514,6 +68681,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutInventoryItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -68628,6 +68796,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateWithoutInventoryItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -68661,6 +68830,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateWithoutInventoryItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -68746,6 +68916,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutMovementsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -68794,6 +68965,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutMovementsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -68896,6 +69068,7 @@ export namespace Prisma {
 
   export type WarehouseCreateWithoutMovementsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -68929,6 +69102,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedCreateWithoutMovementsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -69041,6 +69215,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutMovementsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -69089,6 +69264,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutMovementsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -69203,6 +69379,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateWithoutMovementsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69236,6 +69413,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateWithoutMovementsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69719,6 +69897,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutSuppliersInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -69767,6 +69946,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutSuppliersInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -69820,6 +70000,7 @@ export namespace Prisma {
 
   export type SupplierCreateWithoutProductsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -69855,6 +70036,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedCreateWithoutProductsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -69906,6 +70088,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutSuppliersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -69954,6 +70137,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutSuppliersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -70013,6 +70197,7 @@ export namespace Prisma {
 
   export type SupplierUpdateWithoutProductsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70048,6 +70233,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedUpdateWithoutProductsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70083,6 +70269,7 @@ export namespace Prisma {
 
   export type SupplierCreateWithoutContactsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -70118,6 +70305,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedCreateWithoutContactsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -70169,6 +70357,7 @@ export namespace Prisma {
 
   export type SupplierUpdateWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70204,6 +70393,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedUpdateWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70239,6 +70429,7 @@ export namespace Prisma {
 
   export type SupplierCreateWithoutDocumentsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -70274,6 +70465,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedCreateWithoutDocumentsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -70325,6 +70517,7 @@ export namespace Prisma {
 
   export type SupplierUpdateWithoutDocumentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70360,6 +70553,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedUpdateWithoutDocumentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70395,6 +70589,7 @@ export namespace Prisma {
 
   export type SupplierCreateWithoutPurchaseOrdersInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -70430,6 +70625,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedCreateWithoutPurchaseOrdersInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -70470,6 +70666,7 @@ export namespace Prisma {
 
   export type WarehouseCreateWithoutPurchaseOrdersInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -70503,6 +70700,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedCreateWithoutPurchaseOrdersInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -70692,6 +70890,7 @@ export namespace Prisma {
 
   export type SupplierUpdateWithoutPurchaseOrdersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70727,6 +70926,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedUpdateWithoutPurchaseOrdersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70773,6 +70973,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateWithoutPurchaseOrdersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70806,6 +71007,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateWithoutPurchaseOrdersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70952,6 +71154,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutPurchaseItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -71000,6 +71203,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutPurchaseItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -71184,6 +71388,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutPurchaseItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -71232,6 +71437,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutPurchaseItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -71400,6 +71606,7 @@ export namespace Prisma {
 
   export type WarehouseCreateWithoutGoodsReceiptsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -71433,6 +71640,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedCreateWithoutGoodsReceiptsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -71605,6 +71813,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateWithoutGoodsReceiptsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71638,6 +71847,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateWithoutGoodsReceiptsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71726,6 +71936,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutGoodsReceiptItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -71774,6 +71985,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutGoodsReceiptItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -71932,6 +72144,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutGoodsReceiptItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -71980,6 +72193,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutGoodsReceiptItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -72083,6 +72297,7 @@ export namespace Prisma {
 
   export type OrderCreateWithoutCustomerInput = {
     id?: string
+    companyId: string
     orderNumber: string
     type?: $Enums.OrderType
     channel?: $Enums.OrderChannel
@@ -72119,6 +72334,7 @@ export namespace Prisma {
 
   export type OrderUncheckedCreateWithoutCustomerInput = {
     id?: string
+    companyId: string
     orderNumber: string
     warehouseId: string
     type?: $Enums.OrderType
@@ -72349,6 +72565,7 @@ export namespace Prisma {
 
   export type CustomerCreateWithoutContactsInput = {
     id?: string
+    companyId: string
     customerNumber: string
     type?: $Enums.CustomerType
     firstName?: string | null
@@ -72378,6 +72595,7 @@ export namespace Prisma {
 
   export type CustomerUncheckedCreateWithoutContactsInput = {
     id?: string
+    companyId: string
     customerNumber: string
     type?: $Enums.CustomerType
     firstName?: string | null
@@ -72423,6 +72641,7 @@ export namespace Prisma {
 
   export type CustomerUpdateWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     customerNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72452,6 +72671,7 @@ export namespace Prisma {
 
   export type CustomerUncheckedUpdateWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     customerNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72481,6 +72701,7 @@ export namespace Prisma {
 
   export type CustomerCreateWithoutOrdersInput = {
     id?: string
+    companyId: string
     customerNumber: string
     type?: $Enums.CustomerType
     firstName?: string | null
@@ -72510,6 +72731,7 @@ export namespace Prisma {
 
   export type CustomerUncheckedCreateWithoutOrdersInput = {
     id?: string
+    companyId: string
     customerNumber: string
     type?: $Enums.CustomerType
     firstName?: string | null
@@ -72544,6 +72766,7 @@ export namespace Prisma {
 
   export type WarehouseCreateWithoutOrdersInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -72577,6 +72800,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedCreateWithoutOrdersInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -72786,6 +73010,7 @@ export namespace Prisma {
 
   export type CustomerUpdateWithoutOrdersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     customerNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72815,6 +73040,7 @@ export namespace Prisma {
 
   export type CustomerUncheckedUpdateWithoutOrdersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     customerNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72855,6 +73081,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateWithoutOrdersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72888,6 +73115,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateWithoutOrdersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72969,6 +73197,7 @@ export namespace Prisma {
 
   export type OrderCreateWithoutItemsInput = {
     id?: string
+    companyId: string
     orderNumber: string
     type?: $Enums.OrderType
     channel?: $Enums.OrderChannel
@@ -73005,6 +73234,7 @@ export namespace Prisma {
 
   export type OrderUncheckedCreateWithoutItemsInput = {
     id?: string
+    companyId: string
     orderNumber: string
     customerId: string
     warehouseId: string
@@ -73046,6 +73276,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutOrderItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -73094,6 +73325,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutOrderItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -73207,6 +73439,7 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
     channel?: EnumOrderChannelFieldUpdateOperationsInput | $Enums.OrderChannel
@@ -73243,6 +73476,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateWithoutItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     customerId?: StringFieldUpdateOperationsInput | string
     warehouseId?: StringFieldUpdateOperationsInput | string
@@ -73290,6 +73524,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutOrderItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -73338,6 +73573,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutOrderItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -73441,6 +73677,7 @@ export namespace Prisma {
 
   export type OrderCreateWithoutShipmentsInput = {
     id?: string
+    companyId: string
     orderNumber: string
     type?: $Enums.OrderType
     channel?: $Enums.OrderChannel
@@ -73477,6 +73714,7 @@ export namespace Prisma {
 
   export type OrderUncheckedCreateWithoutShipmentsInput = {
     id?: string
+    companyId: string
     orderNumber: string
     customerId: string
     warehouseId: string
@@ -73518,6 +73756,7 @@ export namespace Prisma {
 
   export type WarehouseCreateWithoutShipmentsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -73551,6 +73790,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedCreateWithoutShipmentsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -73664,6 +73904,7 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutShipmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
     channel?: EnumOrderChannelFieldUpdateOperationsInput | $Enums.OrderChannel
@@ -73700,6 +73941,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateWithoutShipmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     customerId?: StringFieldUpdateOperationsInput | string
     warehouseId?: StringFieldUpdateOperationsInput | string
@@ -73747,6 +73989,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateWithoutShipmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73780,6 +74023,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateWithoutShipmentsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74115,6 +74359,7 @@ export namespace Prisma {
 
   export type WarehouseCreateWithoutTransfersInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -74148,6 +74393,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedCreateWithoutTransfersInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -74186,6 +74432,7 @@ export namespace Prisma {
 
   export type WarehouseCreateWithoutReceivedTransfersInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -74219,6 +74466,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedCreateWithoutReceivedTransfersInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -74312,6 +74560,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateWithoutTransfersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74345,6 +74594,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateWithoutTransfersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74389,6 +74639,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateWithoutReceivedTransfersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74422,6 +74673,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateWithoutReceivedTransfersInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74512,6 +74764,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutTransferItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -74560,6 +74813,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutTransferItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -74720,6 +74974,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutTransferItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -74768,6 +75023,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutTransferItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -75003,6 +75259,7 @@ export namespace Prisma {
 
   export type SupplierCreateWithoutInvoicesInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -75038,6 +75295,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedCreateWithoutInvoicesInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     email?: string | null
@@ -75154,6 +75412,7 @@ export namespace Prisma {
 
   export type SupplierUpdateWithoutInvoicesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75189,6 +75448,7 @@ export namespace Prisma {
 
   export type SupplierUncheckedUpdateWithoutInvoicesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75295,6 +75555,7 @@ export namespace Prisma {
 
   export type CustomerCreateWithoutInvoicesInput = {
     id?: string
+    companyId: string
     customerNumber: string
     type?: $Enums.CustomerType
     firstName?: string | null
@@ -75324,6 +75585,7 @@ export namespace Prisma {
 
   export type CustomerUncheckedCreateWithoutInvoicesInput = {
     id?: string
+    companyId: string
     customerNumber: string
     type?: $Enums.CustomerType
     firstName?: string | null
@@ -75358,6 +75620,7 @@ export namespace Prisma {
 
   export type OrderCreateWithoutInvoicesInput = {
     id?: string
+    companyId: string
     orderNumber: string
     type?: $Enums.OrderType
     channel?: $Enums.OrderChannel
@@ -75394,6 +75657,7 @@ export namespace Prisma {
 
   export type OrderUncheckedCreateWithoutInvoicesInput = {
     id?: string
+    companyId: string
     orderNumber: string
     customerId: string
     warehouseId: string
@@ -75446,6 +75710,7 @@ export namespace Prisma {
 
   export type CustomerUpdateWithoutInvoicesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     customerNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75475,6 +75740,7 @@ export namespace Prisma {
 
   export type CustomerUncheckedUpdateWithoutInvoicesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     customerNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumCustomerTypeFieldUpdateOperationsInput | $Enums.CustomerType
     firstName?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75515,6 +75781,7 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutInvoicesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
     channel?: EnumOrderChannelFieldUpdateOperationsInput | $Enums.OrderChannel
@@ -75551,6 +75818,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateWithoutInvoicesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     customerId?: StringFieldUpdateOperationsInput | string
     warehouseId?: StringFieldUpdateOperationsInput | string
@@ -75587,6 +75855,7 @@ export namespace Prisma {
 
   export type WarehouseCreateWithoutAuditsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -75620,6 +75889,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedCreateWithoutAuditsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -75658,6 +75928,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutAuditsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -75706,6 +75977,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutAuditsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -75826,6 +76098,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateWithoutAuditsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75859,6 +76132,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateWithoutAuditsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75903,6 +76177,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutAuditsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -75951,6 +76226,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutAuditsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -76064,6 +76340,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutAuditItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -76112,6 +76389,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutAuditItemsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -76214,6 +76492,7 @@ export namespace Prisma {
 
   export type WarehouseCreateWithoutAuditItemsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -76247,6 +76526,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedCreateWithoutAuditItemsInput = {
     id?: string
+    companyId: string
     name: string
     code: string
     description?: string | null
@@ -76351,6 +76631,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutAuditItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -76399,6 +76680,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutAuditItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -76513,6 +76795,7 @@ export namespace Prisma {
 
   export type WarehouseUpdateWithoutAuditItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76546,6 +76829,7 @@ export namespace Prisma {
 
   export type WarehouseUncheckedUpdateWithoutAuditItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76579,6 +76863,7 @@ export namespace Prisma {
 
   export type ProductCreateWithoutReviewsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -76627,6 +76912,7 @@ export namespace Prisma {
 
   export type ProductUncheckedCreateWithoutReviewsInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -76691,6 +76977,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutReviewsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -76739,6 +77026,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutReviewsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78386,6 +78674,7 @@ export namespace Prisma {
 
   export type ProductCreateManyCategoryInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -78470,6 +78759,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutCategoryInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78518,6 +78808,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutCategoryInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78566,6 +78857,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateManyWithoutCategoryInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78601,6 +78893,7 @@ export namespace Prisma {
 
   export type ProductCreateManyBrandInput = {
     id?: string
+    companyId: string
     name: string
     description?: string | null
     sku: string
@@ -78636,6 +78929,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutBrandInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78684,6 +78978,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutBrandInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78732,6 +79027,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateManyWithoutBrandInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78767,6 +79063,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutBundlesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78815,6 +79112,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutBundlesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78863,6 +79161,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateManyWithoutBundlesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78899,6 +79198,7 @@ export namespace Prisma {
 
   export type ProductUpdateWithoutBundleItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78947,6 +79247,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateWithoutBundleItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -78995,6 +79296,7 @@ export namespace Prisma {
 
   export type ProductUncheckedUpdateManyWithoutBundleItemsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     sku?: StringFieldUpdateOperationsInput | string
@@ -79120,6 +79422,7 @@ export namespace Prisma {
 
   export type OrderCreateManyWarehouseInput = {
     id?: string
+    companyId: string
     orderNumber: string
     customerId: string
     type?: $Enums.OrderType
@@ -79539,6 +79842,7 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutWarehouseInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
     channel?: EnumOrderChannelFieldUpdateOperationsInput | $Enums.OrderChannel
@@ -79575,6 +79879,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateWithoutWarehouseInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     customerId?: StringFieldUpdateOperationsInput | string
     type?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
@@ -79611,6 +79916,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateManyWithoutWarehouseInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     customerId?: StringFieldUpdateOperationsInput | string
     type?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
@@ -80843,6 +81149,7 @@ export namespace Prisma {
 
   export type OrderCreateManyCustomerInput = {
     id?: string
+    companyId: string
     orderNumber: string
     warehouseId: string
     type?: $Enums.OrderType
@@ -80912,6 +81219,7 @@ export namespace Prisma {
 
   export type OrderUpdateWithoutCustomerInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     type?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
     channel?: EnumOrderChannelFieldUpdateOperationsInput | $Enums.OrderChannel
@@ -80948,6 +81256,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateWithoutCustomerInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     warehouseId?: StringFieldUpdateOperationsInput | string
     type?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType
@@ -80984,6 +81293,7 @@ export namespace Prisma {
 
   export type OrderUncheckedUpdateManyWithoutCustomerInput = {
     id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
     orderNumber?: StringFieldUpdateOperationsInput | string
     warehouseId?: StringFieldUpdateOperationsInput | string
     type?: EnumOrderTypeFieldUpdateOperationsInput | $Enums.OrderType

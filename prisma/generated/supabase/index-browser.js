@@ -120,6 +120,162 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.CompanyScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  displayName: 'displayName',
+  description: 'description',
+  website: 'website',
+  industry: 'industry',
+  size: 'size',
+  email: 'email',
+  phone: 'phone',
+  address: 'address',
+  registrationNumber: 'registrationNumber',
+  taxId: 'taxId',
+  vatNumber: 'vatNumber',
+  businessType: 'businessType',
+  logo: 'logo',
+  primaryColor: 'primaryColor',
+  theme: 'theme',
+  subscriptionPlan: 'subscriptionPlan',
+  subscriptionStatus: 'subscriptionStatus',
+  billingEmail: 'billingEmail',
+  paymentMethodId: 'paymentMethodId',
+  maxUsers: 'maxUsers',
+  maxWarehouses: 'maxWarehouses',
+  maxProducts: 'maxProducts',
+  features: 'features',
+  enforceSSO: 'enforceSSO',
+  requireTwoFactor: 'requireTwoFactor',
+  passwordPolicy: 'passwordPolicy',
+  sessionTimeoutMinutes: 'sessionTimeoutMinutes',
+  isActive: 'isActive',
+  isSuspended: 'isSuspended',
+  isDeleted: 'isDeleted',
+  trialEndsAt: 'trialEndsAt',
+  onboardingStep: 'onboardingStep',
+  setupComplete: 'setupComplete',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy'
+};
+
+exports.Prisma.CompanyUserScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  userId: 'userId',
+  role: 'role',
+  title: 'title',
+  departmentId: 'departmentId',
+  employeeId: 'employeeId',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  permissions: 'permissions',
+  isActive: 'isActive',
+  isOwner: 'isOwner',
+  canInvite: 'canInvite',
+  canManageBilling: 'canManageBilling',
+  managerId: 'managerId',
+  directReports: 'directReports',
+  status: 'status',
+  invitedBy: 'invitedBy',
+  invitedAt: 'invitedAt',
+  joinedAt: 'joinedAt',
+  lastActiveAt: 'lastActiveAt'
+};
+
+exports.Prisma.DepartmentScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  name: 'name',
+  description: 'description',
+  code: 'code',
+  parentId: 'parentId',
+  level: 'level',
+  headOfDepartment: 'headOfDepartment',
+  budget: 'budget',
+  costCenter: 'costCenter',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CompanyLocationScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  name: 'name',
+  type: 'type',
+  address: 'address',
+  coordinates: 'coordinates',
+  timezone: 'timezone',
+  phone: 'phone',
+  email: 'email',
+  managerName: 'managerName',
+  businessHours: 'businessHours',
+  isPrimary: 'isPrimary',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CompanyIntegrationScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  name: 'name',
+  type: 'type',
+  provider: 'provider',
+  config: 'config',
+  credentials: 'credentials',
+  mappings: 'mappings',
+  autoSync: 'autoSync',
+  syncInterval: 'syncInterval',
+  lastSyncAt: 'lastSyncAt',
+  nextSyncAt: 'nextSyncAt',
+  status: 'status',
+  isActive: 'isActive',
+  lastError: 'lastError',
+  errorCount: 'errorCount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CompanyAuditLogScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  userId: 'userId',
+  userEmail: 'userEmail',
+  action: 'action',
+  resource: 'resource',
+  resourceId: 'resourceId',
+  oldValues: 'oldValues',
+  newValues: 'newValues',
+  changes: 'changes',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  metadata: 'metadata',
+  severity: 'severity',
+  timestamp: 'timestamp'
+};
+
+exports.Prisma.BillingHistoryScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  periodStart: 'periodStart',
+  periodEnd: 'periodEnd',
+  amount: 'amount',
+  tax: 'tax',
+  total: 'total',
+  currency: 'currency',
+  description: 'description',
+  invoiceNumber: 'invoiceNumber',
+  paymentStatus: 'paymentStatus',
+  paymentMethod: 'paymentMethod',
+  paidAt: 'paidAt',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -320,12 +476,12 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.JsonNullValueInput = {
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -334,16 +490,112 @@ exports.Prisma.QueryMode = {
   insensitive: 'insensitive'
 };
 
-exports.Prisma.NullsOrder = {
-  first: 'first',
-  last: 'last'
-};
-
 exports.Prisma.JsonNullValueFilter = {
   DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
+
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.CompanySize = exports.$Enums.CompanySize = {
+  STARTUP: 'STARTUP',
+  SMALL: 'SMALL',
+  MEDIUM: 'MEDIUM',
+  LARGE: 'LARGE',
+  ENTERPRISE: 'ENTERPRISE'
+};
+
+exports.BusinessType = exports.$Enums.BusinessType = {
+  PRIVATE: 'PRIVATE',
+  PUBLIC: 'PUBLIC',
+  NONPROFIT: 'NONPROFIT',
+  GOVERNMENT: 'GOVERNMENT',
+  PARTNERSHIP: 'PARTNERSHIP',
+  SOLE_PROPRIETORSHIP: 'SOLE_PROPRIETORSHIP'
+};
+
+exports.SubscriptionPlan = exports.$Enums.SubscriptionPlan = {
+  FREE: 'FREE',
+  BASIC: 'BASIC',
+  PROFESSIONAL: 'PROFESSIONAL',
+  ENTERPRISE: 'ENTERPRISE',
+  CUSTOM: 'CUSTOM'
+};
+
+exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  TRIAL: 'TRIAL',
+  PAST_DUE: 'PAST_DUE',
+  CANCELLED: 'CANCELLED',
+  SUSPENDED: 'SUSPENDED',
+  EXPIRED: 'EXPIRED'
+};
+
+exports.CompanyRole = exports.$Enums.CompanyRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MANAGER: 'MANAGER',
+  SUPERVISOR: 'SUPERVISOR',
+  EMPLOYEE: 'EMPLOYEE',
+  CONTRACTOR: 'CONTRACTOR',
+  VIEWER: 'VIEWER'
+};
+
+exports.EmploymentStatus = exports.$Enums.EmploymentStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  TERMINATED: 'TERMINATED',
+  SUSPENDED: 'SUSPENDED',
+  ON_LEAVE: 'ON_LEAVE'
+};
+
+exports.LocationType = exports.$Enums.LocationType = {
+  HEADQUARTERS: 'HEADQUARTERS',
+  OFFICE: 'OFFICE',
+  WAREHOUSE: 'WAREHOUSE',
+  STORE: 'STORE',
+  FACTORY: 'FACTORY',
+  REMOTE: 'REMOTE',
+  OTHER: 'OTHER'
+};
+
+exports.IntegrationType = exports.$Enums.IntegrationType = {
+  ECOMMERCE: 'ECOMMERCE',
+  ACCOUNTING: 'ACCOUNTING',
+  CRM: 'CRM',
+  ERP: 'ERP',
+  SHIPPING: 'SHIPPING',
+  PAYMENT: 'PAYMENT',
+  EMAIL: 'EMAIL',
+  OTHER: 'OTHER'
+};
+
+exports.IntegrationStatus = exports.$Enums.IntegrationStatus = {
+  CONNECTED: 'CONNECTED',
+  DISCONNECTED: 'DISCONNECTED',
+  ERROR: 'ERROR',
+  SYNCING: 'SYNCING',
+  PAUSED: 'PAUSED'
+};
+
+exports.AuditSeverity = exports.$Enums.AuditSeverity = {
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  ERROR: 'ERROR',
+  CRITICAL: 'CRITICAL'
+};
+
+exports.PaymentStatus = exports.$Enums.PaymentStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.InvitationStatus = exports.$Enums.InvitationStatus = {
   PENDING: 'PENDING',
   SENT: 'SENT',
@@ -369,14 +621,14 @@ exports.NotificationPriority = exports.$Enums.NotificationPriority = {
   URGENT: 'URGENT'
 };
 
-exports.AuditSeverity = exports.$Enums.AuditSeverity = {
-  INFO: 'INFO',
-  WARNING: 'WARNING',
-  ERROR: 'ERROR',
-  CRITICAL: 'CRITICAL'
-};
-
 exports.Prisma.ModelName = {
+  Company: 'Company',
+  CompanyUser: 'CompanyUser',
+  Department: 'Department',
+  CompanyLocation: 'CompanyLocation',
+  CompanyIntegration: 'CompanyIntegration',
+  CompanyAuditLog: 'CompanyAuditLog',
+  BillingHistory: 'BillingHistory',
   User: 'User',
   Role: 'Role',
   UserRole: 'UserRole',

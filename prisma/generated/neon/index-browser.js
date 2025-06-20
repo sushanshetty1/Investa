@@ -122,6 +122,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 
 exports.Prisma.ProductScalarFieldEnum = {
   id: 'id',
+  companyId: 'companyId',
   name: 'name',
   description: 'description',
   sku: 'sku',
@@ -215,6 +216,7 @@ exports.Prisma.ProductBundleScalarFieldEnum = {
 
 exports.Prisma.WarehouseScalarFieldEnum = {
   id: 'id',
+  companyId: 'companyId',
   name: 'name',
   code: 'code',
   description: 'description',
@@ -296,6 +298,7 @@ exports.Prisma.InventoryMovementScalarFieldEnum = {
 
 exports.Prisma.SupplierScalarFieldEnum = {
   id: 'id',
+  companyId: 'companyId',
   name: 'name',
   code: 'code',
   email: 'email',
@@ -463,6 +466,7 @@ exports.Prisma.GoodsReceiptItemScalarFieldEnum = {
 
 exports.Prisma.CustomerScalarFieldEnum = {
   id: 'id',
+  companyId: 'companyId',
   customerNumber: 'customerNumber',
   type: 'type',
   firstName: 'firstName',
@@ -506,6 +510,7 @@ exports.Prisma.CustomerContactScalarFieldEnum = {
 
 exports.Prisma.OrderScalarFieldEnum = {
   id: 'id',
+  companyId: 'companyId',
   orderNumber: 'orderNumber',
   customerId: 'customerId',
   warehouseId: 'warehouseId',
@@ -959,10 +964,11 @@ exports.FulfillmentStatus = exports.$Enums.FulfillmentStatus = {
 
 exports.PaymentStatus = exports.$Enums.PaymentStatus = {
   PENDING: 'PENDING',
-  AUTHORIZED: 'AUTHORIZED',
+  PROCESSING: 'PROCESSING',
   PAID: 'PAID',
   PARTIALLY_PAID: 'PARTIALLY_PAID',
   REFUNDED: 'REFUNDED',
+  CANCELLED: 'CANCELLED',
   FAILED: 'FAILED'
 };
 

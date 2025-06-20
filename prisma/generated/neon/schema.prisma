@@ -22,6 +22,9 @@ datasource neonDb {
 model Product {
   id String @id @default(uuid())
 
+  // Company Ownership
+  companyId String // Reference to Company in Supabase schema
+
   // Basic Information
   name        String
   description String?
@@ -232,6 +235,9 @@ enum ProductStatus {
 model Warehouse {
   id String @id @default(uuid())
 
+  // Company Ownership
+  companyId String // Reference to Company in Supabase schema
+
   // Basic Information
   name        String
   code        String  @unique
@@ -435,6 +441,9 @@ enum MovementType {
 
 model Supplier {
   id String @id @default(uuid())
+
+  // Company Ownership
+  companyId String // Reference to Company in Supabase schema
 
   // Basic Information
   name    String
@@ -824,6 +833,9 @@ model GoodsReceiptItem {
 model Customer {
   id String @id @default(uuid())
 
+  // Company Ownership
+  companyId String // Reference to Company in Supabase schema
+
   // Basic Information
   customerNumber String       @unique
   type           CustomerType @default(INDIVIDUAL)
@@ -921,6 +933,9 @@ model CustomerContact {
 model Order {
   id String @id @default(uuid())
 
+  // Company Ownership
+  companyId String // Reference to Company in Supabase schema
+
   // Order Information
   orderNumber String @unique
   customerId  String
@@ -1017,10 +1032,11 @@ enum FulfillmentStatus {
 
 enum PaymentStatus {
   PENDING
-  AUTHORIZED
+  PROCESSING
   PAID
   PARTIALLY_PAID
   REFUNDED
+  CANCELLED
   FAILED
 }
 
