@@ -6,8 +6,8 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { 
-  successResponse, 
+import {
+  successResponse,
   errorResponse,
   checkRateLimit
 } from '@/lib/api-utils'
@@ -29,9 +29,11 @@ const RATE_LIMIT_WINDOW = 15 * 60 * 1000 // 15 minutes
  * GET /api/inventory/suppliers
  * Retrieve suppliers with pagination and filtering
  */
-export async function GET(request: NextRequest) {  try {
+export async function GET(request: NextRequest) {
+  try {
     // Apply rate limiting
     const clientIp = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+
     if (!checkRateLimit(clientIp, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW)) {
       return errorResponse('Rate limit exceeded', 429)
     }
@@ -41,8 +43,10 @@ export async function GET(request: NextRequest) {  try {
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '20')
     const search = searchParams.get('search') || undefined
-    const status = searchParams.get('status') as 'ACTIVE' | 'INACTIVE' | 'PENDING_APPROVAL' | 'SUSPENDED' | 'BLACKLISTED' | undefined
-    const companyType = searchParams.get('companyType') as 'CORPORATION' | 'LLC' | 'PARTNERSHIP' | 'SOLE_PROPRIETORSHIP' | 'NON_PROFIT' | 'GOVERNMENT' | 'OTHER' | undefined
+    const statusParam = searchParams.get('status')
+    const status = statusParam ? statusParam as 'ACTIVE' | 'INACTIVE' | 'PENDING_APPROVAL' | 'SUSPENDED' | 'BLACKLISTED' : undefined
+    const companyTypeParam = searchParams.get('companyType')
+    const companyType = companyTypeParam ? companyTypeParam as 'CORPORATION' | 'LLC' | 'PARTNERSHIP' | 'SOLE_PROPRIETORSHIP' | 'NON_PROFIT' | 'GOVERNMENT' | 'OTHER' : undefined
     const sortBy = searchParams.get('sortBy') as 'name' | 'code' | 'createdAt' | 'updatedAt' | 'rating' || 'createdAt'
     const sortOrder = searchParams.get('sortOrder') as 'asc' | 'desc' || 'desc'
 
@@ -84,7 +88,8 @@ export async function GET(request: NextRequest) {  try {
  * POST /api/inventory/suppliers
  * Create a new supplier
  */
-export async function POST(request: NextRequest) {  try {
+export async function POST(request: NextRequest) {
+  try {
     // Apply rate limiting
     const clientIp = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
     if (!checkRateLimit(clientIp, RATE_LIMIT_MAX, RATE_LIMIT_WINDOW)) {
@@ -94,7 +99,8 @@ export async function POST(request: NextRequest) {  try {
     // Parse and validate request body
     let body
     try {
-      body = await request.json()    } catch {
+      body = await request.json()
+    } catch {
       return errorResponse('Invalid JSON in request body', 400)
     }
 

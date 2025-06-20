@@ -139,7 +139,7 @@ export async function getSuppliers(input: SupplierQueryInput): Promise<ActionRes
     const validatedQuery = supplierQuerySchema.parse(input)
     const { page, limit, search, status, companyType, sortBy, sortOrder } = validatedQuery
 
-    const skip = (page - 1) * limit    // Build where clause
+    const skip = (page - 1) * limit// Build where clause
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const where: any = {}
 
@@ -166,9 +166,7 @@ export async function getSuppliers(input: SupplierQueryInput): Promise<ActionRes
       orderBy.createdAt = sortOrder
     } else if (sortBy === 'updatedAt') {
       orderBy.updatedAt = sortOrder
-    }
-
-    const [suppliers, total] = await Promise.all([
+    } const [suppliers, total] = await Promise.all([
       neonClient.supplier.findMany({
         where,
         orderBy,
@@ -193,8 +191,7 @@ export async function getSuppliers(input: SupplierQueryInput): Promise<ActionRes
             },
           },
         },
-      }),
-      neonClient.supplier.count({ where }),
+      }), neonClient.supplier.count({ where }),
     ])
 
     const pagination = {

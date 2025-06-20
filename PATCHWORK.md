@@ -532,3 +532,87 @@ The build shows ESLint warnings that don't affect functionality:
 **Next Steps:** The application is now production-ready and can be deployed to any hosting platform. All core functionality is complete and tested.
 
 ---
+
+## 🔧 **Runtime Error Fixes (June 20, 2025)**
+
+#### 1. **Stock Items Filter Error**
+**Problem:** `stockItems.filter is not a function` runtime error when data wasn't properly loaded as an array.
+
+**Solution:** Added array safety checks to all filter/map operations:
+```typescript
+// Before (causing runtime errors):
+const filteredStockItems = stockItems.filter(item => { ... })
+
+// After (safe array operations):
+const filteredStockItems = (Array.isArray(stockItems) ? stockItems : []).filter(item => { ... })
+```
+
+**Files Fixed:**
+- `app/inventory/stock/page.tsx`
+- Enhanced data loading functions with robust error handling
+- Added Array.isArray checks for all array operations
+
+#### 2. **Missing Stock Alerts API Endpoint**
+**Problem:** 404 error for `/api/inventory/stock/alerts` endpoint that didn't exist.
+
+**Solution:** Created comprehensive stock alerts API endpoint with smart alert generation:
+- `app/api/inventory/stock/alerts/route.ts` (NEW)
+- Generates LOW_STOCK, OUT_OF_STOCK, OVERSTOCK, and EXPIRING alerts
+- Calculates severity levels (CRITICAL, HIGH, MEDIUM, LOW)
+- Provides alert summaries and filtering capabilities
+
+**Features:**
+- Automatic low stock detection based on product minimum levels
+- Out of stock identification
+- Overstock alerts for items exceeding maximum levels  
+- Expiry alerts for items expiring within 30 days
+- Severity-based prioritization
+- Comprehensive alert messaging
+
+#### 3. **Stock Alert Interface Synchronization**
+**Problem:** Component interfaces didn't match the new API response format.
+
+**Solution:** Updated interfaces across components:
+- Updated `StockAlert` interface in both page and component
+- Synchronized property names between API response and UI components
+- Fixed all references to use new property names (`productName`, `warehouseName`, etc.)
+
+**Files Updated:**
+- `app/inventory/stock/page.tsx`
+- `components/inventory/LowStockAlerts.tsx`
+
+#### 4. **Suppliers API Query Parameter Validation Error**
+**Problem:** The `/api/inventory/suppliers` endpoint was returning 500 errors due to Zod validation failing when query parameters `status` and `companyType` were passed as `null` instead of `undefined`.
+
+**Error Details:**
+```
+Error [ZodError]: [
+  {
+    "expected": "'ACTIVE' | 'INACTIVE' | 'PENDING_APPROVAL' | 'SUSPENDED' | 'BLACKLISTED'",
+    "received": "null",
+    "code": "invalid_type",
+    "path": ["status"],
+    "message": "Expected enum values, received null"
+  }
+]
+```
+
+**Solution:** Fixed query parameter handling to properly convert `null` values to `undefined` for optional enum parameters:
+
+```typescript
+// Before (causing validation errors):
+const status = searchParams.get('status') as 'ACTIVE' | 'INACTIVE' | ... | undefined
+const companyType = searchParams.get('companyType') as 'CORPORATION' | 'LLC' | ... | undefined
+
+// After (fixed):
+const statusParam = searchParams.get('status')
+const status = statusParam ? statusParam as 'ACTIVE' | 'INACTIVE' | ... : undefined
+const companyTypeParam = searchParams.get('companyType')  
+const companyType = companyTypeParam ? companyTypeParam as 'CORPORATION' | 'LLC' | ... : undefined
+```
+
+**Result:** API now properly handles optional query parameters and returns suppliers data successfully (200 status).
+
+**Files Updated:**
+- `app/api/inventory/suppliers/route.ts`
+- `lib/actions/suppliers.ts` (removed debug logging)

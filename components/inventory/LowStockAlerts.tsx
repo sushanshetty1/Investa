@@ -9,19 +9,23 @@ import { AlertTriangle, Package, TrendingDown } from 'lucide-react'
 interface StockAlert {
   id: string
   type: 'LOW_STOCK' | 'OUT_OF_STOCK' | 'OVERSTOCK' | 'EXPIRING'
+  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'
   productId: string
+  productName: string
+  productSku: string
+  variantId?: string
+  variantName?: string
   warehouseId: string
-  currentLevel: number
-  threshold: number
-  priority: 'HIGH' | 'MEDIUM' | 'LOW'
-  product: {
-    name: string
-    sku: string
-  }
-  warehouse: {
-    name: string
-    code: string
-  }
+  warehouseName: string
+  currentQuantity: number
+  minimumLevel?: number
+  maximumLevel?: number
+  reorderPoint?: number
+  expiryDate?: string
+  daysToExpiry?: number
+  message: string
+  createdAt: string
+  requiresAction: boolean
 }
 
 interface LowStockAlertsProps {
@@ -29,9 +33,10 @@ interface LowStockAlertsProps {
 }
 
 export function LowStockAlerts({ alerts }: LowStockAlertsProps) {
-  const highPriorityAlerts = alerts.filter(alert => alert.priority === 'HIGH')
-  const mediumPriorityAlerts = alerts.filter(alert => alert.priority === 'MEDIUM')
-  const lowPriorityAlerts = alerts.filter(alert => alert.priority === 'LOW')
+  const criticalAlerts = alerts.filter(alert => alert.severity === 'CRITICAL')
+  const highPriorityAlerts = alerts.filter(alert => alert.severity === 'HIGH')
+  const mediumPriorityAlerts = alerts.filter(alert => alert.severity === 'MEDIUM')
+  const lowPriorityAlerts = alerts.filter(alert => alert.severity === 'LOW')
 
   const getAlertIcon = (type: string) => {
     switch (type) {
@@ -101,28 +106,27 @@ export function LowStockAlerts({ alerts }: LowStockAlertsProps) {
                 {highPriorityAlerts.length} alerts
               </span>
             </div>
-            {highPriorityAlerts.map((alert) => (
-              <Alert key={alert.id} variant="destructive">
-                <div className="flex items-center gap-2">
-                  {getAlertIcon(alert.type)}
-                  <AlertTitle className="text-sm">
-                    {alert.product.name} - {alert.warehouse.name}
-                  </AlertTitle>
-                </div>
-                <AlertDescription className="mt-2">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="font-medium">{alert.type.replace('_', ' ')}</span>
-                      <span className="text-muted-foreground ml-2">
-                        Current: {alert.currentLevel} | Threshold: {alert.threshold}
-                      </span>
-                    </div>
-                    <Button size="sm" variant="outline">
-                      Resolve
-                    </Button>
+            {highPriorityAlerts.map((alert) => (<Alert key={alert.id} variant="destructive">
+              <div className="flex items-center gap-2">
+                {getAlertIcon(alert.type)}
+                <AlertTitle className="text-sm">
+                  {alert.productName} - {alert.warehouseName}
+                </AlertTitle>
+              </div>
+              <AlertDescription className="mt-2">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-medium">{alert.type.replace('_', ' ')}</span>
+                    <span className="text-muted-foreground ml-2">
+                      Current: {alert.currentQuantity} | Min: {alert.minimumLevel || 'N/A'}
+                    </span>
                   </div>
-                </AlertDescription>
-              </Alert>
+                  <Button size="sm" variant="outline">
+                    Resolve
+                  </Button>
+                </div>
+              </AlertDescription>
+            </Alert>
             ))}
           </div>
         )}
@@ -137,19 +141,18 @@ export function LowStockAlerts({ alerts }: LowStockAlertsProps) {
               </span>
             </div>
             {mediumPriorityAlerts.slice(0, 3).map((alert) => (
-              <Alert key={alert.id}>
-                <div className="flex items-center gap-2">
-                  {getAlertIcon(alert.type)}
-                  <AlertTitle className="text-sm">
-                    {alert.product.name} - {alert.warehouse.name}
-                  </AlertTitle>
-                </div>
+              <Alert key={alert.id}>                <div className="flex items-center gap-2">
+                {getAlertIcon(alert.type)}
+                <AlertTitle className="text-sm">
+                  {alert.productName} - {alert.warehouseName}
+                </AlertTitle>
+              </div>
                 <AlertDescription className="mt-2">
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="font-medium">{alert.type.replace('_', ' ')}</span>
                       <span className="text-muted-foreground ml-2">
-                        Current: {alert.currentLevel} | Threshold: {alert.threshold}
+                        Current: {alert.currentQuantity} | Min: {alert.minimumLevel || 'N/A'}
                       </span>
                     </div>
                     <Button size="sm" variant="outline">

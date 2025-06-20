@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { neonClient } from '@/lib/db'
 
 export async function GET(
-  request: NextRequest,  { params }: { params: Promise<{ id: string }> }
+  request: NextRequest, { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params
     const items = await neonClient.inventoryAuditItem.findMany({
       where: {
-        auditId: id
+        auditId: id,
       },
       include: {
         product: {
