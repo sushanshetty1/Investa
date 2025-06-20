@@ -99,9 +99,10 @@ const Navbar = () => {
     };
   }, [openDropdown]);
   // Show loading state while auth is being determined
-  if (loading) {    return (
+  if (loading) {
+    return (
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border/30">
-        <div className="container mx-auto px-2 sm:px-3 lg:px-4 max-w-7xl">
+        <div className="mx-4 md:mx-8 px-2 sm:px-4">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center space-x-1 sm:space-x-2">
               <div className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
@@ -132,7 +133,8 @@ const Navbar = () => {
         { title: "Notifications", href: "/dashboard/notifications" },
         { title: "Settings", href: "/dashboard/settings" },
       ]
-    },    {
+    },
+    {
       title: "Inventory",
       href: "/inventory",
       icon: Package,
@@ -145,7 +147,8 @@ const Navbar = () => {
         { title: "Stock Adjustments", href: "/inventory/adjustments" },
         { title: "Reports", href: "/inventory/reports" },
       ]
-    },    {
+    },
+    {
       title: "Orders",
       href: "/orders",
       icon: FileText,
@@ -219,6 +222,7 @@ const Navbar = () => {
                      pathname?.startsWith("/invoices") ||
                      pathname?.startsWith("/purchase-orders") ||
                      pathname?.startsWith("/audit"));
+  
   const handleAuthAction = async (action: string) => {
     if (action === "login") {
       router.push("/auth/login");
@@ -232,6 +236,7 @@ const Navbar = () => {
   const handleDropdownToggle = (itemHref: string) => {
     setOpenDropdown(openDropdown === itemHref ? null : itemHref);
   };
+  
   const CustomDropdown = ({ item, isOpen, onToggle }: {
     item: NavItem;
     isOpen: boolean;
@@ -245,22 +250,24 @@ const Navbar = () => {
             dropdownRefs.current[item.href] = el;
           }
         }}
-      >        <button
+      >
+        <button
           onClick={() => onToggle(item.href)}
           className={`flex items-center h-8 px-1.5 text-xs rounded-md transition-colors whitespace-nowrap hover:bg-accent/50 focus:outline-none focus:ring-2 focus:ring-primary/20 ${
             isOpen ? 'bg-accent/60' : 'bg-transparent'
           }`}
         >
           <item.icon className="h-3 w-3 mr-1 flex-shrink-0" />
-          <span className="hidden xl:inline text-xs">{item.title}</span>
-          <span className="xl:hidden text-xs">{item.title.length > 6 ? item.title.substring(0, 6) : item.title}</span>
-          <ChevronDown className={`h-2 w-2 ml-0.5 flex-shrink-0 transition-transform duration-200 ${
+          <span className="hidden md:inline text-xs">{item.title}</span>
+          <span className="md:hidden text-xs">{item.title.substring(0, 1)}</span>
+          <ChevronDown className={`h-2 w-2 ml-0.5 hidden sm:block flex-shrink-0 transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`} />
         </button>
         
-        {isOpen && (          <div className="absolute top-full left-0 mt-1 p-2 min-w-[200px] bg-background border border-border rounded-md shadow-lg z-50 animate-in fade-in-0 zoom-in-95 duration-200">
-            <div className="grid gap-1 w-48">
+        {isOpen && (
+          <div className="absolute top-full left-0 mt-1 p-2 min-w-[180px] sm:min-w-[200px] max-w-[280px] bg-background border border-border rounded-md shadow-lg z-50 animate-in fade-in-0 zoom-in-95 duration-200">
+            <div className="grid gap-1 w-full">
               {item.items.map((subItem: SubNavItem) => (
                 <Link
                   key={subItem.href}
@@ -279,20 +286,24 @@ const Navbar = () => {
   };
 
   return (
-    <>      {/* Mobile Menu Backdrop */}
+    <>
+      {/* Mobile Menu Backdrop */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black/50 z-30 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
-        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled 
           ? "bg-background/95 backdrop-blur-xl border-b border-border/60 shadow-lg shadow-black/5" 
           : "bg-background/80 backdrop-blur-sm border-b border-border/30"
-      }`}>        <div className="container mx-auto px-2 sm:px-3 lg:px-4 max-w-7xl">
-          <div className="flex mx-1   sm:justify-between h-16 gap-32 sm:gap-2">            {/* Logo */}
-            <Link href="/" className="flex items-center space-x-1 sm:space-x-2 group flex-shrink-0 min-w-0">
+      }`}>
+        <div className="mx-4 md:mx-8 px-2 sm:px-4">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link href="/" className="flex items-center space-x-1 sm:space-x-2 group flex-shrink-0">
               <div className="relative">
                 <div className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                   <Package className="h-3 w-3 sm:h-4 sm:w-4 lg:h-5 lg:w-5 text-white" />
@@ -302,9 +313,12 @@ const Navbar = () => {
               <span className="text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent truncate">
                 Invista
               </span>
-            </Link>{/* Desktop Navigation */}
-            {isDashboard ? (              <div className="hidden lg:flex items-center flex-1 max-w-3xl mx-2">
-                <div className="flex items-center space-x-0.5 lg:space-x-1">
+            </Link>
+
+            {/* Desktop Navigation */}
+            {isDashboard ? (
+              <div className="hidden md:flex items-center flex-1 max-w-3xl mx-auto justify-center">
+                <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-3 overflow-x-auto scrollbar-hide">
                   {dashboardNavItems.map((item) => (
                     <CustomDropdown
                       key={item.href}
@@ -316,7 +330,7 @@ const Navbar = () => {
                 </div>
               </div>
             ) : (
-              <div className="hidden lg:flex items-center gap-2 lg:gap-3 flex-1 justify-center">
+              <div className="hidden md:flex items-center gap-2 lg:gap-3 flex-1 justify-center">
                 <Link href="#features" className="text-sm font-medium hover:text-primary transition-colors whitespace-nowrap">
                   Features
                 </Link>
@@ -331,15 +345,15 @@ const Navbar = () => {
                 </Link>
               </div>
             )}            {/* Right Side Actions */}
-            <div className="flex ml-10 items-center space-x-1 sm:space-x-2 flex-shrink-0">
+            <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-3 flex-shrink-0 ml-auto">
               {isDashboard && (
                 <>
-                  {/* Search - Hidden on mobile */}
-                  <div className="hidden md:flex relative">
+                  {/* Search - Hidden on smaller screens */}
+                  <div className="hidden lg:flex relative">
                     <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
                       placeholder="Search..."
-                      className="pl-9 pr-4 w-28 lg:w-32 xl:w-48 h-9 bg-background/50 border-border/60 focus:border-primary/60 focus:bg-background text-sm"
+                      className="pl-9 pr-4 w-28 lg:w-36 xl:w-48 h-9 bg-background/50 border-border/60 focus:border-primary/60 focus:bg-background text-sm"
                     />
                   </div>
 
@@ -356,15 +370,17 @@ const Navbar = () => {
               {/* Theme Toggle */}
               <div className="flex-shrink-0">
                 <ThemeToggle />
-              </div>              {/* User Menu / Auth Buttons */}
+              </div>
+
+              {/* User Menu / Auth Buttons */}
               {isDashboard ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 px-1 space-x-1 hover:bg-accent/60 flex-shrink-0">
+                    <Button variant="ghost" className="h-8 px-1 md:px-2 space-x-1 hover:bg-accent/60 flex-shrink-0">
                       <div className="w-5 h-5 sm:w-6 sm:h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                         <User className="h-2 w-2 sm:h-3 sm:w-3 text-white" />
                       </div>
-                      <span className="hidden lg:block text-xs truncate max-w-[50px]">
+                      <span className="hidden lg:block text-xs truncate max-w-[80px] xl:max-w-[120px]">
                         {user?.email?.split('@')[0] || 'User'}
                       </span>
                       <ChevronDown className="h-2 w-2 sm:h-3 sm:w-3 hidden lg:block" />
@@ -393,7 +409,8 @@ const Navbar = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              ) : (                <div className="hidden sm:flex items-center space-x-1">
+              ) : (
+                <div className="hidden sm:flex items-center space-x-1">
                   <Button 
                     variant="ghost" 
                     size="sm"
@@ -411,77 +428,87 @@ const Navbar = () => {
                     <span className="sm:hidden">Start</span>
                   </Button>
                 </div>
-              )}              {/* Mobile Menu Button */}
+              )}
+
+              {/* Mobile Menu Button */}
               <Button
                 variant="ghost"
                 size="sm"
-                className="lg:hidden h-8 w-8 p-0 hover:bg-accent/60 ml-1"
+                className="md:hidden h-8 w-8 p-0 hover:bg-accent/60"
                 onClick={() => setIsOpen(!isOpen)}
               >
                 {isOpen ? <X className="h-3 w-3" /> : <Menu className="h-3 w-3" />}
               </Button>
             </div>
-          </div>          {/* Mobile Menu */}
-          <div className={`lg:hidden absolute top-full left-0 right-0 border-t border-border/60 bg-background/95 backdrop-blur-xl transition-all duration-300 ease-in-out z-40 ${
-            isOpen ? 'max-h-screen opacity-100 visible' : 'max-h-0 opacity-0 invisible'
+          </div>
+
+          {/* Mobile Menu */}
+          <div className={`md:hidden absolute top-full left-0 right-0 border-t border-border/60 bg-background/95 backdrop-blur-xl transition-all duration-300 ease-in-out z-40 ${
+            isOpen ? 'max-h-[80vh] opacity-100 visible overflow-y-auto' : 'max-h-0 opacity-0 invisible overflow-hidden'
           }`}>
-            <div className="container mx-auto px-3 sm:px-4 max-w-7xl">
-              <div className="py-2 space-y-1 max-h-[calc(100vh-4rem)] overflow-y-auto">
+            <div className="mx-4 md:mx-8 px-2 py-2">
+              <div className="py-2 space-y-1">
                 {isDashboard ? (
                   <>
                     {/* Mobile Search */}
-                    <div className="px-3 py-2">
+                    <div className="px-2 py-2 mb-2">
                       <div className="relative">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
                           placeholder="Search..."
-                          className="pl-9 pr-4 bg-background/50 border-border/60 h-10"
+                          className="pl-9 pr-4 bg-background/50 border-border/60 h-10 w-full"
                         />
                       </div>
                     </div>
                   
                     {/* Dashboard Navigation Items */}
-                    {dashboardNavItems.map((item) => (
-                      <div key={item.href} className="space-y-1">
-                        <Link
-                          href={item.href}
-                          className="flex items-center px-3 py-3 text-sm font-medium rounded-md hover:bg-accent/60 transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <item.icon className="h-4 w-4 mr-3 text-muted-foreground" />
-                          {item.title}
-                        </Link>
-                        {/* Sub-items for mobile */}
-                        <div className="ml-8 space-y-1">
-                          {item.items.slice(0, 3).map((subItem) => (
-                            <Link
-                              key={subItem.href}
-                              href={subItem.href}
-                              className="block px-3 py-2 text-xs text-muted-foreground rounded-md hover:bg-accent/40 transition-colors"
-                              onClick={() => setIsOpen(false)}
-                            >
-                              {subItem.title}
-                            </Link>
-                          ))}
+                    <div className="space-y-2">
+                      {dashboardNavItems.map((item) => (
+                        <div key={item.href} className="space-y-1">
+                          <Link
+                            href={item.href}
+                            className="flex items-center px-3 py-2.5 text-sm font-medium rounded-md hover:bg-accent/60 transition-colors"
+                            onClick={() => setIsOpen(false)}
+                          >
+                            <item.icon className="h-4 w-4 mr-3 text-muted-foreground" />
+                            {item.title}
+                          </Link>
+                          {/* Sub-items for mobile - show all items now */}
+                          <div className="ml-7 space-y-1 border-l border-border/40 pl-2">
+                            {item.items.map((subItem) => (
+                              <Link
+                                key={subItem.href}
+                                href={subItem.href}
+                                className="block px-3 py-2 text-xs text-muted-foreground rounded-md hover:bg-accent/40 transition-colors"
+                                onClick={() => setIsOpen(false)}
+                              >
+                                {subItem.title}
+                              </Link>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                     
                     {/* Mobile User Actions */}
-                    <div className="border-t border-border/40 mt-4 pt-4 px-3">
+                    <div className="border-t border-border/40 mt-4 pt-4 px-2">
                       <div className="flex items-center space-x-3 py-2">
                         <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
                           <User className="h-4 w-4 text-white" />
                         </div>
-                        <div>
-                          <div className="text-sm font-medium">{user?.email?.split('@')[0] || 'User'}</div>
-                          <div className="text-xs text-muted-foreground">{user?.email}</div>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-medium truncate">{user?.email?.split('@')[0] || 'User'}</div>
+                          <div className="text-xs text-muted-foreground truncate">{user?.email}</div>
                         </div>
                       </div>
                       <div className="space-y-1 mt-2">
                         <Button 
                           variant="ghost" 
                           className="w-full justify-start text-sm h-10"
+                          onClick={() => {
+                            router.push('/profile');
+                            setIsOpen(false);
+                          }}
                         >
                           <User className="mr-2 h-4 w-4" />
                           Profile
@@ -489,6 +516,10 @@ const Navbar = () => {
                         <Button 
                           variant="ghost" 
                           className="w-full justify-start text-sm h-10"
+                          onClick={() => {
+                            router.push('/dashboard/settings');
+                            setIsOpen(false);
+                          }}
                         >
                           <Settings className="mr-2 h-4 w-4" />
                           Settings
