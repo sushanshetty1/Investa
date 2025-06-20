@@ -1,9 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -65,13 +64,7 @@ export function AuditDetailsDialog({ audit, open, onOpenChange }: AuditDetailsDi
   const [auditItems, setAuditItems] = useState<AuditItem[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    if (open && audit.id) {
-      fetchAuditItems()
-    }
-  }, [open, audit.id])
-
-  const fetchAuditItems = async () => {
+  const fetchAuditItems = useCallback(async () => {
     try {
       setIsLoading(true)
       const response = await fetch(`/api/audits/${audit.id}/items`)
@@ -84,7 +77,13 @@ export function AuditDetailsDialog({ audit, open, onOpenChange }: AuditDetailsDi
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [audit.id])
+
+  useEffect(() => {
+    if (open && audit.id) {
+      fetchAuditItems()
+    }
+  }, [open, audit.id, fetchAuditItems])
 
   const getStatusColor = (status: string) => {
     switch (status) {

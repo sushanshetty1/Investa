@@ -4,19 +4,14 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { 
-  DollarSign, 
   TrendingUp, 
   TrendingDown,
-  BarChart3, 
-  PieChart as PieChartIcon,
   Calculator,
   Download,
-  Filter,
   RefreshCw,
   Target,
   Activity,
   Percent,
-  ShoppingCart,
   Package
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -24,14 +19,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
 import { 
   LineChart, 
   Line, 
-  AreaChart, 
-  Area, 
   BarChart, 
   Bar, 
   XAxis, 
@@ -101,10 +92,8 @@ const profitabilityAnalysis = [
 export default function FinancialReportsPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
-  const [selectedDateRange, setSelectedDateRange] = useState("6m");
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
-  const [valuationMethod, setValuationMethod] = useState("fifo");
-  const [financialData, setFinancialData] = useState<any>(null);
+  const [selectedDateRange, setSelectedDateRange] = useState("6m");  const [valuationMethod, setValuationMethod] = useState("fifo");
+  const [financialData, setFinancialData] = useState<Record<string, unknown> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Fetch financial data
@@ -188,9 +177,8 @@ export default function FinancialReportsPage() {
             <CardTitle className="text-sm font-medium">Total Inventory Value</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              ${(financialData?.data.metrics.cogs.value * 2.2 || 1450000).toLocaleString()}
+          <CardContent>            <div className="text-2xl font-bold">
+              ${((financialData as Record<string, any>)?.data?.metrics?.cogs?.value * 2.2 || 1450000).toLocaleString()}
             </div>
             <p className="text-xs text-muted-foreground">
               <span className="text-green-600 flex items-center">
@@ -209,18 +197,18 @@ export default function FinancialReportsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {financialData?.data.metrics.grossMargin.value || 38.1}%
+              {(financialData as Record<string, any>)?.data?.metrics?.grossMargin?.value || 38.1}%
             </div>
             <p className="text-xs text-muted-foreground">
               <span className={`flex items-center ${
-                (financialData?.data.metrics.grossMargin.trend || 'up') === 'up' ? 'text-green-600' : 'text-red-600'
+                ((financialData as Record<string, any>)?.data?.metrics?.grossMargin?.trend || 'up') === 'up' ? 'text-green-600' : 'text-red-600'
               }`}>
-                {(financialData?.data.metrics.grossMargin.trend || 'up') === 'up' ? (
+                {((financialData as Record<string, any>)?.data?.metrics?.grossMargin?.trend || 'up') === 'up' ? (
                   <TrendingUp className="w-3 h-3 mr-1" />
                 ) : (
                   <TrendingDown className="w-3 h-3 mr-1" />
                 )}
-                +{financialData?.data.metrics.grossMargin.change || 1.2}%
+                +{(financialData as Record<string, any>)?.data?.metrics?.grossMargin?.change || 1.2}%
               </span>
               improvement
             </p>
@@ -232,14 +220,14 @@ export default function FinancialReportsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              ${financialData?.data.metrics.cogs.value.toLocaleString() || '650,000'}
+              ${(financialData as Record<string, any>)?.data?.metrics?.cogs?.value?.toLocaleString() || '650,000'}
             </div>
             <p className="text-xs text-muted-foreground">
               <span className={`flex items-center ${
-                (financialData?.data.metrics.cogs.trend || 'up') === 'up' ? 'text-red-600' : 'text-green-600'
+                ((financialData as Record<string, any>)?.data?.metrics?.cogs?.trend || 'up') === 'up' ? 'text-red-600' : 'text-green-600'
               }`}>
                 <TrendingUp className="w-3 h-3 mr-1" />
-                +{financialData?.data.metrics.cogs.change || 12.1}%
+                +{(financialData as Record<string, any>)?.data?.metrics?.cogs?.change || 12.1}%
               </span>
               from last month
             </p>
@@ -253,12 +241,12 @@ export default function FinancialReportsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {financialData?.data.metrics.roi.value || 24.7}%
+              {(financialData as Record<string, any>)?.data?.metrics?.roi?.value || 24.7}%
             </div>
             <p className="text-xs text-muted-foreground">
               <span className="text-green-600 flex items-center">
                 <TrendingUp className="w-3 h-3 mr-1" />
-                +{financialData?.data.metrics.roi.change || 2.3}%
+                +{(financialData as Record<string, any>)?.data?.metrics?.roi?.change || 2.3}%
               </span>
               annual improvement
             </p>
@@ -388,7 +376,7 @@ export default function FinancialReportsPage() {
                       cx="50%"
                       cy="50%"
                       outerRadius={100}
-                      label={({category, percentage}) => `${percentage}%`}
+                      label={({percentage}) => `${percentage}%`}
                     >
                       {topValueCategories.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={`hsl(${index * 60}, 70%, 50%)`} />

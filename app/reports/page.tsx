@@ -14,9 +14,7 @@ import {
   Download,
   Calendar,
   Clock,
-  Target,
   Activity,
-  Percent,
   AlertTriangle,
   Lightbulb
 } from "lucide-react";

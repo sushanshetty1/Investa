@@ -4,14 +4,9 @@ import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { 
-  Package, 
   TrendingUp, 
   TrendingDown,
-  BarChart3, 
-  PieChart as PieChartIcon,
-  Calendar,
   Download,
-  Filter,
   RefreshCw,
   AlertTriangle,
   Clock,
@@ -25,7 +20,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
 import { 
   LineChart, 
@@ -41,9 +35,7 @@ import {
   ResponsiveContainer, 
   PieChart, 
   Pie, 
-  Cell,
-  ScatterChart,
-  Scatter
+  Cell
 } from "recharts";
 
 // Mock data for charts and analytics
@@ -100,7 +92,7 @@ export default function InventoryAnalyticsPage() {
   const router = useRouter();
   const [selectedDateRange, setSelectedDateRange] = useState("30d");
   const [selectedWarehouse, setSelectedWarehouse] = useState("all");
-  const [analyticsData, setAnalyticsData] = useState<any>(null);
+  const [analyticsData, setAnalyticsData] = useState<Record<string, unknown> | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   // Fetch analytics data
@@ -200,18 +192,18 @@ export default function InventoryAnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              ${analyticsData?.stats.data.stats.totalStockValue.value.toLocaleString() || '1,420,000'}
+              ${(analyticsData as Record<string, any>)?.stats?.data?.stats?.totalStockValue?.value?.toLocaleString() || '1,420,000'}
             </div>
             <p className="text-xs text-muted-foreground">
               <span className={`flex items-center ${
-                (analyticsData?.stats.data.stats.totalStockValue.trend || 'up') === 'up' ? 'text-green-600' : 'text-red-600'
+                ((analyticsData as Record<string, any>)?.stats?.data?.stats?.totalStockValue?.trend || 'up') === 'up' ? 'text-green-600' : 'text-red-600'
               }`}>
-                {(analyticsData?.stats.data.stats.totalStockValue.trend || 'up') === 'up' ? (
+                {((analyticsData as Record<string, any>)?.stats?.data?.stats?.totalStockValue?.trend || 'up') === 'up' ? (
                   <TrendingUp className="w-3 h-3 mr-1" />
                 ) : (
                   <TrendingDown className="w-3 h-3 mr-1" />
                 )}
-                +{analyticsData?.stats.data.stats.totalStockValue.change || 5.2}%
+                +{(analyticsData as Record<string, any>)?.stats?.data?.stats?.totalStockValue?.change || 5.2}%
               </span>
               from last month
             </p>
@@ -225,12 +217,12 @@ export default function InventoryAnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {analyticsData?.stats.data.stats.stockTurnover.value || 6.8}x
+              {(analyticsData as Record<string, any>)?.stats?.data?.stats?.stockTurnover?.value || 6.8}x
             </div>
             <p className="text-xs text-muted-foreground">
               <span className="text-green-600 flex items-center">
                 <TrendingUp className="w-3 h-3 mr-1" />
-                +{analyticsData?.stats.data.stats.stockTurnover.change || 0.3}x
+                +{(analyticsData as Record<string, any>)?.stats?.data?.stats?.stockTurnover?.change || 0.3}x
               </span>
               from last period
             </p>
@@ -244,12 +236,12 @@ export default function InventoryAnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {analyticsData?.stats.data.stats.daysOnHand.value || 53.7}
+              {(analyticsData as Record<string, any>)?.stats?.data?.stats?.daysOnHand?.value || 53.7}
             </div>
             <p className="text-xs text-muted-foreground">
               <span className="text-red-600 flex items-center">
                 <TrendingDown className="w-3 h-3 mr-1" />
-                {analyticsData?.stats.data.stats.daysOnHand.change || -2.1} days
+                {(analyticsData as Record<string, any>)?.stats?.data?.stats?.daysOnHand?.change || -2.1} days
               </span>
               improvement
             </p>
@@ -263,7 +255,7 @@ export default function InventoryAnalyticsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {analyticsData?.stats.data.stats.stockoutRisk.value || 12}
+              {(analyticsData as Record<string, any>)?.stats?.data?.stats?.stockoutRisk?.value || 12}
             </div>
             <p className="text-xs text-muted-foreground">
               Items below reorder point
@@ -290,7 +282,7 @@ export default function InventoryAnalyticsPage() {
                 <CardDescription>Daily inbound vs outbound movements</CardDescription>
               </CardHeader>              <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <AreaChart data={analyticsData?.movements.data.movements || stockMovementData}>
+                  <AreaChart data={(analyticsData as Record<string, any>)?.movements?.data?.movements || stockMovementData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
                       dataKey="date" 
@@ -327,7 +319,7 @@ export default function InventoryAnalyticsPage() {
                 <CardDescription>Running stock levels with net changes</CardDescription>
               </CardHeader>              <CardContent>
                 <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={analyticsData?.movements.data.movements || stockMovementData}>
+                  <LineChart data={(analyticsData as Record<string, any>)?.movements?.data?.movements || stockMovementData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
                       dataKey="date" 

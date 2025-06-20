@@ -1,12 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest) {
-  try {
+interface ReportData {
+  summary?: Record<string, unknown>;
+  details?: Array<Record<string, unknown>>;
+  monthlyTrends?: Array<Record<string, unknown>>;
+  message?: string;
+}
+
+export async function POST(request: NextRequest) {  try {
     const body = await request.json();
     const { 
       reportType, 
       dateRange, 
-      warehouse, 
+      warehouse: _warehouse, // eslint-disable-line @typescript-eslint/no-unused-vars
       format = 'csv', // csv, xlsx, pdf
       includeCharts = false 
     } = body;
@@ -19,29 +25,22 @@ export async function POST(request: NextRequest) {
         },
         { status: 400 }
       );
-    }
-
-    // Mock data - in production, fetch real data based on parameters
-    const reportData = await generateReportData(reportType, dateRange, warehouse);
+    }    // Mock data - in production, fetch real data based on parameters
+    const reportData = await generateReportData(reportType);
     
     let exportData;
-    let contentType;
     let filename;
 
-    switch (format) {
-      case 'csv':
+    switch (format) {      case 'csv':
         exportData = generateCSV(reportData);
-        contentType = 'text/csv';
         filename = `${reportType}-${dateRange}-${Date.now()}.csv`;
         break;
       case 'xlsx':
         exportData = generateExcel(reportData);
-        contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
         filename = `${reportType}-${dateRange}-${Date.now()}.xlsx`;
         break;
       case 'pdf':
         exportData = generatePDF(reportData, includeCharts);
-        contentType = 'application/pdf';
         filename = `${reportType}-${dateRange}-${Date.now()}.pdf`;
         break;
       default:
@@ -74,7 +73,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-async function generateReportData(reportType: string, dateRange: string, warehouse: string) {
+async function generateReportData(reportType: string) {
   // Mock data generation - replace with actual data fetching
   switch (reportType) {
     case 'inventory-summary':
@@ -110,18 +109,16 @@ async function generateReportData(reportType: string, dateRange: string, warehou
   }
 }
 
-function generateCSV(data: any): string {
+function generateCSV(data: ReportData): string {
   if (data.details && Array.isArray(data.details)) {
-    const headers = Object.keys(data.details[0]).join(',');
-    const rows = data.details.map((item: any) => 
+    const headers = Object.keys(data.details[0]).join(',');    const rows = data.details.map((item: Record<string, unknown>) => 
       Object.values(item).join(',')
     ).join('\n');
     return `${headers}\n${rows}`;
   }
   
   if (data.monthlyTrends && Array.isArray(data.monthlyTrends)) {
-    const headers = Object.keys(data.monthlyTrends[0]).join(',');
-    const rows = data.monthlyTrends.map((item: any) => 
+    const headers = Object.keys(data.monthlyTrends[0]).join(',');    const rows = data.monthlyTrends.map((item: Record<string, unknown>) => 
       Object.values(item).join(',')
     ).join('\n');
     return `${headers}\n${rows}`;
@@ -130,13 +127,13 @@ function generateCSV(data: any): string {
   return 'No exportable data available';
 }
 
-function generateExcel(data: any): Buffer {
+function generateExcel(data: ReportData): Buffer {
   // Mock Excel generation - in production, use a library like ExcelJS
   const csvData = generateCSV(data);
   return Buffer.from(csvData, 'utf-8');
 }
 
-function generatePDF(data: any, includeCharts: boolean): Buffer {
+function generatePDF(data: ReportData, _includeCharts: boolean): Buffer {
   // Mock PDF generation - in production, use a library like Puppeteer or PDFKit
   const content = `
     Report Generated: ${new Date().toISOString()}
@@ -144,13 +141,13 @@ function generatePDF(data: any, includeCharts: boolean): Buffer {
     Summary:
     ${JSON.stringify(data.summary, null, 2)}
     
-    ${includeCharts ? 'Charts and visualizations would be included here.' : ''}
+    ${_includeCharts ? 'Charts and visualizations would be included here.' : ''}
   `;
   return Buffer.from(content, 'utf-8');
 }
 
 // GET endpoint to list available exports
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Mock list of available exports
     const exports = [

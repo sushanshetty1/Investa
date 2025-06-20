@@ -124,12 +124,11 @@ export async function GET(request: NextRequest) {
       } else if (audit.status === 'CANCELLED') {
         acc[type].cancelled += 1
       }
-      
-      return acc
-    }, {} as any)
+        return acc
+    }, {} as Record<string, any>)
 
     // Add completion rates to type compliance
-    Object.values(typeCompliance).forEach((tc: any) => {
+    Object.values(typeCompliance).forEach((tc: Record<string, any>) => {
       tc.completionRate = tc.total > 0 ? Math.round((tc.completed / tc.total) * 100) : 0
       tc.onTimeRate = tc.completed > 0 ? Math.round((tc.onTime / tc.completed) * 100) : 0
     })
@@ -184,7 +183,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function generateRecommendations(metrics: any) {
+function generateRecommendations(metrics: Record<string, any>) {
   const recommendations = []
 
   if (metrics.completionRate < 80) {

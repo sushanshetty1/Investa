@@ -74,11 +74,10 @@ export async function GET(request: NextRequest) {
       const auditType = item.audit?.type || 'UNKNOWN'
       acc[reason].auditTypes[auditType] = (acc[reason].auditTypes[auditType] || 0) + 1
 
-      return acc
-    }, {} as any)
+      return acc    }, {} as Record<string, any>)
 
     // Calculate averages and determine severity
-    const rootCauses = Object.values(rootCauseStats).map((cause: any) => {
+    const rootCauses = Object.values(rootCauseStats).map((cause: Record<string, any>) => {
       cause.averageAdjustment = Math.round((cause.totalAdjustment / cause.count) * 100) / 100
       cause.affectedProductsCount = cause.affectedProducts.size
       cause.affectedWarehousesCount = cause.affectedWarehouses.size

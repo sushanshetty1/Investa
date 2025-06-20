@@ -3,13 +3,13 @@ import { neonClient } from '@/lib/db'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const auditId = params.id
+    const { id } = await params
 
     const auditItems = await neonClient.inventoryAuditItem.findMany({
-      where: { auditId },
+      where: { auditId: id },
       include: {
         product: {
           select: {
@@ -26,7 +26,7 @@ export async function GET(
       orderBy: { createdAt: 'asc' }
     })
 
-    const transformedItems = auditItems.map((item: any) => ({
+    const transformedItems = auditItems.map((item: Record<string, any>) => ({
       id: item.id,
       productId: item.productId,
       productName: item.product.name,

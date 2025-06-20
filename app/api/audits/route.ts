@@ -10,10 +10,8 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get('type')
     const status = searchParams.get('status')
     const warehouseId = searchParams.get('warehouseId')
-    const dateRange = searchParams.get('dateRange')
-
-    // Build where clause
-    const where: any = {}
+    const dateRange = searchParams.get('dateRange')    // Build where clause
+    const where: Record<string, any> = {}
     if (type) where.type = type
     if (status) where.status = status
     if (warehouseId) where.warehouseId = warehouseId
@@ -21,7 +19,7 @@ export async function GET(request: NextRequest) {
     // Date range filter
     if (dateRange) {
       const now = new Date()
-      let fromDate = new Date()
+      const fromDate = new Date()
 
       switch (dateRange) {
         case 'today':
@@ -63,7 +61,7 @@ export async function GET(request: NextRequest) {
     ])
 
     // Transform the data to match our interface
-    const transformedAudits = audits.map((audit: any) => ({
+    const transformedAudits = audits.map((audit: Record<string, any>) => ({
       id: audit.id,
       auditNumber: audit.auditNumber,
       type: audit.type,
@@ -179,7 +177,7 @@ export async function POST(request: NextRequest) {
 // Helper function to generate audit items
 async function generateAuditItems(auditId: string, type: string, warehouseId?: string, productId?: string) {
   try {
-    const where: any = {}
+    const where: Record<string, any> = {}
     if (warehouseId) where.warehouseId = warehouseId
     if (productId) where.productId = productId
 
@@ -194,7 +192,7 @@ async function generateAuditItems(auditId: string, type: string, warehouseId?: s
     })
 
     // Create audit items
-    const auditItems = inventoryItems.map((item: any) => ({
+    const auditItems = inventoryItems.map((item: Record<string, any>) => ({
       auditId,
       productId: item.productId,
       warehouseId: item.warehouseId,

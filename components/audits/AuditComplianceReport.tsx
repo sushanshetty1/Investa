@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Shield, FileText, Download, CheckCircle, XCircle, AlertTriangle, Calendar, Award, Clock } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -47,7 +47,7 @@ interface AuditTrail {
   details: string
   auditId?: string
   auditNumber?: string
-  changes?: Record<string, { from: any; to: any }>
+  changes?: Record<string, { from: unknown; to: unknown }>
   ipAddress?: string
   userAgent?: string
 }
@@ -79,18 +79,13 @@ export function AuditComplianceReport() {
     averageResolutionTime: 0,
     pendingActions: 0
   })
-  
-  const [requirements, setRequirements] = useState<ComplianceRequirement[]>([])
+    const [requirements, setRequirements] = useState<ComplianceRequirement[]>([])
   const [auditTrails, setAuditTrails] = useState<AuditTrail[]>([])
   const [reports, setReports] = useState<ComplianceReport[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [selectedPeriod, setSelectedPeriod] = useState('current')
-
-  useEffect(() => {
-    fetchComplianceData()
-  }, [selectedPeriod])
-
-  const fetchComplianceData = async () => {
+  
+  const fetchComplianceData = useCallback(async () => {
     try {
       setIsLoading(true)
       
@@ -122,10 +117,13 @@ export function AuditComplianceReport() {
       }
     } catch (error) {
       console.error('Error fetching compliance data:', error)
-    } finally {
-      setIsLoading(false)
+    } finally {      setIsLoading(false)
     }
-  }
+  }, [selectedPeriod])
+
+  useEffect(() => {
+    fetchComplianceData()
+  }, [fetchComplianceData])
 
   const generateReport = async (type: string) => {
     try {

@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Search, Filter, Download, Eye, Edit, Trash2, CheckCircle, XCircle, Clock, Calendar, FileText, AlertTriangle } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { Search, Download, Eye, Edit, Trash2, CheckCircle, XCircle, Clock, Calendar, FileText, AlertTriangle } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -56,20 +56,11 @@ export function AuditListView() {
   const [filters, setFilters] = useState<FilterOptions>({
     search: '',
     type: 'all',
-    status: 'all',
-    warehouse: 'all',
+    status: 'all',    warehouse: 'all',
     dateRange: 'all'
   })
-
-  useEffect(() => {
-    fetchAudits()
-  }, [])
-
-  useEffect(() => {
-    applyFilters()
-  }, [audits, filters])
-
-  const fetchAudits = async () => {
+  
+  const fetchAudits = useCallback(async () => {
     try {
       setIsLoading(true)
       const response = await fetch('/api/audits')
@@ -82,9 +73,9 @@ export function AuditListView() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...audits]
 
     // Search filter
@@ -94,9 +85,10 @@ export function AuditListView() {
         audit.auditNumber.toLowerCase().includes(searchLower) ||
         audit.warehouseName?.toLowerCase().includes(searchLower) ||
         audit.productName?.toLowerCase().includes(searchLower) ||
-        audit.auditedByName?.toLowerCase().includes(searchLower)
-      )
-    }    // Type filter
+        audit.auditedByName?.toLowerCase().includes(searchLower)      )
+    }
+
+    // Type filter
     if (filters.type && filters.type !== 'all') {
       filtered = filtered.filter(audit => audit.type === filters.type)
     }
@@ -104,10 +96,14 @@ export function AuditListView() {
     // Status filter
     if (filters.status && filters.status !== 'all') {
       filtered = filtered.filter(audit => audit.status === filters.status)
-    }    // Warehouse filter
+    }
+
+    // Warehouse filter
     if (filters.warehouse && filters.warehouse !== 'all') {
       filtered = filtered.filter(audit => audit.warehouseId === filters.warehouse)
-    }// Date range filter
+    }
+
+    // Date range filter
     if (filters.dateRange && filters.dateRange !== 'all') {
       const now = new Date()
       const filterDate = new Date()
@@ -125,15 +121,21 @@ export function AuditListView() {
         case 'quarter':
           filterDate.setMonth(now.getMonth() - 3)
           break
-      }
-
-      filtered = filtered.filter(audit => 
+      }      filtered = filtered.filter(audit => 
         new Date(audit.createdAt) >= filterDate
       )
     }
-
+    
     setFilteredAudits(filtered)
-  }
+  }, [audits, filters])
+
+  useEffect(() => {
+    fetchAudits()
+  }, [fetchAudits])
+
+  useEffect(() => {
+    applyFilters()
+  }, [applyFilters])
 
   const handleDeleteAudit = async (auditId: string) => {
     try {

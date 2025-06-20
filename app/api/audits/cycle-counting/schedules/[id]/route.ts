@@ -3,15 +3,16 @@ import { neonClient } from '@/lib/db'
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const body = await request.json()
     const { status, notes, plannedDate } = body
+    const { id } = await params
 
     const audit = await neonClient.inventoryAudit.update({
       where: { 
-        id: params.id,
+        id: id,
         type: 'CYCLE_COUNT'
       },
       data: {
@@ -68,12 +69,13 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     await neonClient.inventoryAudit.delete({
       where: { 
-        id: params.id,
+        id: id,
         type: 'CYCLE_COUNT'
       }
     })

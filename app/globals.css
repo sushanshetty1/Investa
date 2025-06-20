@@ -360,3 +360,19 @@
   background-clip: text;
   color: transparent;
 }
+
+/* Navbar utilities */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Container max width utilities */
+.navbar-container {
+  max-width: 100%;
+  overflow-x: hidden;
+}

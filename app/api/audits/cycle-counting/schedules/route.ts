@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status')
     const warehouseId = searchParams.get('warehouseId')
 
-    const where: any = {
+    const where: Record<string, any> = {
       type: 'CYCLE_COUNT'
     }
     

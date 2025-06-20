@@ -32,10 +32,8 @@ export async function POST(request: NextRequest) {
     // Calculate date range
     const periodDays = parseInt(period)
     const dateFrom = new Date()
-    dateFrom.setDate(dateFrom.getDate() - periodDays)
-
-    // Get data based on filters
-    const whereClause: any = {
+    dateFrom.setDate(dateFrom.getDate() - periodDays)    // Get data based on filters
+    const whereClause: Record<string, unknown> = {
       completedDate: { gte: dateFrom },
       status: 'COMPLETED'
     }

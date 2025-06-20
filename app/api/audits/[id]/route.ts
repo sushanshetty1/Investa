@@ -3,10 +3,10 @@ import { neonClient } from '@/lib/db'
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const auditId = params.id
+    const { id: auditId } = await params
     const body = await request.json()
     const { plannedDate, supervisedBy, notes, status } = body
 
@@ -37,10 +37,8 @@ export async function PATCH(
           { status: 400 }
         )
       }
-    }
-
-    // Build update data
-    const updateData: any = {}
+    }    // Build update data
+    const updateData: Record<string, any> = {}
     if (plannedDate) updateData.plannedDate = new Date(plannedDate)
     if (supervisedBy !== undefined) updateData.supervisedBy = supervisedBy
     if (notes !== undefined) updateData.notes = notes
@@ -89,10 +87,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const auditId = params.id
+    const { id: auditId } = await params
 
     // Check if audit can be deleted (not in progress)
     const audit = await neonClient.inventoryAudit.findUnique({

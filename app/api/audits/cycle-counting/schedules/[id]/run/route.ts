@@ -3,13 +3,14 @@ import { neonClient } from '@/lib/db'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
+  { params }: { params: Promise<{ id: string }> }
+) {  try {
+    const { id } = await params
+    
     // Start the cycle count by updating audit status and generating audit items
     const audit = await neonClient.inventoryAudit.findUnique({
       where: { 
-        id: params.id,
+        id,
         type: 'CYCLE_COUNT'
       },
       include: {
@@ -30,17 +31,17 @@ export async function POST(
         { error: 'Cycle count can only be started from PLANNED status' },
         { status: 400 }
       )
-    }
-
-    // Update audit status
+    }    // Update audit status
     await neonClient.inventoryAudit.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         status: 'IN_PROGRESS',
         startedDate: new Date()
       }
-    })    // Generate audit items based on warehouse and/or product selection
-    let inventoryItems: any[] = []
+    })
+
+    // Generate audit items based on warehouse and/or product selection
+    let inventoryItems: Array<Record<string, any>> = []
 
     if (audit.productId) {
       // Product-specific audit
@@ -80,9 +81,11 @@ export async function POST(
         },
         take: 50 // Very limited for cycle counts
       })
-    }    // Create audit items
+    }
+
+    // Create audit items
     const auditItemsData = inventoryItems.map(item => ({
-      auditId: params.id,
+      auditId: id,
       productId: item.productId,
       variantId: item.variantId,
       warehouseId: item.warehouseId,
@@ -95,11 +98,9 @@ export async function POST(
       await neonClient.inventoryAuditItem.createMany({
         data: auditItemsData
       })
-    }
-
-    // Update audit with totals
+    }    // Update audit with totals
     await neonClient.inventoryAudit.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         totalItems: auditItemsData.length,
         itemsCounted: 0

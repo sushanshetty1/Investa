@@ -232,9 +232,10 @@ export default function CreateOrderPage() {
       toast.error('Failed to create order');
     } finally {
       setIsSubmitting(false);
-    }
-  };  // Helper function to safely convert price values to numbers
-  const convertToNumber = (value: any): number => {
+    }  };
+
+  // Helper function to safely convert price values to numbers
+  const convertToNumber = (value: unknown): number => {
     if (value == null) return 0;
     if (typeof value === 'number') return isNaN(value) ? 0 : value;
     if (typeof value === 'string') {
@@ -242,7 +243,9 @@ export default function CreateOrderPage() {
       return isNaN(parsed) ? 0 : parsed;
     }
     return 0;
-  };  // Helper function to safely format currency
+  };
+
+  // Helper function to safely format currency
   const formatCurrency = (value: number | string | null | undefined): string => {
     const numValue = convertToNumber(value);
     if (numValue <= 0) {

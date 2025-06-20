@@ -13,8 +13,6 @@ import {
   FileText, 
   FileSpreadsheet,
   FileImage,
-  Clock,
-  CheckCircle,
   XCircle,
   RefreshCw
 } from "lucide-react";

@@ -219,7 +219,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-function getMostActiveUser(auditTrail: any[]) {
+function getMostActiveUser(auditTrail: Array<Record<string, any>>) {
   const userCounts = auditTrail.reduce((acc, event) => {
     acc[event.performedBy] = (acc[event.performedBy] || 0) + 1
     return acc

@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { Calendar, Clock, MapPin, Package2, Settings, Play, Pause, RotateCcw } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { Calendar, Clock, MapPin, Package2, Settings, Play} from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -76,18 +76,7 @@ export function CycleCountingScheduler() {
     itemsPerCycle: 50,
     isActive: true
   })
-
-  useEffect(() => {
-    fetchSchedules()
-  }, [])
-
-  useEffect(() => {
-    if (selectedSchedule) {
-      fetchCycleItems(selectedSchedule)
-    }
-  }, [selectedSchedule])
-
-  const fetchSchedules = async () => {
+  const fetchSchedules = useCallback(async () => {
     try {
       setIsLoading(true)
       const response = await fetch('/api/audits/cycle-counting/schedules')
@@ -103,7 +92,11 @@ export function CycleCountingScheduler() {
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [selectedSchedule])
+
+  useEffect(() => {
+    fetchSchedules()
+  }, [fetchSchedules])
 
   const fetchCycleItems = async (scheduleId: string) => {
     try {

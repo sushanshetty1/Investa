@@ -57,11 +57,9 @@ export async function GET(request: NextRequest) {
           },
         },
       },
-    });
-
-    // Calculate ABC analysis
-    const productValues = products.map((product: any) => {
-      const totalValue = product.inventoryItems.reduce((sum: number, item: any) => {
+    });    // Calculate ABC analysis
+    const productValues = products.map((product: Record<string, any>) => {
+      const totalValue = product.inventoryItems.reduce((sum: number, item: Record<string, any>) => {
         return sum + (item.quantity * (item.averageCost || 0));
       }, 0);
       return {
@@ -96,9 +94,10 @@ export async function GET(request: NextRequest) {
             name: true,
             sku: true,
           },
-        },
-      },
-    });    const agingData = inventoryItems.map((item: any) => {
+        },      },
+    });
+
+    const agingData = inventoryItems.map((item: Record<string, any>) => {
       const daysInInventory = Math.floor(
         (new Date().getTime() - new Date(item.createdAt).getTime()) / (1000 * 60 * 60 * 24)
       );

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { neonClient } from '@/lib/db'
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const now = new Date()
     const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1)
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     })
 
     const discrepanciesFound = discrepancyItems.length
-    const discrepancyValue = discrepancyItems.reduce((sum: number, item: any) => {
+    const discrepancyValue = discrepancyItems.reduce((sum: number, item: Record<string, any>) => {
       const costPrice = item.product?.costPrice || 0
       const adjustmentValue = (item.adjustmentQty || 0) * Number(costPrice)
       return sum + Math.abs(adjustmentValue)
@@ -108,7 +108,7 @@ async function getOnTimeAuditsCount(): Promise<number> {
       }
     })
 
-    const onTimeAudits = audits.filter((audit: any) => {
+    const onTimeAudits = audits.filter((audit: Record<string, any>) => {
       const plannedDate = new Date(audit.plannedDate)
       const completedDate = new Date(audit.completedDate)
       // Consider on-time if completed within 1 day of planned date

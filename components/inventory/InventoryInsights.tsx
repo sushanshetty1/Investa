@@ -1,21 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { 
   TrendingUp, 
-  TrendingDown,
   AlertTriangle,
-  Clock,
   Target,
   Activity,
   Package,
-  DollarSign
 } from "lucide-react";
 
 interface InventoryInsight {
@@ -36,6 +31,14 @@ interface InventoryInsight {
 interface InventoryInsightsProps {
   insights?: InventoryInsight[];
   isLoading?: boolean;
+}
+
+interface SummaryStats {
+  total: number;
+  highPriority: number;
+  opportunities: number;
+  risks: number;
+  alerts: number;
 }
 
 const mockInsights: InventoryInsight[] = [
@@ -116,7 +119,7 @@ export function InventoryInsights({ insights, isLoading = false }: InventoryInsi
   const [selectedPriority, setSelectedPriority] = useState<string>('all');
   const [apiInsights, setApiInsights] = useState<InventoryInsight[]>([]);
   const [apiLoading, setApiLoading] = useState(true);
-  const [apiSummaryStats, setApiSummaryStats] = useState<any>(null);
+  const [apiSummaryStats, setApiSummaryStats] = useState<SummaryStats | null>(null);
 
   // Fetch insights from API if not provided as props
   useEffect(() => {

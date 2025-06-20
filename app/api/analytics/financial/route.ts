@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { neonClient } from '@/lib/db';
 
-export async function GET(request: NextRequest) {
-  try {
+export async function GET(request: NextRequest) {  try {
     const searchParams = request.nextUrl.searchParams;
     const dateRange = searchParams.get('dateRange') || '6m';
-    const valuationMethod = searchParams.get('valuationMethod') || 'fifo';
 
     // Calculate date range
     const endDate = new Date();
@@ -55,10 +53,12 @@ export async function GET(request: NextRequest) {
     });
 
     // Calculate total inventory value
-    const totalInventoryValue = inventoryItems.reduce((sum: number, item: any) => {
+    const totalInventoryValue = inventoryItems.reduce((sum: number, item: Record<string, any>) => {
       const cost = item.averageCost || item.product.costPrice || 0;
       return sum + (item.quantity * Number(cost));
-    }, 0);    // Get sales and COGS data from order items
+    }, 0);
+
+    // Get sales and COGS data from order items
     const orderItems = await neonClient.orderItem.findMany({
       where: {
         order: {
@@ -87,11 +87,9 @@ export async function GET(request: NextRequest) {
           },
         },
       },
-    });
-
-    // Calculate COGS and revenue by month
+    });    // Calculate COGS and revenue by month
     const monthlyData: { [key: string]: { revenue: number; cogs: number; } } = {};
-      orderItems.forEach((item: any) => {
+      orderItems.forEach((item: Record<string, any>) => {
       if (item.order) {
         const month = new Date(item.order.createdAt).toISOString().slice(0, 7); // YYYY-MM
         if (!monthlyData[month]) {
@@ -104,11 +102,9 @@ export async function GET(request: NextRequest) {
         monthlyData[month].revenue += itemRevenue;
         monthlyData[month].cogs += itemCogs;
       }
-    });
-
-    // Get profit margin by category
+    });    // Get profit margin by category
     const categoryData: { [key: string]: { revenue: number; cogs: number; } } = {};
-      orderItems.forEach((item: any) => {
+      orderItems.forEach((item: Record<string, any>) => {
       if (item.order && item.product.category) {
         const categoryName = item.product.category.name;
         if (!categoryData[categoryName]) {
@@ -138,12 +134,10 @@ export async function GET(request: NextRequest) {
           },
         },
       },
-    });
-
-    const purchasesByMonth: { [key: string]: number } = {};
-      purchaseOrders.forEach((po: any) => {
+    });    const purchasesByMonth: { [key: string]: number } = {};
+      purchaseOrders.forEach((po: Record<string, any>) => {
       const month = new Date(po.createdAt).toISOString().slice(0, 7);
-      const totalPurchase = po.items.reduce((sum: number, item: any) => {
+      const totalPurchase = po.items.reduce((sum: number, item: Record<string, any>) => {
         return sum + (Number(item.unitCost) * item.orderedQty);
       }, 0);
       

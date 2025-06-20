@@ -134,11 +134,10 @@ export async function GET(request: NextRequest) {
         acc[req.category].highestSeverity = req.severity
       }
       
-      return acc
-    }, {} as any)
+      return acc    }, {} as Record<string, any>)
 
     // Calculate average rates for categories
-    Object.values(categoryBreakdown).forEach((cat: any) => {
+    Object.values(categoryBreakdown).forEach((cat: Record<string, any>) => {
       const categoryReqs = filteredRequirements.filter(r => r.category === cat.category)
       cat.averageRate = Math.round(
         categoryReqs.reduce((sum, req) => sum + req.complianceRate, 0) / categoryReqs.length

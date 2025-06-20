@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { TrendingUp, TrendingDown, AlertTriangle, DollarSign, Package, MapPin, Calendar, Filter } from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { TrendingUp, TrendingDown, AlertTriangle, Package, MapPin, Filter } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -91,14 +91,9 @@ export function DiscrepancyAnalytics() {
     warehouse: 'all',
     severity: 'all',
     status: 'all',
-    rootCause: 'all'
-  })
+    rootCause: 'all'  })
 
-  useEffect(() => {
-    fetchData()
-  }, [filters])
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setIsLoading(true)
         // Build query parameters
@@ -126,13 +121,16 @@ export function DiscrepancyAnalytics() {
       if (rootCausesResponse.ok) {
         const data = await rootCausesResponse.json()
         setRootCauses(data.rootCauses || [])
-      }
-    } catch (error) {
+      }    } catch (error) {
       console.error('Error fetching discrepancy data:', error)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [filters])
+
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
@@ -436,7 +434,7 @@ export function DiscrepancyAnalytics() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {rootCauses.slice(0, 5).map((cause, index) => (
+                  {rootCauses.slice(0, 5).map((cause) => (
                     <div key={cause.cause} className="space-y-2">
                       <div className="flex justify-between items-center">
                         <span className="font-medium">{cause.cause}</span>
