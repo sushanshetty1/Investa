@@ -76,17 +76,28 @@ export default function CategoriesPage() {
   useEffect(() => {
     fetchCategories()
   }, [])
-
   const fetchCategories = async () => {
     try {
       setLoading(true)
       const response = await fetch('/api/inventory/categories')
       if (response.ok) {
         const data = await response.json()
-        setCategories(data)
+        const categoriesData = data.data || data.categories || data || []
+
+        // Ensure we always set an array
+        if (Array.isArray(categoriesData)) {
+          setCategories(categoriesData)
+        } else {
+          console.warn('Categories API returned non-array data:', categoriesData)
+          setCategories([])
+        }
+      } else {
+        console.error('Failed to fetch categories')
+        setCategories([])
       }
     } catch (error) {
       console.error('Error fetching categories:', error)
+      setCategories([])
     } finally {
       setLoading(false)
     }
@@ -97,20 +108,19 @@ export default function CategoriesPage() {
     setSubmitting(true)
 
     try {
-      const url = selectedCategory 
+      const url = selectedCategory
         ? `/api/inventory/categories/${selectedCategory.id}`
         : '/api/inventory/categories'
-      
+
       const method = selectedCategory ? 'PUT' : 'POST'
-      
+
       const response = await fetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+        }, body: JSON.stringify({
           ...formData,
-          parentId: formData.parentId || null
+          parentId: formData.parentId === 'root' ? null : formData.parentId || null
         }),
       })
 
@@ -147,23 +157,21 @@ export default function CategoriesPage() {
       setSubmitting(false)
     }
   }
-
   const resetForm = () => {
     setFormData({
       name: '',
       description: '',
-      parentId: '',
+      parentId: 'root',
       status: 'ACTIVE'
     })
     setSelectedCategory(null)
   }
-
   const openEditDialog = (category: Category) => {
     setSelectedCategory(category)
     setFormData({
       name: category.name,
       description: category.description || '',
-      parentId: category.parentId || '',
+      parentId: category.parentId || 'root',
       status: category.status
     })
     setIsEditDialogOpen(true)
@@ -173,14 +181,13 @@ export default function CategoriesPage() {
     setSelectedCategory(category)
     setIsDeleteDialogOpen(true)
   }
-
-  const filteredCategories = categories.filter(category =>
+  const filteredCategories = (categories || []).filter(category =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     category.description?.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const getParentCategories = () => {
-    return categories.filter(cat => !cat.parentId)
+    return (categories || []).filter(cat => !cat.parentId)
   }
 
   const getCategoryHierarchy = (category: Category): string => {
@@ -196,7 +203,7 @@ export default function CategoriesPage() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Categories</h1>
           <p className="text-gray-600 py-4 dark:text-gray-400">Organize your products with categories</p>
         </div>
-        <Button 
+        <Button
           onClick={() => {
             resetForm()
             setIsAddDialogOpen(true)
@@ -311,7 +318,7 @@ export default function CategoriesPage() {
                       <Badge variant="secondary">{category.productCount}</Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge 
+                      <Badge
                         variant={category.status === 'ACTIVE' ? 'default' : 'secondary'}
                         className={category.status === 'ACTIVE' ? 'bg-green-100 text-green-800' : ''}
                       >
@@ -331,7 +338,7 @@ export default function CategoriesPage() {
                             <Edit className="mr-2 h-4 w-4" />
                             Edit
                           </DropdownMenuItem>
-                          <DropdownMenuItem 
+                          <DropdownMenuItem
                             onClick={() => openDeleteDialog(category)}
                             className="text-red-600"
                           >
@@ -381,15 +388,14 @@ export default function CategoriesPage() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="parentId">Parent Category</Label>
-                <Select 
-                  value={formData.parentId} 
+                <Select
+                  value={formData.parentId}
                   onValueChange={(value) => setFormData(prev => ({ ...prev, parentId: value }))}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select parent category (optional)" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">No parent (root category)</SelectItem>
+                  </SelectTrigger>                  <SelectContent>
+                    <SelectItem value="root">No parent (root category)</SelectItem>
                     {getParentCategories().map((category) => (
                       <SelectItem key={category.id} value={category.id}>
                         {category.name}
@@ -400,8 +406,8 @@ export default function CategoriesPage() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="status">Status</Label>
-                <Select 
-                  value={formData.status} 
+                <Select
+                  value={formData.status}
                   onValueChange={(value: 'ACTIVE' | 'INACTIVE') => setFormData(prev => ({ ...prev, status: value }))}
                 >
                   <SelectTrigger>
@@ -458,15 +464,14 @@ export default function CategoriesPage() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="edit-parentId">Parent Category</Label>
-                <Select 
-                  value={formData.parentId} 
+                <Select
+                  value={formData.parentId}
                   onValueChange={(value) => setFormData(prev => ({ ...prev, parentId: value }))}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select parent category (optional)" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="">No parent (root category)</SelectItem>
+                  </SelectTrigger>                  <SelectContent>
+                    <SelectItem value="root">No parent (root category)</SelectItem>
                     {getParentCategories()
                       .filter(cat => cat.id !== selectedCategory?.id)
                       .map((category) => (
@@ -479,8 +484,8 @@ export default function CategoriesPage() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="edit-status">Status</Label>
-                <Select 
-                  value={formData.status} 
+                <Select
+                  value={formData.status}
                   onValueChange={(value: 'ACTIVE' | 'INACTIVE') => setFormData(prev => ({ ...prev, status: value }))}
                 >
                   <SelectTrigger>

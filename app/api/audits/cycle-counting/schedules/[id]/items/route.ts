@@ -6,8 +6,10 @@ export async function GET(
 ) {
   try {
     const { id } = await params
+    const { id } = await params
     const items = await neonClient.inventoryAuditItem.findMany({
       where: {
+        auditId: id
         auditId: id
       },
       include: {

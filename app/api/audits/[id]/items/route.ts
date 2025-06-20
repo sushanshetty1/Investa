@@ -3,7 +3,7 @@ import { neonClient } from '@/lib/db'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<Promise<{ id: string }>> }
 ) {
   try {
     const { id } = await params

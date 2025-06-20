@@ -60,7 +60,7 @@ export default function AuditsPage() {
       pending: 0
     }
   })
-  
+
   const [recentAudits, setRecentAudits] = useState<RecentAudit[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [showCreateDialog, setShowCreateDialog] = useState(false)
@@ -131,283 +131,283 @@ export default function AuditsPage() {
     <div className="min-h-screen bg-background pt-20">
       <div className="container mx-auto p-6 space-y-6">
         {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Quality Control & Audits</h1>
-          <p className="text-muted-foreground">
-            Comprehensive inventory auditing and quality management system
-          </p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold">Quality Control & Audits</h1>
+            <p className="text-muted-foreground">
+              Comprehensive inventory auditing and quality management system
+            </p>
+          </div>
+          <Button onClick={() => setShowCreateDialog(true)}>
+            <Plus className="h-4 w-4 mr-2" />
+            New Audit
+          </Button>
         </div>
-        <Button onClick={() => setShowCreateDialog(true)}>
-          <Plus className="h-4 w-4 mr-2" />
-          New Audit
-        </Button>
-      </div>
 
-      {/* Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Active Audits
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.activeAudits}</div>
-            <p className="text-xs text-muted-foreground">
-              Currently in progress
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Completed This Month
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.completedThisMonth}</div>
-            <p className="text-xs text-muted-foreground">
-              +{Math.round((stats.completedThisMonth / (stats.totalAudits || 1)) * 100)}% of total
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Discrepancies Found
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.discrepanciesFound}</div>
-            <p className="text-xs text-muted-foreground">
-              ${stats.discrepancyValue.toLocaleString()} value impact
-            </p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Compliance Score
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.complianceScore}%</div>
-            <Progress value={stats.complianceScore} className="mt-2" />
-          </CardContent>
-        </Card>
-      </div>
+        {/* Overview Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Active Audits
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.activeAudits}</div>
+              <p className="text-xs text-muted-foreground">
+                Currently in progress
+              </p>
+            </CardContent>
+          </Card>
 
-      {/* Cycle Count Status */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
-            Cycle Count Schedule
-          </CardTitle>
-          <CardDescription>
-            Current status of ongoing cycle counting program
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-blue-600">{stats.cycleCounts.scheduled}</div>
-              <p className="text-sm text-muted-foreground">Scheduled</p>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Completed This Month
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.completedThisMonth}</div>
+              <p className="text-xs text-muted-foreground">
+                +{Math.round((stats.completedThisMonth / (stats.totalAudits || 1)) * 100)}% of total
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Discrepancies Found
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.discrepanciesFound}</div>
+              <p className="text-xs text-muted-foreground">
+                ${stats.discrepancyValue.toLocaleString()} value impact
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-muted-foreground">
+                Compliance Score
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.complianceScore}%</div>
+              <Progress value={stats.complianceScore} className="mt-2" />
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Cycle Count Status */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Clock className="h-5 w-5" />
+              Cycle Count Schedule
+            </CardTitle>
+            <CardDescription>
+              Current status of ongoing cycle counting program
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-blue-600">{stats.cycleCounts.scheduled}</div>
+                <p className="text-sm text-muted-foreground">Scheduled</p>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-green-600">{stats.cycleCounts.completed}</div>
+                <p className="text-sm text-muted-foreground">Completed</p>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-orange-600">{stats.cycleCounts.pending}</div>
+                <p className="text-sm text-muted-foreground">Pending</p>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-green-600">{stats.cycleCounts.completed}</div>
-              <p className="text-sm text-muted-foreground">Completed</p>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-orange-600">{stats.cycleCounts.pending}</div>
-              <p className="text-sm text-muted-foreground">Pending</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* Main Content Tabs */}
-      <Tabs defaultValue="audits" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="audits">All Audits</TabsTrigger>
-          <TabsTrigger value="cycle-counting">Cycle Counting</TabsTrigger>
-          <TabsTrigger value="discrepancies">Discrepancy Analysis</TabsTrigger>
-          <TabsTrigger value="compliance">Compliance & Reports</TabsTrigger>
-        </TabsList>
+        {/* Main Content Tabs */}
+        <Tabs defaultValue="audits" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="audits">All Audits</TabsTrigger>
+            <TabsTrigger value="cycle-counting">Cycle Counting</TabsTrigger>
+            <TabsTrigger value="discrepancies">Discrepancy Analysis</TabsTrigger>
+            <TabsTrigger value="compliance">Compliance & Reports</TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="audits" className="space-y-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Recent Audits */}
-            <div className="lg:col-span-2">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Recent Audits</CardTitle>
-                  <CardDescription>
-                    Latest audit activities and their status
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {isLoading ? (
-                    <div className="space-y-4">
-                      {[...Array(5)].map((_, i) => (
-                        <div key={i} className="flex items-center space-x-4">
-                          <div className="h-10 w-10 rounded bg-gray-200 animate-pulse" />
-                          <div className="space-y-2 flex-1">
-                            <div className="h-4 bg-gray-200 rounded animate-pulse" />
-                            <div className="h-3 bg-gray-200 rounded w-3/4 animate-pulse" />
+          <TabsContent value="audits" className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Recent Audits */}
+              <div className="lg:col-span-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Recent Audits</CardTitle>
+                    <CardDescription>
+                      Latest audit activities and their status
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    {isLoading ? (
+                      <div className="space-y-4">
+                        {[...Array(5)].map((_, i) => (
+                          <div key={i} className="flex items-center space-x-4">
+                            <div className="h-10 w-10 rounded bg-gray-200 animate-pulse" />
+                            <div className="space-y-2 flex-1">
+                              <div className="h-4 bg-gray-200 rounded animate-pulse" />
+                              <div className="h-3 bg-gray-200 rounded w-3/4 animate-pulse" />
+                            </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : recentAudits.length === 0 ? (
-                    <div className="text-center py-8">
-                      <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                      <p className="text-gray-500">No audits found</p>
-                      <Button
-                        variant="outline"
-                        className="mt-4"
-                        onClick={() => setShowCreateDialog(true)}
-                      >
-                        Create Your First Audit
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {recentAudits.map((audit) => (
-                        <div
-                          key={audit.id}
-                          className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50"
+                        ))}
+                      </div>
+                    ) : recentAudits.length === 0 ? (
+                      <div className="text-center py-8">
+                        <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                        <p className="text-gray-500">No audits found</p>
+                        <Button
+                          variant="outline"
+                          className="mt-4"
+                          onClick={() => setShowCreateDialog(true)}
                         >
-                          <div className="flex items-center space-x-3">
-                            <div className="p-2 bg-gray-100 rounded">
-                              {getTypeIcon(audit.type)}
+                          Create Your First Audit
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {recentAudits.map((audit) => (
+                          <div
+                            key={audit.id}
+                            className="flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50"
+                          >
+                            <div className="flex items-center space-x-3">
+                              <div className="p-2 bg-gray-100 rounded">
+                                {getTypeIcon(audit.type)}
+                              </div>
+                              <div>
+                                <p className="font-medium">{audit.auditNumber}</p>
+                                <p className="text-sm text-muted-foreground">
+                                  {audit.warehouseName || audit.productName || 'Full Inventory'}
+                                </p>
+                                <p className="text-xs text-muted-foreground">
+                                  By {audit.auditedBy}
+                                </p>
+                              </div>
                             </div>
-                            <div>
-                              <p className="font-medium">{audit.auditNumber}</p>
-                              <p className="text-sm text-muted-foreground">
-                                {audit.warehouseName || audit.productName || 'Full Inventory'}
-                              </p>
-                              <p className="text-xs text-muted-foreground">
-                                By {audit.auditedBy}
-                              </p>
+                            <div className="text-right">
+                              <Badge className={getStatusColor(audit.status)}>
+                                {audit.status.replace('_', ' ')}
+                              </Badge>
+                              {audit.discrepancies > 0 && (
+                                <p className="text-xs text-red-600 mt-1">
+                                  {audit.discrepancies} discrepancies
+                                </p>
+                              )}
                             </div>
                           </div>
-                          <div className="text-right">
-                            <Badge className={getStatusColor(audit.status)}>
-                              {audit.status.replace('_', ' ')}
-                            </Badge>
-                            {audit.discrepancies > 0 && (
-                              <p className="text-xs text-red-600 mt-1">
-                                {audit.discrepancies} discrepancies
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Quick Actions */}
+              <div>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Quick Actions</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3">
+                    <Button
+                      className="w-full justify-start"
+                      variant="outline"
+                      onClick={() => setShowCreateDialog(true)}
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Create New Audit
+                    </Button>
+                    <Button className="w-full justify-start" variant="outline">
+                      <Clock className="h-4 w-4 mr-2" />
+                      Schedule Cycle Count
+                    </Button>
+                    <Button className="w-full justify-start" variant="outline">
+                      <Eye className="h-4 w-4 mr-2" />
+                      Spot Check Products
+                    </Button>
+                    <Button className="w-full justify-start" variant="outline">
+                      <TrendingUp className="h-4 w-4 mr-2" />
+                      View Analytics
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* Audit Summary */}
+                <Card className="mt-4">
+                  <CardHeader>
+                    <CardTitle>Audit Summary</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between">
+                        <span className="text-sm">Total Audits</span>
+                        <span className="font-medium">{stats.totalAudits}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Pending Approval</span>
+                        <span className="font-medium">{stats.pendingApproval}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Last Audit</span>
+                        <span className="font-medium text-xs">
+                          {stats.lastAuditDate
+                            ? new Date(stats.lastAuditDate).toLocaleDateString()
+                            : 'Never'
+                          }
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-sm">Next Scheduled</span>
+                        <span className="font-medium text-xs">
+                          {stats.nextScheduledAudit
+                            ? new Date(stats.nextScheduledAudit).toLocaleDateString()
+                            : 'None'
+                          }
+                        </span>
+                      </div>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
 
-            {/* Quick Actions */}
-            <div>
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Button 
-                    className="w-full justify-start" 
-                    variant="outline"
-                    onClick={() => setShowCreateDialog(true)}
-                  >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Create New Audit
-                  </Button>
-                  <Button className="w-full justify-start" variant="outline">
-                    <Clock className="h-4 w-4 mr-2" />
-                    Schedule Cycle Count
-                  </Button>
-                  <Button className="w-full justify-start" variant="outline">
-                    <Eye className="h-4 w-4 mr-2" />
-                    Spot Check Products
-                  </Button>
-                  <Button className="w-full justify-start" variant="outline">
-                    <TrendingUp className="h-4 w-4 mr-2" />
-                    View Analytics
-                  </Button>
-                </CardContent>
-              </Card>
+            {/* Full Audit List */}
+            <AuditListView />
+          </TabsContent>
 
-              {/* Audit Summary */}
-              <Card className="mt-4">
-                <CardHeader>
-                  <CardTitle>Audit Summary</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-sm">Total Audits</span>
-                      <span className="font-medium">{stats.totalAudits}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm">Pending Approval</span>
-                      <span className="font-medium">{stats.pendingApproval}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm">Last Audit</span>
-                      <span className="font-medium text-xs">
-                        {stats.lastAuditDate 
-                          ? new Date(stats.lastAuditDate).toLocaleDateString()
-                          : 'Never'
-                        }
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm">Next Scheduled</span>
-                      <span className="font-medium text-xs">
-                        {stats.nextScheduledAudit 
-                          ? new Date(stats.nextScheduledAudit).toLocaleDateString()
-                          : 'None'
-                        }
-                      </span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-          
-          {/* Full Audit List */}
-          <AuditListView />
-        </TabsContent>
+          <TabsContent value="cycle-counting">
+            <CycleCountingScheduler />
+          </TabsContent>
 
-        <TabsContent value="cycle-counting">
-          <CycleCountingScheduler />
-        </TabsContent>
+          <TabsContent value="discrepancies">
+            <DiscrepancyAnalytics />
+          </TabsContent>
 
-        <TabsContent value="discrepancies">
-          <DiscrepancyAnalytics />
-        </TabsContent>
+          <TabsContent value="compliance">
+            <AuditComplianceReport />
+          </TabsContent>
+        </Tabs>
 
-        <TabsContent value="compliance">
-          <AuditComplianceReport />
-        </TabsContent>
-      </Tabs>
-
-      {/* Create Audit Dialog */}
-      <CreateAuditDialog 
-        open={showCreateDialog}
-        onOpenChange={setShowCreateDialog}
-        onAuditCreated={() => {
-          fetchStats()
-          fetchRecentAudits()
-        }}      />
+        {/* Create Audit Dialog */}
+        <CreateAuditDialog
+          open={showCreateDialog}
+          onOpenChange={setShowCreateDialog}
+          onAuditCreated={() => {
+            fetchStats()
+            fetchRecentAudits()
+          }} />
       </div>
     </div>
   )

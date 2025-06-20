@@ -3,13 +3,13 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { 
-  Menu, 
-  X, 
-  User, 
-  Settings, 
-  LogOut, 
-  Bell, 
+import {
+  Menu,
+  X,
+  User,
+  Settings,
+  LogOut,
+  Bell,
   Search,
   ChevronDown,
   Package,
@@ -99,7 +99,8 @@ const Navbar = () => {
     };
   }, [openDropdown]);
   // Show loading state while auth is being determined
-  if (loading) {    return (
+  if (loading) {
+    return (
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border/30">
         <div className="container mx-auto px-2 sm:px-3 lg:px-4 max-w-7xl">
           <div className="flex items-center justify-between h-16">
@@ -120,7 +121,7 @@ const Navbar = () => {
       </nav>
     );
   }
-  
+
   const dashboardNavItems = [
     {
       title: "Dashboard",
@@ -129,10 +130,9 @@ const Navbar = () => {
       items: [
         { title: "Overview", href: "/dashboard" },
         { title: "Analytics", href: "/dashboard/analytics" },
-        { title: "Notifications", href: "/dashboard/notifications" },
         { title: "Settings", href: "/dashboard/settings" },
       ]
-    },    {
+    }, {
       title: "Inventory",
       href: "/inventory",
       icon: Package,
@@ -143,9 +143,8 @@ const Navbar = () => {
         { title: "Categories", href: "/inventory/categories" },
         { title: "Low Stock Alerts", href: "/inventory/alerts" },
         { title: "Stock Adjustments", href: "/inventory/adjustments" },
-        { title: "Reports", href: "/inventory/reports" },
       ]
-    },    {
+    }, {
       title: "Orders",
       href: "/orders",
       icon: FileText,
@@ -205,20 +204,20 @@ const Navbar = () => {
   ];
 
   // Check if we're in dashboard routes AND user is authenticated
-  const isDashboard = user && (pathname?.startsWith("/dashboard") || 
-                     pathname?.startsWith("/inventory") ||
-                     pathname?.startsWith("/orders") ||
-                     pathname?.startsWith("/profile") ||
-                     pathname?.startsWith("/suppliers") ||
-                     pathname?.startsWith("/shipments") ||
-                     pathname?.startsWith("/reports") ||
-                     pathname?.startsWith("/products") ||
-                     pathname?.startsWith("/customers") ||
-                     pathname?.startsWith("/employees") ||
-                     pathname?.startsWith("/warehouses") ||
-                     pathname?.startsWith("/invoices") ||
-                     pathname?.startsWith("/purchase-orders") ||
-                     pathname?.startsWith("/audit"));
+  const isDashboard = user && (pathname?.startsWith("/dashboard") ||
+    pathname?.startsWith("/inventory") ||
+    pathname?.startsWith("/orders") ||
+    pathname?.startsWith("/profile") ||
+    pathname?.startsWith("/suppliers") ||
+    pathname?.startsWith("/shipments") ||
+    pathname?.startsWith("/reports") ||
+    pathname?.startsWith("/products") ||
+    pathname?.startsWith("/customers") ||
+    pathname?.startsWith("/employees") ||
+    pathname?.startsWith("/warehouses") ||
+    pathname?.startsWith("/invoices") ||
+    pathname?.startsWith("/purchase-orders") ||
+    pathname?.startsWith("/audit"));
   const handleAuthAction = async (action: string) => {
     if (action === "login") {
       router.push("/auth/login");
@@ -254,7 +253,7 @@ const Navbar = () => {
     };
     
     return (
-      <div 
+      <div
         className="relative"
         ref={(el) => {
           if (el) {
@@ -309,7 +308,7 @@ const Navbar = () => {
   return (
     <>      {/* Mobile Menu Backdrop */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-30 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
@@ -473,7 +472,7 @@ const Navbar = () => {
                         />
                       </div>
                     </div>
-                  
+
                     {/* Dashboard Navigation Items */}
                     {dashboardNavItems.map((item) => (
                       <div key={item.href} className="space-y-1">
@@ -508,7 +507,7 @@ const Navbar = () => {
                         </div>
                       </div>
                     ))}
-                    
+
                     {/* Mobile User Actions */}
                     <div className="border-t border-border/40 mt-6 pt-4 px-2">
                       <div className="flex items-center space-x-3 py-3 px-2">

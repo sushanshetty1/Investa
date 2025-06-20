@@ -3,9 +3,9 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { 
-  TrendingUp, 
-  TrendingDown, 
+import {
+  TrendingUp,
+  TrendingDown,
   Minus,
   RefreshCw,
   Download,
@@ -41,7 +41,7 @@ export function MetricCard({
 }: MetricCardProps) {
   const formatValue = (val: string | number) => {
     const numVal = typeof val === 'string' ? parseFloat(val) : val;
-    
+
     switch (format) {
       case 'currency':
         return `$${numVal.toLocaleString()}`;
@@ -112,9 +112,9 @@ export function MetricCard({
               <span>Target: {formatValue(target)}{unit}</span>
               <span>{Math.round((typeof value === 'string' ? parseFloat(value) : value) / target * 100)}%</span>
             </div>
-            <Progress 
-              value={Math.min(100, (typeof value === 'string' ? parseFloat(value) : value) / target * 100)} 
-              className="h-2" 
+            <Progress
+              value={Math.min(100, (typeof value === 'string' ? parseFloat(value) : value) / target * 100)}
+              className="h-2"
             />
           </div>
         )}

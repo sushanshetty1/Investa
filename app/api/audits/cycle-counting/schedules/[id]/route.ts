@@ -4,8 +4,10 @@ import { neonClient } from '@/lib/db'
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const body = await request.json()
     const { status, notes, plannedDate } = body
     const { id } = await params
@@ -70,8 +72,10 @@ export async function PATCH(
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const { id } = await params
     await neonClient.inventoryAudit.delete({
       where: { 

@@ -151,6 +151,7 @@ export default function SuppliersPage() {
       console.error('Error loading data:', error)
     }
   }
+
   const loadSuppliers = async () => {
     try {
       const response = await fetch('/api/inventory/suppliers')
@@ -158,7 +159,8 @@ export default function SuppliersPage() {
         const data = await response.json()
         setSuppliers(data.data || [])
       } else {
-        console.error('Failed to fetch suppliers')
+        const errorText = await response.text()
+        console.error('Failed to fetch suppliers:', response.status, response.statusText, errorText)
         setSuppliers([])
       }
     } catch (error) {
@@ -166,7 +168,6 @@ export default function SuppliersPage() {
       setSuppliers([])
     }
   }
-
   const loadPurchaseOrders = async () => {
     try {
       const response = await fetch('/api/inventory/purchase-orders')
@@ -174,7 +175,8 @@ export default function SuppliersPage() {
         const data = await response.json()
         setPurchaseOrders(data.data || [])
       } else {
-        console.error('Failed to fetch purchase orders')
+        const errorText = await response.text()
+        console.error('Failed to fetch purchase orders:', response.status, response.statusText, errorText)
         setPurchaseOrders([])
       }
     } catch (error) {
