@@ -101,8 +101,7 @@ const suppliers = [
 ];
 
 export default function DashboardPage() {
-  const { user, loading } = useAuth();
-  const router = useRouter();
+  const { user, loading } = useAuth();  const router = useRouter();
   const [timeRange, setTimeRange] = useState("7d");
   const [selectedTab, setSelectedTab] = useState("overview");
 
@@ -159,8 +158,7 @@ export default function DashboardPage() {
                 </p>
               </div>
             </div>
-          </div>
-          <div className="flex items-center gap-2 lg:gap-3 mt-6 lg:mt-0">
+          </div>          <div className="flex items-center gap-2 lg:gap-3 mt-6 lg:mt-0">
             <Select value={timeRange} onValueChange={setTimeRange}>
               <SelectTrigger className="w-36 h-9">
                 <SelectValue />
@@ -1046,11 +1044,9 @@ export default function DashboardPage() {
               <div className="flex items-center justify-center space-x-3">
                 <RefreshCw className="h-4 w-4 text-blue-500 animate-spin" />
                 <span className="text-sm text-muted-foreground">Synced 2 minutes ago</span>
-              </div>            </div>
-          </div>
+              </div>            </div>          </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
     </DashboardGuard>
   );
 }

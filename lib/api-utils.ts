@@ -85,8 +85,6 @@ export function handleValidationError(error: ZodError): NextResponse<ApiResponse
 // Handle Prisma errors
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function handlePrismaError(error: any): NextResponse<ApiResponse> {
-  console.error('Prisma error:', error)
-
   // Unique constraint violation
   if (error.code === 'P2002') {
     const field = error.meta?.target?.[0] || 'field'
@@ -125,8 +123,6 @@ export function handlePrismaError(error: any): NextResponse<ApiResponse> {
 
 // Generic error handler for server actions and API routes
 export function handleError(error: unknown): NextResponse<ApiResponse> {
-  console.error('API Error:', error)
-
   // Zod validation error
   if (error instanceof ZodError) {
     return handleValidationError(error)

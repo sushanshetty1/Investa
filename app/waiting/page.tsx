@@ -23,7 +23,6 @@ export default function WaitingPage() {
   const router = useRouter();
   const [invites, setInvites] = useState<CompanyInvite[]>([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     // If no user, redirect to login
     if (!user) {
@@ -39,17 +38,18 @@ export default function WaitingPage() {
 
     // If user exists, fetch invites
     fetchInvites();
-    
+  }, [user, hasCompanyAccess, router]);
+  useEffect(() => {
     // Periodically check for company access (useful for recently created companies)
-    const accessCheckInterval = setInterval(async () => {
-      await checkUserAccess(0);
-      if (hasCompanyAccess) {
-        router.push('/dashboard');
+    if (!user || hasCompanyAccess) return;
+      const accessCheckInterval = setInterval(async () => {
+      if (!hasCompanyAccess) {
+        await checkUserAccess(0);
       }
-    }, 5000); // Check every 5 seconds
+    }, 10000); // Check every 10 seconds
 
     return () => clearInterval(accessCheckInterval);
-  }, [user, hasCompanyAccess, router, checkUserAccess]);
+  }, [user, hasCompanyAccess, checkUserAccess]);
   const fetchInvites = async () => {
     if (!user?.email) {
       setLoading(false);
@@ -79,11 +79,9 @@ export default function WaitingPage() {
         status: invite.status,
         invitedAt: invite.createdAt,
         expiresAt: invite.expiresAt
-      })) || [];
-
-      setInvites(formattedInvites);
+      })) || [];      setInvites(formattedInvites);
     } catch (error) {
-      console.error('Error fetching invites:', error);
+      // Error handling without logging
     } finally {
       setLoading(false);
     }
@@ -101,11 +99,10 @@ export default function WaitingPage() {
         // Redirect to dashboard after accepting
         router.push('/dashboard');
       } else {
-        // Refresh invites after declining
-        fetchInvites();
+        // Refresh invites after declining        fetchInvites();
       }
     } catch (error) {
-      console.error('Error responding to invite:', error);
+      // Error handling without logging
     }
   };
 
@@ -124,139 +121,7 @@ export default function WaitingPage() {
       case 'ACCEPTED': return <CheckCircle className="h-4 w-4" />;
       case 'DECLINED': return <XCircle className="h-4 w-4" />;
       default: return <AlertCircle className="h-4 w-4" />;
-    }
-  };
-  // Add debug function to check company access directly
-  const checkCompanyAccessDirect = async () => {
-    if (!user?.id) return;
-    
-    console.log('=== DIRECT DEBUG CHECK ===');
-    console.log('Auth User ID:', user.id);
-    console.log('Auth User Email:', user.email);
-    
-    try {
-      // Check users table for this email
-      const { data: userRecords, error: userError } = await supabase
-        .from('users')
-        .select('id, email, firstName, lastName')
-        .eq('email', user.email);
-        
-      console.log('User records by email:', { data: userRecords, error: userError });
-      
-      // Check company_users with auth user ID
-      const { data: companyUsersAuth, error: errorAuth } = await supabase
-        .from('company_users')
-        .select('*')
-        .eq('userId', user.id);
-        
-      console.log('Company users by Auth ID:', { data: companyUsersAuth, error: errorAuth });
-      
-      // Check company_users with database user IDs
-      if (userRecords && userRecords.length > 0) {
-        for (const userRecord of userRecords) {
-          const { data: companyUsersDB, error: errorDB } = await supabase
-            .from('company_users')
-            .select('*')
-            .eq('userId', userRecord.id);
-            
-          console.log(`Company users by DB ID (${userRecord.id}):`, { data: companyUsersDB, error: errorDB });
-          
-          if (companyUsersDB && companyUsersDB.length > 0) {
-            console.log('✅ Found company user record with DB ID:', companyUsersDB[0]);
-            // User should have access, redirect to dashboard
-            alert('Found company access! Redirecting to dashboard...');
-            router.push('/dashboard');
-            return;
-          }
-        }
-      }
-      
-      console.log('❌ No company user record found with any ID');
-      alert('No company access found. Check console for details.');
-    } catch (err) {
-      console.error('Direct query error:', err);
-    }
-  };
-
-  // Function to fix user ID mismatch
-  const fixUserIdMismatch = async () => {
-    if (!user?.id || !user?.email) return;
-    
-    console.log('=== FIXING USER ID MISMATCH ===');
-    
-    try {
-      // Find the user record by email
-      const { data: userRecords, error: userError } = await supabase
-        .from('users')
-        .select('id, email')
-        .eq('email', user.email);
-        
-      if (userError) {
-        console.error('Error finding user by email:', userError);
-        return;
-      }
-      
-      if (userRecords && userRecords.length > 0) {
-        const dbUserId = userRecords[0].id;
-        console.log('Found DB user ID:', dbUserId);
-        console.log('Auth user ID:', user.id);
-        
-        if (dbUserId !== user.id) {
-          console.log('IDs are different, updating...');
-          
-          // Update the user record to use the correct Auth ID
-          const { error: updateError } = await supabase
-            .from('users')
-            .update({ id: user.id })
-            .eq('email', user.email);
-            
-          if (updateError) {
-            console.error('Error updating user ID:', updateError);
-            alert('Could not fix user ID mismatch: ' + updateError.message);
-            return;
-          }
-          
-          // Update company_users records to use the correct user ID
-          const { error: companyUpdateError } = await supabase
-            .from('company_users')
-            .update({ userId: user.id })
-            .eq('userId', dbUserId);
-            
-          if (companyUpdateError) {
-            console.error('Error updating company_users:', companyUpdateError);
-            alert('Could not update company_users: ' + companyUpdateError.message);
-            return;
-          }
-          
-          // Update companies createdBy field
-          const { error: companyCreatedByError } = await supabase
-            .from('companies')
-            .update({ createdBy: user.id })
-            .eq('createdBy', dbUserId);
-            
-          if (companyCreatedByError) {
-            console.error('Error updating companies createdBy:', companyCreatedByError);
-          }
-            alert('User ID mismatch fixed! Redirecting to dashboard...');
-          console.log('✅ User ID mismatch fixed successfully');
-          
-          // Refresh access check and redirect immediately
-          await checkUserAccess(0);
-          setTimeout(() => {
-            router.push('/dashboard');
-          }, 1000);
-        } else {
-          console.log('IDs are already matching');
-          alert('User IDs are already matching. The issue might be elsewhere.');
-        }
-      } else {
-        console.log('No user record found by email');
-        alert('No user record found by email');
-      }    } catch (err) {
-      console.error('Error fixing user ID mismatch:', err);
-      alert('Error fixing user ID mismatch: ' + (err instanceof Error ? err.message : 'Unknown error'));
-    }
-  };
+    }  };
 
   if (loading) {
     return (
@@ -312,27 +177,6 @@ export default function WaitingPage() {
                     Please contact your company administrator to send you an invitation to join their Invista workspace.
                   </p>
                 </div>
-                  {/* Debug buttons for development */}
-                {process.env.NODE_ENV === 'development' && (
-                  <div className="space-y-2">
-                    <Button 
-                      onClick={checkCompanyAccessDirect}
-                      variant="outline"
-                      size="sm"
-                      className="w-full"
-                    >
-                      Debug: Check Company Access
-                    </Button>
-                    <Button 
-                      onClick={fixUserIdMismatch}
-                      variant="outline"
-                      size="sm"
-                      className="w-full bg-red-50 border-red-200 text-red-700 hover:bg-red-100"
-                    >
-                      Fix User ID Mismatch
-                    </Button>
-                  </div>
-                )}
                 
                 <div className="space-y-2">
                   <h4 className="font-semibold">What happens next?</h4>

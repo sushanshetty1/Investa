@@ -112,10 +112,7 @@ export async function POST(request: NextRequest) {
       data: result,
       message: 'Company registration successful!'
     })
-
   } catch (error) {
-    console.error('Company signup error:', error)
-    
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Failed to create company'

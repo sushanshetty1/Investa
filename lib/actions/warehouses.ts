@@ -76,9 +76,7 @@ export async function getWarehouses(input: WarehouseQueryInput): Promise<ActionR
     return actionSuccess({
       warehouses,
       pagination: { page, limit, total, totalPages }
-    }, `Retrieved ${warehouses.length} warehouses`)
-  } catch (error) {
-    console.error('Error fetching warehouses:', error)
+    }, `Retrieved ${warehouses.length} warehouses`)  } catch (error) {
     return actionError('Failed to fetch warehouses')
   }
 }
@@ -101,9 +99,7 @@ export async function getWarehouse(id: string): Promise<ActionResponse<unknown>>
       return actionError('Warehouse not found')
     }
 
-    return actionSuccess(warehouse, 'Warehouse retrieved successfully')
-  } catch (error) {
-    console.error('Error fetching warehouse:', error)
+    return actionSuccess(warehouse, 'Warehouse retrieved successfully')  } catch (error) {
     return actionError('Failed to fetch warehouse')
   }
 }
@@ -144,10 +140,7 @@ export async function createWarehouse(input: CreateWarehouseInput): Promise<Acti
       }
     })
 
-    return actionSuccess(warehouse, 'Warehouse created successfully')
-  } catch (error) {
-    console.error('Error creating warehouse:', error)
-    
+    return actionSuccess(warehouse, 'Warehouse created successfully')  } catch (error) {
     if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
       return actionError('Warehouse with this code already exists')
     }
@@ -210,10 +203,7 @@ export async function updateWarehouse(input: UpdateWarehouseInput): Promise<Acti
       }
     })
 
-    return actionSuccess(warehouse, 'Warehouse updated successfully')
-  } catch (error) {
-    console.error('Error updating warehouse:', error)
-    
+    return actionSuccess(warehouse, 'Warehouse updated successfully')  } catch (error) {
     if (error && typeof error === 'object' && 'code' in error && error.code === 'P2002') {
       return actionError('Warehouse with this code already exists')
     }
@@ -246,10 +236,7 @@ export async function deleteWarehouse(id: string): Promise<ActionResponse<unknow
       where: { id }
     })
 
-    return actionSuccess(undefined, 'Warehouse deleted successfully')
-  } catch (error) {
-    console.error('Error deleting warehouse:', error)
-    
+    return actionSuccess(undefined, 'Warehouse deleted successfully')  } catch (error) {
     if (error && typeof error === 'object' && 'code' in error && error.code === 'P2003') {
       return actionError('Warehouse cannot be deleted due to existing references')
     }

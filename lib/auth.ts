@@ -51,8 +51,7 @@ export async function authenticate(request: NextRequest): Promise<Authentication
       if (profileError || !profile) {
         // Create default user profile if not exists
         const defaultProfile = {
-          id: data.user.id,
-          email: data.user.email || '',
+          id: data.user.id,          email: data.user.email || '',
           role: 'user',
           permissions: ['inventory:read']
         }
@@ -62,7 +61,7 @@ export async function authenticate(request: NextRequest): Promise<Authentication
           .insert(defaultProfile)
 
         if (insertError) {
-          console.error('Failed to create user profile:', insertError)
+          // Handle error silently in production
         }
 
         return {
@@ -82,12 +81,9 @@ export async function authenticate(request: NextRequest): Promise<Authentication
             : ['inventory:read']
         }
       }
-    } catch (jwtError) {
-      console.error('JWT validation error:', jwtError)
-      return { success: false, error: 'Authentication service unavailable' }
+    } catch (jwtError) {      return { success: false, error: 'Authentication service unavailable' }
     }
   } catch (error) {
-    console.error('Authentication error:', error)
     return { success: false, error: 'Authentication failed' }
   }
 }
@@ -160,14 +156,10 @@ export async function authenticateApiKey(request: NextRequest): Promise<Authenti
           permissions: Array.isArray(keyRecord.permissions)
             ? keyRecord.permissions
             : ['inventory:read', 'inventory:write']
-        }
-      }
+        }      }
     } catch (dbError) {
-      console.error('API key validation error:', dbError)
       return { success: false, error: 'API key validation service unavailable' }
-    }
-  } catch (error) {
-    console.error('API key authentication error:', error)
+    }} catch (error) {
     return { success: false, error: 'API key authentication failed' }
   }
 }

@@ -144,7 +144,7 @@ export async function createPurchaseOrder(data: CreatePurchaseOrderData) {
     revalidatePath('/purchase-orders');
     return { success: true, data: purchaseOrder };
   } catch (error) {
-    console.error('Error creating purchase order:', error);
+    // Error handled silently in production
     return { success: false, error: 'Failed to create purchase order' };
   }
 }
@@ -203,7 +203,7 @@ export async function getPurchaseOrders(filters: PurchaseOrderFilters = {}) {
 
     return { success: true, data: purchaseOrders };
   } catch (error) {
-    console.error('Error fetching purchase orders:', error);
+    // Error handled silently in production
     return { success: false, error: 'Failed to fetch purchase orders' };
   }
 }
@@ -233,7 +233,7 @@ export async function getPurchaseOrderById(id: string) {
 
     return { success: true, data: purchaseOrder };
   } catch (error) {
-    console.error('Error fetching purchase order:', error);
+    // Error handled silently in production
     return { success: false, error: 'Failed to fetch purchase order' };
   }
 }
@@ -277,7 +277,7 @@ export async function updatePurchaseOrderStatus(data: UpdatePurchaseOrderStatusD
     revalidatePath('/purchase-orders');
     return { success: true, data: purchaseOrder };
   } catch (error) {
-    console.error('Error updating purchase order status:', error);
+    // Error handled silently in production
     return { success: false, error: 'Failed to update purchase order status' };
   }
 }
@@ -303,7 +303,7 @@ export async function approvePurchaseOrder(purchaseOrderId: string, approvedBy: 
     revalidatePath('/purchase-orders');
     return { success: true, data: purchaseOrder };
   } catch (error) {
-    console.error('Error approving purchase order:', error);
+    // Error handled silently in production
     return { success: false, error: 'Failed to approve purchase order' };
   }
 }
@@ -465,7 +465,7 @@ export async function createGoodsReceipt(data: GoodsReceiptData) {
     revalidatePath('/purchase-orders');
     return { success: true, data: goodsReceipt };
   } catch (error) {
-    console.error('Error creating goods receipt:', error);
+    // Error handled silently in production
     return { success: false, error: 'Failed to create goods receipt' };
   }
 }
@@ -521,7 +521,7 @@ export async function getReorderSuggestions(): Promise<{ success: boolean; data?
 
     return { success: true, data: suggestions };
   } catch (error) {
-    console.error('Error fetching reorder suggestions:', error);
+    // Error handled silently in production
     return { success: false, error: 'Failed to fetch reorder suggestions' };
   }
 }
@@ -558,7 +558,7 @@ export async function createPurchaseOrderFromSuggestion(suggestion: ReorderSugge
 
     return await createPurchaseOrder(createData);
   } catch (error) {
-    console.error('Error creating purchase order from suggestion:', error);
+    // Error handled silently in production
     return { success: false, error: 'Failed to create purchase order from suggestion' };
   }
 }
@@ -611,7 +611,7 @@ export async function getPurchaseOrderStats() {
       }
     };
   } catch (error) {
-    console.error('Error fetching purchase order stats:', error);
+    // Error handled silently in production
     return { success: false, error: 'Failed to fetch purchase order statistics' };
   }
 }

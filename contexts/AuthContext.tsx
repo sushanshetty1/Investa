@@ -28,90 +28,41 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const checkUserAccess = async (retryCount = 0) => {
         if (!user?.email || !user?.id) {
-            console.log('checkUserAccess: No user or email');
             setUserType(null);
             setHasCompanyAccess(false);
             return;
         }
 
-        console.log('checkUserAccess: Checking access for user:', user.email, 'retry:', retryCount);
-        
         try {
-            console.log('Checking user access for userId:', user.id, 'email:', user.email);
-            
-            // First, check if user is a company user/owner via company_users table using user ID
+            // Check if user is a company user/owner via company_users table using Supabase Auth user ID
             const { data: companyUserData, error: companyUserError } = await supabase
                 .from('company_users')
-                .select('id, role, isOwner, isActive, companyId')
+                .select('id, role, isOwner, isActive, companyId, userId')
                 .eq('userId', user.id)
                 .eq('isActive', true);
 
-            console.log('Company user query by ID result:', {
-                data: companyUserData,
-                error: companyUserError,
-                count: companyUserData?.length || 0
-            });            // If we found company user data, user has company access
             if (companyUserData && companyUserData.length > 0) {
-                console.log('✅ User has company access via company_users table (by ID)');
                 setUserType('company');
                 setHasCompanyAccess(true);
                 return;
             }
 
-            // Also check for very recent company creation using direct company ownership
-            const { data: recentCompanyData, error: recentCompanyError } = await supabase
-                .from('companies')
-                .select('id, name, createdAt')
-                .eq('createdBy', user.id)
-                .eq('isActive', true)
-                .gte('createdAt', new Date(Date.now() - 5 * 60 * 1000).toISOString()); // Created in last 5 minutes
-
-            console.log('Recent company creation check:', {
-                data: recentCompanyData,
-                error: recentCompanyError,
-                count: recentCompanyData?.length || 0
-            });
-
-            if (recentCompanyData && recentCompanyData.length > 0) {
-                console.log('✅ User has company access as recent company creator');
-                setUserType('company');
-                setHasCompanyAccess(true);
-                return;
-            }
-
-            // If no match by user ID, try to find the correct user record by email
-            console.log('No match by user ID, checking users table by email...');
+            // Find user records in users table by email to get internal user IDs
             const { data: userRecords, error: userError } = await supabase
                 .from('users')
                 .select('id, email')
                 .eq('email', user.email);
 
-            console.log('User records by email:', {
-                data: userRecords,
-                error: userError,
-                count: userRecords?.length || 0
-            });
-
-            // If we found user records, try to find company access using those IDs
+            // Check company_users table with internal user IDs
             if (userRecords && userRecords.length > 0) {
                 for (const userRecord of userRecords) {
-                    console.log('Checking company access for user record:', userRecord.id);
-                    
-                    const { data: companyUserByEmail, error: companyUserByEmailError } = await supabase
+                    const { data: companyUserByInternalId, error: companyUserByInternalIdError } = await supabase
                         .from('company_users')
-                        .select('id, role, isOwner, isActive, companyId')
+                        .select('id, role, isOwner, isActive, companyId, userId')
                         .eq('userId', userRecord.id)
                         .eq('isActive', true);
 
-                    console.log('Company user query by email-found ID result:', {
-                        userId: userRecord.id,
-                        data: companyUserByEmail,
-                        error: companyUserByEmailError,
-                        count: companyUserByEmail?.length || 0
-                    });
-
-                    if (companyUserByEmail && companyUserByEmail.length > 0) {
-                        console.log('✅ User has company access via company_users table (by email lookup)');
+                    if (companyUserByInternalId && companyUserByInternalId.length > 0) {
                         setUserType('company');
                         setHasCompanyAccess(true);
                         return;
@@ -119,37 +70,64 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 }
             }
 
-            // If no company_users record, check if user created a company directly
+            // Check if user created a company directly (using Auth user ID)
             const { data: companyData, error: companyError } = await supabase
                 .from('companies')
-                .select('id, name')
+                .select('id, name, createdBy')
                 .eq('createdBy', user.id)
                 .eq('isActive', true);
 
-            console.log('Company owner query result:', {
-                data: companyData,
-                error: companyError,
-                count: companyData?.length || 0
-            });
-
             if (companyData && companyData.length > 0) {
-                console.log('✅ User has company access as company owner');
                 setUserType('company');
                 setHasCompanyAccess(true);
                 return;
             }
 
-            // Also check by email for company ownership
+            // Check company ownership with internal user IDs
             if (userRecords && userRecords.length > 0) {
                 for (const userRecord of userRecords) {
-                    const { data: companyByEmail, error: companyByEmailError } = await supabase
+                    const { data: companyByInternalId, error: companyByInternalIdError } = await supabase
                         .from('companies')
-                        .select('id, name')
+                        .select('id, name, createdBy')
                         .eq('createdBy', userRecord.id)
                         .eq('isActive', true);
 
-                    if (companyByEmail && companyByEmail.length > 0) {
-                        console.log('✅ User has company access as company owner (by email lookup)');
+                    if (companyByInternalId && companyByInternalId.length > 0) {
+                        setUserType('company');
+                        setHasCompanyAccess(true);
+                        return;
+                    }
+                }
+            }
+
+            // Check recent company creation (within last 5 minutes)
+            const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+            
+            // Check with Auth user ID
+            const { data: recentCompanyByAuth, error: recentCompanyByAuthError } = await supabase
+                .from('companies')
+                .select('id, name, createdAt, createdBy')
+                .eq('createdBy', user.id)
+                .eq('isActive', true)
+                .gte('createdAt', fiveMinutesAgo);
+
+            if (recentCompanyByAuth && recentCompanyByAuth.length > 0) {
+                setUserType('company');
+                setHasCompanyAccess(true);
+                return;
+            }
+
+            // Check with internal user IDs
+            if (userRecords && userRecords.length > 0) {
+                for (const userRecord of userRecords) {
+                    const { data: recentCompanyByInternal, error: recentCompanyByInternalError } = await supabase
+                        .from('companies')
+                        .select('id, name, createdAt, createdBy')
+                        .eq('createdBy', userRecord.id)
+                        .eq('isActive', true)
+                        .gte('createdAt', fiveMinutesAgo);
+
+                    if (recentCompanyByInternal && recentCompanyByInternal.length > 0) {
                         setUserType('company');
                         setHasCompanyAccess(true);
                         return;
@@ -160,40 +138,33 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             // Check if user has accepted company invitations
             const { data: inviteData, error: inviteError } = await supabase
                 .from('user_invitations')
-                .select('id, status')
+                .select('id, status, email')
                 .eq('email', user.email)
                 .eq('status', 'ACCEPTED');
 
-            console.log('Invite query result:', {
-                data: inviteData,
-                error: inviteError,
-                count: inviteData?.length || 0
-            });            if (inviteData && inviteData.length > 0) {
-                console.log('✅ User has company access via accepted invitations');
+            if (inviteData && inviteData.length > 0) {
                 setUserType('individual');
                 setHasCompanyAccess(true);
-            } else {
-                console.log('❌ User has no company access - retry:', retryCount);
-                setUserType('individual');
-                setHasCompanyAccess(false);
-                
-                // Retry logic for newly created companies (max 3 retries with increasing delays)
-                if (retryCount < 3) {
-                    const delay = (retryCount + 1) * 1000; // 1s, 2s, 3s delays
-                    console.log(`Retrying checkUserAccess in ${delay}ms...`);
-                    setTimeout(() => {
-                        checkUserAccess(retryCount + 1);
-                    }, delay);
-                }
+                return;
+            }
+
+            // If we reach here, no company access was found
+            setUserType('individual');
+            setHasCompanyAccess(false);
+            
+            // Retry logic for newly created companies (max 3 retries with increasing delays)
+            if (retryCount < 3) {
+                const delay = (retryCount + 1) * 1000; // 1s, 2s, 3s delays
+                setTimeout(() => {
+                    checkUserAccess(retryCount + 1);
+                }, delay);
             }        } catch (error) {
-            console.error('Error checking user access:', error)
             setUserType('individual')
             setHasCompanyAccess(false)
             
             // Retry on error (max 3 retries)
             if (retryCount < 3) {
                 const delay = (retryCount + 1) * 1000;
-                console.log(`Retrying checkUserAccess after error in ${delay}ms...`);
                 setTimeout(() => {
                     checkUserAccess(retryCount + 1);
                 }, delay);
@@ -202,13 +173,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     useEffect(() => {
+        let isMounted = true;
+        
         const getSession = async () => {
             const { data: { session } } = await supabase.auth.getSession()
-            setUser(session?.user ?? null)
-            if (session?.user) {
-                await checkUserAccess()
+            if (isMounted) {
+                setUser(session?.user ?? null)
+                if (session?.user) {
+                    await checkUserAccess()
+                }
+                setLoading(false)
             }
-            setLoading(false)
         }
 
         getSession()
@@ -216,7 +191,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const {
             data: { subscription },
         } = supabase.auth.onAuthStateChange(async (event, session) => {
-            console.log('Auth state change:', event, session?.user?.email);
+            if (!isMounted) return;
+            
             setUser(session?.user ?? null)
             
             if (event === 'SIGNED_IN' && session?.user) {
@@ -227,7 +203,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                     .eq('id', session.user.id)
                     .single()
 
-                if (!existingUser) {
+                if (!existingUser && isMounted) {
                     // Create user record for Google sign-in
                     const fullName = session.user.user_metadata?.full_name || ''
                     const [firstName = '', lastName = ''] = fullName.split(' ')
@@ -256,15 +232,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 }
                 
                 // Check user access after sign in
-                await checkUserAccess()
+                if (isMounted) {
+                    await checkUserAccess()
+                }
             } else if (event === 'SIGNED_OUT') {
-                setUserType(null)
-                setHasCompanyAccess(false)
+                if (isMounted) {
+                    setUserType(null)
+                    setHasCompanyAccess(false)
+                }
             }
         })
 
-        return () => subscription.unsubscribe()
-    }, [user?.id]) // Add user.id as dependency to re-check when user changes
+        return () => {
+            isMounted = false;
+            subscription.unsubscribe();
+        }
+    }, []) // Remove user.id dependency to prevent infinite loops
 
     const signUp = async (email: string, password: string) => {
         return await supabase.auth.signUp({ email, password })
@@ -302,7 +285,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         if (user) {
             return await supabase.rpc('delete_user', { uid: user.id })
-        }        return { error: { message: 'No user found' } }
+        }
+
+        return { error: { message: 'No user found' } }
     }
 
     return (
@@ -310,14 +295,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             user, 
             loading, 
             userType, 
-            hasCompanyAccess, 
+            hasCompanyAccess,
             signUp, 
             login, 
             signInWithGoogle, 
             logout, 
             resetPassword, 
             deleteAccount,
-            checkUserAccess 
+            checkUserAccess
         }}>
             {children}
         </AuthContext.Provider>
