@@ -34,7 +34,6 @@ export async function POST(
     }    // Update audit status
     await neonClient.inventoryAudit.update({
       where: { id },
-      where: { id },
       data: {
         status: 'IN_PROGRESS',
         startedDate: new Date()
@@ -87,7 +86,6 @@ export async function POST(
     // Create audit items
     const auditItemsData = inventoryItems.map(item => ({
       auditId: id,
-      auditId: id,
       productId: item.productId,
       variantId: item.variantId,
       warehouseId: item.warehouseId,
@@ -102,7 +100,6 @@ export async function POST(
       })
     }    // Update audit with totals
     await neonClient.inventoryAudit.update({
-      where: { id },
       where: { id },
       data: {
         totalItems: auditItemsData.length,
