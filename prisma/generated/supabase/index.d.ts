@@ -2731,21 +2731,21 @@ export namespace Prisma {
    */
 
   export type CompanyCountOutputType = {
+    billingHistory: number
+    auditLogs: number
+    integrations: number
+    locations: number
     companyUsers: number
     departments: number
-    locations: number
-    integrations: number
-    auditLogs: number
-    billingHistory: number
   }
 
   export type CompanyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    billingHistory?: boolean | CompanyCountOutputTypeCountBillingHistoryArgs
+    auditLogs?: boolean | CompanyCountOutputTypeCountAuditLogsArgs
+    integrations?: boolean | CompanyCountOutputTypeCountIntegrationsArgs
+    locations?: boolean | CompanyCountOutputTypeCountLocationsArgs
     companyUsers?: boolean | CompanyCountOutputTypeCountCompanyUsersArgs
     departments?: boolean | CompanyCountOutputTypeCountDepartmentsArgs
-    locations?: boolean | CompanyCountOutputTypeCountLocationsArgs
-    integrations?: boolean | CompanyCountOutputTypeCountIntegrationsArgs
-    auditLogs?: boolean | CompanyCountOutputTypeCountAuditLogsArgs
-    billingHistory?: boolean | CompanyCountOutputTypeCountBillingHistoryArgs
   }
 
   // Custom InputTypes
@@ -2762,29 +2762,8 @@ export namespace Prisma {
   /**
    * CompanyCountOutputType without action
    */
-  export type CompanyCountOutputTypeCountCompanyUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CompanyUserWhereInput
-  }
-
-  /**
-   * CompanyCountOutputType without action
-   */
-  export type CompanyCountOutputTypeCountDepartmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DepartmentWhereInput
-  }
-
-  /**
-   * CompanyCountOutputType without action
-   */
-  export type CompanyCountOutputTypeCountLocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CompanyLocationWhereInput
-  }
-
-  /**
-   * CompanyCountOutputType without action
-   */
-  export type CompanyCountOutputTypeCountIntegrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CompanyIntegrationWhereInput
+  export type CompanyCountOutputTypeCountBillingHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BillingHistoryWhereInput
   }
 
   /**
@@ -2797,8 +2776,29 @@ export namespace Prisma {
   /**
    * CompanyCountOutputType without action
    */
-  export type CompanyCountOutputTypeCountBillingHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BillingHistoryWhereInput
+  export type CompanyCountOutputTypeCountIntegrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyIntegrationWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountLocationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyLocationWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountCompanyUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyUserWhereInput
+  }
+
+  /**
+   * CompanyCountOutputType without action
+   */
+  export type CompanyCountOutputTypeCountDepartmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DepartmentWhereInput
   }
 
 
@@ -2838,13 +2838,13 @@ export namespace Prisma {
    */
 
   export type DepartmentCountOutputType = {
-    children: number
     employees: number
+    children: number
   }
 
   export type DepartmentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    children?: boolean | DepartmentCountOutputTypeCountChildrenArgs
     employees?: boolean | DepartmentCountOutputTypeCountEmployeesArgs
+    children?: boolean | DepartmentCountOutputTypeCountChildrenArgs
   }
 
   // Custom InputTypes
@@ -2861,15 +2861,15 @@ export namespace Prisma {
   /**
    * DepartmentCountOutputType without action
    */
-  export type DepartmentCountOutputTypeCountChildrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DepartmentWhereInput
+  export type DepartmentCountOutputTypeCountEmployeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyUserWhereInput
   }
 
   /**
    * DepartmentCountOutputType without action
    */
-  export type DepartmentCountOutputTypeCountEmployeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CompanyUserWhereInput
+  export type DepartmentCountOutputTypeCountChildrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DepartmentWhereInput
   }
 
 
@@ -2878,31 +2878,31 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    userRoles: number
-    sessions: number
+    apiKeys: number
+    auditLogs: number
+    companyUsers: number
     loginHistory: number
     passwordResets: number
     invitations: number
     receivedInvites: number
-    auditLogs: number
-    preferences: number
     notifications: number
-    apiKeys: number
-    companyUsers: number
+    preferences: number
+    userRoles: number
+    sessions: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    userRoles?: boolean | UserCountOutputTypeCountUserRolesArgs
-    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
+    apiKeys?: boolean | UserCountOutputTypeCountApiKeysArgs
+    auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+    companyUsers?: boolean | UserCountOutputTypeCountCompanyUsersArgs
     loginHistory?: boolean | UserCountOutputTypeCountLoginHistoryArgs
     passwordResets?: boolean | UserCountOutputTypeCountPasswordResetsArgs
     invitations?: boolean | UserCountOutputTypeCountInvitationsArgs
     receivedInvites?: boolean | UserCountOutputTypeCountReceivedInvitesArgs
-    auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
-    preferences?: boolean | UserCountOutputTypeCountPreferencesArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
-    apiKeys?: boolean | UserCountOutputTypeCountApiKeysArgs
-    companyUsers?: boolean | UserCountOutputTypeCountCompanyUsersArgs
+    preferences?: boolean | UserCountOutputTypeCountPreferencesArgs
+    userRoles?: boolean | UserCountOutputTypeCountUserRolesArgs
+    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
   }
 
   // Custom InputTypes
@@ -2919,15 +2919,22 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountUserRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserRoleWhereInput
+  export type UserCountOutputTypeCountApiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ApiKeyWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserSessionWhereInput
+  export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCompanyUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanyUserWhereInput
   }
 
   /**
@@ -2961,8 +2968,8 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AuditLogWhereInput
+  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserNotificationWhereInput
   }
 
   /**
@@ -2975,22 +2982,15 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserNotificationWhereInput
+  export type UserCountOutputTypeCountUserRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserRoleWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountApiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ApiKeyWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountCompanyUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: CompanyUserWhereInput
+  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserSessionWhereInput
   }
 
 
@@ -3487,12 +3487,12 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     createdBy?: boolean
+    billingHistory?: boolean | Company$billingHistoryArgs<ExtArgs>
+    auditLogs?: boolean | Company$auditLogsArgs<ExtArgs>
+    integrations?: boolean | Company$integrationsArgs<ExtArgs>
+    locations?: boolean | Company$locationsArgs<ExtArgs>
     companyUsers?: boolean | Company$companyUsersArgs<ExtArgs>
     departments?: boolean | Company$departmentsArgs<ExtArgs>
-    locations?: boolean | Company$locationsArgs<ExtArgs>
-    integrations?: boolean | Company$integrationsArgs<ExtArgs>
-    auditLogs?: boolean | Company$auditLogsArgs<ExtArgs>
-    billingHistory?: boolean | Company$billingHistoryArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["company"]>
 
@@ -3621,12 +3621,12 @@ export namespace Prisma {
 
   export type CompanyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "displayName" | "description" | "website" | "industry" | "size" | "email" | "phone" | "address" | "registrationNumber" | "taxId" | "vatNumber" | "businessType" | "logo" | "primaryColor" | "theme" | "subscriptionPlan" | "subscriptionStatus" | "billingEmail" | "paymentMethodId" | "maxUsers" | "maxWarehouses" | "maxProducts" | "features" | "enforceSSO" | "requireTwoFactor" | "passwordPolicy" | "sessionTimeoutMinutes" | "isActive" | "isSuspended" | "isDeleted" | "trialEndsAt" | "onboardingStep" | "setupComplete" | "createdAt" | "updatedAt" | "createdBy", ExtArgs["result"]["company"]>
   export type CompanyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    billingHistory?: boolean | Company$billingHistoryArgs<ExtArgs>
+    auditLogs?: boolean | Company$auditLogsArgs<ExtArgs>
+    integrations?: boolean | Company$integrationsArgs<ExtArgs>
+    locations?: boolean | Company$locationsArgs<ExtArgs>
     companyUsers?: boolean | Company$companyUsersArgs<ExtArgs>
     departments?: boolean | Company$departmentsArgs<ExtArgs>
-    locations?: boolean | Company$locationsArgs<ExtArgs>
-    integrations?: boolean | Company$integrationsArgs<ExtArgs>
-    auditLogs?: boolean | Company$auditLogsArgs<ExtArgs>
-    billingHistory?: boolean | Company$billingHistoryArgs<ExtArgs>
     _count?: boolean | CompanyCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CompanyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3635,12 +3635,12 @@ export namespace Prisma {
   export type $CompanyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Company"
     objects: {
+      billingHistory: Prisma.$BillingHistoryPayload<ExtArgs>[]
+      auditLogs: Prisma.$CompanyAuditLogPayload<ExtArgs>[]
+      integrations: Prisma.$CompanyIntegrationPayload<ExtArgs>[]
+      locations: Prisma.$CompanyLocationPayload<ExtArgs>[]
       companyUsers: Prisma.$CompanyUserPayload<ExtArgs>[]
       departments: Prisma.$DepartmentPayload<ExtArgs>[]
-      locations: Prisma.$CompanyLocationPayload<ExtArgs>[]
-      integrations: Prisma.$CompanyIntegrationPayload<ExtArgs>[]
-      auditLogs: Prisma.$CompanyAuditLogPayload<ExtArgs>[]
-      billingHistory: Prisma.$BillingHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4075,12 +4075,12 @@ export namespace Prisma {
    */
   export interface Prisma__CompanyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    billingHistory<T extends Company$billingHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Company$billingHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BillingHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    auditLogs<T extends Company$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, Company$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    integrations<T extends Company$integrationsArgs<ExtArgs> = {}>(args?: Subset<T, Company$integrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    locations<T extends Company$locationsArgs<ExtArgs> = {}>(args?: Subset<T, Company$locationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyLocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     companyUsers<T extends Company$companyUsersArgs<ExtArgs> = {}>(args?: Subset<T, Company$companyUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     departments<T extends Company$departmentsArgs<ExtArgs> = {}>(args?: Subset<T, Company$departmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    locations<T extends Company$locationsArgs<ExtArgs> = {}>(args?: Subset<T, Company$locationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyLocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    integrations<T extends Company$integrationsArgs<ExtArgs> = {}>(args?: Subset<T, Company$integrationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    auditLogs<T extends Company$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, Company$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    billingHistory<T extends Company$billingHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Company$billingHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BillingHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4536,6 +4536,102 @@ export namespace Prisma {
   }
 
   /**
+   * Company.billingHistory
+   */
+  export type Company$billingHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the BillingHistory
+     */
+    select?: BillingHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the BillingHistory
+     */
+    omit?: BillingHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BillingHistoryInclude<ExtArgs> | null
+    where?: BillingHistoryWhereInput
+    orderBy?: BillingHistoryOrderByWithRelationInput | BillingHistoryOrderByWithRelationInput[]
+    cursor?: BillingHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BillingHistoryScalarFieldEnum | BillingHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * Company.auditLogs
+   */
+  export type Company$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyAuditLog
+     */
+    select?: CompanyAuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyAuditLog
+     */
+    omit?: CompanyAuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyAuditLogInclude<ExtArgs> | null
+    where?: CompanyAuditLogWhereInput
+    orderBy?: CompanyAuditLogOrderByWithRelationInput | CompanyAuditLogOrderByWithRelationInput[]
+    cursor?: CompanyAuditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompanyAuditLogScalarFieldEnum | CompanyAuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * Company.integrations
+   */
+  export type Company$integrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyIntegration
+     */
+    select?: CompanyIntegrationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyIntegration
+     */
+    omit?: CompanyIntegrationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyIntegrationInclude<ExtArgs> | null
+    where?: CompanyIntegrationWhereInput
+    orderBy?: CompanyIntegrationOrderByWithRelationInput | CompanyIntegrationOrderByWithRelationInput[]
+    cursor?: CompanyIntegrationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompanyIntegrationScalarFieldEnum | CompanyIntegrationScalarFieldEnum[]
+  }
+
+  /**
+   * Company.locations
+   */
+  export type Company$locationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyLocation
+     */
+    select?: CompanyLocationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyLocation
+     */
+    omit?: CompanyLocationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyLocationInclude<ExtArgs> | null
+    where?: CompanyLocationWhereInput
+    orderBy?: CompanyLocationOrderByWithRelationInput | CompanyLocationOrderByWithRelationInput[]
+    cursor?: CompanyLocationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompanyLocationScalarFieldEnum | CompanyLocationScalarFieldEnum[]
+  }
+
+  /**
    * Company.companyUsers
    */
   export type Company$companyUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4581,102 +4677,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DepartmentScalarFieldEnum | DepartmentScalarFieldEnum[]
-  }
-
-  /**
-   * Company.locations
-   */
-  export type Company$locationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CompanyLocation
-     */
-    select?: CompanyLocationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CompanyLocation
-     */
-    omit?: CompanyLocationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CompanyLocationInclude<ExtArgs> | null
-    where?: CompanyLocationWhereInput
-    orderBy?: CompanyLocationOrderByWithRelationInput | CompanyLocationOrderByWithRelationInput[]
-    cursor?: CompanyLocationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CompanyLocationScalarFieldEnum | CompanyLocationScalarFieldEnum[]
-  }
-
-  /**
-   * Company.integrations
-   */
-  export type Company$integrationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CompanyIntegration
-     */
-    select?: CompanyIntegrationSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CompanyIntegration
-     */
-    omit?: CompanyIntegrationOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CompanyIntegrationInclude<ExtArgs> | null
-    where?: CompanyIntegrationWhereInput
-    orderBy?: CompanyIntegrationOrderByWithRelationInput | CompanyIntegrationOrderByWithRelationInput[]
-    cursor?: CompanyIntegrationWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CompanyIntegrationScalarFieldEnum | CompanyIntegrationScalarFieldEnum[]
-  }
-
-  /**
-   * Company.auditLogs
-   */
-  export type Company$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CompanyAuditLog
-     */
-    select?: CompanyAuditLogSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CompanyAuditLog
-     */
-    omit?: CompanyAuditLogOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CompanyAuditLogInclude<ExtArgs> | null
-    where?: CompanyAuditLogWhereInput
-    orderBy?: CompanyAuditLogOrderByWithRelationInput | CompanyAuditLogOrderByWithRelationInput[]
-    cursor?: CompanyAuditLogWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CompanyAuditLogScalarFieldEnum | CompanyAuditLogScalarFieldEnum[]
-  }
-
-  /**
-   * Company.billingHistory
-   */
-  export type Company$billingHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BillingHistory
-     */
-    select?: BillingHistorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BillingHistory
-     */
-    omit?: BillingHistoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BillingHistoryInclude<ExtArgs> | null
-    where?: BillingHistoryWhereInput
-    orderBy?: BillingHistoryOrderByWithRelationInput | BillingHistoryOrderByWithRelationInput[]
-    cursor?: BillingHistoryWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: BillingHistoryScalarFieldEnum | BillingHistoryScalarFieldEnum[]
   }
 
   /**
@@ -4983,10 +4983,10 @@ export namespace Prisma {
     joinedAt?: boolean
     lastActiveAt?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
     department?: boolean | CompanyUser$departmentArgs<ExtArgs>
     manager?: boolean | CompanyUser$managerArgs<ExtArgs>
     reports?: boolean | CompanyUser$reportsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | CompanyUserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["companyUser"]>
 
@@ -5013,9 +5013,9 @@ export namespace Prisma {
     joinedAt?: boolean
     lastActiveAt?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
     department?: boolean | CompanyUser$departmentArgs<ExtArgs>
     manager?: boolean | CompanyUser$managerArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["companyUser"]>
 
   export type CompanyUserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -5041,9 +5041,9 @@ export namespace Prisma {
     joinedAt?: boolean
     lastActiveAt?: boolean
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
     department?: boolean | CompanyUser$departmentArgs<ExtArgs>
     manager?: boolean | CompanyUser$managerArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["companyUser"]>
 
   export type CompanyUserSelectScalar = {
@@ -5073,33 +5073,33 @@ export namespace Prisma {
   export type CompanyUserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "userId" | "role" | "title" | "departmentId" | "employeeId" | "startDate" | "endDate" | "permissions" | "isActive" | "isOwner" | "canInvite" | "canManageBilling" | "managerId" | "directReports" | "status" | "invitedBy" | "invitedAt" | "joinedAt" | "lastActiveAt", ExtArgs["result"]["companyUser"]>
   export type CompanyUserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
     department?: boolean | CompanyUser$departmentArgs<ExtArgs>
     manager?: boolean | CompanyUser$managerArgs<ExtArgs>
     reports?: boolean | CompanyUser$reportsArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | CompanyUserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type CompanyUserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
     department?: boolean | CompanyUser$departmentArgs<ExtArgs>
     manager?: boolean | CompanyUser$managerArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type CompanyUserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     company?: boolean | CompanyDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
     department?: boolean | CompanyUser$departmentArgs<ExtArgs>
     manager?: boolean | CompanyUser$managerArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $CompanyUserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "CompanyUser"
     objects: {
       company: Prisma.$CompanyPayload<ExtArgs>
-      user: Prisma.$UserPayload<ExtArgs>
       department: Prisma.$DepartmentPayload<ExtArgs> | null
       manager: Prisma.$CompanyUserPayload<ExtArgs> | null
       reports: Prisma.$CompanyUserPayload<ExtArgs>[]
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5518,10 +5518,10 @@ export namespace Prisma {
   export interface Prisma__CompanyUserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     department<T extends CompanyUser$departmentArgs<ExtArgs> = {}>(args?: Subset<T, CompanyUser$departmentArgs<ExtArgs>>): Prisma__DepartmentClient<$Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     manager<T extends CompanyUser$managerArgs<ExtArgs> = {}>(args?: Subset<T, CompanyUser$managerArgs<ExtArgs>>): Prisma__CompanyUserClient<$Result.GetResult<Prisma.$CompanyUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     reports<T extends CompanyUser$reportsArgs<ExtArgs> = {}>(args?: Subset<T, CompanyUser$reportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6314,10 +6314,10 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    employees?: boolean | Department$employeesArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     parent?: boolean | Department$parentArgs<ExtArgs>
     children?: boolean | Department$childrenArgs<ExtArgs>
-    employees?: boolean | Department$employeesArgs<ExtArgs>
     _count?: boolean | DepartmentCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["department"]>
 
@@ -6375,10 +6375,10 @@ export namespace Prisma {
 
   export type DepartmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyId" | "name" | "description" | "code" | "parentId" | "level" | "headOfDepartment" | "budget" | "costCenter" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["department"]>
   export type DepartmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employees?: boolean | Department$employeesArgs<ExtArgs>
     company?: boolean | CompanyDefaultArgs<ExtArgs>
     parent?: boolean | Department$parentArgs<ExtArgs>
     children?: boolean | Department$childrenArgs<ExtArgs>
-    employees?: boolean | Department$employeesArgs<ExtArgs>
     _count?: boolean | DepartmentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DepartmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6393,10 +6393,10 @@ export namespace Prisma {
   export type $DepartmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Department"
     objects: {
+      employees: Prisma.$CompanyUserPayload<ExtArgs>[]
       company: Prisma.$CompanyPayload<ExtArgs>
       parent: Prisma.$DepartmentPayload<ExtArgs> | null
       children: Prisma.$DepartmentPayload<ExtArgs>[]
-      employees: Prisma.$CompanyUserPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6806,10 +6806,10 @@ export namespace Prisma {
    */
   export interface Prisma__DepartmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    employees<T extends Department$employeesArgs<ExtArgs> = {}>(args?: Subset<T, Department$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     company<T extends CompanyDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CompanyDefaultArgs<ExtArgs>>): Prisma__CompanyClient<$Result.GetResult<Prisma.$CompanyPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     parent<T extends Department$parentArgs<ExtArgs> = {}>(args?: Subset<T, Department$parentArgs<ExtArgs>>): Prisma__DepartmentClient<$Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     children<T extends Department$childrenArgs<ExtArgs> = {}>(args?: Subset<T, Department$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    employees<T extends Department$employeesArgs<ExtArgs> = {}>(args?: Subset<T, Department$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7248,6 +7248,30 @@ export namespace Prisma {
   }
 
   /**
+   * Department.employees
+   */
+  export type Department$employeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyUser
+     */
+    select?: CompanyUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyUser
+     */
+    omit?: CompanyUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyUserInclude<ExtArgs> | null
+    where?: CompanyUserWhereInput
+    orderBy?: CompanyUserOrderByWithRelationInput | CompanyUserOrderByWithRelationInput[]
+    cursor?: CompanyUserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompanyUserScalarFieldEnum | CompanyUserScalarFieldEnum[]
+  }
+
+  /**
    * Department.parent
    */
   export type Department$parentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7288,30 +7312,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DepartmentScalarFieldEnum | DepartmentScalarFieldEnum[]
-  }
-
-  /**
-   * Department.employees
-   */
-  export type Department$employeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CompanyUser
-     */
-    select?: CompanyUserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CompanyUser
-     */
-    omit?: CompanyUserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CompanyUserInclude<ExtArgs> | null
-    where?: CompanyUserWhereInput
-    orderBy?: CompanyUserOrderByWithRelationInput | CompanyUserOrderByWithRelationInput[]
-    cursor?: CompanyUserWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CompanyUserScalarFieldEnum | CompanyUserScalarFieldEnum[]
   }
 
   /**
@@ -12510,17 +12510,17 @@ export namespace Prisma {
     lockedUntil?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    userRoles?: boolean | User$userRolesArgs<ExtArgs>
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
+    apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
+    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
+    companyUsers?: boolean | User$companyUsersArgs<ExtArgs>
     loginHistory?: boolean | User$loginHistoryArgs<ExtArgs>
     passwordResets?: boolean | User$passwordResetsArgs<ExtArgs>
     invitations?: boolean | User$invitationsArgs<ExtArgs>
     receivedInvites?: boolean | User$receivedInvitesArgs<ExtArgs>
-    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
-    preferences?: boolean | User$preferencesArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
-    apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
-    companyUsers?: boolean | User$companyUsersArgs<ExtArgs>
+    preferences?: boolean | User$preferencesArgs<ExtArgs>
+    userRoles?: boolean | User$userRolesArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -12607,17 +12607,17 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "emailVerified" | "firstName" | "lastName" | "displayName" | "avatar" | "phone" | "password" | "twoFactorEnabled" | "twoFactorSecret" | "timezone" | "language" | "theme" | "isActive" | "isVerified" | "isSuspended" | "suspendedReason" | "lastLoginAt" | "lastLoginIp" | "failedLoginCount" | "lockedUntil" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    userRoles?: boolean | User$userRolesArgs<ExtArgs>
-    sessions?: boolean | User$sessionsArgs<ExtArgs>
+    apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
+    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
+    companyUsers?: boolean | User$companyUsersArgs<ExtArgs>
     loginHistory?: boolean | User$loginHistoryArgs<ExtArgs>
     passwordResets?: boolean | User$passwordResetsArgs<ExtArgs>
     invitations?: boolean | User$invitationsArgs<ExtArgs>
     receivedInvites?: boolean | User$receivedInvitesArgs<ExtArgs>
-    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
-    preferences?: boolean | User$preferencesArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
-    apiKeys?: boolean | User$apiKeysArgs<ExtArgs>
-    companyUsers?: boolean | User$companyUsersArgs<ExtArgs>
+    preferences?: boolean | User$preferencesArgs<ExtArgs>
+    userRoles?: boolean | User$userRolesArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -12626,17 +12626,17 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      userRoles: Prisma.$UserRolePayload<ExtArgs>[]
-      sessions: Prisma.$UserSessionPayload<ExtArgs>[]
+      apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
+      auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+      companyUsers: Prisma.$CompanyUserPayload<ExtArgs>[]
       loginHistory: Prisma.$LoginHistoryPayload<ExtArgs>[]
       passwordResets: Prisma.$PasswordResetPayload<ExtArgs>[]
       invitations: Prisma.$UserInvitationPayload<ExtArgs>[]
       receivedInvites: Prisma.$UserInvitationPayload<ExtArgs>[]
-      auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
-      preferences: Prisma.$UserPreferencePayload<ExtArgs>[]
       notifications: Prisma.$UserNotificationPayload<ExtArgs>[]
-      apiKeys: Prisma.$ApiKeyPayload<ExtArgs>[]
-      companyUsers: Prisma.$CompanyUserPayload<ExtArgs>[]
+      preferences: Prisma.$UserPreferencePayload<ExtArgs>[]
+      userRoles: Prisma.$UserRolePayload<ExtArgs>[]
+      sessions: Prisma.$UserSessionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13057,17 +13057,17 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    userRoles<T extends User$userRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$userRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    apiKeys<T extends User$apiKeysArgs<ExtArgs> = {}>(args?: Subset<T, User$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    companyUsers<T extends User$companyUsersArgs<ExtArgs> = {}>(args?: Subset<T, User$companyUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     loginHistory<T extends User$loginHistoryArgs<ExtArgs> = {}>(args?: Subset<T, User$loginHistoryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LoginHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     passwordResets<T extends User$passwordResetsArgs<ExtArgs> = {}>(args?: Subset<T, User$passwordResetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PasswordResetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     invitations<T extends User$invitationsArgs<ExtArgs> = {}>(args?: Subset<T, User$invitationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     receivedInvites<T extends User$receivedInvitesArgs<ExtArgs> = {}>(args?: Subset<T, User$receivedInvitesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserInvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    preferences<T extends User$preferencesArgs<ExtArgs> = {}>(args?: Subset<T, User$preferencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPreferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserNotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    apiKeys<T extends User$apiKeysArgs<ExtArgs> = {}>(args?: Subset<T, User$apiKeysArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ApiKeyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    companyUsers<T extends User$companyUsersArgs<ExtArgs> = {}>(args?: Subset<T, User$companyUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanyUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    preferences<T extends User$preferencesArgs<ExtArgs> = {}>(args?: Subset<T, User$preferencesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPreferencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    userRoles<T extends User$userRolesArgs<ExtArgs> = {}>(args?: Subset<T, User$userRolesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserRolePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13509,51 +13509,75 @@ export namespace Prisma {
   }
 
   /**
-   * User.userRoles
+   * User.apiKeys
    */
-  export type User$userRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$apiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserRole
+     * Select specific fields to fetch from the ApiKey
      */
-    select?: UserRoleSelect<ExtArgs> | null
+    select?: ApiKeySelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserRole
+     * Omit specific fields from the ApiKey
      */
-    omit?: UserRoleOmit<ExtArgs> | null
+    omit?: ApiKeyOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserRoleInclude<ExtArgs> | null
-    where?: UserRoleWhereInput
-    orderBy?: UserRoleOrderByWithRelationInput | UserRoleOrderByWithRelationInput[]
-    cursor?: UserRoleWhereUniqueInput
+    include?: ApiKeyInclude<ExtArgs> | null
+    where?: ApiKeyWhereInput
+    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
+    cursor?: ApiKeyWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: UserRoleScalarFieldEnum | UserRoleScalarFieldEnum[]
+    distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
   }
 
   /**
-   * User.sessions
+   * User.auditLogs
    */
-  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserSession
+     * Select specific fields to fetch from the AuditLog
      */
-    select?: UserSessionSelect<ExtArgs> | null
+    select?: AuditLogSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserSession
+     * Omit specific fields from the AuditLog
      */
-    omit?: UserSessionOmit<ExtArgs> | null
+    omit?: AuditLogOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserSessionInclude<ExtArgs> | null
-    where?: UserSessionWhereInput
-    orderBy?: UserSessionOrderByWithRelationInput | UserSessionOrderByWithRelationInput[]
-    cursor?: UserSessionWhereUniqueInput
+    include?: AuditLogInclude<ExtArgs> | null
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    cursor?: AuditLogWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: UserSessionScalarFieldEnum | UserSessionScalarFieldEnum[]
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.companyUsers
+   */
+  export type User$companyUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanyUser
+     */
+    select?: CompanyUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanyUser
+     */
+    omit?: CompanyUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CompanyUserInclude<ExtArgs> | null
+    where?: CompanyUserWhereInput
+    orderBy?: CompanyUserOrderByWithRelationInput | CompanyUserOrderByWithRelationInput[]
+    cursor?: CompanyUserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CompanyUserScalarFieldEnum | CompanyUserScalarFieldEnum[]
   }
 
   /**
@@ -13653,27 +13677,27 @@ export namespace Prisma {
   }
 
   /**
-   * User.auditLogs
+   * User.notifications
    */
-  export type User$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the AuditLog
+     * Select specific fields to fetch from the UserNotification
      */
-    select?: AuditLogSelect<ExtArgs> | null
+    select?: UserNotificationSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the AuditLog
+     * Omit specific fields from the UserNotification
      */
-    omit?: AuditLogOmit<ExtArgs> | null
+    omit?: UserNotificationOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: AuditLogInclude<ExtArgs> | null
-    where?: AuditLogWhereInput
-    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
-    cursor?: AuditLogWhereUniqueInput
+    include?: UserNotificationInclude<ExtArgs> | null
+    where?: UserNotificationWhereInput
+    orderBy?: UserNotificationOrderByWithRelationInput | UserNotificationOrderByWithRelationInput[]
+    cursor?: UserNotificationWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+    distinct?: UserNotificationScalarFieldEnum | UserNotificationScalarFieldEnum[]
   }
 
   /**
@@ -13701,75 +13725,51 @@ export namespace Prisma {
   }
 
   /**
-   * User.notifications
+   * User.userRoles
    */
-  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$userRolesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the UserNotification
+     * Select specific fields to fetch from the UserRole
      */
-    select?: UserNotificationSelect<ExtArgs> | null
+    select?: UserRoleSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the UserNotification
+     * Omit specific fields from the UserRole
      */
-    omit?: UserNotificationOmit<ExtArgs> | null
+    omit?: UserRoleOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: UserNotificationInclude<ExtArgs> | null
-    where?: UserNotificationWhereInput
-    orderBy?: UserNotificationOrderByWithRelationInput | UserNotificationOrderByWithRelationInput[]
-    cursor?: UserNotificationWhereUniqueInput
+    include?: UserRoleInclude<ExtArgs> | null
+    where?: UserRoleWhereInput
+    orderBy?: UserRoleOrderByWithRelationInput | UserRoleOrderByWithRelationInput[]
+    cursor?: UserRoleWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: UserNotificationScalarFieldEnum | UserNotificationScalarFieldEnum[]
+    distinct?: UserRoleScalarFieldEnum | UserRoleScalarFieldEnum[]
   }
 
   /**
-   * User.apiKeys
+   * User.sessions
    */
-  export type User$apiKeysArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the ApiKey
+     * Select specific fields to fetch from the UserSession
      */
-    select?: ApiKeySelect<ExtArgs> | null
+    select?: UserSessionSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the ApiKey
+     * Omit specific fields from the UserSession
      */
-    omit?: ApiKeyOmit<ExtArgs> | null
+    omit?: UserSessionOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: ApiKeyInclude<ExtArgs> | null
-    where?: ApiKeyWhereInput
-    orderBy?: ApiKeyOrderByWithRelationInput | ApiKeyOrderByWithRelationInput[]
-    cursor?: ApiKeyWhereUniqueInput
+    include?: UserSessionInclude<ExtArgs> | null
+    where?: UserSessionWhereInput
+    orderBy?: UserSessionOrderByWithRelationInput | UserSessionOrderByWithRelationInput[]
+    cursor?: UserSessionWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: ApiKeyScalarFieldEnum | ApiKeyScalarFieldEnum[]
-  }
-
-  /**
-   * User.companyUsers
-   */
-  export type User$companyUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the CompanyUser
-     */
-    select?: CompanyUserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the CompanyUser
-     */
-    omit?: CompanyUserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CompanyUserInclude<ExtArgs> | null
-    where?: CompanyUserWhereInput
-    orderBy?: CompanyUserOrderByWithRelationInput | CompanyUserOrderByWithRelationInput[]
-    cursor?: CompanyUserWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: CompanyUserScalarFieldEnum | CompanyUserScalarFieldEnum[]
+    distinct?: UserSessionScalarFieldEnum | UserSessionScalarFieldEnum[]
   }
 
   /**
@@ -15149,8 +15149,8 @@ export namespace Prisma {
     assignedAt?: boolean
     expiresAt?: boolean
     isActive?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userRole"]>
 
   export type UserRoleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15161,8 +15161,8 @@ export namespace Prisma {
     assignedAt?: boolean
     expiresAt?: boolean
     isActive?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userRole"]>
 
   export type UserRoleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -15173,8 +15173,8 @@ export namespace Prisma {
     assignedAt?: boolean
     expiresAt?: boolean
     isActive?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userRole"]>
 
   export type UserRoleSelectScalar = {
@@ -15189,23 +15189,23 @@ export namespace Prisma {
 
   export type UserRoleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "roleId" | "assignedBy" | "assignedAt" | "expiresAt" | "isActive", ExtArgs["result"]["userRole"]>
   export type UserRoleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UserRoleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UserRoleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     role?: boolean | RoleDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $UserRolePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "UserRole"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       role: Prisma.$RolePayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -15609,8 +15609,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserRoleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     role<T extends RoleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoleDefaultArgs<ExtArgs>>): Prisma__RoleClient<$Result.GetResult<Prisma.$RolePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -27326,12 +27326,12 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
     createdBy?: StringFilter<"Company"> | string
+    billingHistory?: BillingHistoryListRelationFilter
+    auditLogs?: CompanyAuditLogListRelationFilter
+    integrations?: CompanyIntegrationListRelationFilter
+    locations?: CompanyLocationListRelationFilter
     companyUsers?: CompanyUserListRelationFilter
     departments?: DepartmentListRelationFilter
-    locations?: CompanyLocationListRelationFilter
-    integrations?: CompanyIntegrationListRelationFilter
-    auditLogs?: CompanyAuditLogListRelationFilter
-    billingHistory?: BillingHistoryListRelationFilter
   }
 
   export type CompanyOrderByWithRelationInput = {
@@ -27373,12 +27373,12 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdBy?: SortOrder
+    billingHistory?: BillingHistoryOrderByRelationAggregateInput
+    auditLogs?: CompanyAuditLogOrderByRelationAggregateInput
+    integrations?: CompanyIntegrationOrderByRelationAggregateInput
+    locations?: CompanyLocationOrderByRelationAggregateInput
     companyUsers?: CompanyUserOrderByRelationAggregateInput
     departments?: DepartmentOrderByRelationAggregateInput
-    locations?: CompanyLocationOrderByRelationAggregateInput
-    integrations?: CompanyIntegrationOrderByRelationAggregateInput
-    auditLogs?: CompanyAuditLogOrderByRelationAggregateInput
-    billingHistory?: BillingHistoryOrderByRelationAggregateInput
   }
 
   export type CompanyWhereUniqueInput = Prisma.AtLeast<{
@@ -27423,12 +27423,12 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Company"> | Date | string
     updatedAt?: DateTimeFilter<"Company"> | Date | string
     createdBy?: StringFilter<"Company"> | string
+    billingHistory?: BillingHistoryListRelationFilter
+    auditLogs?: CompanyAuditLogListRelationFilter
+    integrations?: CompanyIntegrationListRelationFilter
+    locations?: CompanyLocationListRelationFilter
     companyUsers?: CompanyUserListRelationFilter
     departments?: DepartmentListRelationFilter
-    locations?: CompanyLocationListRelationFilter
-    integrations?: CompanyIntegrationListRelationFilter
-    auditLogs?: CompanyAuditLogListRelationFilter
-    billingHistory?: BillingHistoryListRelationFilter
   }, "id" | "registrationNumber" | "taxId">
 
   export type CompanyOrderByWithAggregationInput = {
@@ -27547,10 +27547,10 @@ export namespace Prisma {
     joinedAt?: DateTimeFilter<"CompanyUser"> | Date | string
     lastActiveAt?: DateTimeNullableFilter<"CompanyUser"> | Date | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     department?: XOR<DepartmentNullableScalarRelationFilter, DepartmentWhereInput> | null
     manager?: XOR<CompanyUserNullableScalarRelationFilter, CompanyUserWhereInput> | null
     reports?: CompanyUserListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type CompanyUserOrderByWithRelationInput = {
@@ -27576,10 +27576,10 @@ export namespace Prisma {
     joinedAt?: SortOrder
     lastActiveAt?: SortOrderInput | SortOrder
     company?: CompanyOrderByWithRelationInput
-    user?: UserOrderByWithRelationInput
     department?: DepartmentOrderByWithRelationInput
     manager?: CompanyUserOrderByWithRelationInput
     reports?: CompanyUserOrderByRelationAggregateInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type CompanyUserWhereUniqueInput = Prisma.AtLeast<{
@@ -27609,10 +27609,10 @@ export namespace Prisma {
     joinedAt?: DateTimeFilter<"CompanyUser"> | Date | string
     lastActiveAt?: DateTimeNullableFilter<"CompanyUser"> | Date | string | null
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     department?: XOR<DepartmentNullableScalarRelationFilter, DepartmentWhereInput> | null
     manager?: XOR<CompanyUserNullableScalarRelationFilter, CompanyUserWhereInput> | null
     reports?: CompanyUserListRelationFilter
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "companyId_userId">
 
   export type CompanyUserOrderByWithAggregationInput = {
@@ -27686,10 +27686,10 @@ export namespace Prisma {
     isActive?: BoolFilter<"Department"> | boolean
     createdAt?: DateTimeFilter<"Department"> | Date | string
     updatedAt?: DateTimeFilter<"Department"> | Date | string
+    employees?: CompanyUserListRelationFilter
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     parent?: XOR<DepartmentNullableScalarRelationFilter, DepartmentWhereInput> | null
     children?: DepartmentListRelationFilter
-    employees?: CompanyUserListRelationFilter
   }
 
   export type DepartmentOrderByWithRelationInput = {
@@ -27706,10 +27706,10 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    employees?: CompanyUserOrderByRelationAggregateInput
     company?: CompanyOrderByWithRelationInput
     parent?: DepartmentOrderByWithRelationInput
     children?: DepartmentOrderByRelationAggregateInput
-    employees?: CompanyUserOrderByRelationAggregateInput
   }
 
   export type DepartmentWhereUniqueInput = Prisma.AtLeast<{
@@ -27730,10 +27730,10 @@ export namespace Prisma {
     isActive?: BoolFilter<"Department"> | boolean
     createdAt?: DateTimeFilter<"Department"> | Date | string
     updatedAt?: DateTimeFilter<"Department"> | Date | string
+    employees?: CompanyUserListRelationFilter
     company?: XOR<CompanyScalarRelationFilter, CompanyWhereInput>
     parent?: XOR<DepartmentNullableScalarRelationFilter, DepartmentWhereInput> | null
     children?: DepartmentListRelationFilter
-    employees?: CompanyUserListRelationFilter
   }, "id" | "companyId_name">
 
   export type DepartmentOrderByWithAggregationInput = {
@@ -28244,17 +28244,17 @@ export namespace Prisma {
     lockedUntil?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    userRoles?: UserRoleListRelationFilter
-    sessions?: UserSessionListRelationFilter
+    apiKeys?: ApiKeyListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
+    companyUsers?: CompanyUserListRelationFilter
     loginHistory?: LoginHistoryListRelationFilter
     passwordResets?: PasswordResetListRelationFilter
     invitations?: UserInvitationListRelationFilter
     receivedInvites?: UserInvitationListRelationFilter
-    auditLogs?: AuditLogListRelationFilter
-    preferences?: UserPreferenceListRelationFilter
     notifications?: UserNotificationListRelationFilter
-    apiKeys?: ApiKeyListRelationFilter
-    companyUsers?: CompanyUserListRelationFilter
+    preferences?: UserPreferenceListRelationFilter
+    userRoles?: UserRoleListRelationFilter
+    sessions?: UserSessionListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -28282,17 +28282,17 @@ export namespace Prisma {
     lockedUntil?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userRoles?: UserRoleOrderByRelationAggregateInput
-    sessions?: UserSessionOrderByRelationAggregateInput
+    apiKeys?: ApiKeyOrderByRelationAggregateInput
+    auditLogs?: AuditLogOrderByRelationAggregateInput
+    companyUsers?: CompanyUserOrderByRelationAggregateInput
     loginHistory?: LoginHistoryOrderByRelationAggregateInput
     passwordResets?: PasswordResetOrderByRelationAggregateInput
     invitations?: UserInvitationOrderByRelationAggregateInput
     receivedInvites?: UserInvitationOrderByRelationAggregateInput
-    auditLogs?: AuditLogOrderByRelationAggregateInput
-    preferences?: UserPreferenceOrderByRelationAggregateInput
     notifications?: UserNotificationOrderByRelationAggregateInput
-    apiKeys?: ApiKeyOrderByRelationAggregateInput
-    companyUsers?: CompanyUserOrderByRelationAggregateInput
+    preferences?: UserPreferenceOrderByRelationAggregateInput
+    userRoles?: UserRoleOrderByRelationAggregateInput
+    sessions?: UserSessionOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -28323,17 +28323,17 @@ export namespace Prisma {
     lockedUntil?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    userRoles?: UserRoleListRelationFilter
-    sessions?: UserSessionListRelationFilter
+    apiKeys?: ApiKeyListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
+    companyUsers?: CompanyUserListRelationFilter
     loginHistory?: LoginHistoryListRelationFilter
     passwordResets?: PasswordResetListRelationFilter
     invitations?: UserInvitationListRelationFilter
     receivedInvites?: UserInvitationListRelationFilter
-    auditLogs?: AuditLogListRelationFilter
-    preferences?: UserPreferenceListRelationFilter
     notifications?: UserNotificationListRelationFilter
-    apiKeys?: ApiKeyListRelationFilter
-    companyUsers?: CompanyUserListRelationFilter
+    preferences?: UserPreferenceListRelationFilter
+    userRoles?: UserRoleListRelationFilter
+    sessions?: UserSessionListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -28496,8 +28496,8 @@ export namespace Prisma {
     assignedAt?: DateTimeFilter<"UserRole"> | Date | string
     expiresAt?: DateTimeNullableFilter<"UserRole"> | Date | string | null
     isActive?: BoolFilter<"UserRole"> | boolean
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type UserRoleOrderByWithRelationInput = {
@@ -28508,8 +28508,8 @@ export namespace Prisma {
     assignedAt?: SortOrder
     expiresAt?: SortOrderInput | SortOrder
     isActive?: SortOrder
-    user?: UserOrderByWithRelationInput
     role?: RoleOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type UserRoleWhereUniqueInput = Prisma.AtLeast<{
@@ -28524,8 +28524,8 @@ export namespace Prisma {
     assignedAt?: DateTimeFilter<"UserRole"> | Date | string
     expiresAt?: DateTimeNullableFilter<"UserRole"> | Date | string | null
     isActive?: BoolFilter<"UserRole"> | boolean
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     role?: XOR<RoleScalarRelationFilter, RoleWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId_roleId">
 
   export type UserRoleOrderByWithAggregationInput = {
@@ -29452,12 +29452,12 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
+    billingHistory?: BillingHistoryCreateNestedManyWithoutCompanyInput
+    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
     companyUsers?: CompanyUserCreateNestedManyWithoutCompanyInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
-    billingHistory?: BillingHistoryCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateInput = {
@@ -29499,12 +29499,12 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
+    billingHistory?: BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput
+    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
     companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
-    billingHistory?: BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUpdateInput = {
@@ -29546,12 +29546,12 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
+    billingHistory?: BillingHistoryUpdateManyWithoutCompanyNestedInput
+    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
     companyUsers?: CompanyUserUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
-    billingHistory?: BillingHistoryUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateInput = {
@@ -29593,12 +29593,12 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
+    billingHistory?: BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput
+    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
     companyUsers?: CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
-    billingHistory?: BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateManyInput = {
@@ -29743,10 +29743,10 @@ export namespace Prisma {
     joinedAt?: Date | string
     lastActiveAt?: Date | string | null
     company: CompanyCreateNestedOneWithoutCompanyUsersInput
-    user: UserCreateNestedOneWithoutCompanyUsersInput
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     manager?: CompanyUserCreateNestedOneWithoutReportsInput
     reports?: CompanyUserCreateNestedManyWithoutManagerInput
+    user: UserCreateNestedOneWithoutCompanyUsersInput
   }
 
   export type CompanyUserUncheckedCreateInput = {
@@ -29793,10 +29793,10 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutCompanyUsersNestedInput
-    user?: UserUpdateOneRequiredWithoutCompanyUsersNestedInput
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     manager?: CompanyUserUpdateOneWithoutReportsNestedInput
     reports?: CompanyUserUpdateManyWithoutManagerNestedInput
+    user?: UserUpdateOneRequiredWithoutCompanyUsersNestedInput
   }
 
   export type CompanyUserUncheckedUpdateInput = {
@@ -29904,10 +29904,10 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    employees?: CompanyUserCreateNestedManyWithoutDepartmentInput
     company: CompanyCreateNestedOneWithoutDepartmentsInput
     parent?: DepartmentCreateNestedOneWithoutChildrenInput
     children?: DepartmentCreateNestedManyWithoutParentInput
-    employees?: CompanyUserCreateNestedManyWithoutDepartmentInput
   }
 
   export type DepartmentUncheckedCreateInput = {
@@ -29924,8 +29924,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    children?: DepartmentUncheckedCreateNestedManyWithoutParentInput
     employees?: CompanyUserUncheckedCreateNestedManyWithoutDepartmentInput
+    children?: DepartmentUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type DepartmentUpdateInput = {
@@ -29940,10 +29940,10 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employees?: CompanyUserUpdateManyWithoutDepartmentNestedInput
     company?: CompanyUpdateOneRequiredWithoutDepartmentsNestedInput
     parent?: DepartmentUpdateOneWithoutChildrenNestedInput
     children?: DepartmentUpdateManyWithoutParentNestedInput
-    employees?: CompanyUserUpdateManyWithoutDepartmentNestedInput
   }
 
   export type DepartmentUncheckedUpdateInput = {
@@ -29960,8 +29960,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    children?: DepartmentUncheckedUpdateManyWithoutParentNestedInput
     employees?: CompanyUserUncheckedUpdateManyWithoutDepartmentNestedInput
+    children?: DepartmentUncheckedUpdateManyWithoutParentNestedInput
   }
 
   export type DepartmentCreateManyInput = {
@@ -30556,17 +30556,17 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
-    sessions?: UserSessionCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
     notifications?: UserNotificationCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    sessions?: UserSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -30594,17 +30594,17 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
-    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
     notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -30632,17 +30632,17 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -30670,17 +30670,17 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -30872,8 +30872,8 @@ export namespace Prisma {
     assignedAt?: Date | string
     expiresAt?: Date | string | null
     isActive?: boolean
-    user: UserCreateNestedOneWithoutUserRolesInput
     role: RoleCreateNestedOneWithoutUserRolesInput
+    user: UserCreateNestedOneWithoutUserRolesInput
   }
 
   export type UserRoleUncheckedCreateInput = {
@@ -30892,8 +30892,8 @@ export namespace Prisma {
     assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    user?: UserUpdateOneRequiredWithoutUserRolesNestedInput
     role?: RoleUpdateOneRequiredWithoutUserRolesNestedInput
+    user?: UserUpdateOneRequiredWithoutUserRolesNestedInput
   }
 
   export type UserRoleUncheckedUpdateInput = {
@@ -32052,6 +32052,30 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type BillingHistoryListRelationFilter = {
+    every?: BillingHistoryWhereInput
+    some?: BillingHistoryWhereInput
+    none?: BillingHistoryWhereInput
+  }
+
+  export type CompanyAuditLogListRelationFilter = {
+    every?: CompanyAuditLogWhereInput
+    some?: CompanyAuditLogWhereInput
+    none?: CompanyAuditLogWhereInput
+  }
+
+  export type CompanyIntegrationListRelationFilter = {
+    every?: CompanyIntegrationWhereInput
+    some?: CompanyIntegrationWhereInput
+    none?: CompanyIntegrationWhereInput
+  }
+
+  export type CompanyLocationListRelationFilter = {
+    every?: CompanyLocationWhereInput
+    some?: CompanyLocationWhereInput
+    none?: CompanyLocationWhereInput
+  }
+
   export type CompanyUserListRelationFilter = {
     every?: CompanyUserWhereInput
     some?: CompanyUserWhereInput
@@ -32064,48 +32088,12 @@ export namespace Prisma {
     none?: DepartmentWhereInput
   }
 
-  export type CompanyLocationListRelationFilter = {
-    every?: CompanyLocationWhereInput
-    some?: CompanyLocationWhereInput
-    none?: CompanyLocationWhereInput
-  }
-
-  export type CompanyIntegrationListRelationFilter = {
-    every?: CompanyIntegrationWhereInput
-    some?: CompanyIntegrationWhereInput
-    none?: CompanyIntegrationWhereInput
-  }
-
-  export type CompanyAuditLogListRelationFilter = {
-    every?: CompanyAuditLogWhereInput
-    some?: CompanyAuditLogWhereInput
-    none?: CompanyAuditLogWhereInput
-  }
-
-  export type BillingHistoryListRelationFilter = {
-    every?: BillingHistoryWhereInput
-    some?: BillingHistoryWhereInput
-    none?: BillingHistoryWhereInput
-  }
-
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
   }
 
-  export type CompanyUserOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type DepartmentOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type CompanyLocationOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type CompanyIntegrationOrderByRelationAggregateInput = {
+  export type BillingHistoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -32113,7 +32101,19 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type BillingHistoryOrderByRelationAggregateInput = {
+  export type CompanyIntegrationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CompanyLocationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CompanyUserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DepartmentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -32419,11 +32419,6 @@ export namespace Prisma {
     isNot?: CompanyWhereInput
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
   export type DepartmentNullableScalarRelationFilter = {
     is?: DepartmentWhereInput | null
     isNot?: DepartmentWhereInput | null
@@ -32432,6 +32427,11 @@ export namespace Prisma {
   export type CompanyUserNullableScalarRelationFilter = {
     is?: CompanyUserWhereInput | null
     isNot?: CompanyUserWhereInput | null
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
   export type CompanyUserCompanyIdUserIdCompoundUniqueInput = {
@@ -33008,16 +33008,16 @@ export namespace Prisma {
     _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
   }
 
-  export type UserRoleListRelationFilter = {
-    every?: UserRoleWhereInput
-    some?: UserRoleWhereInput
-    none?: UserRoleWhereInput
+  export type ApiKeyListRelationFilter = {
+    every?: ApiKeyWhereInput
+    some?: ApiKeyWhereInput
+    none?: ApiKeyWhereInput
   }
 
-  export type UserSessionListRelationFilter = {
-    every?: UserSessionWhereInput
-    some?: UserSessionWhereInput
-    none?: UserSessionWhereInput
+  export type AuditLogListRelationFilter = {
+    every?: AuditLogWhereInput
+    some?: AuditLogWhereInput
+    none?: AuditLogWhereInput
   }
 
   export type LoginHistoryListRelationFilter = {
@@ -33038,10 +33038,10 @@ export namespace Prisma {
     none?: UserInvitationWhereInput
   }
 
-  export type AuditLogListRelationFilter = {
-    every?: AuditLogWhereInput
-    some?: AuditLogWhereInput
-    none?: AuditLogWhereInput
+  export type UserNotificationListRelationFilter = {
+    every?: UserNotificationWhereInput
+    some?: UserNotificationWhereInput
+    none?: UserNotificationWhereInput
   }
 
   export type UserPreferenceListRelationFilter = {
@@ -33050,23 +33050,23 @@ export namespace Prisma {
     none?: UserPreferenceWhereInput
   }
 
-  export type UserNotificationListRelationFilter = {
-    every?: UserNotificationWhereInput
-    some?: UserNotificationWhereInput
-    none?: UserNotificationWhereInput
+  export type UserRoleListRelationFilter = {
+    every?: UserRoleWhereInput
+    some?: UserRoleWhereInput
+    none?: UserRoleWhereInput
   }
 
-  export type ApiKeyListRelationFilter = {
-    every?: ApiKeyWhereInput
-    some?: ApiKeyWhereInput
-    none?: ApiKeyWhereInput
+  export type UserSessionListRelationFilter = {
+    every?: UserSessionWhereInput
+    some?: UserSessionWhereInput
+    none?: UserSessionWhereInput
   }
 
-  export type UserRoleOrderByRelationAggregateInput = {
+  export type ApiKeyOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type UserSessionOrderByRelationAggregateInput = {
+  export type AuditLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -33082,7 +33082,7 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type AuditLogOrderByRelationAggregateInput = {
+  export type UserNotificationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -33090,11 +33090,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type UserNotificationOrderByRelationAggregateInput = {
+  export type UserRoleOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type ApiKeyOrderByRelationAggregateInput = {
+  export type UserSessionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -33791,6 +33791,34 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type BillingHistoryCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<BillingHistoryCreateWithoutCompanyInput, BillingHistoryUncheckedCreateWithoutCompanyInput> | BillingHistoryCreateWithoutCompanyInput[] | BillingHistoryUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: BillingHistoryCreateOrConnectWithoutCompanyInput | BillingHistoryCreateOrConnectWithoutCompanyInput[]
+    createMany?: BillingHistoryCreateManyCompanyInputEnvelope
+    connect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
+  }
+
+  export type CompanyAuditLogCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<CompanyAuditLogCreateWithoutCompanyInput, CompanyAuditLogUncheckedCreateWithoutCompanyInput> | CompanyAuditLogCreateWithoutCompanyInput[] | CompanyAuditLogUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyAuditLogCreateOrConnectWithoutCompanyInput | CompanyAuditLogCreateOrConnectWithoutCompanyInput[]
+    createMany?: CompanyAuditLogCreateManyCompanyInputEnvelope
+    connect?: CompanyAuditLogWhereUniqueInput | CompanyAuditLogWhereUniqueInput[]
+  }
+
+  export type CompanyIntegrationCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<CompanyIntegrationCreateWithoutCompanyInput, CompanyIntegrationUncheckedCreateWithoutCompanyInput> | CompanyIntegrationCreateWithoutCompanyInput[] | CompanyIntegrationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyIntegrationCreateOrConnectWithoutCompanyInput | CompanyIntegrationCreateOrConnectWithoutCompanyInput[]
+    createMany?: CompanyIntegrationCreateManyCompanyInputEnvelope
+    connect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
+  }
+
+  export type CompanyLocationCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput> | CompanyLocationCreateWithoutCompanyInput[] | CompanyLocationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyLocationCreateOrConnectWithoutCompanyInput | CompanyLocationCreateOrConnectWithoutCompanyInput[]
+    createMany?: CompanyLocationCreateManyCompanyInputEnvelope
+    connect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
+  }
+
   export type CompanyUserCreateNestedManyWithoutCompanyInput = {
     create?: XOR<CompanyUserCreateWithoutCompanyInput, CompanyUserUncheckedCreateWithoutCompanyInput> | CompanyUserCreateWithoutCompanyInput[] | CompanyUserUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: CompanyUserCreateOrConnectWithoutCompanyInput | CompanyUserCreateOrConnectWithoutCompanyInput[]
@@ -33805,32 +33833,32 @@ export namespace Prisma {
     connect?: DepartmentWhereUniqueInput | DepartmentWhereUniqueInput[]
   }
 
-  export type CompanyLocationCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput> | CompanyLocationCreateWithoutCompanyInput[] | CompanyLocationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: CompanyLocationCreateOrConnectWithoutCompanyInput | CompanyLocationCreateOrConnectWithoutCompanyInput[]
-    createMany?: CompanyLocationCreateManyCompanyInputEnvelope
-    connect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
+  export type BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<BillingHistoryCreateWithoutCompanyInput, BillingHistoryUncheckedCreateWithoutCompanyInput> | BillingHistoryCreateWithoutCompanyInput[] | BillingHistoryUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: BillingHistoryCreateOrConnectWithoutCompanyInput | BillingHistoryCreateOrConnectWithoutCompanyInput[]
+    createMany?: BillingHistoryCreateManyCompanyInputEnvelope
+    connect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
   }
 
-  export type CompanyIntegrationCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<CompanyIntegrationCreateWithoutCompanyInput, CompanyIntegrationUncheckedCreateWithoutCompanyInput> | CompanyIntegrationCreateWithoutCompanyInput[] | CompanyIntegrationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: CompanyIntegrationCreateOrConnectWithoutCompanyInput | CompanyIntegrationCreateOrConnectWithoutCompanyInput[]
-    createMany?: CompanyIntegrationCreateManyCompanyInputEnvelope
-    connect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
-  }
-
-  export type CompanyAuditLogCreateNestedManyWithoutCompanyInput = {
+  export type CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput = {
     create?: XOR<CompanyAuditLogCreateWithoutCompanyInput, CompanyAuditLogUncheckedCreateWithoutCompanyInput> | CompanyAuditLogCreateWithoutCompanyInput[] | CompanyAuditLogUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: CompanyAuditLogCreateOrConnectWithoutCompanyInput | CompanyAuditLogCreateOrConnectWithoutCompanyInput[]
     createMany?: CompanyAuditLogCreateManyCompanyInputEnvelope
     connect?: CompanyAuditLogWhereUniqueInput | CompanyAuditLogWhereUniqueInput[]
   }
 
-  export type BillingHistoryCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<BillingHistoryCreateWithoutCompanyInput, BillingHistoryUncheckedCreateWithoutCompanyInput> | BillingHistoryCreateWithoutCompanyInput[] | BillingHistoryUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: BillingHistoryCreateOrConnectWithoutCompanyInput | BillingHistoryCreateOrConnectWithoutCompanyInput[]
-    createMany?: BillingHistoryCreateManyCompanyInputEnvelope
-    connect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
+  export type CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<CompanyIntegrationCreateWithoutCompanyInput, CompanyIntegrationUncheckedCreateWithoutCompanyInput> | CompanyIntegrationCreateWithoutCompanyInput[] | CompanyIntegrationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyIntegrationCreateOrConnectWithoutCompanyInput | CompanyIntegrationCreateOrConnectWithoutCompanyInput[]
+    createMany?: CompanyIntegrationCreateManyCompanyInputEnvelope
+    connect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
+  }
+
+  export type CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput = {
+    create?: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput> | CompanyLocationCreateWithoutCompanyInput[] | CompanyLocationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyLocationCreateOrConnectWithoutCompanyInput | CompanyLocationCreateOrConnectWithoutCompanyInput[]
+    createMany?: CompanyLocationCreateManyCompanyInputEnvelope
+    connect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
   }
 
   export type CompanyUserUncheckedCreateNestedManyWithoutCompanyInput = {
@@ -33845,34 +33873,6 @@ export namespace Prisma {
     connectOrCreate?: DepartmentCreateOrConnectWithoutCompanyInput | DepartmentCreateOrConnectWithoutCompanyInput[]
     createMany?: DepartmentCreateManyCompanyInputEnvelope
     connect?: DepartmentWhereUniqueInput | DepartmentWhereUniqueInput[]
-  }
-
-  export type CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput> | CompanyLocationCreateWithoutCompanyInput[] | CompanyLocationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: CompanyLocationCreateOrConnectWithoutCompanyInput | CompanyLocationCreateOrConnectWithoutCompanyInput[]
-    createMany?: CompanyLocationCreateManyCompanyInputEnvelope
-    connect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
-  }
-
-  export type CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<CompanyIntegrationCreateWithoutCompanyInput, CompanyIntegrationUncheckedCreateWithoutCompanyInput> | CompanyIntegrationCreateWithoutCompanyInput[] | CompanyIntegrationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: CompanyIntegrationCreateOrConnectWithoutCompanyInput | CompanyIntegrationCreateOrConnectWithoutCompanyInput[]
-    createMany?: CompanyIntegrationCreateManyCompanyInputEnvelope
-    connect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
-  }
-
-  export type CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<CompanyAuditLogCreateWithoutCompanyInput, CompanyAuditLogUncheckedCreateWithoutCompanyInput> | CompanyAuditLogCreateWithoutCompanyInput[] | CompanyAuditLogUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: CompanyAuditLogCreateOrConnectWithoutCompanyInput | CompanyAuditLogCreateOrConnectWithoutCompanyInput[]
-    createMany?: CompanyAuditLogCreateManyCompanyInputEnvelope
-    connect?: CompanyAuditLogWhereUniqueInput | CompanyAuditLogWhereUniqueInput[]
-  }
-
-  export type BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput = {
-    create?: XOR<BillingHistoryCreateWithoutCompanyInput, BillingHistoryUncheckedCreateWithoutCompanyInput> | BillingHistoryCreateWithoutCompanyInput[] | BillingHistoryUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: BillingHistoryCreateOrConnectWithoutCompanyInput | BillingHistoryCreateOrConnectWithoutCompanyInput[]
-    createMany?: BillingHistoryCreateManyCompanyInputEnvelope
-    connect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -33919,6 +33919,62 @@ export namespace Prisma {
     set?: Date | string
   }
 
+  export type BillingHistoryUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<BillingHistoryCreateWithoutCompanyInput, BillingHistoryUncheckedCreateWithoutCompanyInput> | BillingHistoryCreateWithoutCompanyInput[] | BillingHistoryUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: BillingHistoryCreateOrConnectWithoutCompanyInput | BillingHistoryCreateOrConnectWithoutCompanyInput[]
+    upsert?: BillingHistoryUpsertWithWhereUniqueWithoutCompanyInput | BillingHistoryUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: BillingHistoryCreateManyCompanyInputEnvelope
+    set?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
+    disconnect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
+    delete?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
+    connect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
+    update?: BillingHistoryUpdateWithWhereUniqueWithoutCompanyInput | BillingHistoryUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: BillingHistoryUpdateManyWithWhereWithoutCompanyInput | BillingHistoryUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: BillingHistoryScalarWhereInput | BillingHistoryScalarWhereInput[]
+  }
+
+  export type CompanyAuditLogUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<CompanyAuditLogCreateWithoutCompanyInput, CompanyAuditLogUncheckedCreateWithoutCompanyInput> | CompanyAuditLogCreateWithoutCompanyInput[] | CompanyAuditLogUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyAuditLogCreateOrConnectWithoutCompanyInput | CompanyAuditLogCreateOrConnectWithoutCompanyInput[]
+    upsert?: CompanyAuditLogUpsertWithWhereUniqueWithoutCompanyInput | CompanyAuditLogUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: CompanyAuditLogCreateManyCompanyInputEnvelope
+    set?: CompanyAuditLogWhereUniqueInput | CompanyAuditLogWhereUniqueInput[]
+    disconnect?: CompanyAuditLogWhereUniqueInput | CompanyAuditLogWhereUniqueInput[]
+    delete?: CompanyAuditLogWhereUniqueInput | CompanyAuditLogWhereUniqueInput[]
+    connect?: CompanyAuditLogWhereUniqueInput | CompanyAuditLogWhereUniqueInput[]
+    update?: CompanyAuditLogUpdateWithWhereUniqueWithoutCompanyInput | CompanyAuditLogUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: CompanyAuditLogUpdateManyWithWhereWithoutCompanyInput | CompanyAuditLogUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: CompanyAuditLogScalarWhereInput | CompanyAuditLogScalarWhereInput[]
+  }
+
+  export type CompanyIntegrationUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<CompanyIntegrationCreateWithoutCompanyInput, CompanyIntegrationUncheckedCreateWithoutCompanyInput> | CompanyIntegrationCreateWithoutCompanyInput[] | CompanyIntegrationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyIntegrationCreateOrConnectWithoutCompanyInput | CompanyIntegrationCreateOrConnectWithoutCompanyInput[]
+    upsert?: CompanyIntegrationUpsertWithWhereUniqueWithoutCompanyInput | CompanyIntegrationUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: CompanyIntegrationCreateManyCompanyInputEnvelope
+    set?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
+    disconnect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
+    delete?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
+    connect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
+    update?: CompanyIntegrationUpdateWithWhereUniqueWithoutCompanyInput | CompanyIntegrationUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: CompanyIntegrationUpdateManyWithWhereWithoutCompanyInput | CompanyIntegrationUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: CompanyIntegrationScalarWhereInput | CompanyIntegrationScalarWhereInput[]
+  }
+
+  export type CompanyLocationUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput> | CompanyLocationCreateWithoutCompanyInput[] | CompanyLocationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyLocationCreateOrConnectWithoutCompanyInput | CompanyLocationCreateOrConnectWithoutCompanyInput[]
+    upsert?: CompanyLocationUpsertWithWhereUniqueWithoutCompanyInput | CompanyLocationUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: CompanyLocationCreateManyCompanyInputEnvelope
+    set?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
+    disconnect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
+    delete?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
+    connect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
+    update?: CompanyLocationUpdateWithWhereUniqueWithoutCompanyInput | CompanyLocationUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: CompanyLocationUpdateManyWithWhereWithoutCompanyInput | CompanyLocationUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: CompanyLocationScalarWhereInput | CompanyLocationScalarWhereInput[]
+  }
+
   export type CompanyUserUpdateManyWithoutCompanyNestedInput = {
     create?: XOR<CompanyUserCreateWithoutCompanyInput, CompanyUserUncheckedCreateWithoutCompanyInput> | CompanyUserCreateWithoutCompanyInput[] | CompanyUserUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: CompanyUserCreateOrConnectWithoutCompanyInput | CompanyUserCreateOrConnectWithoutCompanyInput[]
@@ -33947,35 +34003,21 @@ export namespace Prisma {
     deleteMany?: DepartmentScalarWhereInput | DepartmentScalarWhereInput[]
   }
 
-  export type CompanyLocationUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput> | CompanyLocationCreateWithoutCompanyInput[] | CompanyLocationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: CompanyLocationCreateOrConnectWithoutCompanyInput | CompanyLocationCreateOrConnectWithoutCompanyInput[]
-    upsert?: CompanyLocationUpsertWithWhereUniqueWithoutCompanyInput | CompanyLocationUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: CompanyLocationCreateManyCompanyInputEnvelope
-    set?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
-    disconnect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
-    delete?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
-    connect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
-    update?: CompanyLocationUpdateWithWhereUniqueWithoutCompanyInput | CompanyLocationUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: CompanyLocationUpdateManyWithWhereWithoutCompanyInput | CompanyLocationUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: CompanyLocationScalarWhereInput | CompanyLocationScalarWhereInput[]
+  export type BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<BillingHistoryCreateWithoutCompanyInput, BillingHistoryUncheckedCreateWithoutCompanyInput> | BillingHistoryCreateWithoutCompanyInput[] | BillingHistoryUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: BillingHistoryCreateOrConnectWithoutCompanyInput | BillingHistoryCreateOrConnectWithoutCompanyInput[]
+    upsert?: BillingHistoryUpsertWithWhereUniqueWithoutCompanyInput | BillingHistoryUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: BillingHistoryCreateManyCompanyInputEnvelope
+    set?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
+    disconnect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
+    delete?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
+    connect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
+    update?: BillingHistoryUpdateWithWhereUniqueWithoutCompanyInput | BillingHistoryUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: BillingHistoryUpdateManyWithWhereWithoutCompanyInput | BillingHistoryUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: BillingHistoryScalarWhereInput | BillingHistoryScalarWhereInput[]
   }
 
-  export type CompanyIntegrationUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<CompanyIntegrationCreateWithoutCompanyInput, CompanyIntegrationUncheckedCreateWithoutCompanyInput> | CompanyIntegrationCreateWithoutCompanyInput[] | CompanyIntegrationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: CompanyIntegrationCreateOrConnectWithoutCompanyInput | CompanyIntegrationCreateOrConnectWithoutCompanyInput[]
-    upsert?: CompanyIntegrationUpsertWithWhereUniqueWithoutCompanyInput | CompanyIntegrationUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: CompanyIntegrationCreateManyCompanyInputEnvelope
-    set?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
-    disconnect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
-    delete?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
-    connect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
-    update?: CompanyIntegrationUpdateWithWhereUniqueWithoutCompanyInput | CompanyIntegrationUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: CompanyIntegrationUpdateManyWithWhereWithoutCompanyInput | CompanyIntegrationUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: CompanyIntegrationScalarWhereInput | CompanyIntegrationScalarWhereInput[]
-  }
-
-  export type CompanyAuditLogUpdateManyWithoutCompanyNestedInput = {
+  export type CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput = {
     create?: XOR<CompanyAuditLogCreateWithoutCompanyInput, CompanyAuditLogUncheckedCreateWithoutCompanyInput> | CompanyAuditLogCreateWithoutCompanyInput[] | CompanyAuditLogUncheckedCreateWithoutCompanyInput[]
     connectOrCreate?: CompanyAuditLogCreateOrConnectWithoutCompanyInput | CompanyAuditLogCreateOrConnectWithoutCompanyInput[]
     upsert?: CompanyAuditLogUpsertWithWhereUniqueWithoutCompanyInput | CompanyAuditLogUpsertWithWhereUniqueWithoutCompanyInput[]
@@ -33989,18 +34031,32 @@ export namespace Prisma {
     deleteMany?: CompanyAuditLogScalarWhereInput | CompanyAuditLogScalarWhereInput[]
   }
 
-  export type BillingHistoryUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<BillingHistoryCreateWithoutCompanyInput, BillingHistoryUncheckedCreateWithoutCompanyInput> | BillingHistoryCreateWithoutCompanyInput[] | BillingHistoryUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: BillingHistoryCreateOrConnectWithoutCompanyInput | BillingHistoryCreateOrConnectWithoutCompanyInput[]
-    upsert?: BillingHistoryUpsertWithWhereUniqueWithoutCompanyInput | BillingHistoryUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: BillingHistoryCreateManyCompanyInputEnvelope
-    set?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
-    disconnect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
-    delete?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
-    connect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
-    update?: BillingHistoryUpdateWithWhereUniqueWithoutCompanyInput | BillingHistoryUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: BillingHistoryUpdateManyWithWhereWithoutCompanyInput | BillingHistoryUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: BillingHistoryScalarWhereInput | BillingHistoryScalarWhereInput[]
+  export type CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<CompanyIntegrationCreateWithoutCompanyInput, CompanyIntegrationUncheckedCreateWithoutCompanyInput> | CompanyIntegrationCreateWithoutCompanyInput[] | CompanyIntegrationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyIntegrationCreateOrConnectWithoutCompanyInput | CompanyIntegrationCreateOrConnectWithoutCompanyInput[]
+    upsert?: CompanyIntegrationUpsertWithWhereUniqueWithoutCompanyInput | CompanyIntegrationUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: CompanyIntegrationCreateManyCompanyInputEnvelope
+    set?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
+    disconnect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
+    delete?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
+    connect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
+    update?: CompanyIntegrationUpdateWithWhereUniqueWithoutCompanyInput | CompanyIntegrationUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: CompanyIntegrationUpdateManyWithWhereWithoutCompanyInput | CompanyIntegrationUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: CompanyIntegrationScalarWhereInput | CompanyIntegrationScalarWhereInput[]
+  }
+
+  export type CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput = {
+    create?: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput> | CompanyLocationCreateWithoutCompanyInput[] | CompanyLocationUncheckedCreateWithoutCompanyInput[]
+    connectOrCreate?: CompanyLocationCreateOrConnectWithoutCompanyInput | CompanyLocationCreateOrConnectWithoutCompanyInput[]
+    upsert?: CompanyLocationUpsertWithWhereUniqueWithoutCompanyInput | CompanyLocationUpsertWithWhereUniqueWithoutCompanyInput[]
+    createMany?: CompanyLocationCreateManyCompanyInputEnvelope
+    set?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
+    disconnect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
+    delete?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
+    connect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
+    update?: CompanyLocationUpdateWithWhereUniqueWithoutCompanyInput | CompanyLocationUpdateWithWhereUniqueWithoutCompanyInput[]
+    updateMany?: CompanyLocationUpdateManyWithWhereWithoutCompanyInput | CompanyLocationUpdateManyWithWhereWithoutCompanyInput[]
+    deleteMany?: CompanyLocationScalarWhereInput | CompanyLocationScalarWhereInput[]
   }
 
   export type CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput = {
@@ -34031,72 +34087,10 @@ export namespace Prisma {
     deleteMany?: DepartmentScalarWhereInput | DepartmentScalarWhereInput[]
   }
 
-  export type CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput> | CompanyLocationCreateWithoutCompanyInput[] | CompanyLocationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: CompanyLocationCreateOrConnectWithoutCompanyInput | CompanyLocationCreateOrConnectWithoutCompanyInput[]
-    upsert?: CompanyLocationUpsertWithWhereUniqueWithoutCompanyInput | CompanyLocationUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: CompanyLocationCreateManyCompanyInputEnvelope
-    set?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
-    disconnect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
-    delete?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
-    connect?: CompanyLocationWhereUniqueInput | CompanyLocationWhereUniqueInput[]
-    update?: CompanyLocationUpdateWithWhereUniqueWithoutCompanyInput | CompanyLocationUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: CompanyLocationUpdateManyWithWhereWithoutCompanyInput | CompanyLocationUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: CompanyLocationScalarWhereInput | CompanyLocationScalarWhereInput[]
-  }
-
-  export type CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<CompanyIntegrationCreateWithoutCompanyInput, CompanyIntegrationUncheckedCreateWithoutCompanyInput> | CompanyIntegrationCreateWithoutCompanyInput[] | CompanyIntegrationUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: CompanyIntegrationCreateOrConnectWithoutCompanyInput | CompanyIntegrationCreateOrConnectWithoutCompanyInput[]
-    upsert?: CompanyIntegrationUpsertWithWhereUniqueWithoutCompanyInput | CompanyIntegrationUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: CompanyIntegrationCreateManyCompanyInputEnvelope
-    set?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
-    disconnect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
-    delete?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
-    connect?: CompanyIntegrationWhereUniqueInput | CompanyIntegrationWhereUniqueInput[]
-    update?: CompanyIntegrationUpdateWithWhereUniqueWithoutCompanyInput | CompanyIntegrationUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: CompanyIntegrationUpdateManyWithWhereWithoutCompanyInput | CompanyIntegrationUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: CompanyIntegrationScalarWhereInput | CompanyIntegrationScalarWhereInput[]
-  }
-
-  export type CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<CompanyAuditLogCreateWithoutCompanyInput, CompanyAuditLogUncheckedCreateWithoutCompanyInput> | CompanyAuditLogCreateWithoutCompanyInput[] | CompanyAuditLogUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: CompanyAuditLogCreateOrConnectWithoutCompanyInput | CompanyAuditLogCreateOrConnectWithoutCompanyInput[]
-    upsert?: CompanyAuditLogUpsertWithWhereUniqueWithoutCompanyInput | CompanyAuditLogUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: CompanyAuditLogCreateManyCompanyInputEnvelope
-    set?: CompanyAuditLogWhereUniqueInput | CompanyAuditLogWhereUniqueInput[]
-    disconnect?: CompanyAuditLogWhereUniqueInput | CompanyAuditLogWhereUniqueInput[]
-    delete?: CompanyAuditLogWhereUniqueInput | CompanyAuditLogWhereUniqueInput[]
-    connect?: CompanyAuditLogWhereUniqueInput | CompanyAuditLogWhereUniqueInput[]
-    update?: CompanyAuditLogUpdateWithWhereUniqueWithoutCompanyInput | CompanyAuditLogUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: CompanyAuditLogUpdateManyWithWhereWithoutCompanyInput | CompanyAuditLogUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: CompanyAuditLogScalarWhereInput | CompanyAuditLogScalarWhereInput[]
-  }
-
-  export type BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput = {
-    create?: XOR<BillingHistoryCreateWithoutCompanyInput, BillingHistoryUncheckedCreateWithoutCompanyInput> | BillingHistoryCreateWithoutCompanyInput[] | BillingHistoryUncheckedCreateWithoutCompanyInput[]
-    connectOrCreate?: BillingHistoryCreateOrConnectWithoutCompanyInput | BillingHistoryCreateOrConnectWithoutCompanyInput[]
-    upsert?: BillingHistoryUpsertWithWhereUniqueWithoutCompanyInput | BillingHistoryUpsertWithWhereUniqueWithoutCompanyInput[]
-    createMany?: BillingHistoryCreateManyCompanyInputEnvelope
-    set?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
-    disconnect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
-    delete?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
-    connect?: BillingHistoryWhereUniqueInput | BillingHistoryWhereUniqueInput[]
-    update?: BillingHistoryUpdateWithWhereUniqueWithoutCompanyInput | BillingHistoryUpdateWithWhereUniqueWithoutCompanyInput[]
-    updateMany?: BillingHistoryUpdateManyWithWhereWithoutCompanyInput | BillingHistoryUpdateManyWithWhereWithoutCompanyInput[]
-    deleteMany?: BillingHistoryScalarWhereInput | BillingHistoryScalarWhereInput[]
-  }
-
   export type CompanyCreateNestedOneWithoutCompanyUsersInput = {
     create?: XOR<CompanyCreateWithoutCompanyUsersInput, CompanyUncheckedCreateWithoutCompanyUsersInput>
     connectOrCreate?: CompanyCreateOrConnectWithoutCompanyUsersInput
     connect?: CompanyWhereUniqueInput
-  }
-
-  export type UserCreateNestedOneWithoutCompanyUsersInput = {
-    create?: XOR<UserCreateWithoutCompanyUsersInput, UserUncheckedCreateWithoutCompanyUsersInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCompanyUsersInput
-    connect?: UserWhereUniqueInput
   }
 
   export type DepartmentCreateNestedOneWithoutEmployeesInput = {
@@ -34116,6 +34110,12 @@ export namespace Prisma {
     connectOrCreate?: CompanyUserCreateOrConnectWithoutManagerInput | CompanyUserCreateOrConnectWithoutManagerInput[]
     createMany?: CompanyUserCreateManyManagerInputEnvelope
     connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+  }
+
+  export type UserCreateNestedOneWithoutCompanyUsersInput = {
+    create?: XOR<UserCreateWithoutCompanyUsersInput, UserUncheckedCreateWithoutCompanyUsersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCompanyUsersInput
+    connect?: UserWhereUniqueInput
   }
 
   export type CompanyUserUncheckedCreateNestedManyWithoutManagerInput = {
@@ -34139,14 +34139,6 @@ export namespace Prisma {
     upsert?: CompanyUpsertWithoutCompanyUsersInput
     connect?: CompanyWhereUniqueInput
     update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutCompanyUsersInput, CompanyUpdateWithoutCompanyUsersInput>, CompanyUncheckedUpdateWithoutCompanyUsersInput>
-  }
-
-  export type UserUpdateOneRequiredWithoutCompanyUsersNestedInput = {
-    create?: XOR<UserCreateWithoutCompanyUsersInput, UserUncheckedCreateWithoutCompanyUsersInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCompanyUsersInput
-    upsert?: UserUpsertWithoutCompanyUsersInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCompanyUsersInput, UserUpdateWithoutCompanyUsersInput>, UserUncheckedUpdateWithoutCompanyUsersInput>
   }
 
   export type DepartmentUpdateOneWithoutEmployeesNestedInput = {
@@ -34183,6 +34175,14 @@ export namespace Prisma {
     deleteMany?: CompanyUserScalarWhereInput | CompanyUserScalarWhereInput[]
   }
 
+  export type UserUpdateOneRequiredWithoutCompanyUsersNestedInput = {
+    create?: XOR<UserCreateWithoutCompanyUsersInput, UserUncheckedCreateWithoutCompanyUsersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCompanyUsersInput
+    upsert?: UserUpsertWithoutCompanyUsersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCompanyUsersInput, UserUpdateWithoutCompanyUsersInput>, UserUncheckedUpdateWithoutCompanyUsersInput>
+  }
+
   export type CompanyUserUncheckedUpdateManyWithoutManagerNestedInput = {
     create?: XOR<CompanyUserCreateWithoutManagerInput, CompanyUserUncheckedCreateWithoutManagerInput> | CompanyUserCreateWithoutManagerInput[] | CompanyUserUncheckedCreateWithoutManagerInput[]
     connectOrCreate?: CompanyUserCreateOrConnectWithoutManagerInput | CompanyUserCreateOrConnectWithoutManagerInput[]
@@ -34195,6 +34195,13 @@ export namespace Prisma {
     update?: CompanyUserUpdateWithWhereUniqueWithoutManagerInput | CompanyUserUpdateWithWhereUniqueWithoutManagerInput[]
     updateMany?: CompanyUserUpdateManyWithWhereWithoutManagerInput | CompanyUserUpdateManyWithWhereWithoutManagerInput[]
     deleteMany?: CompanyUserScalarWhereInput | CompanyUserScalarWhereInput[]
+  }
+
+  export type CompanyUserCreateNestedManyWithoutDepartmentInput = {
+    create?: XOR<CompanyUserCreateWithoutDepartmentInput, CompanyUserUncheckedCreateWithoutDepartmentInput> | CompanyUserCreateWithoutDepartmentInput[] | CompanyUserUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CompanyUserCreateOrConnectWithoutDepartmentInput | CompanyUserCreateOrConnectWithoutDepartmentInput[]
+    createMany?: CompanyUserCreateManyDepartmentInputEnvelope
+    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
   }
 
   export type CompanyCreateNestedOneWithoutDepartmentsInput = {
@@ -34216,7 +34223,7 @@ export namespace Prisma {
     connect?: DepartmentWhereUniqueInput | DepartmentWhereUniqueInput[]
   }
 
-  export type CompanyUserCreateNestedManyWithoutDepartmentInput = {
+  export type CompanyUserUncheckedCreateNestedManyWithoutDepartmentInput = {
     create?: XOR<CompanyUserCreateWithoutDepartmentInput, CompanyUserUncheckedCreateWithoutDepartmentInput> | CompanyUserCreateWithoutDepartmentInput[] | CompanyUserUncheckedCreateWithoutDepartmentInput[]
     connectOrCreate?: CompanyUserCreateOrConnectWithoutDepartmentInput | CompanyUserCreateOrConnectWithoutDepartmentInput[]
     createMany?: CompanyUserCreateManyDepartmentInputEnvelope
@@ -34230,19 +34237,26 @@ export namespace Prisma {
     connect?: DepartmentWhereUniqueInput | DepartmentWhereUniqueInput[]
   }
 
-  export type CompanyUserUncheckedCreateNestedManyWithoutDepartmentInput = {
-    create?: XOR<CompanyUserCreateWithoutDepartmentInput, CompanyUserUncheckedCreateWithoutDepartmentInput> | CompanyUserCreateWithoutDepartmentInput[] | CompanyUserUncheckedCreateWithoutDepartmentInput[]
-    connectOrCreate?: CompanyUserCreateOrConnectWithoutDepartmentInput | CompanyUserCreateOrConnectWithoutDepartmentInput[]
-    createMany?: CompanyUserCreateManyDepartmentInputEnvelope
-    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-  }
-
   export type NullableDecimalFieldUpdateOperationsInput = {
     set?: Decimal | DecimalJsLike | number | string | null
     increment?: Decimal | DecimalJsLike | number | string
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type CompanyUserUpdateManyWithoutDepartmentNestedInput = {
+    create?: XOR<CompanyUserCreateWithoutDepartmentInput, CompanyUserUncheckedCreateWithoutDepartmentInput> | CompanyUserCreateWithoutDepartmentInput[] | CompanyUserUncheckedCreateWithoutDepartmentInput[]
+    connectOrCreate?: CompanyUserCreateOrConnectWithoutDepartmentInput | CompanyUserCreateOrConnectWithoutDepartmentInput[]
+    upsert?: CompanyUserUpsertWithWhereUniqueWithoutDepartmentInput | CompanyUserUpsertWithWhereUniqueWithoutDepartmentInput[]
+    createMany?: CompanyUserCreateManyDepartmentInputEnvelope
+    set?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    disconnect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    delete?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    update?: CompanyUserUpdateWithWhereUniqueWithoutDepartmentInput | CompanyUserUpdateWithWhereUniqueWithoutDepartmentInput[]
+    updateMany?: CompanyUserUpdateManyWithWhereWithoutDepartmentInput | CompanyUserUpdateManyWithWhereWithoutDepartmentInput[]
+    deleteMany?: CompanyUserScalarWhereInput | CompanyUserScalarWhereInput[]
   }
 
   export type CompanyUpdateOneRequiredWithoutDepartmentsNestedInput = {
@@ -34277,7 +34291,7 @@ export namespace Prisma {
     deleteMany?: DepartmentScalarWhereInput | DepartmentScalarWhereInput[]
   }
 
-  export type CompanyUserUpdateManyWithoutDepartmentNestedInput = {
+  export type CompanyUserUncheckedUpdateManyWithoutDepartmentNestedInput = {
     create?: XOR<CompanyUserCreateWithoutDepartmentInput, CompanyUserUncheckedCreateWithoutDepartmentInput> | CompanyUserCreateWithoutDepartmentInput[] | CompanyUserUncheckedCreateWithoutDepartmentInput[]
     connectOrCreate?: CompanyUserCreateOrConnectWithoutDepartmentInput | CompanyUserCreateOrConnectWithoutDepartmentInput[]
     upsert?: CompanyUserUpsertWithWhereUniqueWithoutDepartmentInput | CompanyUserUpsertWithWhereUniqueWithoutDepartmentInput[]
@@ -34303,20 +34317,6 @@ export namespace Prisma {
     update?: DepartmentUpdateWithWhereUniqueWithoutParentInput | DepartmentUpdateWithWhereUniqueWithoutParentInput[]
     updateMany?: DepartmentUpdateManyWithWhereWithoutParentInput | DepartmentUpdateManyWithWhereWithoutParentInput[]
     deleteMany?: DepartmentScalarWhereInput | DepartmentScalarWhereInput[]
-  }
-
-  export type CompanyUserUncheckedUpdateManyWithoutDepartmentNestedInput = {
-    create?: XOR<CompanyUserCreateWithoutDepartmentInput, CompanyUserUncheckedCreateWithoutDepartmentInput> | CompanyUserCreateWithoutDepartmentInput[] | CompanyUserUncheckedCreateWithoutDepartmentInput[]
-    connectOrCreate?: CompanyUserCreateOrConnectWithoutDepartmentInput | CompanyUserCreateOrConnectWithoutDepartmentInput[]
-    upsert?: CompanyUserUpsertWithWhereUniqueWithoutDepartmentInput | CompanyUserUpsertWithWhereUniqueWithoutDepartmentInput[]
-    createMany?: CompanyUserCreateManyDepartmentInputEnvelope
-    set?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    disconnect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    delete?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    update?: CompanyUserUpdateWithWhereUniqueWithoutDepartmentInput | CompanyUserUpdateWithWhereUniqueWithoutDepartmentInput[]
-    updateMany?: CompanyUserUpdateManyWithWhereWithoutDepartmentInput | CompanyUserUpdateManyWithWhereWithoutDepartmentInput[]
-    deleteMany?: CompanyUserScalarWhereInput | CompanyUserScalarWhereInput[]
   }
 
   export type CompanyCreateNestedOneWithoutLocationsInput = {
@@ -34403,18 +34403,25 @@ export namespace Prisma {
     update?: XOR<XOR<CompanyUpdateToOneWithWhereWithoutBillingHistoryInput, CompanyUpdateWithoutBillingHistoryInput>, CompanyUncheckedUpdateWithoutBillingHistoryInput>
   }
 
-  export type UserRoleCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
-    createMany?: UserRoleCreateManyUserInputEnvelope
-    connect?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
+  export type ApiKeyCreateNestedManyWithoutUserInput = {
+    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
+    createMany?: ApiKeyCreateManyUserInputEnvelope
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
   }
 
-  export type UserSessionCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserSessionCreateWithoutUserInput, UserSessionUncheckedCreateWithoutUserInput> | UserSessionCreateWithoutUserInput[] | UserSessionUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserSessionCreateOrConnectWithoutUserInput | UserSessionCreateOrConnectWithoutUserInput[]
-    createMany?: UserSessionCreateManyUserInputEnvelope
-    connect?: UserSessionWhereUniqueInput | UserSessionWhereUniqueInput[]
+  export type AuditLogCreateNestedManyWithoutUserInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
+  export type CompanyUserCreateNestedManyWithoutUserInput = {
+    create?: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput> | CompanyUserCreateWithoutUserInput[] | CompanyUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CompanyUserCreateOrConnectWithoutUserInput | CompanyUserCreateOrConnectWithoutUserInput[]
+    createMany?: CompanyUserCreateManyUserInputEnvelope
+    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
   }
 
   export type LoginHistoryCreateNestedManyWithoutUserInput = {
@@ -34445,11 +34452,11 @@ export namespace Prisma {
     connect?: UserInvitationWhereUniqueInput | UserInvitationWhereUniqueInput[]
   }
 
-  export type AuditLogCreateNestedManyWithoutUserInput = {
-    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
-    createMany?: AuditLogCreateManyUserInputEnvelope
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  export type UserNotificationCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserNotificationCreateWithoutUserInput, UserNotificationUncheckedCreateWithoutUserInput> | UserNotificationCreateWithoutUserInput[] | UserNotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserNotificationCreateOrConnectWithoutUserInput | UserNotificationCreateOrConnectWithoutUserInput[]
+    createMany?: UserNotificationCreateManyUserInputEnvelope
+    connect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
   }
 
   export type UserPreferenceCreateNestedManyWithoutUserInput = {
@@ -34459,39 +34466,39 @@ export namespace Prisma {
     connect?: UserPreferenceWhereUniqueInput | UserPreferenceWhereUniqueInput[]
   }
 
-  export type UserNotificationCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserNotificationCreateWithoutUserInput, UserNotificationUncheckedCreateWithoutUserInput> | UserNotificationCreateWithoutUserInput[] | UserNotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserNotificationCreateOrConnectWithoutUserInput | UserNotificationCreateOrConnectWithoutUserInput[]
-    createMany?: UserNotificationCreateManyUserInputEnvelope
-    connect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
-  }
-
-  export type ApiKeyCreateNestedManyWithoutUserInput = {
-    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
-    createMany?: ApiKeyCreateManyUserInputEnvelope
-    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-  }
-
-  export type CompanyUserCreateNestedManyWithoutUserInput = {
-    create?: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput> | CompanyUserCreateWithoutUserInput[] | CompanyUserUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CompanyUserCreateOrConnectWithoutUserInput | CompanyUserCreateOrConnectWithoutUserInput[]
-    createMany?: CompanyUserCreateManyUserInputEnvelope
-    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-  }
-
-  export type UserRoleUncheckedCreateNestedManyWithoutUserInput = {
+  export type UserRoleCreateNestedManyWithoutUserInput = {
     create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
     createMany?: UserRoleCreateManyUserInputEnvelope
     connect?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
   }
 
-  export type UserSessionUncheckedCreateNestedManyWithoutUserInput = {
+  export type UserSessionCreateNestedManyWithoutUserInput = {
     create?: XOR<UserSessionCreateWithoutUserInput, UserSessionUncheckedCreateWithoutUserInput> | UserSessionCreateWithoutUserInput[] | UserSessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserSessionCreateOrConnectWithoutUserInput | UserSessionCreateOrConnectWithoutUserInput[]
     createMany?: UserSessionCreateManyUserInputEnvelope
     connect?: UserSessionWhereUniqueInput | UserSessionWhereUniqueInput[]
+  }
+
+  export type ApiKeyUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
+    createMany?: ApiKeyCreateManyUserInputEnvelope
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+  }
+
+  export type AuditLogUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
+  export type CompanyUserUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput> | CompanyUserCreateWithoutUserInput[] | CompanyUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CompanyUserCreateOrConnectWithoutUserInput | CompanyUserCreateOrConnectWithoutUserInput[]
+    createMany?: CompanyUserCreateManyUserInputEnvelope
+    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
   }
 
   export type LoginHistoryUncheckedCreateNestedManyWithoutUserInput = {
@@ -34522,11 +34529,11 @@ export namespace Prisma {
     connect?: UserInvitationWhereUniqueInput | UserInvitationWhereUniqueInput[]
   }
 
-  export type AuditLogUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
-    createMany?: AuditLogCreateManyUserInputEnvelope
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  export type UserNotificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserNotificationCreateWithoutUserInput, UserNotificationUncheckedCreateWithoutUserInput> | UserNotificationCreateWithoutUserInput[] | UserNotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserNotificationCreateOrConnectWithoutUserInput | UserNotificationCreateOrConnectWithoutUserInput[]
+    createMany?: UserNotificationCreateManyUserInputEnvelope
+    connect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
   }
 
   export type UserPreferenceUncheckedCreateNestedManyWithoutUserInput = {
@@ -34536,53 +34543,60 @@ export namespace Prisma {
     connect?: UserPreferenceWhereUniqueInput | UserPreferenceWhereUniqueInput[]
   }
 
-  export type UserNotificationUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserNotificationCreateWithoutUserInput, UserNotificationUncheckedCreateWithoutUserInput> | UserNotificationCreateWithoutUserInput[] | UserNotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserNotificationCreateOrConnectWithoutUserInput | UserNotificationCreateOrConnectWithoutUserInput[]
-    createMany?: UserNotificationCreateManyUserInputEnvelope
-    connect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
-  }
-
-  export type ApiKeyUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
-    createMany?: ApiKeyCreateManyUserInputEnvelope
-    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-  }
-
-  export type CompanyUserUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput> | CompanyUserCreateWithoutUserInput[] | CompanyUserUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CompanyUserCreateOrConnectWithoutUserInput | CompanyUserCreateOrConnectWithoutUserInput[]
-    createMany?: CompanyUserCreateManyUserInputEnvelope
-    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-  }
-
-  export type UserRoleUpdateManyWithoutUserNestedInput = {
+  export type UserRoleUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
-    upsert?: UserRoleUpsertWithWhereUniqueWithoutUserInput | UserRoleUpsertWithWhereUniqueWithoutUserInput[]
     createMany?: UserRoleCreateManyUserInputEnvelope
-    set?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
-    disconnect?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
-    delete?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
     connect?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
-    update?: UserRoleUpdateWithWhereUniqueWithoutUserInput | UserRoleUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserRoleUpdateManyWithWhereWithoutUserInput | UserRoleUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
   }
 
-  export type UserSessionUpdateManyWithoutUserNestedInput = {
+  export type UserSessionUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<UserSessionCreateWithoutUserInput, UserSessionUncheckedCreateWithoutUserInput> | UserSessionCreateWithoutUserInput[] | UserSessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserSessionCreateOrConnectWithoutUserInput | UserSessionCreateOrConnectWithoutUserInput[]
-    upsert?: UserSessionUpsertWithWhereUniqueWithoutUserInput | UserSessionUpsertWithWhereUniqueWithoutUserInput[]
     createMany?: UserSessionCreateManyUserInputEnvelope
-    set?: UserSessionWhereUniqueInput | UserSessionWhereUniqueInput[]
-    disconnect?: UserSessionWhereUniqueInput | UserSessionWhereUniqueInput[]
-    delete?: UserSessionWhereUniqueInput | UserSessionWhereUniqueInput[]
     connect?: UserSessionWhereUniqueInput | UserSessionWhereUniqueInput[]
-    update?: UserSessionUpdateWithWhereUniqueWithoutUserInput | UserSessionUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserSessionUpdateManyWithWhereWithoutUserInput | UserSessionUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserSessionScalarWhereInput | UserSessionScalarWhereInput[]
+  }
+
+  export type ApiKeyUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
+    upsert?: ApiKeyUpsertWithWhereUniqueWithoutUserInput | ApiKeyUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ApiKeyCreateManyUserInputEnvelope
+    set?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    disconnect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    delete?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    update?: ApiKeyUpdateWithWhereUniqueWithoutUserInput | ApiKeyUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ApiKeyUpdateManyWithWhereWithoutUserInput | ApiKeyUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
+  }
+
+  export type AuditLogUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
+  export type CompanyUserUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput> | CompanyUserCreateWithoutUserInput[] | CompanyUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CompanyUserCreateOrConnectWithoutUserInput | CompanyUserCreateOrConnectWithoutUserInput[]
+    upsert?: CompanyUserUpsertWithWhereUniqueWithoutUserInput | CompanyUserUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CompanyUserCreateManyUserInputEnvelope
+    set?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    disconnect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    delete?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    update?: CompanyUserUpdateWithWhereUniqueWithoutUserInput | CompanyUserUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CompanyUserUpdateManyWithWhereWithoutUserInput | CompanyUserUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CompanyUserScalarWhereInput | CompanyUserScalarWhereInput[]
   }
 
   export type LoginHistoryUpdateManyWithoutUserNestedInput = {
@@ -34641,18 +34655,18 @@ export namespace Prisma {
     deleteMany?: UserInvitationScalarWhereInput | UserInvitationScalarWhereInput[]
   }
 
-  export type AuditLogUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
-    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AuditLogCreateManyUserInputEnvelope
-    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  export type UserNotificationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserNotificationCreateWithoutUserInput, UserNotificationUncheckedCreateWithoutUserInput> | UserNotificationCreateWithoutUserInput[] | UserNotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserNotificationCreateOrConnectWithoutUserInput | UserNotificationCreateOrConnectWithoutUserInput[]
+    upsert?: UserNotificationUpsertWithWhereUniqueWithoutUserInput | UserNotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserNotificationCreateManyUserInputEnvelope
+    set?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
+    disconnect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
+    delete?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
+    connect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
+    update?: UserNotificationUpdateWithWhereUniqueWithoutUserInput | UserNotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserNotificationUpdateManyWithWhereWithoutUserInput | UserNotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserNotificationScalarWhereInput | UserNotificationScalarWhereInput[]
   }
 
   export type UserPreferenceUpdateManyWithoutUserNestedInput = {
@@ -34669,49 +34683,7 @@ export namespace Prisma {
     deleteMany?: UserPreferenceScalarWhereInput | UserPreferenceScalarWhereInput[]
   }
 
-  export type UserNotificationUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserNotificationCreateWithoutUserInput, UserNotificationUncheckedCreateWithoutUserInput> | UserNotificationCreateWithoutUserInput[] | UserNotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserNotificationCreateOrConnectWithoutUserInput | UserNotificationCreateOrConnectWithoutUserInput[]
-    upsert?: UserNotificationUpsertWithWhereUniqueWithoutUserInput | UserNotificationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserNotificationCreateManyUserInputEnvelope
-    set?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
-    disconnect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
-    delete?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
-    connect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
-    update?: UserNotificationUpdateWithWhereUniqueWithoutUserInput | UserNotificationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserNotificationUpdateManyWithWhereWithoutUserInput | UserNotificationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserNotificationScalarWhereInput | UserNotificationScalarWhereInput[]
-  }
-
-  export type ApiKeyUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
-    upsert?: ApiKeyUpsertWithWhereUniqueWithoutUserInput | ApiKeyUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ApiKeyCreateManyUserInputEnvelope
-    set?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    disconnect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    delete?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    update?: ApiKeyUpdateWithWhereUniqueWithoutUserInput | ApiKeyUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ApiKeyUpdateManyWithWhereWithoutUserInput | ApiKeyUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
-  }
-
-  export type CompanyUserUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput> | CompanyUserCreateWithoutUserInput[] | CompanyUserUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CompanyUserCreateOrConnectWithoutUserInput | CompanyUserCreateOrConnectWithoutUserInput[]
-    upsert?: CompanyUserUpsertWithWhereUniqueWithoutUserInput | CompanyUserUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CompanyUserCreateManyUserInputEnvelope
-    set?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    disconnect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    delete?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    update?: CompanyUserUpdateWithWhereUniqueWithoutUserInput | CompanyUserUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CompanyUserUpdateManyWithWhereWithoutUserInput | CompanyUserUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CompanyUserScalarWhereInput | CompanyUserScalarWhereInput[]
-  }
-
-  export type UserRoleUncheckedUpdateManyWithoutUserNestedInput = {
+  export type UserRoleUpdateManyWithoutUserNestedInput = {
     create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
     upsert?: UserRoleUpsertWithWhereUniqueWithoutUserInput | UserRoleUpsertWithWhereUniqueWithoutUserInput[]
@@ -34725,7 +34697,7 @@ export namespace Prisma {
     deleteMany?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
   }
 
-  export type UserSessionUncheckedUpdateManyWithoutUserNestedInput = {
+  export type UserSessionUpdateManyWithoutUserNestedInput = {
     create?: XOR<UserSessionCreateWithoutUserInput, UserSessionUncheckedCreateWithoutUserInput> | UserSessionCreateWithoutUserInput[] | UserSessionUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserSessionCreateOrConnectWithoutUserInput | UserSessionCreateOrConnectWithoutUserInput[]
     upsert?: UserSessionUpsertWithWhereUniqueWithoutUserInput | UserSessionUpsertWithWhereUniqueWithoutUserInput[]
@@ -34737,6 +34709,48 @@ export namespace Prisma {
     update?: UserSessionUpdateWithWhereUniqueWithoutUserInput | UserSessionUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserSessionUpdateManyWithWhereWithoutUserInput | UserSessionUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserSessionScalarWhereInput | UserSessionScalarWhereInput[]
+  }
+
+  export type ApiKeyUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
+    upsert?: ApiKeyUpsertWithWhereUniqueWithoutUserInput | ApiKeyUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ApiKeyCreateManyUserInputEnvelope
+    set?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    disconnect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    delete?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
+    update?: ApiKeyUpdateWithWhereUniqueWithoutUserInput | ApiKeyUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ApiKeyUpdateManyWithWhereWithoutUserInput | ApiKeyUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
+  export type CompanyUserUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput> | CompanyUserCreateWithoutUserInput[] | CompanyUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: CompanyUserCreateOrConnectWithoutUserInput | CompanyUserCreateOrConnectWithoutUserInput[]
+    upsert?: CompanyUserUpsertWithWhereUniqueWithoutUserInput | CompanyUserUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: CompanyUserCreateManyUserInputEnvelope
+    set?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    disconnect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    delete?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
+    update?: CompanyUserUpdateWithWhereUniqueWithoutUserInput | CompanyUserUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: CompanyUserUpdateManyWithWhereWithoutUserInput | CompanyUserUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: CompanyUserScalarWhereInput | CompanyUserScalarWhereInput[]
   }
 
   export type LoginHistoryUncheckedUpdateManyWithoutUserNestedInput = {
@@ -34795,18 +34809,18 @@ export namespace Prisma {
     deleteMany?: UserInvitationScalarWhereInput | UserInvitationScalarWhereInput[]
   }
 
-  export type AuditLogUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
-    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: AuditLogCreateManyUserInputEnvelope
-    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
-    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  export type UserNotificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserNotificationCreateWithoutUserInput, UserNotificationUncheckedCreateWithoutUserInput> | UserNotificationCreateWithoutUserInput[] | UserNotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserNotificationCreateOrConnectWithoutUserInput | UserNotificationCreateOrConnectWithoutUserInput[]
+    upsert?: UserNotificationUpsertWithWhereUniqueWithoutUserInput | UserNotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserNotificationCreateManyUserInputEnvelope
+    set?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
+    disconnect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
+    delete?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
+    connect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
+    update?: UserNotificationUpdateWithWhereUniqueWithoutUserInput | UserNotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserNotificationUpdateManyWithWhereWithoutUserInput | UserNotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserNotificationScalarWhereInput | UserNotificationScalarWhereInput[]
   }
 
   export type UserPreferenceUncheckedUpdateManyWithoutUserNestedInput = {
@@ -34823,46 +34837,32 @@ export namespace Prisma {
     deleteMany?: UserPreferenceScalarWhereInput | UserPreferenceScalarWhereInput[]
   }
 
-  export type UserNotificationUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserNotificationCreateWithoutUserInput, UserNotificationUncheckedCreateWithoutUserInput> | UserNotificationCreateWithoutUserInput[] | UserNotificationUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserNotificationCreateOrConnectWithoutUserInput | UserNotificationCreateOrConnectWithoutUserInput[]
-    upsert?: UserNotificationUpsertWithWhereUniqueWithoutUserInput | UserNotificationUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserNotificationCreateManyUserInputEnvelope
-    set?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
-    disconnect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
-    delete?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
-    connect?: UserNotificationWhereUniqueInput | UserNotificationWhereUniqueInput[]
-    update?: UserNotificationUpdateWithWhereUniqueWithoutUserInput | UserNotificationUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserNotificationUpdateManyWithWhereWithoutUserInput | UserNotificationUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserNotificationScalarWhereInput | UserNotificationScalarWhereInput[]
+  export type UserRoleUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput> | UserRoleCreateWithoutUserInput[] | UserRoleUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserRoleCreateOrConnectWithoutUserInput | UserRoleCreateOrConnectWithoutUserInput[]
+    upsert?: UserRoleUpsertWithWhereUniqueWithoutUserInput | UserRoleUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserRoleCreateManyUserInputEnvelope
+    set?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
+    disconnect?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
+    delete?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
+    connect?: UserRoleWhereUniqueInput | UserRoleWhereUniqueInput[]
+    update?: UserRoleUpdateWithWhereUniqueWithoutUserInput | UserRoleUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserRoleUpdateManyWithWhereWithoutUserInput | UserRoleUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
   }
 
-  export type ApiKeyUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput> | ApiKeyCreateWithoutUserInput[] | ApiKeyUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ApiKeyCreateOrConnectWithoutUserInput | ApiKeyCreateOrConnectWithoutUserInput[]
-    upsert?: ApiKeyUpsertWithWhereUniqueWithoutUserInput | ApiKeyUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ApiKeyCreateManyUserInputEnvelope
-    set?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    disconnect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    delete?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    connect?: ApiKeyWhereUniqueInput | ApiKeyWhereUniqueInput[]
-    update?: ApiKeyUpdateWithWhereUniqueWithoutUserInput | ApiKeyUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ApiKeyUpdateManyWithWhereWithoutUserInput | ApiKeyUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
-  }
-
-  export type CompanyUserUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput> | CompanyUserCreateWithoutUserInput[] | CompanyUserUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: CompanyUserCreateOrConnectWithoutUserInput | CompanyUserCreateOrConnectWithoutUserInput[]
-    upsert?: CompanyUserUpsertWithWhereUniqueWithoutUserInput | CompanyUserUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: CompanyUserCreateManyUserInputEnvelope
-    set?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    disconnect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    delete?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    connect?: CompanyUserWhereUniqueInput | CompanyUserWhereUniqueInput[]
-    update?: CompanyUserUpdateWithWhereUniqueWithoutUserInput | CompanyUserUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: CompanyUserUpdateManyWithWhereWithoutUserInput | CompanyUserUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: CompanyUserScalarWhereInput | CompanyUserScalarWhereInput[]
+  export type UserSessionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserSessionCreateWithoutUserInput, UserSessionUncheckedCreateWithoutUserInput> | UserSessionCreateWithoutUserInput[] | UserSessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserSessionCreateOrConnectWithoutUserInput | UserSessionCreateOrConnectWithoutUserInput[]
+    upsert?: UserSessionUpsertWithWhereUniqueWithoutUserInput | UserSessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserSessionCreateManyUserInputEnvelope
+    set?: UserSessionWhereUniqueInput | UserSessionWhereUniqueInput[]
+    disconnect?: UserSessionWhereUniqueInput | UserSessionWhereUniqueInput[]
+    delete?: UserSessionWhereUniqueInput | UserSessionWhereUniqueInput[]
+    connect?: UserSessionWhereUniqueInput | UserSessionWhereUniqueInput[]
+    update?: UserSessionUpdateWithWhereUniqueWithoutUserInput | UserSessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserSessionUpdateManyWithWhereWithoutUserInput | UserSessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserSessionScalarWhereInput | UserSessionScalarWhereInput[]
   }
 
   export type UserRoleCreateNestedManyWithoutRoleInput = {
@@ -34907,24 +34907,16 @@ export namespace Prisma {
     deleteMany?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutUserRolesInput = {
-    create?: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUserRolesInput
-    connect?: UserWhereUniqueInput
-  }
-
   export type RoleCreateNestedOneWithoutUserRolesInput = {
     create?: XOR<RoleCreateWithoutUserRolesInput, RoleUncheckedCreateWithoutUserRolesInput>
     connectOrCreate?: RoleCreateOrConnectWithoutUserRolesInput
     connect?: RoleWhereUniqueInput
   }
 
-  export type UserUpdateOneRequiredWithoutUserRolesNestedInput = {
+  export type UserCreateNestedOneWithoutUserRolesInput = {
     create?: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
     connectOrCreate?: UserCreateOrConnectWithoutUserRolesInput
-    upsert?: UserUpsertWithoutUserRolesInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserRolesInput, UserUpdateWithoutUserRolesInput>, UserUncheckedUpdateWithoutUserRolesInput>
   }
 
   export type RoleUpdateOneRequiredWithoutUserRolesNestedInput = {
@@ -34933,6 +34925,14 @@ export namespace Prisma {
     upsert?: RoleUpsertWithoutUserRolesInput
     connect?: RoleWhereUniqueInput
     update?: XOR<XOR<RoleUpdateToOneWithWhereWithoutUserRolesInput, RoleUpdateWithoutUserRolesInput>, RoleUncheckedUpdateWithoutUserRolesInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutUserRolesNestedInput = {
+    create?: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserRolesInput
+    upsert?: UserUpsertWithoutUserRolesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserRolesInput, UserUpdateWithoutUserRolesInput>, UserUncheckedUpdateWithoutUserRolesInput>
   }
 
   export type UserCreateNestedOneWithoutSessionsInput = {
@@ -35626,149 +35626,91 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
-  export type CompanyUserCreateWithoutCompanyInput = {
+  export type BillingHistoryCreateWithoutCompanyInput = {
     id?: string
-    role?: $Enums.CompanyRole
-    title?: string | null
-    employeeId?: string | null
-    startDate?: Date | string
-    endDate?: Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
-    isActive?: boolean
-    isOwner?: boolean
-    canInvite?: boolean
-    canManageBilling?: boolean
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.EmploymentStatus
-    invitedBy?: string | null
-    invitedAt?: Date | string | null
-    joinedAt?: Date | string
-    lastActiveAt?: Date | string | null
-    user: UserCreateNestedOneWithoutCompanyUsersInput
-    department?: DepartmentCreateNestedOneWithoutEmployeesInput
-    manager?: CompanyUserCreateNestedOneWithoutReportsInput
-    reports?: CompanyUserCreateNestedManyWithoutManagerInput
+    periodStart: Date | string
+    periodEnd: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
+    currency?: string
+    description?: string | null
+    invoiceNumber?: string | null
+    paymentStatus?: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
   }
 
-  export type CompanyUserUncheckedCreateWithoutCompanyInput = {
+  export type BillingHistoryUncheckedCreateWithoutCompanyInput = {
     id?: string
-    userId: string
-    role?: $Enums.CompanyRole
-    title?: string | null
-    departmentId?: string | null
-    employeeId?: string | null
-    startDate?: Date | string
-    endDate?: Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
-    isActive?: boolean
-    isOwner?: boolean
-    canInvite?: boolean
-    canManageBilling?: boolean
-    managerId?: string | null
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.EmploymentStatus
-    invitedBy?: string | null
-    invitedAt?: Date | string | null
-    joinedAt?: Date | string
-    lastActiveAt?: Date | string | null
-    reports?: CompanyUserUncheckedCreateNestedManyWithoutManagerInput
+    periodStart: Date | string
+    periodEnd: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
+    currency?: string
+    description?: string | null
+    invoiceNumber?: string | null
+    paymentStatus?: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
   }
 
-  export type CompanyUserCreateOrConnectWithoutCompanyInput = {
-    where: CompanyUserWhereUniqueInput
-    create: XOR<CompanyUserCreateWithoutCompanyInput, CompanyUserUncheckedCreateWithoutCompanyInput>
+  export type BillingHistoryCreateOrConnectWithoutCompanyInput = {
+    where: BillingHistoryWhereUniqueInput
+    create: XOR<BillingHistoryCreateWithoutCompanyInput, BillingHistoryUncheckedCreateWithoutCompanyInput>
   }
 
-  export type CompanyUserCreateManyCompanyInputEnvelope = {
-    data: CompanyUserCreateManyCompanyInput | CompanyUserCreateManyCompanyInput[]
+  export type BillingHistoryCreateManyCompanyInputEnvelope = {
+    data: BillingHistoryCreateManyCompanyInput | BillingHistoryCreateManyCompanyInput[]
     skipDuplicates?: boolean
   }
 
-  export type DepartmentCreateWithoutCompanyInput = {
+  export type CompanyAuditLogCreateWithoutCompanyInput = {
     id?: string
-    name: string
-    description?: string | null
-    code?: string | null
-    level?: number
-    headOfDepartment?: string | null
-    budget?: Decimal | DecimalJsLike | number | string | null
-    costCenter?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    parent?: DepartmentCreateNestedOneWithoutChildrenInput
-    children?: DepartmentCreateNestedManyWithoutParentInput
-    employees?: CompanyUserCreateNestedManyWithoutDepartmentInput
+    userId?: string | null
+    userEmail?: string | null
+    action: string
+    resource: string
+    resourceId?: string | null
+    oldValues?: NullableJsonNullValueInput | InputJsonValue
+    newValues?: NullableJsonNullValueInput | InputJsonValue
+    changes?: NullableJsonNullValueInput | InputJsonValue
+    ipAddress?: string | null
+    userAgent?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    severity?: $Enums.AuditSeverity
+    timestamp?: Date | string
   }
 
-  export type DepartmentUncheckedCreateWithoutCompanyInput = {
+  export type CompanyAuditLogUncheckedCreateWithoutCompanyInput = {
     id?: string
-    name: string
-    description?: string | null
-    code?: string | null
-    parentId?: string | null
-    level?: number
-    headOfDepartment?: string | null
-    budget?: Decimal | DecimalJsLike | number | string | null
-    costCenter?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    children?: DepartmentUncheckedCreateNestedManyWithoutParentInput
-    employees?: CompanyUserUncheckedCreateNestedManyWithoutDepartmentInput
+    userId?: string | null
+    userEmail?: string | null
+    action: string
+    resource: string
+    resourceId?: string | null
+    oldValues?: NullableJsonNullValueInput | InputJsonValue
+    newValues?: NullableJsonNullValueInput | InputJsonValue
+    changes?: NullableJsonNullValueInput | InputJsonValue
+    ipAddress?: string | null
+    userAgent?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    severity?: $Enums.AuditSeverity
+    timestamp?: Date | string
   }
 
-  export type DepartmentCreateOrConnectWithoutCompanyInput = {
-    where: DepartmentWhereUniqueInput
-    create: XOR<DepartmentCreateWithoutCompanyInput, DepartmentUncheckedCreateWithoutCompanyInput>
+  export type CompanyAuditLogCreateOrConnectWithoutCompanyInput = {
+    where: CompanyAuditLogWhereUniqueInput
+    create: XOR<CompanyAuditLogCreateWithoutCompanyInput, CompanyAuditLogUncheckedCreateWithoutCompanyInput>
   }
 
-  export type DepartmentCreateManyCompanyInputEnvelope = {
-    data: DepartmentCreateManyCompanyInput | DepartmentCreateManyCompanyInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type CompanyLocationCreateWithoutCompanyInput = {
-    id?: string
-    name: string
-    type?: $Enums.LocationType
-    address: JsonNullValueInput | InputJsonValue
-    coordinates?: NullableJsonNullValueInput | InputJsonValue
-    timezone?: string
-    phone?: string | null
-    email?: string | null
-    managerName?: string | null
-    businessHours?: NullableJsonNullValueInput | InputJsonValue
-    isPrimary?: boolean
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CompanyLocationUncheckedCreateWithoutCompanyInput = {
-    id?: string
-    name: string
-    type?: $Enums.LocationType
-    address: JsonNullValueInput | InputJsonValue
-    coordinates?: NullableJsonNullValueInput | InputJsonValue
-    timezone?: string
-    phone?: string | null
-    email?: string | null
-    managerName?: string | null
-    businessHours?: NullableJsonNullValueInput | InputJsonValue
-    isPrimary?: boolean
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type CompanyLocationCreateOrConnectWithoutCompanyInput = {
-    where: CompanyLocationWhereUniqueInput
-    create: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput>
-  }
-
-  export type CompanyLocationCreateManyCompanyInputEnvelope = {
-    data: CompanyLocationCreateManyCompanyInput | CompanyLocationCreateManyCompanyInput[]
+  export type CompanyAuditLogCreateManyCompanyInputEnvelope = {
+    data: CompanyAuditLogCreateManyCompanyInput | CompanyAuditLogCreateManyCompanyInput[]
     skipDuplicates?: boolean
   }
 
@@ -35822,92 +35764,301 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CompanyAuditLogCreateWithoutCompanyInput = {
+  export type CompanyLocationCreateWithoutCompanyInput = {
     id?: string
-    userId?: string | null
-    userEmail?: string | null
-    action: string
-    resource: string
-    resourceId?: string | null
-    oldValues?: NullableJsonNullValueInput | InputJsonValue
-    newValues?: NullableJsonNullValueInput | InputJsonValue
-    changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: string | null
-    userAgent?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: $Enums.AuditSeverity
-    timestamp?: Date | string
+    name: string
+    type?: $Enums.LocationType
+    address: JsonNullValueInput | InputJsonValue
+    coordinates?: NullableJsonNullValueInput | InputJsonValue
+    timezone?: string
+    phone?: string | null
+    email?: string | null
+    managerName?: string | null
+    businessHours?: NullableJsonNullValueInput | InputJsonValue
+    isPrimary?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type CompanyAuditLogUncheckedCreateWithoutCompanyInput = {
+  export type CompanyLocationUncheckedCreateWithoutCompanyInput = {
     id?: string
-    userId?: string | null
-    userEmail?: string | null
-    action: string
-    resource: string
-    resourceId?: string | null
-    oldValues?: NullableJsonNullValueInput | InputJsonValue
-    newValues?: NullableJsonNullValueInput | InputJsonValue
-    changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: string | null
-    userAgent?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: $Enums.AuditSeverity
-    timestamp?: Date | string
+    name: string
+    type?: $Enums.LocationType
+    address: JsonNullValueInput | InputJsonValue
+    coordinates?: NullableJsonNullValueInput | InputJsonValue
+    timezone?: string
+    phone?: string | null
+    email?: string | null
+    managerName?: string | null
+    businessHours?: NullableJsonNullValueInput | InputJsonValue
+    isPrimary?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type CompanyAuditLogCreateOrConnectWithoutCompanyInput = {
-    where: CompanyAuditLogWhereUniqueInput
-    create: XOR<CompanyAuditLogCreateWithoutCompanyInput, CompanyAuditLogUncheckedCreateWithoutCompanyInput>
+  export type CompanyLocationCreateOrConnectWithoutCompanyInput = {
+    where: CompanyLocationWhereUniqueInput
+    create: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput>
   }
 
-  export type CompanyAuditLogCreateManyCompanyInputEnvelope = {
-    data: CompanyAuditLogCreateManyCompanyInput | CompanyAuditLogCreateManyCompanyInput[]
+  export type CompanyLocationCreateManyCompanyInputEnvelope = {
+    data: CompanyLocationCreateManyCompanyInput | CompanyLocationCreateManyCompanyInput[]
     skipDuplicates?: boolean
   }
 
-  export type BillingHistoryCreateWithoutCompanyInput = {
+  export type CompanyUserCreateWithoutCompanyInput = {
     id?: string
-    periodStart: Date | string
-    periodEnd: Date | string
-    amount: Decimal | DecimalJsLike | number | string
-    tax?: Decimal | DecimalJsLike | number | string
-    total: Decimal | DecimalJsLike | number | string
-    currency?: string
-    description?: string | null
-    invoiceNumber?: string | null
-    paymentStatus?: $Enums.PaymentStatus
-    paymentMethod?: string | null
-    paidAt?: Date | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
+    role?: $Enums.CompanyRole
+    title?: string | null
+    employeeId?: string | null
+    startDate?: Date | string
+    endDate?: Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    isOwner?: boolean
+    canInvite?: boolean
+    canManageBilling?: boolean
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.EmploymentStatus
+    invitedBy?: string | null
+    invitedAt?: Date | string | null
+    joinedAt?: Date | string
+    lastActiveAt?: Date | string | null
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    manager?: CompanyUserCreateNestedOneWithoutReportsInput
+    reports?: CompanyUserCreateNestedManyWithoutManagerInput
+    user: UserCreateNestedOneWithoutCompanyUsersInput
   }
 
-  export type BillingHistoryUncheckedCreateWithoutCompanyInput = {
+  export type CompanyUserUncheckedCreateWithoutCompanyInput = {
     id?: string
-    periodStart: Date | string
-    periodEnd: Date | string
-    amount: Decimal | DecimalJsLike | number | string
-    tax?: Decimal | DecimalJsLike | number | string
-    total: Decimal | DecimalJsLike | number | string
-    currency?: string
-    description?: string | null
-    invoiceNumber?: string | null
-    paymentStatus?: $Enums.PaymentStatus
-    paymentMethod?: string | null
-    paidAt?: Date | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
+    userId: string
+    role?: $Enums.CompanyRole
+    title?: string | null
+    departmentId?: string | null
+    employeeId?: string | null
+    startDate?: Date | string
+    endDate?: Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    isOwner?: boolean
+    canInvite?: boolean
+    canManageBilling?: boolean
+    managerId?: string | null
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.EmploymentStatus
+    invitedBy?: string | null
+    invitedAt?: Date | string | null
+    joinedAt?: Date | string
+    lastActiveAt?: Date | string | null
+    reports?: CompanyUserUncheckedCreateNestedManyWithoutManagerInput
   }
 
-  export type BillingHistoryCreateOrConnectWithoutCompanyInput = {
+  export type CompanyUserCreateOrConnectWithoutCompanyInput = {
+    where: CompanyUserWhereUniqueInput
+    create: XOR<CompanyUserCreateWithoutCompanyInput, CompanyUserUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type CompanyUserCreateManyCompanyInputEnvelope = {
+    data: CompanyUserCreateManyCompanyInput | CompanyUserCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DepartmentCreateWithoutCompanyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    code?: string | null
+    level?: number
+    headOfDepartment?: string | null
+    budget?: Decimal | DecimalJsLike | number | string | null
+    costCenter?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employees?: CompanyUserCreateNestedManyWithoutDepartmentInput
+    parent?: DepartmentCreateNestedOneWithoutChildrenInput
+    children?: DepartmentCreateNestedManyWithoutParentInput
+  }
+
+  export type DepartmentUncheckedCreateWithoutCompanyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    code?: string | null
+    parentId?: string | null
+    level?: number
+    headOfDepartment?: string | null
+    budget?: Decimal | DecimalJsLike | number | string | null
+    costCenter?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employees?: CompanyUserUncheckedCreateNestedManyWithoutDepartmentInput
+    children?: DepartmentUncheckedCreateNestedManyWithoutParentInput
+  }
+
+  export type DepartmentCreateOrConnectWithoutCompanyInput = {
+    where: DepartmentWhereUniqueInput
+    create: XOR<DepartmentCreateWithoutCompanyInput, DepartmentUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type DepartmentCreateManyCompanyInputEnvelope = {
+    data: DepartmentCreateManyCompanyInput | DepartmentCreateManyCompanyInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BillingHistoryUpsertWithWhereUniqueWithoutCompanyInput = {
     where: BillingHistoryWhereUniqueInput
+    update: XOR<BillingHistoryUpdateWithoutCompanyInput, BillingHistoryUncheckedUpdateWithoutCompanyInput>
     create: XOR<BillingHistoryCreateWithoutCompanyInput, BillingHistoryUncheckedCreateWithoutCompanyInput>
   }
 
-  export type BillingHistoryCreateManyCompanyInputEnvelope = {
-    data: BillingHistoryCreateManyCompanyInput | BillingHistoryCreateManyCompanyInput[]
-    skipDuplicates?: boolean
+  export type BillingHistoryUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: BillingHistoryWhereUniqueInput
+    data: XOR<BillingHistoryUpdateWithoutCompanyInput, BillingHistoryUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type BillingHistoryUpdateManyWithWhereWithoutCompanyInput = {
+    where: BillingHistoryScalarWhereInput
+    data: XOR<BillingHistoryUpdateManyMutationInput, BillingHistoryUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type BillingHistoryScalarWhereInput = {
+    AND?: BillingHistoryScalarWhereInput | BillingHistoryScalarWhereInput[]
+    OR?: BillingHistoryScalarWhereInput[]
+    NOT?: BillingHistoryScalarWhereInput | BillingHistoryScalarWhereInput[]
+    id?: StringFilter<"BillingHistory"> | string
+    companyId?: StringFilter<"BillingHistory"> | string
+    periodStart?: DateTimeFilter<"BillingHistory"> | Date | string
+    periodEnd?: DateTimeFilter<"BillingHistory"> | Date | string
+    amount?: DecimalFilter<"BillingHistory"> | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFilter<"BillingHistory"> | Decimal | DecimalJsLike | number | string
+    total?: DecimalFilter<"BillingHistory"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"BillingHistory"> | string
+    description?: StringNullableFilter<"BillingHistory"> | string | null
+    invoiceNumber?: StringNullableFilter<"BillingHistory"> | string | null
+    paymentStatus?: EnumPaymentStatusFilter<"BillingHistory"> | $Enums.PaymentStatus
+    paymentMethod?: StringNullableFilter<"BillingHistory"> | string | null
+    paidAt?: DateTimeNullableFilter<"BillingHistory"> | Date | string | null
+    metadata?: JsonNullableFilter<"BillingHistory">
+    createdAt?: DateTimeFilter<"BillingHistory"> | Date | string
+  }
+
+  export type CompanyAuditLogUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: CompanyAuditLogWhereUniqueInput
+    update: XOR<CompanyAuditLogUpdateWithoutCompanyInput, CompanyAuditLogUncheckedUpdateWithoutCompanyInput>
+    create: XOR<CompanyAuditLogCreateWithoutCompanyInput, CompanyAuditLogUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type CompanyAuditLogUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: CompanyAuditLogWhereUniqueInput
+    data: XOR<CompanyAuditLogUpdateWithoutCompanyInput, CompanyAuditLogUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type CompanyAuditLogUpdateManyWithWhereWithoutCompanyInput = {
+    where: CompanyAuditLogScalarWhereInput
+    data: XOR<CompanyAuditLogUpdateManyMutationInput, CompanyAuditLogUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type CompanyAuditLogScalarWhereInput = {
+    AND?: CompanyAuditLogScalarWhereInput | CompanyAuditLogScalarWhereInput[]
+    OR?: CompanyAuditLogScalarWhereInput[]
+    NOT?: CompanyAuditLogScalarWhereInput | CompanyAuditLogScalarWhereInput[]
+    id?: StringFilter<"CompanyAuditLog"> | string
+    companyId?: StringFilter<"CompanyAuditLog"> | string
+    userId?: StringNullableFilter<"CompanyAuditLog"> | string | null
+    userEmail?: StringNullableFilter<"CompanyAuditLog"> | string | null
+    action?: StringFilter<"CompanyAuditLog"> | string
+    resource?: StringFilter<"CompanyAuditLog"> | string
+    resourceId?: StringNullableFilter<"CompanyAuditLog"> | string | null
+    oldValues?: JsonNullableFilter<"CompanyAuditLog">
+    newValues?: JsonNullableFilter<"CompanyAuditLog">
+    changes?: JsonNullableFilter<"CompanyAuditLog">
+    ipAddress?: StringNullableFilter<"CompanyAuditLog"> | string | null
+    userAgent?: StringNullableFilter<"CompanyAuditLog"> | string | null
+    metadata?: JsonNullableFilter<"CompanyAuditLog">
+    severity?: EnumAuditSeverityFilter<"CompanyAuditLog"> | $Enums.AuditSeverity
+    timestamp?: DateTimeFilter<"CompanyAuditLog"> | Date | string
+  }
+
+  export type CompanyIntegrationUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: CompanyIntegrationWhereUniqueInput
+    update: XOR<CompanyIntegrationUpdateWithoutCompanyInput, CompanyIntegrationUncheckedUpdateWithoutCompanyInput>
+    create: XOR<CompanyIntegrationCreateWithoutCompanyInput, CompanyIntegrationUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type CompanyIntegrationUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: CompanyIntegrationWhereUniqueInput
+    data: XOR<CompanyIntegrationUpdateWithoutCompanyInput, CompanyIntegrationUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type CompanyIntegrationUpdateManyWithWhereWithoutCompanyInput = {
+    where: CompanyIntegrationScalarWhereInput
+    data: XOR<CompanyIntegrationUpdateManyMutationInput, CompanyIntegrationUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type CompanyIntegrationScalarWhereInput = {
+    AND?: CompanyIntegrationScalarWhereInput | CompanyIntegrationScalarWhereInput[]
+    OR?: CompanyIntegrationScalarWhereInput[]
+    NOT?: CompanyIntegrationScalarWhereInput | CompanyIntegrationScalarWhereInput[]
+    id?: StringFilter<"CompanyIntegration"> | string
+    companyId?: StringFilter<"CompanyIntegration"> | string
+    name?: StringFilter<"CompanyIntegration"> | string
+    type?: EnumIntegrationTypeFilter<"CompanyIntegration"> | $Enums.IntegrationType
+    provider?: StringFilter<"CompanyIntegration"> | string
+    config?: JsonFilter<"CompanyIntegration">
+    credentials?: JsonFilter<"CompanyIntegration">
+    mappings?: JsonNullableFilter<"CompanyIntegration">
+    autoSync?: BoolFilter<"CompanyIntegration"> | boolean
+    syncInterval?: IntFilter<"CompanyIntegration"> | number
+    lastSyncAt?: DateTimeNullableFilter<"CompanyIntegration"> | Date | string | null
+    nextSyncAt?: DateTimeNullableFilter<"CompanyIntegration"> | Date | string | null
+    status?: EnumIntegrationStatusFilter<"CompanyIntegration"> | $Enums.IntegrationStatus
+    isActive?: BoolFilter<"CompanyIntegration"> | boolean
+    lastError?: StringNullableFilter<"CompanyIntegration"> | string | null
+    errorCount?: IntFilter<"CompanyIntegration"> | number
+    createdAt?: DateTimeFilter<"CompanyIntegration"> | Date | string
+    updatedAt?: DateTimeFilter<"CompanyIntegration"> | Date | string
+  }
+
+  export type CompanyLocationUpsertWithWhereUniqueWithoutCompanyInput = {
+    where: CompanyLocationWhereUniqueInput
+    update: XOR<CompanyLocationUpdateWithoutCompanyInput, CompanyLocationUncheckedUpdateWithoutCompanyInput>
+    create: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput>
+  }
+
+  export type CompanyLocationUpdateWithWhereUniqueWithoutCompanyInput = {
+    where: CompanyLocationWhereUniqueInput
+    data: XOR<CompanyLocationUpdateWithoutCompanyInput, CompanyLocationUncheckedUpdateWithoutCompanyInput>
+  }
+
+  export type CompanyLocationUpdateManyWithWhereWithoutCompanyInput = {
+    where: CompanyLocationScalarWhereInput
+    data: XOR<CompanyLocationUpdateManyMutationInput, CompanyLocationUncheckedUpdateManyWithoutCompanyInput>
+  }
+
+  export type CompanyLocationScalarWhereInput = {
+    AND?: CompanyLocationScalarWhereInput | CompanyLocationScalarWhereInput[]
+    OR?: CompanyLocationScalarWhereInput[]
+    NOT?: CompanyLocationScalarWhereInput | CompanyLocationScalarWhereInput[]
+    id?: StringFilter<"CompanyLocation"> | string
+    companyId?: StringFilter<"CompanyLocation"> | string
+    name?: StringFilter<"CompanyLocation"> | string
+    type?: EnumLocationTypeFilter<"CompanyLocation"> | $Enums.LocationType
+    address?: JsonFilter<"CompanyLocation">
+    coordinates?: JsonNullableFilter<"CompanyLocation">
+    timezone?: StringFilter<"CompanyLocation"> | string
+    phone?: StringNullableFilter<"CompanyLocation"> | string | null
+    email?: StringNullableFilter<"CompanyLocation"> | string | null
+    managerName?: StringNullableFilter<"CompanyLocation"> | string | null
+    businessHours?: JsonNullableFilter<"CompanyLocation">
+    isPrimary?: BoolFilter<"CompanyLocation"> | boolean
+    isActive?: BoolFilter<"CompanyLocation"> | boolean
+    createdAt?: DateTimeFilter<"CompanyLocation"> | Date | string
+    updatedAt?: DateTimeFilter<"CompanyLocation"> | Date | string
   }
 
   export type CompanyUserUpsertWithWhereUniqueWithoutCompanyInput = {
@@ -35988,157 +36139,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Department"> | Date | string
   }
 
-  export type CompanyLocationUpsertWithWhereUniqueWithoutCompanyInput = {
-    where: CompanyLocationWhereUniqueInput
-    update: XOR<CompanyLocationUpdateWithoutCompanyInput, CompanyLocationUncheckedUpdateWithoutCompanyInput>
-    create: XOR<CompanyLocationCreateWithoutCompanyInput, CompanyLocationUncheckedCreateWithoutCompanyInput>
-  }
-
-  export type CompanyLocationUpdateWithWhereUniqueWithoutCompanyInput = {
-    where: CompanyLocationWhereUniqueInput
-    data: XOR<CompanyLocationUpdateWithoutCompanyInput, CompanyLocationUncheckedUpdateWithoutCompanyInput>
-  }
-
-  export type CompanyLocationUpdateManyWithWhereWithoutCompanyInput = {
-    where: CompanyLocationScalarWhereInput
-    data: XOR<CompanyLocationUpdateManyMutationInput, CompanyLocationUncheckedUpdateManyWithoutCompanyInput>
-  }
-
-  export type CompanyLocationScalarWhereInput = {
-    AND?: CompanyLocationScalarWhereInput | CompanyLocationScalarWhereInput[]
-    OR?: CompanyLocationScalarWhereInput[]
-    NOT?: CompanyLocationScalarWhereInput | CompanyLocationScalarWhereInput[]
-    id?: StringFilter<"CompanyLocation"> | string
-    companyId?: StringFilter<"CompanyLocation"> | string
-    name?: StringFilter<"CompanyLocation"> | string
-    type?: EnumLocationTypeFilter<"CompanyLocation"> | $Enums.LocationType
-    address?: JsonFilter<"CompanyLocation">
-    coordinates?: JsonNullableFilter<"CompanyLocation">
-    timezone?: StringFilter<"CompanyLocation"> | string
-    phone?: StringNullableFilter<"CompanyLocation"> | string | null
-    email?: StringNullableFilter<"CompanyLocation"> | string | null
-    managerName?: StringNullableFilter<"CompanyLocation"> | string | null
-    businessHours?: JsonNullableFilter<"CompanyLocation">
-    isPrimary?: BoolFilter<"CompanyLocation"> | boolean
-    isActive?: BoolFilter<"CompanyLocation"> | boolean
-    createdAt?: DateTimeFilter<"CompanyLocation"> | Date | string
-    updatedAt?: DateTimeFilter<"CompanyLocation"> | Date | string
-  }
-
-  export type CompanyIntegrationUpsertWithWhereUniqueWithoutCompanyInput = {
-    where: CompanyIntegrationWhereUniqueInput
-    update: XOR<CompanyIntegrationUpdateWithoutCompanyInput, CompanyIntegrationUncheckedUpdateWithoutCompanyInput>
-    create: XOR<CompanyIntegrationCreateWithoutCompanyInput, CompanyIntegrationUncheckedCreateWithoutCompanyInput>
-  }
-
-  export type CompanyIntegrationUpdateWithWhereUniqueWithoutCompanyInput = {
-    where: CompanyIntegrationWhereUniqueInput
-    data: XOR<CompanyIntegrationUpdateWithoutCompanyInput, CompanyIntegrationUncheckedUpdateWithoutCompanyInput>
-  }
-
-  export type CompanyIntegrationUpdateManyWithWhereWithoutCompanyInput = {
-    where: CompanyIntegrationScalarWhereInput
-    data: XOR<CompanyIntegrationUpdateManyMutationInput, CompanyIntegrationUncheckedUpdateManyWithoutCompanyInput>
-  }
-
-  export type CompanyIntegrationScalarWhereInput = {
-    AND?: CompanyIntegrationScalarWhereInput | CompanyIntegrationScalarWhereInput[]
-    OR?: CompanyIntegrationScalarWhereInput[]
-    NOT?: CompanyIntegrationScalarWhereInput | CompanyIntegrationScalarWhereInput[]
-    id?: StringFilter<"CompanyIntegration"> | string
-    companyId?: StringFilter<"CompanyIntegration"> | string
-    name?: StringFilter<"CompanyIntegration"> | string
-    type?: EnumIntegrationTypeFilter<"CompanyIntegration"> | $Enums.IntegrationType
-    provider?: StringFilter<"CompanyIntegration"> | string
-    config?: JsonFilter<"CompanyIntegration">
-    credentials?: JsonFilter<"CompanyIntegration">
-    mappings?: JsonNullableFilter<"CompanyIntegration">
-    autoSync?: BoolFilter<"CompanyIntegration"> | boolean
-    syncInterval?: IntFilter<"CompanyIntegration"> | number
-    lastSyncAt?: DateTimeNullableFilter<"CompanyIntegration"> | Date | string | null
-    nextSyncAt?: DateTimeNullableFilter<"CompanyIntegration"> | Date | string | null
-    status?: EnumIntegrationStatusFilter<"CompanyIntegration"> | $Enums.IntegrationStatus
-    isActive?: BoolFilter<"CompanyIntegration"> | boolean
-    lastError?: StringNullableFilter<"CompanyIntegration"> | string | null
-    errorCount?: IntFilter<"CompanyIntegration"> | number
-    createdAt?: DateTimeFilter<"CompanyIntegration"> | Date | string
-    updatedAt?: DateTimeFilter<"CompanyIntegration"> | Date | string
-  }
-
-  export type CompanyAuditLogUpsertWithWhereUniqueWithoutCompanyInput = {
-    where: CompanyAuditLogWhereUniqueInput
-    update: XOR<CompanyAuditLogUpdateWithoutCompanyInput, CompanyAuditLogUncheckedUpdateWithoutCompanyInput>
-    create: XOR<CompanyAuditLogCreateWithoutCompanyInput, CompanyAuditLogUncheckedCreateWithoutCompanyInput>
-  }
-
-  export type CompanyAuditLogUpdateWithWhereUniqueWithoutCompanyInput = {
-    where: CompanyAuditLogWhereUniqueInput
-    data: XOR<CompanyAuditLogUpdateWithoutCompanyInput, CompanyAuditLogUncheckedUpdateWithoutCompanyInput>
-  }
-
-  export type CompanyAuditLogUpdateManyWithWhereWithoutCompanyInput = {
-    where: CompanyAuditLogScalarWhereInput
-    data: XOR<CompanyAuditLogUpdateManyMutationInput, CompanyAuditLogUncheckedUpdateManyWithoutCompanyInput>
-  }
-
-  export type CompanyAuditLogScalarWhereInput = {
-    AND?: CompanyAuditLogScalarWhereInput | CompanyAuditLogScalarWhereInput[]
-    OR?: CompanyAuditLogScalarWhereInput[]
-    NOT?: CompanyAuditLogScalarWhereInput | CompanyAuditLogScalarWhereInput[]
-    id?: StringFilter<"CompanyAuditLog"> | string
-    companyId?: StringFilter<"CompanyAuditLog"> | string
-    userId?: StringNullableFilter<"CompanyAuditLog"> | string | null
-    userEmail?: StringNullableFilter<"CompanyAuditLog"> | string | null
-    action?: StringFilter<"CompanyAuditLog"> | string
-    resource?: StringFilter<"CompanyAuditLog"> | string
-    resourceId?: StringNullableFilter<"CompanyAuditLog"> | string | null
-    oldValues?: JsonNullableFilter<"CompanyAuditLog">
-    newValues?: JsonNullableFilter<"CompanyAuditLog">
-    changes?: JsonNullableFilter<"CompanyAuditLog">
-    ipAddress?: StringNullableFilter<"CompanyAuditLog"> | string | null
-    userAgent?: StringNullableFilter<"CompanyAuditLog"> | string | null
-    metadata?: JsonNullableFilter<"CompanyAuditLog">
-    severity?: EnumAuditSeverityFilter<"CompanyAuditLog"> | $Enums.AuditSeverity
-    timestamp?: DateTimeFilter<"CompanyAuditLog"> | Date | string
-  }
-
-  export type BillingHistoryUpsertWithWhereUniqueWithoutCompanyInput = {
-    where: BillingHistoryWhereUniqueInput
-    update: XOR<BillingHistoryUpdateWithoutCompanyInput, BillingHistoryUncheckedUpdateWithoutCompanyInput>
-    create: XOR<BillingHistoryCreateWithoutCompanyInput, BillingHistoryUncheckedCreateWithoutCompanyInput>
-  }
-
-  export type BillingHistoryUpdateWithWhereUniqueWithoutCompanyInput = {
-    where: BillingHistoryWhereUniqueInput
-    data: XOR<BillingHistoryUpdateWithoutCompanyInput, BillingHistoryUncheckedUpdateWithoutCompanyInput>
-  }
-
-  export type BillingHistoryUpdateManyWithWhereWithoutCompanyInput = {
-    where: BillingHistoryScalarWhereInput
-    data: XOR<BillingHistoryUpdateManyMutationInput, BillingHistoryUncheckedUpdateManyWithoutCompanyInput>
-  }
-
-  export type BillingHistoryScalarWhereInput = {
-    AND?: BillingHistoryScalarWhereInput | BillingHistoryScalarWhereInput[]
-    OR?: BillingHistoryScalarWhereInput[]
-    NOT?: BillingHistoryScalarWhereInput | BillingHistoryScalarWhereInput[]
-    id?: StringFilter<"BillingHistory"> | string
-    companyId?: StringFilter<"BillingHistory"> | string
-    periodStart?: DateTimeFilter<"BillingHistory"> | Date | string
-    periodEnd?: DateTimeFilter<"BillingHistory"> | Date | string
-    amount?: DecimalFilter<"BillingHistory"> | Decimal | DecimalJsLike | number | string
-    tax?: DecimalFilter<"BillingHistory"> | Decimal | DecimalJsLike | number | string
-    total?: DecimalFilter<"BillingHistory"> | Decimal | DecimalJsLike | number | string
-    currency?: StringFilter<"BillingHistory"> | string
-    description?: StringNullableFilter<"BillingHistory"> | string | null
-    invoiceNumber?: StringNullableFilter<"BillingHistory"> | string | null
-    paymentStatus?: EnumPaymentStatusFilter<"BillingHistory"> | $Enums.PaymentStatus
-    paymentMethod?: StringNullableFilter<"BillingHistory"> | string | null
-    paidAt?: DateTimeNullableFilter<"BillingHistory"> | Date | string | null
-    metadata?: JsonNullableFilter<"BillingHistory">
-    createdAt?: DateTimeFilter<"BillingHistory"> | Date | string
-  }
-
   export type CompanyCreateWithoutCompanyUsersInput = {
     id?: string
     name: string
@@ -36178,11 +36178,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
-    departments?: DepartmentCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
     billingHistory?: BillingHistoryCreateNestedManyWithoutCompanyInput
+    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
+    departments?: DepartmentCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutCompanyUsersInput = {
@@ -36224,95 +36224,16 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
-    departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
     billingHistory?: BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput
+    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
+    departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutCompanyUsersInput = {
     where: CompanyWhereUniqueInput
     create: XOR<CompanyCreateWithoutCompanyUsersInput, CompanyUncheckedCreateWithoutCompanyUsersInput>
-  }
-
-  export type UserCreateWithoutCompanyUsersInput = {
-    id?: string
-    email: string
-    emailVerified?: boolean
-    firstName?: string | null
-    lastName?: string | null
-    displayName?: string | null
-    avatar?: string | null
-    phone?: string | null
-    password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    timezone?: string
-    language?: string
-    theme?: string
-    isActive?: boolean
-    isVerified?: boolean
-    isSuspended?: boolean
-    suspendedReason?: string | null
-    lastLoginAt?: Date | string | null
-    lastLoginIp?: string | null
-    failedLoginCount?: number
-    lockedUntil?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
-    sessions?: UserSessionCreateNestedManyWithoutUserInput
-    loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
-    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
-    invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
-    receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
-    notifications?: UserNotificationCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutCompanyUsersInput = {
-    id?: string
-    email: string
-    emailVerified?: boolean
-    firstName?: string | null
-    lastName?: string | null
-    displayName?: string | null
-    avatar?: string | null
-    phone?: string | null
-    password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    timezone?: string
-    language?: string
-    theme?: string
-    isActive?: boolean
-    isVerified?: boolean
-    isSuspended?: boolean
-    suspendedReason?: string | null
-    lastLoginAt?: Date | string | null
-    lastLoginIp?: string | null
-    failedLoginCount?: number
-    lockedUntil?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
-    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
-    loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
-    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
-    invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
-    receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
-    notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutCompanyUsersInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCompanyUsersInput, UserUncheckedCreateWithoutCompanyUsersInput>
   }
 
   export type DepartmentCreateWithoutEmployeesInput = {
@@ -36373,9 +36294,9 @@ export namespace Prisma {
     joinedAt?: Date | string
     lastActiveAt?: Date | string | null
     company: CompanyCreateNestedOneWithoutCompanyUsersInput
-    user: UserCreateNestedOneWithoutCompanyUsersInput
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     manager?: CompanyUserCreateNestedOneWithoutReportsInput
+    user: UserCreateNestedOneWithoutCompanyUsersInput
   }
 
   export type CompanyUserUncheckedCreateWithoutReportsInput = {
@@ -36426,9 +36347,9 @@ export namespace Prisma {
     joinedAt?: Date | string
     lastActiveAt?: Date | string | null
     company: CompanyCreateNestedOneWithoutCompanyUsersInput
-    user: UserCreateNestedOneWithoutCompanyUsersInput
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     reports?: CompanyUserCreateNestedManyWithoutManagerInput
+    user: UserCreateNestedOneWithoutCompanyUsersInput
   }
 
   export type CompanyUserUncheckedCreateWithoutManagerInput = {
@@ -36463,6 +36384,85 @@ export namespace Prisma {
   export type CompanyUserCreateManyManagerInputEnvelope = {
     data: CompanyUserCreateManyManagerInput | CompanyUserCreateManyManagerInput[]
     skipDuplicates?: boolean
+  }
+
+  export type UserCreateWithoutCompanyUsersInput = {
+    id?: string
+    email: string
+    emailVerified?: boolean
+    firstName?: string | null
+    lastName?: string | null
+    displayName?: string | null
+    avatar?: string | null
+    phone?: string | null
+    password?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    timezone?: string
+    language?: string
+    theme?: string
+    isActive?: boolean
+    isVerified?: boolean
+    isSuspended?: boolean
+    suspendedReason?: string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
+    receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
+    notifications?: UserNotificationCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    sessions?: UserSessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCompanyUsersInput = {
+    id?: string
+    email: string
+    emailVerified?: boolean
+    firstName?: string | null
+    lastName?: string | null
+    displayName?: string | null
+    avatar?: string | null
+    phone?: string | null
+    password?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    timezone?: string
+    language?: string
+    theme?: string
+    isActive?: boolean
+    isVerified?: boolean
+    isSuspended?: boolean
+    suspendedReason?: string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+    receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
+    notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCompanyUsersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCompanyUsersInput, UserUncheckedCreateWithoutCompanyUsersInput>
   }
 
   export type CompanyUpsertWithoutCompanyUsersInput = {
@@ -36515,11 +36515,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
-    departments?: DepartmentUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
     billingHistory?: BillingHistoryUpdateManyWithoutCompanyNestedInput
+    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
+    departments?: DepartmentUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutCompanyUsersInput = {
@@ -36561,96 +36561,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
-    departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
     billingHistory?: BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput
-  }
-
-  export type UserUpsertWithoutCompanyUsersInput = {
-    update: XOR<UserUpdateWithoutCompanyUsersInput, UserUncheckedUpdateWithoutCompanyUsersInput>
-    create: XOR<UserCreateWithoutCompanyUsersInput, UserUncheckedCreateWithoutCompanyUsersInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutCompanyUsersInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutCompanyUsersInput, UserUncheckedUpdateWithoutCompanyUsersInput>
-  }
-
-  export type UserUpdateWithoutCompanyUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    timezone?: StringFieldUpdateOperationsInput | string
-    language?: StringFieldUpdateOperationsInput | string
-    theme?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isSuspended?: BoolFieldUpdateOperationsInput | boolean
-    suspendedReason?: NullableStringFieldUpdateOperationsInput | string | null
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
-    failedLoginCount?: IntFieldUpdateOperationsInput | number
-    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUpdateManyWithoutUserNestedInput
-    loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
-    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
-    invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
-    receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
-    notifications?: UserNotificationUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCompanyUsersInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    timezone?: StringFieldUpdateOperationsInput | string
-    language?: StringFieldUpdateOperationsInput | string
-    theme?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isSuspended?: BoolFieldUpdateOperationsInput | boolean
-    suspendedReason?: NullableStringFieldUpdateOperationsInput | string | null
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
-    failedLoginCount?: IntFieldUpdateOperationsInput | number
-    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
-    loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
-    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
-    receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
+    departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type DepartmentUpsertWithoutEmployeesInput = {
@@ -36728,9 +36643,9 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutCompanyUsersNestedInput
-    user?: UserUpdateOneRequiredWithoutCompanyUsersNestedInput
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     manager?: CompanyUserUpdateOneWithoutReportsNestedInput
+    user?: UserUpdateOneRequiredWithoutCompanyUsersNestedInput
   }
 
   export type CompanyUserUncheckedUpdateWithoutReportsInput = {
@@ -36773,6 +36688,149 @@ export namespace Prisma {
     data: XOR<CompanyUserUpdateManyMutationInput, CompanyUserUncheckedUpdateManyWithoutManagerInput>
   }
 
+  export type UserUpsertWithoutCompanyUsersInput = {
+    update: XOR<UserUpdateWithoutCompanyUsersInput, UserUncheckedUpdateWithoutCompanyUsersInput>
+    create: XOR<UserCreateWithoutCompanyUsersInput, UserUncheckedCreateWithoutCompanyUsersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCompanyUsersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCompanyUsersInput, UserUncheckedUpdateWithoutCompanyUsersInput>
+  }
+
+  export type UserUpdateWithoutCompanyUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: StringFieldUpdateOperationsInput | string
+    language?: StringFieldUpdateOperationsInput | string
+    theme?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isSuspended?: BoolFieldUpdateOperationsInput | boolean
+    suspendedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
+    receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
+    notifications?: UserNotificationUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCompanyUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: StringFieldUpdateOperationsInput | string
+    language?: StringFieldUpdateOperationsInput | string
+    theme?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isSuspended?: BoolFieldUpdateOperationsInput | boolean
+    suspendedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+    receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
+    notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type CompanyUserCreateWithoutDepartmentInput = {
+    id?: string
+    role?: $Enums.CompanyRole
+    title?: string | null
+    employeeId?: string | null
+    startDate?: Date | string
+    endDate?: Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    isOwner?: boolean
+    canInvite?: boolean
+    canManageBilling?: boolean
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.EmploymentStatus
+    invitedBy?: string | null
+    invitedAt?: Date | string | null
+    joinedAt?: Date | string
+    lastActiveAt?: Date | string | null
+    company: CompanyCreateNestedOneWithoutCompanyUsersInput
+    manager?: CompanyUserCreateNestedOneWithoutReportsInput
+    reports?: CompanyUserCreateNestedManyWithoutManagerInput
+    user: UserCreateNestedOneWithoutCompanyUsersInput
+  }
+
+  export type CompanyUserUncheckedCreateWithoutDepartmentInput = {
+    id?: string
+    companyId: string
+    userId: string
+    role?: $Enums.CompanyRole
+    title?: string | null
+    employeeId?: string | null
+    startDate?: Date | string
+    endDate?: Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    isOwner?: boolean
+    canInvite?: boolean
+    canManageBilling?: boolean
+    managerId?: string | null
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.EmploymentStatus
+    invitedBy?: string | null
+    invitedAt?: Date | string | null
+    joinedAt?: Date | string
+    lastActiveAt?: Date | string | null
+    reports?: CompanyUserUncheckedCreateNestedManyWithoutManagerInput
+  }
+
+  export type CompanyUserCreateOrConnectWithoutDepartmentInput = {
+    where: CompanyUserWhereUniqueInput
+    create: XOR<CompanyUserCreateWithoutDepartmentInput, CompanyUserUncheckedCreateWithoutDepartmentInput>
+  }
+
+  export type CompanyUserCreateManyDepartmentInputEnvelope = {
+    data: CompanyUserCreateManyDepartmentInput | CompanyUserCreateManyDepartmentInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CompanyCreateWithoutDepartmentsInput = {
     id?: string
     name: string
@@ -36812,11 +36870,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
-    companyUsers?: CompanyUserCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
     billingHistory?: BillingHistoryCreateNestedManyWithoutCompanyInput
+    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutDepartmentsInput = {
@@ -36858,11 +36916,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
     billingHistory?: BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput
+    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutDepartmentsInput = {
@@ -36882,9 +36940,9 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    employees?: CompanyUserCreateNestedManyWithoutDepartmentInput
     company: CompanyCreateNestedOneWithoutDepartmentsInput
     parent?: DepartmentCreateNestedOneWithoutChildrenInput
-    employees?: CompanyUserCreateNestedManyWithoutDepartmentInput
   }
 
   export type DepartmentUncheckedCreateWithoutChildrenInput = {
@@ -36921,9 +36979,9 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    employees?: CompanyUserCreateNestedManyWithoutDepartmentInput
     company: CompanyCreateNestedOneWithoutDepartmentsInput
     children?: DepartmentCreateNestedManyWithoutParentInput
-    employees?: CompanyUserCreateNestedManyWithoutDepartmentInput
   }
 
   export type DepartmentUncheckedCreateWithoutParentInput = {
@@ -36939,8 +36997,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    children?: DepartmentUncheckedCreateNestedManyWithoutParentInput
     employees?: CompanyUserUncheckedCreateNestedManyWithoutDepartmentInput
+    children?: DepartmentUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type DepartmentCreateOrConnectWithoutParentInput = {
@@ -36953,62 +37011,20 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type CompanyUserCreateWithoutDepartmentInput = {
-    id?: string
-    role?: $Enums.CompanyRole
-    title?: string | null
-    employeeId?: string | null
-    startDate?: Date | string
-    endDate?: Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
-    isActive?: boolean
-    isOwner?: boolean
-    canInvite?: boolean
-    canManageBilling?: boolean
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.EmploymentStatus
-    invitedBy?: string | null
-    invitedAt?: Date | string | null
-    joinedAt?: Date | string
-    lastActiveAt?: Date | string | null
-    company: CompanyCreateNestedOneWithoutCompanyUsersInput
-    user: UserCreateNestedOneWithoutCompanyUsersInput
-    manager?: CompanyUserCreateNestedOneWithoutReportsInput
-    reports?: CompanyUserCreateNestedManyWithoutManagerInput
-  }
-
-  export type CompanyUserUncheckedCreateWithoutDepartmentInput = {
-    id?: string
-    companyId: string
-    userId: string
-    role?: $Enums.CompanyRole
-    title?: string | null
-    employeeId?: string | null
-    startDate?: Date | string
-    endDate?: Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
-    isActive?: boolean
-    isOwner?: boolean
-    canInvite?: boolean
-    canManageBilling?: boolean
-    managerId?: string | null
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.EmploymentStatus
-    invitedBy?: string | null
-    invitedAt?: Date | string | null
-    joinedAt?: Date | string
-    lastActiveAt?: Date | string | null
-    reports?: CompanyUserUncheckedCreateNestedManyWithoutManagerInput
-  }
-
-  export type CompanyUserCreateOrConnectWithoutDepartmentInput = {
+  export type CompanyUserUpsertWithWhereUniqueWithoutDepartmentInput = {
     where: CompanyUserWhereUniqueInput
+    update: XOR<CompanyUserUpdateWithoutDepartmentInput, CompanyUserUncheckedUpdateWithoutDepartmentInput>
     create: XOR<CompanyUserCreateWithoutDepartmentInput, CompanyUserUncheckedCreateWithoutDepartmentInput>
   }
 
-  export type CompanyUserCreateManyDepartmentInputEnvelope = {
-    data: CompanyUserCreateManyDepartmentInput | CompanyUserCreateManyDepartmentInput[]
-    skipDuplicates?: boolean
+  export type CompanyUserUpdateWithWhereUniqueWithoutDepartmentInput = {
+    where: CompanyUserWhereUniqueInput
+    data: XOR<CompanyUserUpdateWithoutDepartmentInput, CompanyUserUncheckedUpdateWithoutDepartmentInput>
+  }
+
+  export type CompanyUserUpdateManyWithWhereWithoutDepartmentInput = {
+    where: CompanyUserScalarWhereInput
+    data: XOR<CompanyUserUpdateManyMutationInput, CompanyUserUncheckedUpdateManyWithoutDepartmentInput>
   }
 
   export type CompanyUpsertWithoutDepartmentsInput = {
@@ -37061,11 +37077,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
-    companyUsers?: CompanyUserUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
     billingHistory?: BillingHistoryUpdateManyWithoutCompanyNestedInput
+    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutDepartmentsInput = {
@@ -37107,11 +37123,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
     billingHistory?: BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput
+    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type DepartmentUpsertWithoutChildrenInput = {
@@ -37137,9 +37153,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employees?: CompanyUserUpdateManyWithoutDepartmentNestedInput
     company?: CompanyUpdateOneRequiredWithoutDepartmentsNestedInput
     parent?: DepartmentUpdateOneWithoutChildrenNestedInput
-    employees?: CompanyUserUpdateManyWithoutDepartmentNestedInput
   }
 
   export type DepartmentUncheckedUpdateWithoutChildrenInput = {
@@ -37173,22 +37189,6 @@ export namespace Prisma {
   export type DepartmentUpdateManyWithWhereWithoutParentInput = {
     where: DepartmentScalarWhereInput
     data: XOR<DepartmentUpdateManyMutationInput, DepartmentUncheckedUpdateManyWithoutParentInput>
-  }
-
-  export type CompanyUserUpsertWithWhereUniqueWithoutDepartmentInput = {
-    where: CompanyUserWhereUniqueInput
-    update: XOR<CompanyUserUpdateWithoutDepartmentInput, CompanyUserUncheckedUpdateWithoutDepartmentInput>
-    create: XOR<CompanyUserCreateWithoutDepartmentInput, CompanyUserUncheckedCreateWithoutDepartmentInput>
-  }
-
-  export type CompanyUserUpdateWithWhereUniqueWithoutDepartmentInput = {
-    where: CompanyUserWhereUniqueInput
-    data: XOR<CompanyUserUpdateWithoutDepartmentInput, CompanyUserUncheckedUpdateWithoutDepartmentInput>
-  }
-
-  export type CompanyUserUpdateManyWithWhereWithoutDepartmentInput = {
-    where: CompanyUserScalarWhereInput
-    data: XOR<CompanyUserUpdateManyMutationInput, CompanyUserUncheckedUpdateManyWithoutDepartmentInput>
   }
 
   export type CompanyCreateWithoutLocationsInput = {
@@ -37230,11 +37230,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
+    billingHistory?: BillingHistoryCreateNestedManyWithoutCompanyInput
+    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
     companyUsers?: CompanyUserCreateNestedManyWithoutCompanyInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
-    billingHistory?: BillingHistoryCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutLocationsInput = {
@@ -37276,11 +37276,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
+    billingHistory?: BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput
+    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
     companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
-    billingHistory?: BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutLocationsInput = {
@@ -37338,11 +37338,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
+    billingHistory?: BillingHistoryUpdateManyWithoutCompanyNestedInput
+    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
     companyUsers?: CompanyUserUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
-    billingHistory?: BillingHistoryUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutLocationsInput = {
@@ -37384,11 +37384,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
+    billingHistory?: BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput
+    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
     companyUsers?: CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
-    billingHistory?: BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutIntegrationsInput = {
@@ -37430,11 +37430,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
+    billingHistory?: BillingHistoryCreateNestedManyWithoutCompanyInput
+    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
     companyUsers?: CompanyUserCreateNestedManyWithoutCompanyInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
-    billingHistory?: BillingHistoryCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutIntegrationsInput = {
@@ -37476,11 +37476,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
+    billingHistory?: BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput
+    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
     companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
-    billingHistory?: BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutIntegrationsInput = {
@@ -37538,11 +37538,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
+    billingHistory?: BillingHistoryUpdateManyWithoutCompanyNestedInput
+    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
     companyUsers?: CompanyUserUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
-    billingHistory?: BillingHistoryUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutIntegrationsInput = {
@@ -37584,11 +37584,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
+    billingHistory?: BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput
+    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
     companyUsers?: CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
-    billingHistory?: BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutAuditLogsInput = {
@@ -37630,11 +37630,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
+    billingHistory?: BillingHistoryCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
     companyUsers?: CompanyUserCreateNestedManyWithoutCompanyInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
-    billingHistory?: BillingHistoryCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutAuditLogsInput = {
@@ -37676,11 +37676,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
+    billingHistory?: BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
     companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
-    billingHistory?: BillingHistoryUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutAuditLogsInput = {
@@ -37738,11 +37738,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
+    billingHistory?: BillingHistoryUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
     companyUsers?: CompanyUserUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
-    billingHistory?: BillingHistoryUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutAuditLogsInput = {
@@ -37784,11 +37784,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
+    billingHistory?: BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
     companyUsers?: CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
-    billingHistory?: BillingHistoryUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyCreateWithoutBillingHistoryInput = {
@@ -37830,11 +37830,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
+    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
     companyUsers?: CompanyUserCreateNestedManyWithoutCompanyInput
     departments?: DepartmentCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyUncheckedCreateWithoutBillingHistoryInput = {
@@ -37876,11 +37876,11 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy: string
+    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
+    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
+    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
     companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutCompanyInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutCompanyInput
-    locations?: CompanyLocationUncheckedCreateNestedManyWithoutCompanyInput
-    integrations?: CompanyIntegrationUncheckedCreateNestedManyWithoutCompanyInput
-    auditLogs?: CompanyAuditLogUncheckedCreateNestedManyWithoutCompanyInput
   }
 
   export type CompanyCreateOrConnectWithoutBillingHistoryInput = {
@@ -37938,11 +37938,11 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
+    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
     companyUsers?: CompanyUserUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUpdateManyWithoutCompanyNestedInput
   }
 
   export type CompanyUncheckedUpdateWithoutBillingHistoryInput = {
@@ -37984,86 +37984,158 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: StringFieldUpdateOperationsInput | string
+    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
+    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
+    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
     companyUsers?: CompanyUserUncheckedUpdateManyWithoutCompanyNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutCompanyNestedInput
-    locations?: CompanyLocationUncheckedUpdateManyWithoutCompanyNestedInput
-    integrations?: CompanyIntegrationUncheckedUpdateManyWithoutCompanyNestedInput
-    auditLogs?: CompanyAuditLogUncheckedUpdateManyWithoutCompanyNestedInput
   }
 
-  export type UserRoleCreateWithoutUserInput = {
+  export type ApiKeyCreateWithoutUserInput = {
     id?: string
-    assignedBy?: string | null
-    assignedAt?: Date | string
+    name: string
+    keyHash: string
+    keyPrefix: string
+    scopes: JsonNullValueInput | InputJsonValue
+    lastUsedAt?: Date | string | null
+    usageCount?: number
+    rateLimit?: number | null
     expiresAt?: Date | string | null
     isActive?: boolean
-    role: RoleCreateNestedOneWithoutUserRolesInput
+    isRevoked?: boolean
+    revokedAt?: Date | string | null
+    revokedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type UserRoleUncheckedCreateWithoutUserInput = {
+  export type ApiKeyUncheckedCreateWithoutUserInput = {
     id?: string
-    roleId: string
-    assignedBy?: string | null
-    assignedAt?: Date | string
+    name: string
+    keyHash: string
+    keyPrefix: string
+    scopes: JsonNullValueInput | InputJsonValue
+    lastUsedAt?: Date | string | null
+    usageCount?: number
+    rateLimit?: number | null
     expiresAt?: Date | string | null
     isActive?: boolean
+    isRevoked?: boolean
+    revokedAt?: Date | string | null
+    revokedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
-  export type UserRoleCreateOrConnectWithoutUserInput = {
-    where: UserRoleWhereUniqueInput
-    create: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput>
+  export type ApiKeyCreateOrConnectWithoutUserInput = {
+    where: ApiKeyWhereUniqueInput
+    create: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput>
   }
 
-  export type UserRoleCreateManyUserInputEnvelope = {
-    data: UserRoleCreateManyUserInput | UserRoleCreateManyUserInput[]
+  export type ApiKeyCreateManyUserInputEnvelope = {
+    data: ApiKeyCreateManyUserInput | ApiKeyCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
-  export type UserSessionCreateWithoutUserInput = {
+  export type AuditLogCreateWithoutUserInput = {
     id?: string
-    token: string
-    refreshToken?: string | null
-    userAgent?: string | null
+    userEmail?: string | null
+    action: string
+    resource: string
+    resourceId?: string | null
+    oldValues?: NullableJsonNullValueInput | InputJsonValue
+    newValues?: NullableJsonNullValueInput | InputJsonValue
+    changes?: NullableJsonNullValueInput | InputJsonValue
     ipAddress?: string | null
-    deviceId?: string | null
-    deviceType?: string | null
-    browser?: string | null
-    location?: string | null
-    lastActivity?: Date | string
-    expiresAt: Date | string
-    isActive?: boolean
-    isRevoked?: boolean
-    revokedAt?: Date | string | null
-    revokedBy?: string | null
-    createdAt?: Date | string
+    userAgent?: string | null
+    sessionId?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    severity?: $Enums.AuditSeverity
+    timestamp?: Date | string
   }
 
-  export type UserSessionUncheckedCreateWithoutUserInput = {
+  export type AuditLogUncheckedCreateWithoutUserInput = {
     id?: string
-    token: string
-    refreshToken?: string | null
-    userAgent?: string | null
+    userEmail?: string | null
+    action: string
+    resource: string
+    resourceId?: string | null
+    oldValues?: NullableJsonNullValueInput | InputJsonValue
+    newValues?: NullableJsonNullValueInput | InputJsonValue
+    changes?: NullableJsonNullValueInput | InputJsonValue
     ipAddress?: string | null
-    deviceId?: string | null
-    deviceType?: string | null
-    browser?: string | null
-    location?: string | null
-    lastActivity?: Date | string
-    expiresAt: Date | string
+    userAgent?: string | null
+    sessionId?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    severity?: $Enums.AuditSeverity
+    timestamp?: Date | string
+  }
+
+  export type AuditLogCreateOrConnectWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AuditLogCreateManyUserInputEnvelope = {
+    data: AuditLogCreateManyUserInput | AuditLogCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CompanyUserCreateWithoutUserInput = {
+    id?: string
+    role?: $Enums.CompanyRole
+    title?: string | null
+    employeeId?: string | null
+    startDate?: Date | string
+    endDate?: Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
     isActive?: boolean
-    isRevoked?: boolean
-    revokedAt?: Date | string | null
-    revokedBy?: string | null
-    createdAt?: Date | string
+    isOwner?: boolean
+    canInvite?: boolean
+    canManageBilling?: boolean
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.EmploymentStatus
+    invitedBy?: string | null
+    invitedAt?: Date | string | null
+    joinedAt?: Date | string
+    lastActiveAt?: Date | string | null
+    company: CompanyCreateNestedOneWithoutCompanyUsersInput
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    manager?: CompanyUserCreateNestedOneWithoutReportsInput
+    reports?: CompanyUserCreateNestedManyWithoutManagerInput
   }
 
-  export type UserSessionCreateOrConnectWithoutUserInput = {
-    where: UserSessionWhereUniqueInput
-    create: XOR<UserSessionCreateWithoutUserInput, UserSessionUncheckedCreateWithoutUserInput>
+  export type CompanyUserUncheckedCreateWithoutUserInput = {
+    id?: string
+    companyId: string
+    role?: $Enums.CompanyRole
+    title?: string | null
+    departmentId?: string | null
+    employeeId?: string | null
+    startDate?: Date | string
+    endDate?: Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    isOwner?: boolean
+    canInvite?: boolean
+    canManageBilling?: boolean
+    managerId?: string | null
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.EmploymentStatus
+    invitedBy?: string | null
+    invitedAt?: Date | string | null
+    joinedAt?: Date | string
+    lastActiveAt?: Date | string | null
+    reports?: CompanyUserUncheckedCreateNestedManyWithoutManagerInput
   }
 
-  export type UserSessionCreateManyUserInputEnvelope = {
-    data: UserSessionCreateManyUserInput | UserSessionCreateManyUserInput[]
+  export type CompanyUserCreateOrConnectWithoutUserInput = {
+    where: CompanyUserWhereUniqueInput
+    create: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput>
+  }
+
+  export type CompanyUserCreateManyUserInputEnvelope = {
+    data: CompanyUserCreateManyUserInput | CompanyUserCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -38215,78 +38287,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AuditLogCreateWithoutUserInput = {
-    id?: string
-    userEmail?: string | null
-    action: string
-    resource: string
-    resourceId?: string | null
-    oldValues?: NullableJsonNullValueInput | InputJsonValue
-    newValues?: NullableJsonNullValueInput | InputJsonValue
-    changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: string | null
-    userAgent?: string | null
-    sessionId?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: $Enums.AuditSeverity
-    timestamp?: Date | string
-  }
-
-  export type AuditLogUncheckedCreateWithoutUserInput = {
-    id?: string
-    userEmail?: string | null
-    action: string
-    resource: string
-    resourceId?: string | null
-    oldValues?: NullableJsonNullValueInput | InputJsonValue
-    newValues?: NullableJsonNullValueInput | InputJsonValue
-    changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: string | null
-    userAgent?: string | null
-    sessionId?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: $Enums.AuditSeverity
-    timestamp?: Date | string
-  }
-
-  export type AuditLogCreateOrConnectWithoutUserInput = {
-    where: AuditLogWhereUniqueInput
-    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
-  }
-
-  export type AuditLogCreateManyUserInputEnvelope = {
-    data: AuditLogCreateManyUserInput | AuditLogCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserPreferenceCreateWithoutUserInput = {
-    id?: string
-    category: string
-    key: string
-    value: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type UserPreferenceUncheckedCreateWithoutUserInput = {
-    id?: string
-    category: string
-    key: string
-    value: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type UserPreferenceCreateOrConnectWithoutUserInput = {
-    where: UserPreferenceWhereUniqueInput
-    create: XOR<UserPreferenceCreateWithoutUserInput, UserPreferenceUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserPreferenceCreateManyUserInputEnvelope = {
-    data: UserPreferenceCreateManyUserInput | UserPreferenceCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
   export type UserNotificationCreateWithoutUserInput = {
     id?: string
     title: string
@@ -38339,176 +38339,199 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ApiKeyCreateWithoutUserInput = {
+  export type UserPreferenceCreateWithoutUserInput = {
     id?: string
-    name: string
-    keyHash: string
-    keyPrefix: string
-    scopes: JsonNullValueInput | InputJsonValue
-    lastUsedAt?: Date | string | null
-    usageCount?: number
-    rateLimit?: number | null
-    expiresAt?: Date | string | null
-    isActive?: boolean
-    isRevoked?: boolean
-    revokedAt?: Date | string | null
-    revokedBy?: string | null
+    category: string
+    key: string
+    value: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type ApiKeyUncheckedCreateWithoutUserInput = {
+  export type UserPreferenceUncheckedCreateWithoutUserInput = {
     id?: string
-    name: string
-    keyHash: string
-    keyPrefix: string
-    scopes: JsonNullValueInput | InputJsonValue
-    lastUsedAt?: Date | string | null
-    usageCount?: number
-    rateLimit?: number | null
-    expiresAt?: Date | string | null
-    isActive?: boolean
-    isRevoked?: boolean
-    revokedAt?: Date | string | null
-    revokedBy?: string | null
+    category: string
+    key: string
+    value: JsonNullValueInput | InputJsonValue
     createdAt?: Date | string
     updatedAt?: Date | string
   }
 
-  export type ApiKeyCreateOrConnectWithoutUserInput = {
-    where: ApiKeyWhereUniqueInput
-    create: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput>
+  export type UserPreferenceCreateOrConnectWithoutUserInput = {
+    where: UserPreferenceWhereUniqueInput
+    create: XOR<UserPreferenceCreateWithoutUserInput, UserPreferenceUncheckedCreateWithoutUserInput>
   }
 
-  export type ApiKeyCreateManyUserInputEnvelope = {
-    data: ApiKeyCreateManyUserInput | ApiKeyCreateManyUserInput[]
+  export type UserPreferenceCreateManyUserInputEnvelope = {
+    data: UserPreferenceCreateManyUserInput | UserPreferenceCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
-  export type CompanyUserCreateWithoutUserInput = {
+  export type UserRoleCreateWithoutUserInput = {
     id?: string
-    role?: $Enums.CompanyRole
-    title?: string | null
-    employeeId?: string | null
-    startDate?: Date | string
-    endDate?: Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
+    assignedBy?: string | null
+    assignedAt?: Date | string
+    expiresAt?: Date | string | null
     isActive?: boolean
-    isOwner?: boolean
-    canInvite?: boolean
-    canManageBilling?: boolean
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.EmploymentStatus
-    invitedBy?: string | null
-    invitedAt?: Date | string | null
-    joinedAt?: Date | string
-    lastActiveAt?: Date | string | null
-    company: CompanyCreateNestedOneWithoutCompanyUsersInput
-    department?: DepartmentCreateNestedOneWithoutEmployeesInput
-    manager?: CompanyUserCreateNestedOneWithoutReportsInput
-    reports?: CompanyUserCreateNestedManyWithoutManagerInput
+    role: RoleCreateNestedOneWithoutUserRolesInput
   }
 
-  export type CompanyUserUncheckedCreateWithoutUserInput = {
+  export type UserRoleUncheckedCreateWithoutUserInput = {
     id?: string
-    companyId: string
-    role?: $Enums.CompanyRole
-    title?: string | null
-    departmentId?: string | null
-    employeeId?: string | null
-    startDate?: Date | string
-    endDate?: Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
+    roleId: string
+    assignedBy?: string | null
+    assignedAt?: Date | string
+    expiresAt?: Date | string | null
     isActive?: boolean
-    isOwner?: boolean
-    canInvite?: boolean
-    canManageBilling?: boolean
-    managerId?: string | null
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.EmploymentStatus
-    invitedBy?: string | null
-    invitedAt?: Date | string | null
-    joinedAt?: Date | string
-    lastActiveAt?: Date | string | null
-    reports?: CompanyUserUncheckedCreateNestedManyWithoutManagerInput
   }
 
-  export type CompanyUserCreateOrConnectWithoutUserInput = {
-    where: CompanyUserWhereUniqueInput
-    create: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput>
-  }
-
-  export type CompanyUserCreateManyUserInputEnvelope = {
-    data: CompanyUserCreateManyUserInput | CompanyUserCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserRoleUpsertWithWhereUniqueWithoutUserInput = {
+  export type UserRoleCreateOrConnectWithoutUserInput = {
     where: UserRoleWhereUniqueInput
-    update: XOR<UserRoleUpdateWithoutUserInput, UserRoleUncheckedUpdateWithoutUserInput>
     create: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput>
   }
 
-  export type UserRoleUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserRoleWhereUniqueInput
-    data: XOR<UserRoleUpdateWithoutUserInput, UserRoleUncheckedUpdateWithoutUserInput>
+  export type UserRoleCreateManyUserInputEnvelope = {
+    data: UserRoleCreateManyUserInput | UserRoleCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
-  export type UserRoleUpdateManyWithWhereWithoutUserInput = {
-    where: UserRoleScalarWhereInput
-    data: XOR<UserRoleUpdateManyMutationInput, UserRoleUncheckedUpdateManyWithoutUserInput>
+  export type UserSessionCreateWithoutUserInput = {
+    id?: string
+    token: string
+    refreshToken?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    deviceId?: string | null
+    deviceType?: string | null
+    browser?: string | null
+    location?: string | null
+    lastActivity?: Date | string
+    expiresAt: Date | string
+    isActive?: boolean
+    isRevoked?: boolean
+    revokedAt?: Date | string | null
+    revokedBy?: string | null
+    createdAt?: Date | string
   }
 
-  export type UserRoleScalarWhereInput = {
-    AND?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
-    OR?: UserRoleScalarWhereInput[]
-    NOT?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
-    id?: StringFilter<"UserRole"> | string
-    userId?: StringFilter<"UserRole"> | string
-    roleId?: StringFilter<"UserRole"> | string
-    assignedBy?: StringNullableFilter<"UserRole"> | string | null
-    assignedAt?: DateTimeFilter<"UserRole"> | Date | string
-    expiresAt?: DateTimeNullableFilter<"UserRole"> | Date | string | null
-    isActive?: BoolFilter<"UserRole"> | boolean
+  export type UserSessionUncheckedCreateWithoutUserInput = {
+    id?: string
+    token: string
+    refreshToken?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    deviceId?: string | null
+    deviceType?: string | null
+    browser?: string | null
+    location?: string | null
+    lastActivity?: Date | string
+    expiresAt: Date | string
+    isActive?: boolean
+    isRevoked?: boolean
+    revokedAt?: Date | string | null
+    revokedBy?: string | null
+    createdAt?: Date | string
   }
 
-  export type UserSessionUpsertWithWhereUniqueWithoutUserInput = {
+  export type UserSessionCreateOrConnectWithoutUserInput = {
     where: UserSessionWhereUniqueInput
-    update: XOR<UserSessionUpdateWithoutUserInput, UserSessionUncheckedUpdateWithoutUserInput>
     create: XOR<UserSessionCreateWithoutUserInput, UserSessionUncheckedCreateWithoutUserInput>
   }
 
-  export type UserSessionUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserSessionWhereUniqueInput
-    data: XOR<UserSessionUpdateWithoutUserInput, UserSessionUncheckedUpdateWithoutUserInput>
+  export type UserSessionCreateManyUserInputEnvelope = {
+    data: UserSessionCreateManyUserInput | UserSessionCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
-  export type UserSessionUpdateManyWithWhereWithoutUserInput = {
-    where: UserSessionScalarWhereInput
-    data: XOR<UserSessionUpdateManyMutationInput, UserSessionUncheckedUpdateManyWithoutUserInput>
+  export type ApiKeyUpsertWithWhereUniqueWithoutUserInput = {
+    where: ApiKeyWhereUniqueInput
+    update: XOR<ApiKeyUpdateWithoutUserInput, ApiKeyUncheckedUpdateWithoutUserInput>
+    create: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput>
   }
 
-  export type UserSessionScalarWhereInput = {
-    AND?: UserSessionScalarWhereInput | UserSessionScalarWhereInput[]
-    OR?: UserSessionScalarWhereInput[]
-    NOT?: UserSessionScalarWhereInput | UserSessionScalarWhereInput[]
-    id?: StringFilter<"UserSession"> | string
-    userId?: StringFilter<"UserSession"> | string
-    token?: StringFilter<"UserSession"> | string
-    refreshToken?: StringNullableFilter<"UserSession"> | string | null
-    userAgent?: StringNullableFilter<"UserSession"> | string | null
-    ipAddress?: StringNullableFilter<"UserSession"> | string | null
-    deviceId?: StringNullableFilter<"UserSession"> | string | null
-    deviceType?: StringNullableFilter<"UserSession"> | string | null
-    browser?: StringNullableFilter<"UserSession"> | string | null
-    location?: StringNullableFilter<"UserSession"> | string | null
-    lastActivity?: DateTimeFilter<"UserSession"> | Date | string
-    expiresAt?: DateTimeFilter<"UserSession"> | Date | string
-    isActive?: BoolFilter<"UserSession"> | boolean
-    isRevoked?: BoolFilter<"UserSession"> | boolean
-    revokedAt?: DateTimeNullableFilter<"UserSession"> | Date | string | null
-    revokedBy?: StringNullableFilter<"UserSession"> | string | null
-    createdAt?: DateTimeFilter<"UserSession"> | Date | string
+  export type ApiKeyUpdateWithWhereUniqueWithoutUserInput = {
+    where: ApiKeyWhereUniqueInput
+    data: XOR<ApiKeyUpdateWithoutUserInput, ApiKeyUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ApiKeyUpdateManyWithWhereWithoutUserInput = {
+    where: ApiKeyScalarWhereInput
+    data: XOR<ApiKeyUpdateManyMutationInput, ApiKeyUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ApiKeyScalarWhereInput = {
+    AND?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
+    OR?: ApiKeyScalarWhereInput[]
+    NOT?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
+    id?: StringFilter<"ApiKey"> | string
+    userId?: StringNullableFilter<"ApiKey"> | string | null
+    name?: StringFilter<"ApiKey"> | string
+    keyHash?: StringFilter<"ApiKey"> | string
+    keyPrefix?: StringFilter<"ApiKey"> | string
+    scopes?: JsonFilter<"ApiKey">
+    lastUsedAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
+    usageCount?: IntFilter<"ApiKey"> | number
+    rateLimit?: IntNullableFilter<"ApiKey"> | number | null
+    expiresAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
+    isActive?: BoolFilter<"ApiKey"> | boolean
+    isRevoked?: BoolFilter<"ApiKey"> | boolean
+    revokedAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
+    revokedBy?: StringNullableFilter<"ApiKey"> | string | null
+    createdAt?: DateTimeFilter<"ApiKey"> | Date | string
+    updatedAt?: DateTimeFilter<"ApiKey"> | Date | string
+  }
+
+  export type AuditLogUpsertWithWhereUniqueWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    update: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
+    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AuditLogUpdateWithWhereUniqueWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    data: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AuditLogUpdateManyWithWhereWithoutUserInput = {
+    where: AuditLogScalarWhereInput
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AuditLogScalarWhereInput = {
+    AND?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    OR?: AuditLogScalarWhereInput[]
+    NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    userId?: StringNullableFilter<"AuditLog"> | string | null
+    userEmail?: StringNullableFilter<"AuditLog"> | string | null
+    action?: StringFilter<"AuditLog"> | string
+    resource?: StringFilter<"AuditLog"> | string
+    resourceId?: StringNullableFilter<"AuditLog"> | string | null
+    oldValues?: JsonNullableFilter<"AuditLog">
+    newValues?: JsonNullableFilter<"AuditLog">
+    changes?: JsonNullableFilter<"AuditLog">
+    ipAddress?: StringNullableFilter<"AuditLog"> | string | null
+    userAgent?: StringNullableFilter<"AuditLog"> | string | null
+    sessionId?: StringNullableFilter<"AuditLog"> | string | null
+    metadata?: JsonNullableFilter<"AuditLog">
+    severity?: EnumAuditSeverityFilter<"AuditLog"> | $Enums.AuditSeverity
+    timestamp?: DateTimeFilter<"AuditLog"> | Date | string
+  }
+
+  export type CompanyUserUpsertWithWhereUniqueWithoutUserInput = {
+    where: CompanyUserWhereUniqueInput
+    update: XOR<CompanyUserUpdateWithoutUserInput, CompanyUserUncheckedUpdateWithoutUserInput>
+    create: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput>
+  }
+
+  export type CompanyUserUpdateWithWhereUniqueWithoutUserInput = {
+    where: CompanyUserWhereUniqueInput
+    data: XOR<CompanyUserUpdateWithoutUserInput, CompanyUserUncheckedUpdateWithoutUserInput>
+  }
+
+  export type CompanyUserUpdateManyWithWhereWithoutUserInput = {
+    where: CompanyUserScalarWhereInput
+    data: XOR<CompanyUserUpdateManyMutationInput, CompanyUserUncheckedUpdateManyWithoutUserInput>
   }
 
   export type LoginHistoryUpsertWithWhereUniqueWithoutUserInput = {
@@ -38625,72 +38648,6 @@ export namespace Prisma {
     data: XOR<UserInvitationUpdateManyMutationInput, UserInvitationUncheckedUpdateManyWithoutInvitedUserInput>
   }
 
-  export type AuditLogUpsertWithWhereUniqueWithoutUserInput = {
-    where: AuditLogWhereUniqueInput
-    update: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
-    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
-  }
-
-  export type AuditLogUpdateWithWhereUniqueWithoutUserInput = {
-    where: AuditLogWhereUniqueInput
-    data: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
-  }
-
-  export type AuditLogUpdateManyWithWhereWithoutUserInput = {
-    where: AuditLogScalarWhereInput
-    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type AuditLogScalarWhereInput = {
-    AND?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
-    OR?: AuditLogScalarWhereInput[]
-    NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
-    id?: StringFilter<"AuditLog"> | string
-    userId?: StringNullableFilter<"AuditLog"> | string | null
-    userEmail?: StringNullableFilter<"AuditLog"> | string | null
-    action?: StringFilter<"AuditLog"> | string
-    resource?: StringFilter<"AuditLog"> | string
-    resourceId?: StringNullableFilter<"AuditLog"> | string | null
-    oldValues?: JsonNullableFilter<"AuditLog">
-    newValues?: JsonNullableFilter<"AuditLog">
-    changes?: JsonNullableFilter<"AuditLog">
-    ipAddress?: StringNullableFilter<"AuditLog"> | string | null
-    userAgent?: StringNullableFilter<"AuditLog"> | string | null
-    sessionId?: StringNullableFilter<"AuditLog"> | string | null
-    metadata?: JsonNullableFilter<"AuditLog">
-    severity?: EnumAuditSeverityFilter<"AuditLog"> | $Enums.AuditSeverity
-    timestamp?: DateTimeFilter<"AuditLog"> | Date | string
-  }
-
-  export type UserPreferenceUpsertWithWhereUniqueWithoutUserInput = {
-    where: UserPreferenceWhereUniqueInput
-    update: XOR<UserPreferenceUpdateWithoutUserInput, UserPreferenceUncheckedUpdateWithoutUserInput>
-    create: XOR<UserPreferenceCreateWithoutUserInput, UserPreferenceUncheckedCreateWithoutUserInput>
-  }
-
-  export type UserPreferenceUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserPreferenceWhereUniqueInput
-    data: XOR<UserPreferenceUpdateWithoutUserInput, UserPreferenceUncheckedUpdateWithoutUserInput>
-  }
-
-  export type UserPreferenceUpdateManyWithWhereWithoutUserInput = {
-    where: UserPreferenceScalarWhereInput
-    data: XOR<UserPreferenceUpdateManyMutationInput, UserPreferenceUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type UserPreferenceScalarWhereInput = {
-    AND?: UserPreferenceScalarWhereInput | UserPreferenceScalarWhereInput[]
-    OR?: UserPreferenceScalarWhereInput[]
-    NOT?: UserPreferenceScalarWhereInput | UserPreferenceScalarWhereInput[]
-    id?: StringFilter<"UserPreference"> | string
-    userId?: StringFilter<"UserPreference"> | string
-    category?: StringFilter<"UserPreference"> | string
-    key?: StringFilter<"UserPreference"> | string
-    value?: JsonFilter<"UserPreference">
-    createdAt?: DateTimeFilter<"UserPreference"> | Date | string
-    updatedAt?: DateTimeFilter<"UserPreference"> | Date | string
-  }
-
   export type UserNotificationUpsertWithWhereUniqueWithoutUserInput = {
     where: UserNotificationWhereUniqueInput
     update: XOR<UserNotificationUpdateWithoutUserInput, UserNotificationUncheckedUpdateWithoutUserInput>
@@ -38732,58 +38689,101 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"UserNotification"> | Date | string
   }
 
-  export type ApiKeyUpsertWithWhereUniqueWithoutUserInput = {
-    where: ApiKeyWhereUniqueInput
-    update: XOR<ApiKeyUpdateWithoutUserInput, ApiKeyUncheckedUpdateWithoutUserInput>
-    create: XOR<ApiKeyCreateWithoutUserInput, ApiKeyUncheckedCreateWithoutUserInput>
+  export type UserPreferenceUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserPreferenceWhereUniqueInput
+    update: XOR<UserPreferenceUpdateWithoutUserInput, UserPreferenceUncheckedUpdateWithoutUserInput>
+    create: XOR<UserPreferenceCreateWithoutUserInput, UserPreferenceUncheckedCreateWithoutUserInput>
   }
 
-  export type ApiKeyUpdateWithWhereUniqueWithoutUserInput = {
-    where: ApiKeyWhereUniqueInput
-    data: XOR<ApiKeyUpdateWithoutUserInput, ApiKeyUncheckedUpdateWithoutUserInput>
+  export type UserPreferenceUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserPreferenceWhereUniqueInput
+    data: XOR<UserPreferenceUpdateWithoutUserInput, UserPreferenceUncheckedUpdateWithoutUserInput>
   }
 
-  export type ApiKeyUpdateManyWithWhereWithoutUserInput = {
-    where: ApiKeyScalarWhereInput
-    data: XOR<ApiKeyUpdateManyMutationInput, ApiKeyUncheckedUpdateManyWithoutUserInput>
+  export type UserPreferenceUpdateManyWithWhereWithoutUserInput = {
+    where: UserPreferenceScalarWhereInput
+    data: XOR<UserPreferenceUpdateManyMutationInput, UserPreferenceUncheckedUpdateManyWithoutUserInput>
   }
 
-  export type ApiKeyScalarWhereInput = {
-    AND?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
-    OR?: ApiKeyScalarWhereInput[]
-    NOT?: ApiKeyScalarWhereInput | ApiKeyScalarWhereInput[]
-    id?: StringFilter<"ApiKey"> | string
-    userId?: StringNullableFilter<"ApiKey"> | string | null
-    name?: StringFilter<"ApiKey"> | string
-    keyHash?: StringFilter<"ApiKey"> | string
-    keyPrefix?: StringFilter<"ApiKey"> | string
-    scopes?: JsonFilter<"ApiKey">
-    lastUsedAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
-    usageCount?: IntFilter<"ApiKey"> | number
-    rateLimit?: IntNullableFilter<"ApiKey"> | number | null
-    expiresAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
-    isActive?: BoolFilter<"ApiKey"> | boolean
-    isRevoked?: BoolFilter<"ApiKey"> | boolean
-    revokedAt?: DateTimeNullableFilter<"ApiKey"> | Date | string | null
-    revokedBy?: StringNullableFilter<"ApiKey"> | string | null
-    createdAt?: DateTimeFilter<"ApiKey"> | Date | string
-    updatedAt?: DateTimeFilter<"ApiKey"> | Date | string
+  export type UserPreferenceScalarWhereInput = {
+    AND?: UserPreferenceScalarWhereInput | UserPreferenceScalarWhereInput[]
+    OR?: UserPreferenceScalarWhereInput[]
+    NOT?: UserPreferenceScalarWhereInput | UserPreferenceScalarWhereInput[]
+    id?: StringFilter<"UserPreference"> | string
+    userId?: StringFilter<"UserPreference"> | string
+    category?: StringFilter<"UserPreference"> | string
+    key?: StringFilter<"UserPreference"> | string
+    value?: JsonFilter<"UserPreference">
+    createdAt?: DateTimeFilter<"UserPreference"> | Date | string
+    updatedAt?: DateTimeFilter<"UserPreference"> | Date | string
   }
 
-  export type CompanyUserUpsertWithWhereUniqueWithoutUserInput = {
-    where: CompanyUserWhereUniqueInput
-    update: XOR<CompanyUserUpdateWithoutUserInput, CompanyUserUncheckedUpdateWithoutUserInput>
-    create: XOR<CompanyUserCreateWithoutUserInput, CompanyUserUncheckedCreateWithoutUserInput>
+  export type UserRoleUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserRoleWhereUniqueInput
+    update: XOR<UserRoleUpdateWithoutUserInput, UserRoleUncheckedUpdateWithoutUserInput>
+    create: XOR<UserRoleCreateWithoutUserInput, UserRoleUncheckedCreateWithoutUserInput>
   }
 
-  export type CompanyUserUpdateWithWhereUniqueWithoutUserInput = {
-    where: CompanyUserWhereUniqueInput
-    data: XOR<CompanyUserUpdateWithoutUserInput, CompanyUserUncheckedUpdateWithoutUserInput>
+  export type UserRoleUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserRoleWhereUniqueInput
+    data: XOR<UserRoleUpdateWithoutUserInput, UserRoleUncheckedUpdateWithoutUserInput>
   }
 
-  export type CompanyUserUpdateManyWithWhereWithoutUserInput = {
-    where: CompanyUserScalarWhereInput
-    data: XOR<CompanyUserUpdateManyMutationInput, CompanyUserUncheckedUpdateManyWithoutUserInput>
+  export type UserRoleUpdateManyWithWhereWithoutUserInput = {
+    where: UserRoleScalarWhereInput
+    data: XOR<UserRoleUpdateManyMutationInput, UserRoleUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserRoleScalarWhereInput = {
+    AND?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
+    OR?: UserRoleScalarWhereInput[]
+    NOT?: UserRoleScalarWhereInput | UserRoleScalarWhereInput[]
+    id?: StringFilter<"UserRole"> | string
+    userId?: StringFilter<"UserRole"> | string
+    roleId?: StringFilter<"UserRole"> | string
+    assignedBy?: StringNullableFilter<"UserRole"> | string | null
+    assignedAt?: DateTimeFilter<"UserRole"> | Date | string
+    expiresAt?: DateTimeNullableFilter<"UserRole"> | Date | string | null
+    isActive?: BoolFilter<"UserRole"> | boolean
+  }
+
+  export type UserSessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserSessionWhereUniqueInput
+    update: XOR<UserSessionUpdateWithoutUserInput, UserSessionUncheckedUpdateWithoutUserInput>
+    create: XOR<UserSessionCreateWithoutUserInput, UserSessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserSessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserSessionWhereUniqueInput
+    data: XOR<UserSessionUpdateWithoutUserInput, UserSessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserSessionUpdateManyWithWhereWithoutUserInput = {
+    where: UserSessionScalarWhereInput
+    data: XOR<UserSessionUpdateManyMutationInput, UserSessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserSessionScalarWhereInput = {
+    AND?: UserSessionScalarWhereInput | UserSessionScalarWhereInput[]
+    OR?: UserSessionScalarWhereInput[]
+    NOT?: UserSessionScalarWhereInput | UserSessionScalarWhereInput[]
+    id?: StringFilter<"UserSession"> | string
+    userId?: StringFilter<"UserSession"> | string
+    token?: StringFilter<"UserSession"> | string
+    refreshToken?: StringNullableFilter<"UserSession"> | string | null
+    userAgent?: StringNullableFilter<"UserSession"> | string | null
+    ipAddress?: StringNullableFilter<"UserSession"> | string | null
+    deviceId?: StringNullableFilter<"UserSession"> | string | null
+    deviceType?: StringNullableFilter<"UserSession"> | string | null
+    browser?: StringNullableFilter<"UserSession"> | string | null
+    location?: StringNullableFilter<"UserSession"> | string | null
+    lastActivity?: DateTimeFilter<"UserSession"> | Date | string
+    expiresAt?: DateTimeFilter<"UserSession"> | Date | string
+    isActive?: BoolFilter<"UserSession"> | boolean
+    isRevoked?: BoolFilter<"UserSession"> | boolean
+    revokedAt?: DateTimeNullableFilter<"UserSession"> | Date | string | null
+    revokedBy?: StringNullableFilter<"UserSession"> | string | null
+    createdAt?: DateTimeFilter<"UserSession"> | Date | string
   }
 
   export type UserRoleCreateWithoutRoleInput = {
@@ -38830,85 +38830,6 @@ export namespace Prisma {
     data: XOR<UserRoleUpdateManyMutationInput, UserRoleUncheckedUpdateManyWithoutRoleInput>
   }
 
-  export type UserCreateWithoutUserRolesInput = {
-    id?: string
-    email: string
-    emailVerified?: boolean
-    firstName?: string | null
-    lastName?: string | null
-    displayName?: string | null
-    avatar?: string | null
-    phone?: string | null
-    password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    timezone?: string
-    language?: string
-    theme?: string
-    isActive?: boolean
-    isVerified?: boolean
-    isSuspended?: boolean
-    suspendedReason?: string | null
-    lastLoginAt?: Date | string | null
-    lastLoginIp?: string | null
-    failedLoginCount?: number
-    lockedUntil?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    sessions?: UserSessionCreateNestedManyWithoutUserInput
-    loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
-    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
-    invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
-    receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
-    notifications?: UserNotificationCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutUserRolesInput = {
-    id?: string
-    email: string
-    emailVerified?: boolean
-    firstName?: string | null
-    lastName?: string | null
-    displayName?: string | null
-    avatar?: string | null
-    phone?: string | null
-    password?: string | null
-    twoFactorEnabled?: boolean
-    twoFactorSecret?: string | null
-    timezone?: string
-    language?: string
-    theme?: string
-    isActive?: boolean
-    isVerified?: boolean
-    isSuspended?: boolean
-    suspendedReason?: string | null
-    lastLoginAt?: Date | string | null
-    lastLoginIp?: string | null
-    failedLoginCount?: number
-    lockedUntil?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
-    loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
-    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
-    invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
-    receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
-    notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutUserRolesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
-  }
-
   export type RoleCreateWithoutUserRolesInput = {
     id?: string
     name: string
@@ -38942,89 +38863,83 @@ export namespace Prisma {
     create: XOR<RoleCreateWithoutUserRolesInput, RoleUncheckedCreateWithoutUserRolesInput>
   }
 
-  export type UserUpsertWithoutUserRolesInput = {
-    update: XOR<UserUpdateWithoutUserRolesInput, UserUncheckedUpdateWithoutUserRolesInput>
+  export type UserCreateWithoutUserRolesInput = {
+    id?: string
+    email: string
+    emailVerified?: boolean
+    firstName?: string | null
+    lastName?: string | null
+    displayName?: string | null
+    avatar?: string | null
+    phone?: string | null
+    password?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    timezone?: string
+    language?: string
+    theme?: string
+    isActive?: boolean
+    isVerified?: boolean
+    isSuspended?: boolean
+    suspendedReason?: string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
+    loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
+    invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
+    receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
+    notifications?: UserNotificationCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    sessions?: UserSessionCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutUserRolesInput = {
+    id?: string
+    email: string
+    emailVerified?: boolean
+    firstName?: string | null
+    lastName?: string | null
+    displayName?: string | null
+    avatar?: string | null
+    phone?: string | null
+    password?: string | null
+    twoFactorEnabled?: boolean
+    twoFactorSecret?: string | null
+    timezone?: string
+    language?: string
+    theme?: string
+    isActive?: boolean
+    isVerified?: boolean
+    isSuspended?: boolean
+    suspendedReason?: string | null
+    lastLoginAt?: Date | string | null
+    lastLoginIp?: string | null
+    failedLoginCount?: number
+    lockedUntil?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
+    loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
+    passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
+    invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
+    receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
+    notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutUserRolesInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutUserRolesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutUserRolesInput, UserUncheckedUpdateWithoutUserRolesInput>
-  }
-
-  export type UserUpdateWithoutUserRolesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    timezone?: StringFieldUpdateOperationsInput | string
-    language?: StringFieldUpdateOperationsInput | string
-    theme?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isSuspended?: BoolFieldUpdateOperationsInput | boolean
-    suspendedReason?: NullableStringFieldUpdateOperationsInput | string | null
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
-    failedLoginCount?: IntFieldUpdateOperationsInput | number
-    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: UserSessionUpdateManyWithoutUserNestedInput
-    loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
-    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
-    invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
-    receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
-    notifications?: UserNotificationUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutUserRolesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    emailVerified?: BoolFieldUpdateOperationsInput | boolean
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    displayName?: NullableStringFieldUpdateOperationsInput | string | null
-    avatar?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: NullableStringFieldUpdateOperationsInput | string | null
-    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
-    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
-    timezone?: StringFieldUpdateOperationsInput | string
-    language?: StringFieldUpdateOperationsInput | string
-    theme?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isVerified?: BoolFieldUpdateOperationsInput | boolean
-    isSuspended?: BoolFieldUpdateOperationsInput | boolean
-    suspendedReason?: NullableStringFieldUpdateOperationsInput | string | null
-    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
-    failedLoginCount?: IntFieldUpdateOperationsInput | number
-    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
-    loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
-    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
-    invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
-    receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
-    notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type RoleUpsertWithoutUserRolesInput = {
@@ -39066,6 +38981,91 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserUpsertWithoutUserRolesInput = {
+    update: XOR<UserUpdateWithoutUserRolesInput, UserUncheckedUpdateWithoutUserRolesInput>
+    create: XOR<UserCreateWithoutUserRolesInput, UserUncheckedCreateWithoutUserRolesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUserRolesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUserRolesInput, UserUncheckedUpdateWithoutUserRolesInput>
+  }
+
+  export type UserUpdateWithoutUserRolesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: StringFieldUpdateOperationsInput | string
+    language?: StringFieldUpdateOperationsInput | string
+    theme?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isSuspended?: BoolFieldUpdateOperationsInput | boolean
+    suspendedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
+    loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
+    invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
+    receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
+    notifications?: UserNotificationUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUserRolesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    emailVerified?: BoolFieldUpdateOperationsInput | boolean
+    firstName?: NullableStringFieldUpdateOperationsInput | string | null
+    lastName?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: NullableStringFieldUpdateOperationsInput | string | null
+    avatar?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorEnabled?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorSecret?: NullableStringFieldUpdateOperationsInput | string | null
+    timezone?: StringFieldUpdateOperationsInput | string
+    language?: StringFieldUpdateOperationsInput | string
+    theme?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isSuspended?: BoolFieldUpdateOperationsInput | boolean
+    suspendedReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginIp?: NullableStringFieldUpdateOperationsInput | string | null
+    failedLoginCount?: IntFieldUpdateOperationsInput | number
+    lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
+    loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
+    passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
+    invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+    receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
+    notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutSessionsInput = {
     id?: string
     email: string
@@ -39091,16 +39091,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
     notifications?: UserNotificationCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -39128,16 +39128,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
     notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -39181,16 +39181,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -39218,16 +39218,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutLoginHistoryInput = {
@@ -39255,16 +39255,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
-    sessions?: UserSessionCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
     notifications?: UserNotificationCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    sessions?: UserSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLoginHistoryInput = {
@@ -39292,16 +39292,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
-    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
     notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLoginHistoryInput = {
@@ -39345,16 +39345,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLoginHistoryInput = {
@@ -39382,16 +39382,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPasswordResetsInput = {
@@ -39419,16 +39419,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
-    sessions?: UserSessionCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
     invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
     notifications?: UserNotificationCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    sessions?: UserSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPasswordResetsInput = {
@@ -39456,16 +39456,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
-    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
     invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
     notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPasswordResetsInput = {
@@ -39509,16 +39509,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPasswordResetsInput = {
@@ -39546,16 +39546,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutInvitationsInput = {
@@ -39583,16 +39583,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
-    sessions?: UserSessionCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
     notifications?: UserNotificationCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    sessions?: UserSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutInvitationsInput = {
@@ -39620,16 +39620,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
-    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
     notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutInvitationsInput = {
@@ -39662,16 +39662,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
-    sessions?: UserSessionCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
     notifications?: UserNotificationCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    sessions?: UserSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedInvitesInput = {
@@ -39699,16 +39699,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
-    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
     notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedInvitesInput = {
@@ -39752,16 +39752,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutInvitationsInput = {
@@ -39789,16 +39789,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedInvitesInput = {
@@ -39837,16 +39837,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedInvitesInput = {
@@ -39874,16 +39874,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutPreferencesInput = {
@@ -39911,16 +39911,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
-    sessions?: UserSessionCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     notifications?: UserNotificationCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    sessions?: UserSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPreferencesInput = {
@@ -39948,16 +39948,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
-    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPreferencesInput = {
@@ -40001,16 +40001,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPreferencesInput = {
@@ -40038,16 +40038,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutNotificationsInput = {
@@ -40075,16 +40075,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
-    sessions?: UserSessionCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
     preferences?: UserPreferenceCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    sessions?: UserSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -40112,16 +40112,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
-    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -40165,16 +40165,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
     preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -40202,16 +40202,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutAuditLogsInput = {
@@ -40239,16 +40239,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
-    sessions?: UserSessionCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
-    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
     notifications?: UserNotificationCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    sessions?: UserSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -40276,16 +40276,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
-    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
+    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
-    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
     notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
-    apiKeys?: ApiKeyUncheckedCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -40329,16 +40329,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
-    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -40366,16 +40366,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
-    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
-    apiKeys?: ApiKeyUncheckedUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutApiKeysInput = {
@@ -40403,16 +40403,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleCreateNestedManyWithoutUserInput
-    sessions?: UserSessionCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetCreateNestedManyWithoutUserInput
     invitations?: UserInvitationCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
     notifications?: UserNotificationCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleCreateNestedManyWithoutUserInput
+    sessions?: UserSessionCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutApiKeysInput = {
@@ -40440,16 +40440,16 @@ export namespace Prisma {
     lockedUntil?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
-    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
     loginHistory?: LoginHistoryUncheckedCreateNestedManyWithoutUserInput
     passwordResets?: PasswordResetUncheckedCreateNestedManyWithoutUserInput
     invitations?: UserInvitationUncheckedCreateNestedManyWithoutInvitedByInput
     receivedInvites?: UserInvitationUncheckedCreateNestedManyWithoutInvitedUserInput
-    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
     notifications?: UserNotificationUncheckedCreateNestedManyWithoutUserInput
-    companyUsers?: CompanyUserUncheckedCreateNestedManyWithoutUserInput
+    preferences?: UserPreferenceUncheckedCreateNestedManyWithoutUserInput
+    userRoles?: UserRoleUncheckedCreateNestedManyWithoutUserInput
+    sessions?: UserSessionUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutApiKeysInput = {
@@ -40493,16 +40493,16 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApiKeysInput = {
@@ -40530,16 +40530,87 @@ export namespace Prisma {
     lockedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
-    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
     loginHistory?: LoginHistoryUncheckedUpdateManyWithoutUserNestedInput
     passwordResets?: PasswordResetUncheckedUpdateManyWithoutUserNestedInput
     invitations?: UserInvitationUncheckedUpdateManyWithoutInvitedByNestedInput
     receivedInvites?: UserInvitationUncheckedUpdateManyWithoutInvitedUserNestedInput
-    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
-    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
     notifications?: UserNotificationUncheckedUpdateManyWithoutUserNestedInput
-    companyUsers?: CompanyUserUncheckedUpdateManyWithoutUserNestedInput
+    preferences?: UserPreferenceUncheckedUpdateManyWithoutUserNestedInput
+    userRoles?: UserRoleUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: UserSessionUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type BillingHistoryCreateManyCompanyInput = {
+    id?: string
+    periodStart: Date | string
+    periodEnd: Date | string
+    amount: Decimal | DecimalJsLike | number | string
+    tax?: Decimal | DecimalJsLike | number | string
+    total: Decimal | DecimalJsLike | number | string
+    currency?: string
+    description?: string | null
+    invoiceNumber?: string | null
+    paymentStatus?: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type CompanyAuditLogCreateManyCompanyInput = {
+    id?: string
+    userId?: string | null
+    userEmail?: string | null
+    action: string
+    resource: string
+    resourceId?: string | null
+    oldValues?: NullableJsonNullValueInput | InputJsonValue
+    newValues?: NullableJsonNullValueInput | InputJsonValue
+    changes?: NullableJsonNullValueInput | InputJsonValue
+    ipAddress?: string | null
+    userAgent?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    severity?: $Enums.AuditSeverity
+    timestamp?: Date | string
+  }
+
+  export type CompanyIntegrationCreateManyCompanyInput = {
+    id?: string
+    name: string
+    type: $Enums.IntegrationType
+    provider: string
+    config: JsonNullValueInput | InputJsonValue
+    credentials: JsonNullValueInput | InputJsonValue
+    mappings?: NullableJsonNullValueInput | InputJsonValue
+    autoSync?: boolean
+    syncInterval?: number
+    lastSyncAt?: Date | string | null
+    nextSyncAt?: Date | string | null
+    status?: $Enums.IntegrationStatus
+    isActive?: boolean
+    lastError?: string | null
+    errorCount?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanyLocationCreateManyCompanyInput = {
+    id?: string
+    name: string
+    type?: $Enums.LocationType
+    address: JsonNullValueInput | InputJsonValue
+    coordinates?: NullableJsonNullValueInput | InputJsonValue
+    timezone?: string
+    phone?: string | null
+    email?: string | null
+    managerName?: string | null
+    businessHours?: NullableJsonNullValueInput | InputJsonValue
+    isPrimary?: boolean
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type CompanyUserCreateManyCompanyInput = {
@@ -40580,246 +40651,106 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type CompanyLocationCreateManyCompanyInput = {
-    id?: string
-    name: string
-    type?: $Enums.LocationType
-    address: JsonNullValueInput | InputJsonValue
-    coordinates?: NullableJsonNullValueInput | InputJsonValue
-    timezone?: string
-    phone?: string | null
-    email?: string | null
-    managerName?: string | null
-    businessHours?: NullableJsonNullValueInput | InputJsonValue
-    isPrimary?: boolean
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type BillingHistoryUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CompanyIntegrationCreateManyCompanyInput = {
-    id?: string
-    name: string
-    type: $Enums.IntegrationType
-    provider: string
-    config: JsonNullValueInput | InputJsonValue
-    credentials: JsonNullValueInput | InputJsonValue
-    mappings?: NullableJsonNullValueInput | InputJsonValue
-    autoSync?: boolean
-    syncInterval?: number
-    lastSyncAt?: Date | string | null
-    nextSyncAt?: Date | string | null
-    status?: $Enums.IntegrationStatus
-    isActive?: boolean
-    lastError?: string | null
-    errorCount?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type BillingHistoryUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CompanyAuditLogCreateManyCompanyInput = {
-    id?: string
-    userId?: string | null
-    userEmail?: string | null
-    action: string
-    resource: string
-    resourceId?: string | null
+  export type BillingHistoryUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyAuditLogUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
     oldValues?: NullableJsonNullValueInput | InputJsonValue
     newValues?: NullableJsonNullValueInput | InputJsonValue
     changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: string | null
-    userAgent?: string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: $Enums.AuditSeverity
-    timestamp?: Date | string
+    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BillingHistoryCreateManyCompanyInput = {
-    id?: string
-    periodStart: Date | string
-    periodEnd: Date | string
-    amount: Decimal | DecimalJsLike | number | string
-    tax?: Decimal | DecimalJsLike | number | string
-    total: Decimal | DecimalJsLike | number | string
-    currency?: string
-    description?: string | null
-    invoiceNumber?: string | null
-    paymentStatus?: $Enums.PaymentStatus
-    paymentMethod?: string | null
-    paidAt?: Date | string | null
+  export type CompanyAuditLogUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    oldValues?: NullableJsonNullValueInput | InputJsonValue
+    newValues?: NullableJsonNullValueInput | InputJsonValue
+    changes?: NullableJsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
     metadata?: NullableJsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
+    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CompanyUserUpdateWithoutCompanyInput = {
+  export type CompanyAuditLogUncheckedUpdateManyWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isOwner?: BoolFieldUpdateOperationsInput | boolean
-    canInvite?: BoolFieldUpdateOperationsInput | boolean
-    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
-    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    user?: UserUpdateOneRequiredWithoutCompanyUsersNestedInput
-    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
-    manager?: CompanyUserUpdateOneWithoutReportsNestedInput
-    reports?: CompanyUserUpdateManyWithoutManagerNestedInput
-  }
-
-  export type CompanyUserUncheckedUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
-    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isOwner?: BoolFieldUpdateOperationsInput | boolean
-    canInvite?: BoolFieldUpdateOperationsInput | boolean
-    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
-    managerId?: NullableStringFieldUpdateOperationsInput | string | null
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
-    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reports?: CompanyUserUncheckedUpdateManyWithoutManagerNestedInput
-  }
-
-  export type CompanyUserUncheckedUpdateManyWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
-    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isOwner?: BoolFieldUpdateOperationsInput | boolean
-    canInvite?: BoolFieldUpdateOperationsInput | boolean
-    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
-    managerId?: NullableStringFieldUpdateOperationsInput | string | null
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
-    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type DepartmentUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
-    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
-    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parent?: DepartmentUpdateOneWithoutChildrenNestedInput
-    children?: DepartmentUpdateManyWithoutParentNestedInput
-    employees?: CompanyUserUpdateManyWithoutDepartmentNestedInput
-  }
-
-  export type DepartmentUncheckedUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
-    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
-    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    children?: DepartmentUncheckedUpdateManyWithoutParentNestedInput
-    employees?: CompanyUserUncheckedUpdateManyWithoutDepartmentNestedInput
-  }
-
-  export type DepartmentUncheckedUpdateManyWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    parentId?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
-    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
-    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CompanyLocationUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
-    address?: JsonNullValueInput | InputJsonValue
-    coordinates?: NullableJsonNullValueInput | InputJsonValue
-    timezone?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    managerName?: NullableStringFieldUpdateOperationsInput | string | null
-    businessHours?: NullableJsonNullValueInput | InputJsonValue
-    isPrimary?: BoolFieldUpdateOperationsInput | boolean
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CompanyLocationUncheckedUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
-    address?: JsonNullValueInput | InputJsonValue
-    coordinates?: NullableJsonNullValueInput | InputJsonValue
-    timezone?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    managerName?: NullableStringFieldUpdateOperationsInput | string | null
-    businessHours?: NullableJsonNullValueInput | InputJsonValue
-    isPrimary?: BoolFieldUpdateOperationsInput | boolean
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CompanyLocationUncheckedUpdateManyWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
-    address?: JsonNullValueInput | InputJsonValue
-    coordinates?: NullableJsonNullValueInput | InputJsonValue
-    timezone?: StringFieldUpdateOperationsInput | string
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    managerName?: NullableStringFieldUpdateOperationsInput | string | null
-    businessHours?: NullableJsonNullValueInput | InputJsonValue
-    isPrimary?: BoolFieldUpdateOperationsInput | boolean
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    oldValues?: NullableJsonNullValueInput | InputJsonValue
+    newValues?: NullableJsonNullValueInput | InputJsonValue
+    changes?: NullableJsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CompanyIntegrationUpdateWithoutCompanyInput = {
@@ -40882,106 +40813,175 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type CompanyAuditLogUpdateWithoutCompanyInput = {
+  export type CompanyLocationUpdateWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    action?: StringFieldUpdateOperationsInput | string
-    resource?: StringFieldUpdateOperationsInput | string
-    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    oldValues?: NullableJsonNullValueInput | InputJsonValue
-    newValues?: NullableJsonNullValueInput | InputJsonValue
-    changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CompanyAuditLogUncheckedUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    action?: StringFieldUpdateOperationsInput | string
-    resource?: StringFieldUpdateOperationsInput | string
-    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    oldValues?: NullableJsonNullValueInput | InputJsonValue
-    newValues?: NullableJsonNullValueInput | InputJsonValue
-    changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CompanyAuditLogUncheckedUpdateManyWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: NullableStringFieldUpdateOperationsInput | string | null
-    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    action?: StringFieldUpdateOperationsInput | string
-    resource?: StringFieldUpdateOperationsInput | string
-    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    oldValues?: NullableJsonNullValueInput | InputJsonValue
-    newValues?: NullableJsonNullValueInput | InputJsonValue
-    changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BillingHistoryUpdateWithoutCompanyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
-    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    currency?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    address?: JsonNullValueInput | InputJsonValue
+    coordinates?: NullableJsonNullValueInput | InputJsonValue
+    timezone?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    managerName?: NullableStringFieldUpdateOperationsInput | string | null
+    businessHours?: NullableJsonNullValueInput | InputJsonValue
+    isPrimary?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BillingHistoryUncheckedUpdateWithoutCompanyInput = {
+  export type CompanyLocationUncheckedUpdateWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
-    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    currency?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    address?: JsonNullValueInput | InputJsonValue
+    coordinates?: NullableJsonNullValueInput | InputJsonValue
+    timezone?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    managerName?: NullableStringFieldUpdateOperationsInput | string | null
+    businessHours?: NullableJsonNullValueInput | InputJsonValue
+    isPrimary?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BillingHistoryUncheckedUpdateManyWithoutCompanyInput = {
+  export type CompanyLocationUncheckedUpdateManyWithoutCompanyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    periodStart?: DateTimeFieldUpdateOperationsInput | Date | string
-    periodEnd?: DateTimeFieldUpdateOperationsInput | Date | string
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    tax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    currency?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    invoiceNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentStatus?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
-    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
-    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
+    name?: StringFieldUpdateOperationsInput | string
+    type?: EnumLocationTypeFieldUpdateOperationsInput | $Enums.LocationType
+    address?: JsonNullValueInput | InputJsonValue
+    coordinates?: NullableJsonNullValueInput | InputJsonValue
+    timezone?: StringFieldUpdateOperationsInput | string
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    managerName?: NullableStringFieldUpdateOperationsInput | string | null
+    businessHours?: NullableJsonNullValueInput | InputJsonValue
+    isPrimary?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyUserUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isOwner?: BoolFieldUpdateOperationsInput | boolean
+    canInvite?: BoolFieldUpdateOperationsInput | boolean
+    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    manager?: CompanyUserUpdateOneWithoutReportsNestedInput
+    reports?: CompanyUserUpdateManyWithoutManagerNestedInput
+    user?: UserUpdateOneRequiredWithoutCompanyUsersNestedInput
+  }
+
+  export type CompanyUserUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isOwner?: BoolFieldUpdateOperationsInput | boolean
+    canInvite?: BoolFieldUpdateOperationsInput | boolean
+    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reports?: CompanyUserUncheckedUpdateManyWithoutManagerNestedInput
+  }
+
+  export type CompanyUserUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isOwner?: BoolFieldUpdateOperationsInput | boolean
+    canInvite?: BoolFieldUpdateOperationsInput | boolean
+    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type DepartmentUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    level?: IntFieldUpdateOperationsInput | number
+    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
+    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employees?: CompanyUserUpdateManyWithoutDepartmentNestedInput
+    parent?: DepartmentUpdateOneWithoutChildrenNestedInput
+    children?: DepartmentUpdateManyWithoutParentNestedInput
+  }
+
+  export type DepartmentUncheckedUpdateWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    level?: IntFieldUpdateOperationsInput | number
+    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
+    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employees?: CompanyUserUncheckedUpdateManyWithoutDepartmentNestedInput
+    children?: DepartmentUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type DepartmentUncheckedUpdateManyWithoutCompanyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    level?: IntFieldUpdateOperationsInput | number
+    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
+    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type CompanyUserCreateManyManagerInput = {
@@ -41026,9 +41026,9 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutCompanyUsersNestedInput
-    user?: UserUpdateOneRequiredWithoutCompanyUsersNestedInput
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     reports?: CompanyUserUpdateManyWithoutManagerNestedInput
+    user?: UserUpdateOneRequiredWithoutCompanyUsersNestedInput
   }
 
   export type CompanyUserUncheckedUpdateWithoutManagerInput = {
@@ -41078,21 +41078,6 @@ export namespace Prisma {
     lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type DepartmentCreateManyParentInput = {
-    id?: string
-    companyId: string
-    name: string
-    description?: string | null
-    code?: string | null
-    level?: number
-    headOfDepartment?: string | null
-    budget?: Decimal | DecimalJsLike | number | string | null
-    costCenter?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type CompanyUserCreateManyDepartmentInput = {
     id?: string
     companyId: string
@@ -41116,53 +41101,19 @@ export namespace Prisma {
     lastActiveAt?: Date | string | null
   }
 
-  export type DepartmentUpdateWithoutParentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
-    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
-    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    company?: CompanyUpdateOneRequiredWithoutDepartmentsNestedInput
-    children?: DepartmentUpdateManyWithoutParentNestedInput
-    employees?: CompanyUserUpdateManyWithoutDepartmentNestedInput
-  }
-
-  export type DepartmentUncheckedUpdateWithoutParentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    companyId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
-    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
-    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    children?: DepartmentUncheckedUpdateManyWithoutParentNestedInput
-    employees?: CompanyUserUncheckedUpdateManyWithoutDepartmentNestedInput
-  }
-
-  export type DepartmentUncheckedUpdateManyWithoutParentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    companyId?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
-    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
-    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
-    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type DepartmentCreateManyParentInput = {
+    id?: string
+    companyId: string
+    name: string
+    description?: string | null
+    code?: string | null
+    level?: number
+    headOfDepartment?: string | null
+    budget?: Decimal | DecimalJsLike | number | string | null
+    costCenter?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type CompanyUserUpdateWithoutDepartmentInput = {
@@ -41184,9 +41135,9 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     company?: CompanyUpdateOneRequiredWithoutCompanyUsersNestedInput
-    user?: UserUpdateOneRequiredWithoutCompanyUsersNestedInput
     manager?: CompanyUserUpdateOneWithoutReportsNestedInput
     reports?: CompanyUserUpdateManyWithoutManagerNestedInput
+    user?: UserUpdateOneRequiredWithoutCompanyUsersNestedInput
   }
 
   export type CompanyUserUncheckedUpdateWithoutDepartmentInput = {
@@ -41236,32 +41187,111 @@ export namespace Prisma {
     lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type UserRoleCreateManyUserInput = {
-    id?: string
-    roleId: string
-    assignedBy?: string | null
-    assignedAt?: Date | string
-    expiresAt?: Date | string | null
-    isActive?: boolean
+  export type DepartmentUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    level?: IntFieldUpdateOperationsInput | number
+    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
+    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employees?: CompanyUserUpdateManyWithoutDepartmentNestedInput
+    company?: CompanyUpdateOneRequiredWithoutDepartmentsNestedInput
+    children?: DepartmentUpdateManyWithoutParentNestedInput
   }
 
-  export type UserSessionCreateManyUserInput = {
+  export type DepartmentUncheckedUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    level?: IntFieldUpdateOperationsInput | number
+    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
+    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employees?: CompanyUserUncheckedUpdateManyWithoutDepartmentNestedInput
+    children?: DepartmentUncheckedUpdateManyWithoutParentNestedInput
+  }
+
+  export type DepartmentUncheckedUpdateManyWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyId?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    level?: IntFieldUpdateOperationsInput | number
+    headOfDepartment?: NullableStringFieldUpdateOperationsInput | string | null
+    budget?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    costCenter?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ApiKeyCreateManyUserInput = {
     id?: string
-    token: string
-    refreshToken?: string | null
-    userAgent?: string | null
-    ipAddress?: string | null
-    deviceId?: string | null
-    deviceType?: string | null
-    browser?: string | null
-    location?: string | null
-    lastActivity?: Date | string
-    expiresAt: Date | string
+    name: string
+    keyHash: string
+    keyPrefix: string
+    scopes: JsonNullValueInput | InputJsonValue
+    lastUsedAt?: Date | string | null
+    usageCount?: number
+    rateLimit?: number | null
+    expiresAt?: Date | string | null
     isActive?: boolean
     isRevoked?: boolean
     revokedAt?: Date | string | null
     revokedBy?: string | null
     createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AuditLogCreateManyUserInput = {
+    id?: string
+    userEmail?: string | null
+    action: string
+    resource: string
+    resourceId?: string | null
+    oldValues?: NullableJsonNullValueInput | InputJsonValue
+    newValues?: NullableJsonNullValueInput | InputJsonValue
+    changes?: NullableJsonNullValueInput | InputJsonValue
+    ipAddress?: string | null
+    userAgent?: string | null
+    sessionId?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    severity?: $Enums.AuditSeverity
+    timestamp?: Date | string
+  }
+
+  export type CompanyUserCreateManyUserInput = {
+    id?: string
+    companyId: string
+    role?: $Enums.CompanyRole
+    title?: string | null
+    departmentId?: string | null
+    employeeId?: string | null
+    startDate?: Date | string
+    endDate?: Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
+    isActive?: boolean
+    isOwner?: boolean
+    canInvite?: boolean
+    canManageBilling?: boolean
+    managerId?: string | null
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: $Enums.EmploymentStatus
+    invitedBy?: string | null
+    invitedAt?: Date | string | null
+    joinedAt?: Date | string
+    lastActiveAt?: Date | string | null
   }
 
   export type LoginHistoryCreateManyUserInput = {
@@ -41318,32 +41348,6 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type AuditLogCreateManyUserInput = {
-    id?: string
-    userEmail?: string | null
-    action: string
-    resource: string
-    resourceId?: string | null
-    oldValues?: NullableJsonNullValueInput | InputJsonValue
-    newValues?: NullableJsonNullValueInput | InputJsonValue
-    changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: string | null
-    userAgent?: string | null
-    sessionId?: string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: $Enums.AuditSeverity
-    timestamp?: Date | string
-  }
-
-  export type UserPreferenceCreateManyUserInput = {
-    id?: string
-    category: string
-    key: string
-    value: JsonNullValueInput | InputJsonValue
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
   export type UserNotificationCreateManyUserInput = {
     id?: string
     title: string
@@ -41365,129 +41369,217 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type ApiKeyCreateManyUserInput = {
+  export type UserPreferenceCreateManyUserInput = {
     id?: string
-    name: string
-    keyHash: string
-    keyPrefix: string
-    scopes: JsonNullValueInput | InputJsonValue
-    lastUsedAt?: Date | string | null
-    usageCount?: number
-    rateLimit?: number | null
+    category: string
+    key: string
+    value: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserRoleCreateManyUserInput = {
+    id?: string
+    roleId: string
+    assignedBy?: string | null
+    assignedAt?: Date | string
     expiresAt?: Date | string | null
+    isActive?: boolean
+  }
+
+  export type UserSessionCreateManyUserInput = {
+    id?: string
+    token: string
+    refreshToken?: string | null
+    userAgent?: string | null
+    ipAddress?: string | null
+    deviceId?: string | null
+    deviceType?: string | null
+    browser?: string | null
+    location?: string | null
+    lastActivity?: Date | string
+    expiresAt: Date | string
     isActive?: boolean
     isRevoked?: boolean
     revokedAt?: Date | string | null
     revokedBy?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
-  export type CompanyUserCreateManyUserInput = {
-    id?: string
-    companyId: string
-    role?: $Enums.CompanyRole
-    title?: string | null
-    departmentId?: string | null
-    employeeId?: string | null
-    startDate?: Date | string
-    endDate?: Date | string | null
+  export type ApiKeyUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    keyHash?: StringFieldUpdateOperationsInput | string
+    keyPrefix?: StringFieldUpdateOperationsInput | string
+    scopes?: JsonNullValueInput | InputJsonValue
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    usageCount?: IntFieldUpdateOperationsInput | number
+    rateLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isRevoked?: BoolFieldUpdateOperationsInput | boolean
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ApiKeyUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    keyHash?: StringFieldUpdateOperationsInput | string
+    keyPrefix?: StringFieldUpdateOperationsInput | string
+    scopes?: JsonNullValueInput | InputJsonValue
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    usageCount?: IntFieldUpdateOperationsInput | number
+    rateLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isRevoked?: BoolFieldUpdateOperationsInput | boolean
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ApiKeyUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    keyHash?: StringFieldUpdateOperationsInput | string
+    keyPrefix?: StringFieldUpdateOperationsInput | string
+    scopes?: JsonNullValueInput | InputJsonValue
+    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    usageCount?: IntFieldUpdateOperationsInput | number
+    rateLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isRevoked?: BoolFieldUpdateOperationsInput | boolean
+    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    revokedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    oldValues?: NullableJsonNullValueInput | InputJsonValue
+    newValues?: NullableJsonNullValueInput | InputJsonValue
+    changes?: NullableJsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    oldValues?: NullableJsonNullValueInput | InputJsonValue
+    newValues?: NullableJsonNullValueInput | InputJsonValue
+    changes?: NullableJsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: StringFieldUpdateOperationsInput | string
+    resource?: StringFieldUpdateOperationsInput | string
+    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
+    oldValues?: NullableJsonNullValueInput | InputJsonValue
+    newValues?: NullableJsonNullValueInput | InputJsonValue
+    changes?: NullableJsonNullValueInput | InputJsonValue
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanyUserUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     permissions?: NullableJsonNullValueInput | InputJsonValue
-    isActive?: boolean
-    isOwner?: boolean
-    canInvite?: boolean
-    canManageBilling?: boolean
-    managerId?: string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isOwner?: BoolFieldUpdateOperationsInput | boolean
+    canInvite?: BoolFieldUpdateOperationsInput | boolean
+    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
     directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: $Enums.EmploymentStatus
-    invitedBy?: string | null
-    invitedAt?: Date | string | null
-    joinedAt?: Date | string
-    lastActiveAt?: Date | string | null
+    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    company?: CompanyUpdateOneRequiredWithoutCompanyUsersNestedInput
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    manager?: CompanyUserUpdateOneWithoutReportsNestedInput
+    reports?: CompanyUserUpdateManyWithoutManagerNestedInput
   }
 
-  export type UserRoleUpdateWithoutUserInput = {
+  export type CompanyUserUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
+    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    role?: RoleUpdateOneRequiredWithoutUserRolesNestedInput
+    isOwner?: BoolFieldUpdateOperationsInput | boolean
+    canInvite?: BoolFieldUpdateOperationsInput | boolean
+    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    reports?: CompanyUserUncheckedUpdateManyWithoutManagerNestedInput
   }
 
-  export type UserRoleUncheckedUpdateWithoutUserInput = {
+  export type CompanyUserUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    roleId?: StringFieldUpdateOperationsInput | string
-    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    companyId?: StringFieldUpdateOperationsInput | string
+    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    permissions?: NullableJsonNullValueInput | InputJsonValue
     isActive?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type UserRoleUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    roleId?: StringFieldUpdateOperationsInput | string
-    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type UserSessionUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    deviceId?: NullableStringFieldUpdateOperationsInput | string | null
-    deviceType?: NullableStringFieldUpdateOperationsInput | string | null
-    browser?: NullableStringFieldUpdateOperationsInput | string | null
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    lastActivity?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isRevoked?: BoolFieldUpdateOperationsInput | boolean
-    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    revokedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserSessionUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    deviceId?: NullableStringFieldUpdateOperationsInput | string | null
-    deviceType?: NullableStringFieldUpdateOperationsInput | string | null
-    browser?: NullableStringFieldUpdateOperationsInput | string | null
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    lastActivity?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isRevoked?: BoolFieldUpdateOperationsInput | boolean
-    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    revokedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserSessionUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    token?: StringFieldUpdateOperationsInput | string
-    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    deviceId?: NullableStringFieldUpdateOperationsInput | string | null
-    deviceType?: NullableStringFieldUpdateOperationsInput | string | null
-    browser?: NullableStringFieldUpdateOperationsInput | string | null
-    location?: NullableStringFieldUpdateOperationsInput | string | null
-    lastActivity?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isRevoked?: BoolFieldUpdateOperationsInput | boolean
-    revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    revokedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isOwner?: BoolFieldUpdateOperationsInput | boolean
+    canInvite?: BoolFieldUpdateOperationsInput | boolean
+    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    directReports?: NullableJsonNullValueInput | InputJsonValue
+    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
+    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type LoginHistoryUpdateWithoutUserInput = {
@@ -41652,84 +41744,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type AuditLogUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    action?: StringFieldUpdateOperationsInput | string
-    resource?: StringFieldUpdateOperationsInput | string
-    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    oldValues?: NullableJsonNullValueInput | InputJsonValue
-    newValues?: NullableJsonNullValueInput | InputJsonValue
-    changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AuditLogUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    action?: StringFieldUpdateOperationsInput | string
-    resource?: StringFieldUpdateOperationsInput | string
-    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    oldValues?: NullableJsonNullValueInput | InputJsonValue
-    newValues?: NullableJsonNullValueInput | InputJsonValue
-    changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AuditLogUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    action?: StringFieldUpdateOperationsInput | string
-    resource?: StringFieldUpdateOperationsInput | string
-    resourceId?: NullableStringFieldUpdateOperationsInput | string | null
-    oldValues?: NullableJsonNullValueInput | InputJsonValue
-    newValues?: NullableJsonNullValueInput | InputJsonValue
-    changes?: NullableJsonNullValueInput | InputJsonValue
-    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
-    sessionId?: NullableStringFieldUpdateOperationsInput | string | null
-    metadata?: NullableJsonNullValueInput | InputJsonValue
-    severity?: EnumAuditSeverityFieldUpdateOperationsInput | $Enums.AuditSeverity
-    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserPreferenceUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
-    value?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserPreferenceUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
-    value?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserPreferenceUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    key?: StringFieldUpdateOperationsInput | string
-    value?: JsonNullValueInput | InputJsonValue
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type UserNotificationUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -41793,129 +41807,115 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ApiKeyUpdateWithoutUserInput = {
+  export type UserPreferenceUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    keyHash?: StringFieldUpdateOperationsInput | string
-    keyPrefix?: StringFieldUpdateOperationsInput | string
-    scopes?: JsonNullValueInput | InputJsonValue
-    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    usageCount?: IntFieldUpdateOperationsInput | number
-    rateLimit?: NullableIntFieldUpdateOperationsInput | number | null
+    category?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserPreferenceUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserPreferenceUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    key?: StringFieldUpdateOperationsInput | string
+    value?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserRoleUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    role?: RoleUpdateOneRequiredWithoutUserRolesNestedInput
+  }
+
+  export type UserRoleUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roleId?: StringFieldUpdateOperationsInput | string
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserRoleUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roleId?: StringFieldUpdateOperationsInput | string
+    assignedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserSessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    token?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    deviceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deviceType?: NullableStringFieldUpdateOperationsInput | string | null
+    browser?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActivity?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isRevoked?: BoolFieldUpdateOperationsInput | boolean
     revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     revokedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ApiKeyUncheckedUpdateWithoutUserInput = {
+  export type UserSessionUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    keyHash?: StringFieldUpdateOperationsInput | string
-    keyPrefix?: StringFieldUpdateOperationsInput | string
-    scopes?: JsonNullValueInput | InputJsonValue
-    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    usageCount?: IntFieldUpdateOperationsInput | number
-    rateLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    token?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    deviceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deviceType?: NullableStringFieldUpdateOperationsInput | string | null
+    browser?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActivity?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isRevoked?: BoolFieldUpdateOperationsInput | boolean
     revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     revokedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ApiKeyUncheckedUpdateManyWithoutUserInput = {
+  export type UserSessionUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    keyHash?: StringFieldUpdateOperationsInput | string
-    keyPrefix?: StringFieldUpdateOperationsInput | string
-    scopes?: JsonNullValueInput | InputJsonValue
-    lastUsedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    usageCount?: IntFieldUpdateOperationsInput | number
-    rateLimit?: NullableIntFieldUpdateOperationsInput | number | null
-    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    token?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    deviceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deviceType?: NullableStringFieldUpdateOperationsInput | string | null
+    browser?: NullableStringFieldUpdateOperationsInput | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
+    lastActivity?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     isRevoked?: BoolFieldUpdateOperationsInput | boolean
     revokedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     revokedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type CompanyUserUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isOwner?: BoolFieldUpdateOperationsInput | boolean
-    canInvite?: BoolFieldUpdateOperationsInput | boolean
-    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
-    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    company?: CompanyUpdateOneRequiredWithoutCompanyUsersNestedInput
-    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
-    manager?: CompanyUserUpdateOneWithoutReportsNestedInput
-    reports?: CompanyUserUpdateManyWithoutManagerNestedInput
-  }
-
-  export type CompanyUserUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    companyId?: StringFieldUpdateOperationsInput | string
-    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
-    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isOwner?: BoolFieldUpdateOperationsInput | boolean
-    canInvite?: BoolFieldUpdateOperationsInput | boolean
-    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
-    managerId?: NullableStringFieldUpdateOperationsInput | string | null
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
-    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    reports?: CompanyUserUncheckedUpdateManyWithoutManagerNestedInput
-  }
-
-  export type CompanyUserUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    companyId?: StringFieldUpdateOperationsInput | string
-    role?: EnumCompanyRoleFieldUpdateOperationsInput | $Enums.CompanyRole
-    title?: NullableStringFieldUpdateOperationsInput | string | null
-    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
-    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    permissions?: NullableJsonNullValueInput | InputJsonValue
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    isOwner?: BoolFieldUpdateOperationsInput | boolean
-    canInvite?: BoolFieldUpdateOperationsInput | boolean
-    canManageBilling?: BoolFieldUpdateOperationsInput | boolean
-    managerId?: NullableStringFieldUpdateOperationsInput | string | null
-    directReports?: NullableJsonNullValueInput | InputJsonValue
-    status?: EnumEmploymentStatusFieldUpdateOperationsInput | $Enums.EmploymentStatus
-    invitedBy?: NullableStringFieldUpdateOperationsInput | string | null
-    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    lastActiveAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserRoleCreateManyRoleInput = {

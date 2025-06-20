@@ -51,7 +51,7 @@ const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
   const router = useRouter();
-  const { user, logout, loading } = useAuth();
+  const { user, logout, loading, userType, hasCompanyAccess } = useAuth();
   const dropdownRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Handle scroll effect - must be called before any early returns
@@ -206,9 +206,8 @@ const Navbar = () => {
       ]
     }
   ];
-
-  // Check if we're in dashboard routes AND user is authenticated
-  const isDashboard = user && (pathname?.startsWith("/dashboard") || 
+  // Check if we're in dashboard routes AND user is authenticated AND has access
+  const isDashboard = user && hasCompanyAccess && (pathname?.startsWith("/dashboard") || 
                      pathname?.startsWith("/inventory") ||
                      pathname?.startsWith("/orders") ||
                      pathname?.startsWith("/profile") ||
@@ -390,10 +389,12 @@ const Navbar = () => {
                     <div className="px-2 py-1.5 text-sm text-muted-foreground">
                       {user?.email}
                     </div>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="cursor-pointer">
+                    <DropdownMenuSeparator />                    <DropdownMenuItem 
+                      className="cursor-pointer"
+                      onClick={() => router.push(userType === 'company' ? '/company-profile' : '/user-profile')}
+                    >
                       <User className="mr-2 h-4 w-4" />
-                      Profile
+                      {userType === 'company' ? 'Company Profile' : 'User Profile'}
                     </DropdownMenuItem>
                     <DropdownMenuItem className="cursor-pointer">
                       <Settings className="mr-2 h-4 w-4" />
@@ -408,8 +409,7 @@ const Navbar = () => {
                       Logout
                     </DropdownMenuItem>
                   </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
+                </DropdownMenu>              ) : (
                 <div className="hidden sm:flex items-center space-x-1">
                   <Button 
                     variant="ghost" 
@@ -419,14 +419,34 @@ const Navbar = () => {
                   >
                     Sign In
                   </Button>
-                  <Button 
-                    size="sm"
-                    onClick={() => handleAuthAction("signup")}
-                    className="h-8 text-xs bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
-                  >
-                    <span className="hidden sm:inline">Get Started</span>
-                    <span className="sm:hidden">Start</span>
-                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button 
+                        size="sm"
+                        className="h-8 text-xs bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                      >
+                        <span className="hidden sm:inline">Get Started</span>
+                        <span className="sm:hidden">Start</span>
+                        <ChevronDown className="ml-1 h-3 w-3" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem 
+                        onClick={() => router.push("/auth/company-signup")}
+                        className="cursor-pointer"
+                      >
+                        <Building2 className="mr-2 h-4 w-4" />
+                        Create Company Account
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => handleAuthAction("signup")}
+                        className="cursor-pointer"
+                      >
+                        <User className="mr-2 h-4 w-4" />
+                        Join as Individual
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               )}
 
@@ -501,17 +521,16 @@ const Navbar = () => {
                           <div className="text-xs text-muted-foreground truncate">{user?.email}</div>
                         </div>
                       </div>
-                      <div className="space-y-1 mt-2">
-                        <Button 
+                      <div className="space-y-1 mt-2">                        <Button 
                           variant="ghost" 
                           className="w-full justify-start text-sm h-10"
                           onClick={() => {
-                            router.push('/profile');
+                            router.push(userType === 'company' ? '/company-profile' : '/user-profile');
                             setIsOpen(false);
                           }}
                         >
                           <User className="mr-2 h-4 w-4" />
-                          Profile
+                          {userType === 'company' ? 'Company Profile' : 'User Profile'}
                         </Button>
                         <Button 
                           variant="ghost" 
@@ -567,8 +586,7 @@ const Navbar = () => {
                       onClick={() => setIsOpen(false)}
                     >
                       Contact
-                    </Link>
-                    <div className="border-t border-border/40 mt-4 pt-4 px-3 space-y-2">
+                    </Link>                    <div className="border-t border-border/40 mt-4 pt-4 px-3 space-y-2">
                       <Button 
                         variant="ghost" 
                         className="w-full justify-start h-10"
@@ -582,11 +600,23 @@ const Navbar = () => {
                       <Button 
                         className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 h-10"
                         onClick={() => {
+                          router.push("/auth/company-signup");
+                          setIsOpen(false);
+                        }}
+                      >
+                        <Building2 className="mr-2 h-4 w-4" />
+                        Create Company
+                      </Button>
+                      <Button 
+                        variant="outline"
+                        className="w-full h-10"
+                        onClick={() => {
                           handleAuthAction("signup");
                           setIsOpen(false);
                         }}
                       >
-                        Get Started
+                        <User className="mr-2 h-4 w-4" />
+                        Join as Individual
                       </Button>
                     </div>
                   </>

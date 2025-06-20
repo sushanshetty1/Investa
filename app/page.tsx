@@ -20,7 +20,9 @@ import {
   Zap,
   TrendingUp,
   Globe,
-  Clock
+  Clock,
+  Building,
+  User
 } from 'lucide-react';
 
 const InvistaLanding = () => {
@@ -209,18 +211,62 @@ const InvistaLanding = () => {
                     <span className="sm:hidden">30 days</span>
                   </div>
                 </div>
+              </div>              {/* Registration Options */}
+              <div className="bg-white/50 dark:bg-card/50 backdrop-blur-sm rounded-2xl p-4 sm:p-6 border border-white/30 dark:border-border/30 shadow-lg">
+                <h3 className="text-lg sm:text-xl font-semibold text-foreground mb-4 text-center">Choose Your Registration Type</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-4 bg-gradient-to-br from-blue-50/80 to-indigo-50/80 dark:from-primary/10 dark:to-chart-3/10 rounded-xl border border-blue-200/30 dark:border-primary/20">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <Building className="h-6 w-6 text-blue-600 dark:text-primary" />
+                      <h4 className="font-semibold text-foreground">Company Account</h4>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Perfect for businesses starting fresh or switching from another platform
+                    </p>
+                    <ul className="text-xs text-muted-foreground space-y-1">
+                      <li>• Full administrative control</li>
+                      <li>• Create company structure</li>
+                      <li>• Invite team members</li>
+                      <li>• Configure all settings</li>
+                    </ul>
+                  </div>
+                  <div className="p-4 bg-gradient-to-br from-emerald-50/80 to-green-50/80 dark:from-chart-2/10 dark:to-chart-2/5 rounded-xl border border-emerald-200/30 dark:border-chart-2/20">
+                    <div className="flex items-center space-x-3 mb-3">
+                      <User className="h-6 w-6 text-emerald-600 dark:text-chart-2" />
+                      <h4 className="font-semibold text-foreground">Individual Account</h4>
+                    </div>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      For joining an existing company or receiving an invitation
+                    </p>
+                    <ul className="text-xs text-muted-foreground space-y-1">
+                      <li>• Join existing company</li>
+                      <li>• Accept team invitations</li>
+                      <li>• Role-based permissions</li>
+                      <li>• Quick setup process</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <Link href="/auth/signUp" className="group bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center text-sm sm:text-base">
-                  <span>Start Free Trial</span>
-                  <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <button className="group border-2 border-foreground/20 hover:border-foreground/40 text-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 hover:bg-foreground/5 flex items-center justify-center text-sm sm:text-base">
-                  <Package className="mr-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:rotate-12 transition-transform" />
-                  <span>View Demo</span>
-                </button>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <Link href="/auth/company-signup" className="group bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center text-sm sm:text-base">
+                    <Building className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                    <span>Start Company Account</span>
+                    <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                  <Link href="/auth/signUp" className="group border-2 border-primary hover:bg-primary hover:text-primary-foreground text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center text-sm sm:text-base">
+                    <User className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                    <span>Join as Individual</span>
+                  </Link>
+                </div>
+                <div className="flex justify-center">
+                  <button className="group border-2 border-foreground/20 hover:border-foreground/40 text-foreground px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 hover:bg-foreground/5 flex items-center justify-center text-sm sm:text-base">
+                    <Package className="mr-2 h-4 w-4 sm:h-5 sm:w-5 group-hover:rotate-12 transition-transform" />
+                    <span>View Demo</span>
+                  </button>
+                </div>
               </div>
             </div>            {/* Enhanced Right Side - Dashboard Preview */}
             <div className="hidden lg:block relative group items-center justify-center order-1 lg:order-2">

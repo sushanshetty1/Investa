@@ -17,11 +17,9 @@ export default function AuthCallback() {
             }
 
             if (data.session?.user) {
-                const user = data.session.user
-
-                // Check if user already exists in our User table
+                const user = data.session.user                // Check if user already exists in our users table
                 const { data: existingUser } = await supabase
-                    .from('User')
+                    .from('users')
                     .select('*')
                     .eq('id', user.id)
                     .single()
@@ -29,11 +27,17 @@ export default function AuthCallback() {
                 // If user doesn't exist, create profile
                 if (!existingUser) {
                     const { error: dbError } = await supabase
-                        .from('User')
+                        .from('users')
                         .insert({
                             id: user.id,
                             email: user.email,
-                            name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
+                            firstName: user.user_metadata?.full_name?.split(' ')[0] || null,
+                            lastName: user.user_metadata?.full_name?.split(' ').slice(1).join(' ') || null,
+                            displayName: user.user_metadata?.full_name || user.email?.split('@')[0] || 'User',
+                            avatar: user.user_metadata?.avatar_url || null,
+                            isActive: true,
+                            isVerified: true,
+                            emailVerified: user.email_confirmed_at ? true : false,
                         })
 
                     if (dbError) {
@@ -42,7 +46,7 @@ export default function AuthCallback() {
                 }
 
                 // Redirect to dashboard
-                router.push('/dashboard')
+                router.push('/auth/redirect')
             } else {
                 router.push('/auth/login')
             }

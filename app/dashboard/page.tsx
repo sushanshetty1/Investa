@@ -1,5 +1,6 @@
 "use client";
 
+import DashboardGuard from "@/components/DashboardGuard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -125,7 +126,6 @@ export default function DashboardPage() {
   if (!user) {
     return null; // Will redirect to login
   }
-
   const getStatusBadge = (status: string) => {
     const variants = {
       completed: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300",
@@ -137,6 +137,7 @@ export default function DashboardPage() {
   };
 
   return (
+    <DashboardGuard>
     <div className="min-h-screen bg-background pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         {/* Header Section */}
@@ -1045,11 +1046,11 @@ export default function DashboardPage() {
               <div className="flex items-center justify-center space-x-3">
                 <RefreshCw className="h-4 w-4 text-blue-500 animate-spin" />
                 <span className="text-sm text-muted-foreground">Synced 2 minutes ago</span>
-              </div>
-            </div>
+              </div>            </div>
           </div>
         </div>
       </div>
     </div>
+    </DashboardGuard>
   );
 }

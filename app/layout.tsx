@@ -6,6 +6,7 @@ import { ScrollDetector } from "@/components/scroll-detector";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import AuthDebug from "@/components/AuthDebug";
 import { Analytics } from "@vercel/analytics/next"
 
 const spaceGrotesk = Space_Grotesk({
@@ -48,14 +49,14 @@ export default function RootLayout({
           attribute="class"
           defaultTheme="system"
           enableSystem
-          disableTransitionOnChange
-        >
+          disableTransitionOnChange        >
           <AuthProvider>
             <Analytics />
             <Navbar />
             <ScrollDetector />
             {children}
             <Footer />
+            <AuthDebug />
           </AuthProvider>
         </ThemeProvider>
       </body>

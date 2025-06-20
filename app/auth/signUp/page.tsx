@@ -115,7 +115,7 @@ export default function SignUpPage() {
 
                     // Optionally redirect to dashboard after a delay
                     setTimeout(() => {
-                        router.push('/dashboard')
+                        router.push('/auth/redirect')
                     }, 3000)
                 } catch (dbErr) {
                     console.error('Unexpected database error:', dbErr)
@@ -302,14 +302,23 @@ export default function SignUpPage() {
                     {/* Right Side - Sign Up Form */}
                     <div className="flex justify-center lg:justify-end">
                         <Card className="w-full max-w-md bg-white/80 dark:bg-card/80 backdrop-blur-sm border-0 shadow-2xl">
-                            <CardContent className="p-8">
-                                <div className="text-center mb-8">
+                            <CardContent className="p-8">                                <div className="text-center mb-8">
                                     <h2 className="text-2xl font-bold text-foreground mb-2">
-                                        Create Your Account
+                                        Create Your Personal Account
                                     </h2>
                                     <p className="text-muted-foreground">
-                                        Get started with your free trial
+                                        Join an existing company or get invited to collaborate
                                     </p>
+                                    <div className="mt-4 p-3 bg-blue-50/50 dark:bg-primary/10 rounded-lg border border-blue-200/30 dark:border-primary/20">
+                                        <p className="text-sm text-muted-foreground">
+                                            💡 <strong>Note:</strong> Individual accounts are perfect for joining existing companies or accepting team invitations. 
+                                            If you need to create a new company, use the{' '}
+                                            <Link href="/auth/company-signup" className="text-primary hover:underline font-medium">
+                                                Company Registration
+                                            </Link>{' '}
+                                            instead.
+                                        </p>
+                                    </div>
                                 </div>
 
                                 {error && (
@@ -538,13 +547,20 @@ export default function SignUpPage() {
                                     <Link href="/privacy" className="text-primary hover:underline">
                                         Privacy Policy
                                     </Link>
-                                </p>
-
-                                <div className="mt-6 text-center">
+                                </p>                                <div className="mt-6 text-center">
                                     <span className="text-sm text-muted-foreground">
                                         Already have an account?{' '}
                                         <Link href="/auth/login" className="text-primary hover:underline font-medium">
                                             Sign in
+                                        </Link>
+                                    </span>
+                                </div>
+
+                                <div className="mt-4 pt-4 border-t text-center">
+                                    <span className="text-sm text-muted-foreground">
+                                        Need to create a new company?{' '}
+                                        <Link href="/auth/company-signup" className="text-primary hover:underline font-medium">
+                                            Company Registration
                                         </Link>
                                     </span>
                                 </div>

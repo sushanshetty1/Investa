@@ -1,13 +1,7 @@
-// ===================================================================
-// SUPABASE DATABASE SCHEMA - Authentication & User Management
-// ===================================================================
-// This schema handles all authentication, user management, and related
-// functionality for the Invista inventory management system.
-
 generator supabaseClient {
   provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
   output          = "./generated/supabase"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource supabaseDb {
@@ -15,723 +9,449 @@ datasource supabaseDb {
   url      = env("SUPABASE_DATABASE_URL")
 }
 
-// ===================================================================
-// COMPANY & ORGANIZATION MODELS
-// ===================================================================
-
 model Company {
-  id String @id @default(uuid())
-
-  // Basic Information
-  name        String
-  displayName String?
-  description String?
-  website     String?
-  industry    String?
-  size        CompanySize @default(SMALL)
-
-  // Contact Information
-  email   String?
-  phone   String?
-  address Json? // {street, city, state, country, zipCode}
-
-  // Business Details
-  registrationNumber String?      @unique
-  taxId              String?      @unique
-  vatNumber          String?
-  businessType       BusinessType @default(PRIVATE)
-
-  // Branding
-  logo         String? // URL to logo
-  primaryColor String? // Hex color
-  theme        Json? // Custom theme settings
-
-  // Subscription & Billing
-  subscriptionPlan   SubscriptionPlan   @default(FREE)
-  subscriptionStatus SubscriptionStatus @default(ACTIVE)
-  billingEmail       String?
-  paymentMethodId    String?
-
-  // Features & Limits
-  maxUsers      Int   @default(5)
-  maxWarehouses Int   @default(1)
-  maxProducts   Int   @default(100)
-  features      Json? // Array of enabled features
-
-  // Security Settings
-  enforceSSO            Boolean @default(false)
-  requireTwoFactor      Boolean @default(false)
-  passwordPolicy        Json? // Password requirements
-  sessionTimeoutMinutes Int     @default(480) // 8 hours
-
-  // Status & Control
-  isActive    Boolean @default(true)
-  isSuspended Boolean @default(false)
-  isDeleted   Boolean @default(false)
-
-  // Trial & Onboarding
-  trialEndsAt    DateTime?
-  onboardingStep String? // Current onboarding step
-  setupComplete  Boolean   @default(false)
-
-  // Metadata
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  createdBy String // User ID who created the company
-
-  // Relations
-  companyUsers   CompanyUser[]
-  departments    Department[]
-  locations      CompanyLocation[]
-  integrations   CompanyIntegration[]
-  auditLogs      CompanyAuditLog[]
-  billingHistory BillingHistory[]
+  id                    String               @id @default(uuid())
+  name                  String
+  displayName           String?
+  description           String?
+  website               String?
+  industry              String?
+  size                  CompanySize          @default(SMALL)
+  email                 String?
+  phone                 String?
+  address               Json?
+  registrationNumber    String?              @unique
+  taxId                 String?              @unique
+  vatNumber             String?
+  businessType          BusinessType         @default(PRIVATE)
+  logo                  String?
+  primaryColor          String?
+  theme                 Json?
+  subscriptionPlan      SubscriptionPlan     @default(FREE)
+  subscriptionStatus    SubscriptionStatus   @default(ACTIVE)
+  billingEmail          String?
+  paymentMethodId       String?
+  maxUsers              Int                  @default(5)
+  maxWarehouses         Int                  @default(1)
+  maxProducts           Int                  @default(100)
+  features              Json?
+  enforceSSO            Boolean              @default(false)
+  requireTwoFactor      Boolean              @default(false)
+  passwordPolicy        Json?
+  sessionTimeoutMinutes Int                  @default(480)
+  isActive              Boolean              @default(true)
+  isSuspended           Boolean              @default(false)
+  isDeleted             Boolean              @default(false)
+  trialEndsAt           DateTime?
+  onboardingStep        String?
+  setupComplete         Boolean              @default(false)
+  createdAt             DateTime             @default(now())
+  updatedAt             DateTime             @updatedAt
+  createdBy             String
+  billingHistory        BillingHistory[]
+  auditLogs             CompanyAuditLog[]
+  integrations          CompanyIntegration[]
+  locations             CompanyLocation[]
+  companyUsers          CompanyUser[]
+  departments           Department[]
 
   @@map("companies")
 }
 
 model CompanyUser {
-  id        String @id @default(uuid())
-  companyId String
-  userId    String
-
-  // Role & Permissions within Company
-  role         CompanyRole @default(EMPLOYEE)
-  title        String? // Job title
-  departmentId String?
-
-  // Employment Details
-  employeeId String? // Company's internal employee ID
-  startDate  DateTime  @default(now())
-  endDate    DateTime? // For terminated employees
-
-  // Access Control
-  permissions      Json? // Company-specific permissions
-  isActive         Boolean @default(true)
-  isOwner          Boolean @default(false) // Company owner/admin
-  canInvite        Boolean @default(false)
-  canManageBilling Boolean @default(false)
-
-  // Hierarchy
-  managerId     String? // References another CompanyUser
-  directReports Json? // Array of user IDs reporting to this user
-
-  // Status
-  status EmploymentStatus @default(ACTIVE)
-
-  // Metadata
-  invitedBy    String? // User ID who invited them
-  invitedAt    DateTime?
-  joinedAt     DateTime  @default(now())
-  lastActiveAt DateTime?
-
-  // Relations
-  company    Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  department Department?   @relation(fields: [departmentId], references: [id])
-  manager    CompanyUser?  @relation("CompanyHierarchy", fields: [managerId], references: [id])
-  reports    CompanyUser[] @relation("CompanyHierarchy")
+  id               String           @id @default(uuid())
+  companyId        String
+  userId           String
+  role             CompanyRole      @default(EMPLOYEE)
+  title            String?
+  departmentId     String?
+  employeeId       String?
+  startDate        DateTime         @default(now())
+  endDate          DateTime?
+  permissions      Json?
+  isActive         Boolean          @default(true)
+  isOwner          Boolean          @default(false)
+  canInvite        Boolean          @default(false)
+  canManageBilling Boolean          @default(false)
+  managerId        String?
+  directReports    Json?
+  status           EmploymentStatus @default(ACTIVE)
+  invitedBy        String?
+  invitedAt        DateTime?
+  joinedAt         DateTime         @default(now())
+  lastActiveAt     DateTime?
+  company          Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  department       Department?      @relation(fields: [departmentId], references: [id])
+  manager          CompanyUser?     @relation("CompanyHierarchy", fields: [managerId], references: [id])
+  reports          CompanyUser[]    @relation("CompanyHierarchy")
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([companyId, userId])
   @@map("company_users")
 }
 
 model Department {
-  id        String @id @default(uuid())
-  companyId String
-
-  // Basic Information
-  name        String
-  description String?
-  code        String? // Department code (HR, IT, OPS, etc.)
-
-  // Hierarchy
-  parentId String? // For nested departments
-  level    Int     @default(0)
-
-  // Management
-  headOfDepartment String? // User ID
+  id               String        @id @default(uuid())
+  companyId        String
+  name             String
+  description      String?
+  code             String?
+  parentId         String?
+  level            Int           @default(0)
+  headOfDepartment String?
   budget           Decimal?
   costCenter       String?
-
-  // Status
-  isActive Boolean @default(true)
-
-  // Metadata
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  company   Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  parent    Department?   @relation("DepartmentHierarchy", fields: [parentId], references: [id])
-  children  Department[]  @relation("DepartmentHierarchy")
-  employees CompanyUser[]
+  isActive         Boolean       @default(true)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  employees        CompanyUser[]
+  company          Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  parent           Department?   @relation("DepartmentHierarchy", fields: [parentId], references: [id])
+  children         Department[]  @relation("DepartmentHierarchy")
 
   @@unique([companyId, name])
   @@map("departments")
 }
 
 model CompanyLocation {
-  id        String @id @default(uuid())
-  companyId String
-
-  // Location Details
-  name        String
-  type        LocationType @default(OFFICE)
-  address     Json // {street, city, state, country, zipCode}
-  coordinates Json? // {lat, lng}
-  timezone    String       @default("UTC")
-
-  // Contact Information
-  phone       String?
-  email       String?
-  managerName String?
-
-  // Business Hours
-  businessHours Json? // {monday: {open: "09:00", close: "17:00"}, ...}
-
-  // Status
-  isPrimary Boolean @default(false)
-  isActive  Boolean @default(true)
-
-  // Metadata
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  id            String       @id @default(uuid())
+  companyId     String
+  name          String
+  type          LocationType @default(OFFICE)
+  address       Json
+  coordinates   Json?
+  timezone      String       @default("UTC")
+  phone         String?
+  email         String?
+  managerName   String?
+  businessHours Json?
+  isPrimary     Boolean      @default(false)
+  isActive      Boolean      @default(true)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  company       Company      @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@map("company_locations")
 }
 
 model CompanyIntegration {
-  id        String @id @default(uuid())
-  companyId String
-
-  // Integration Details
-  name     String // Shopify, WooCommerce, QuickBooks, etc.
-  type     IntegrationType
-  provider String
-
-  // Configuration
-  config      Json // Integration-specific settings
-  credentials Json // Encrypted credentials
-  mappings    Json? // Field mappings
-
-  // Sync Settings
-  autoSync     Boolean   @default(true)
-  syncInterval Int       @default(60) // Minutes
+  id           String            @id @default(uuid())
+  companyId    String
+  name         String
+  type         IntegrationType
+  provider     String
+  config       Json
+  credentials  Json
+  mappings     Json?
+  autoSync     Boolean           @default(true)
+  syncInterval Int               @default(60)
   lastSyncAt   DateTime?
   nextSyncAt   DateTime?
-
-  // Status
-  status   IntegrationStatus @default(DISCONNECTED)
-  isActive Boolean           @default(true)
-
-  // Error Handling
-  lastError  String?
-  errorCount Int     @default(0)
-
-  // Metadata
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  status       IntegrationStatus @default(DISCONNECTED)
+  isActive     Boolean           @default(true)
+  lastError    String?
+  errorCount   Int               @default(0)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  company      Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@unique([companyId, name])
   @@map("company_integrations")
 }
 
 model CompanyAuditLog {
-  id        String @id @default(uuid())
-  companyId String
-
-  // User Context
-  userId    String?
-  userEmail String?
-
-  // Action Details
+  id         String        @id @default(uuid())
+  companyId  String
+  userId     String?
+  userEmail  String?
   action     String
   resource   String
   resourceId String?
-
-  // Changes
-  oldValues Json?
-  newValues Json?
-  changes   Json?
-
-  // Context
-  ipAddress String?
-  userAgent String?
-
-  // Metadata
-  metadata Json?
-  severity AuditSeverity @default(INFO)
-
-  // Timing
-  timestamp DateTime @default(now())
-
-  // Relations
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  oldValues  Json?
+  newValues  Json?
+  changes    Json?
+  ipAddress  String?
+  userAgent  String?
+  metadata   Json?
+  severity   AuditSeverity @default(INFO)
+  timestamp  DateTime      @default(now())
+  company    Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@map("company_audit_logs")
 }
 
 model BillingHistory {
-  id        String @id @default(uuid())
-  companyId String
-
-  // Billing Period
-  periodStart DateTime
-  periodEnd   DateTime
-
-  // Amounts
-  amount   Decimal
-  tax      Decimal @default(0)
-  total    Decimal
-  currency String  @default("USD")
-
-  // Details
+  id            String        @id @default(uuid())
+  companyId     String
+  periodStart   DateTime
+  periodEnd     DateTime
+  amount        Decimal
+  tax           Decimal       @default(0)
+  total         Decimal
+  currency      String        @default("USD")
   description   String?
-  invoiceNumber String? @unique
-
-  // Payment
+  invoiceNumber String?       @unique
   paymentStatus PaymentStatus @default(PENDING)
   paymentMethod String?
   paidAt        DateTime?
-
-  // Metadata
-  metadata  Json?
-  createdAt DateTime @default(now())
-
-  // Relations
-  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  metadata      Json?
+  createdAt     DateTime      @default(now())
+  company       Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
 
   @@map("billing_history")
 }
 
-// ===================================================================
-// AUTHENTICATION & USER MODELS
-// ===================================================================
-
 model User {
-  id            String  @id @default(uuid())
-  email         String  @unique
-  emailVerified Boolean @default(false)
-
-  // Profile Information
-  firstName   String?
-  lastName    String?
-  displayName String?
-  avatar      String?
-  phone       String?
-
-  // Authentication
-  password         String? // For email/password auth
-  twoFactorEnabled Boolean @default(false)
+  id               String             @id @default(uuid())
+  email            String             @unique
+  emailVerified    Boolean            @default(false)
+  firstName        String?
+  lastName         String?
+  displayName      String?
+  avatar           String?
+  phone            String?
+  password         String?
+  twoFactorEnabled Boolean            @default(false)
   twoFactorSecret  String?
-
-  // Account Settings
-  timezone String @default("UTC")
-  language String @default("en")
-  theme    String @default("system") // light, dark, system
-
-  // Account Status
-  isActive        Boolean @default(true)
-  isVerified      Boolean @default(false)
-  isSuspended     Boolean @default(false)
-  suspendedReason String?
-
-  // Security
+  timezone         String             @default("UTC")
+  language         String             @default("en")
+  theme            String             @default("system")
+  isActive         Boolean            @default(true)
+  isVerified       Boolean            @default(false)
+  isSuspended      Boolean            @default(false)
+  suspendedReason  String?
   lastLoginAt      DateTime?
   lastLoginIp      String?
-  failedLoginCount Int       @default(0)
+  failedLoginCount Int                @default(0)
   lockedUntil      DateTime?
-
-  // Metadata
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  userRoles       UserRole[]
-  sessions        UserSession[]
-  loginHistory    LoginHistory[]
-  passwordResets  PasswordReset[]
-  invitations     UserInvitation[]   @relation("InvitedBy")
-  receivedInvites UserInvitation[]   @relation("InvitedUser")
-  auditLogs       AuditLog[]
-  preferences     UserPreference[]
-  notifications   UserNotification[]
-  apiKeys         ApiKey[]
-  companyUsers    CompanyUser[] // Company memberships
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  apiKeys          ApiKey[]
+  auditLogs        AuditLog[]
+  companyUsers     CompanyUser[]
+  loginHistory     LoginHistory[]
+  passwordResets   PasswordReset[]
+  invitations      UserInvitation[]   @relation("InvitedBy")
+  receivedInvites  UserInvitation[]   @relation("InvitedUser")
+  notifications    UserNotification[]
+  preferences      UserPreference[]
+  userRoles        UserRole[]
+  sessions         UserSession[]
 
   @@map("users")
 }
 
 model Role {
-  id          String  @id @default(uuid())
-  name        String  @unique
+  id          String     @id @default(uuid())
+  name        String     @unique
   displayName String
   description String?
-  color       String? // For UI display
-
-  // Permissions
-  permissions Json // Store permissions as JSON
-
-  // Hierarchy
-  level    Int     @default(0) // 0 = lowest, higher numbers = more permissions
-  isSystem Boolean @default(false) // System roles cannot be deleted
-
-  // Status
-  isActive Boolean @default(true)
-
-  // Metadata
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  userRoles UserRole[]
+  color       String?
+  permissions Json
+  level       Int        @default(0)
+  isSystem    Boolean    @default(false)
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  userRoles   UserRole[]
 
   @@map("roles")
 }
 
 model UserRole {
-  id     String @id @default(uuid())
-  userId String
-  roleId String
-
-  // Assignment Details
+  id         String    @id @default(uuid())
+  userId     String
+  roleId     String
   assignedBy String?
   assignedAt DateTime  @default(now())
   expiresAt  DateTime?
-
-  // Status
-  isActive Boolean @default(true)
-
-  // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  isActive   Boolean   @default(true)
+  role       Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, roleId])
   @@map("user_roles")
 }
 
-// ===================================================================
-// SESSION & SECURITY MODELS
-// ===================================================================
-
 model UserSession {
-  id     String @id @default(uuid())
-  userId String
-
-  // Session Details
-  token        String  @unique
-  refreshToken String? @unique
-
-  // Device & Location
-  userAgent  String?
-  ipAddress  String?
-  deviceId   String?
-  deviceType String? // mobile, desktop, tablet
-  browser    String?
-  location   String? // City, Country
-
-  // Timing
-  lastActivity DateTime @default(now())
+  id           String    @id @default(uuid())
+  userId       String
+  token        String    @unique
+  refreshToken String?   @unique
+  userAgent    String?
+  ipAddress    String?
+  deviceId     String?
+  deviceType   String?
+  browser      String?
+  location     String?
+  lastActivity DateTime  @default(now())
   expiresAt    DateTime
-
-  // Status
-  isActive  Boolean   @default(true)
-  isRevoked Boolean   @default(false)
-  revokedAt DateTime?
-  revokedBy String?
-
-  // Metadata
-  createdAt DateTime @default(now())
-
-  // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isActive     Boolean   @default(true)
+  isRevoked    Boolean   @default(false)
+  revokedAt    DateTime?
+  revokedBy    String?
+  createdAt    DateTime  @default(now())
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("user_sessions")
 }
 
 model LoginHistory {
-  id     String @id @default(uuid())
-  userId String
-
-  // Login Details
-  successful Boolean
-  failReason String?
-
-  // Device & Location
-  ipAddress  String
-  userAgent  String?
-  location   String?
-  deviceType String?
-
-  // Timing
+  id          String   @id @default(uuid())
+  userId      String
+  successful  Boolean
+  failReason  String?
+  ipAddress   String
+  userAgent   String?
+  location    String?
+  deviceType  String?
   attemptedAt DateTime @default(now())
-
-  // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("login_history")
 }
 
 model PasswordReset {
-  id     String @id @default(uuid())
-  userId String
-
-  // Reset Details
-  token     String   @unique
+  id        String    @id @default(uuid())
+  userId    String
+  token     String    @unique
   expiresAt DateTime
-
-  // Status
-  isUsed Boolean   @default(false)
-  usedAt DateTime?
-
-  // Security
+  isUsed    Boolean   @default(false)
+  usedAt    DateTime?
   ipAddress String?
   userAgent String?
-
-  // Metadata
-  createdAt DateTime @default(now())
-
-  // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("password_resets")
 }
 
-// ===================================================================
-// INVITATION & ONBOARDING MODELS
-// ===================================================================
-
 model UserInvitation {
-  id String @id @default(uuid())
-
-  // Invitation Details
-  email  String
-  roleId String?
-  token  String  @unique
-
-  // Inviter Information
+  id            String           @id @default(uuid())
+  email         String
+  roleId        String?
+  token         String           @unique
   invitedById   String
   invitedByName String
-
-  // Recipient Information
-  invitedUserId String? // Set when invitation is accepted
-
-  // Message
-  message String?
-
-  // Status
-  status InvitationStatus @default(PENDING)
-
-  // Timing
-  expiresAt  DateTime
-  sentAt     DateTime?
-  acceptedAt DateTime?
-
-  // Metadata
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  invitedBy   User  @relation("InvitedBy", fields: [invitedById], references: [id])
-  invitedUser User? @relation("InvitedUser", fields: [invitedUserId], references: [id])
+  invitedUserId String?
+  message       String?
+  status        InvitationStatus @default(PENDING)
+  expiresAt     DateTime
+  sentAt        DateTime?
+  acceptedAt    DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  invitedBy     User             @relation("InvitedBy", fields: [invitedById], references: [id])
+  invitedUser   User?            @relation("InvitedUser", fields: [invitedUserId], references: [id])
 
   @@map("user_invitations")
 }
 
-// ===================================================================
-// PREFERENCES & SETTINGS MODELS
-// ===================================================================
-
 model UserPreference {
-  id     String @id @default(uuid())
-  userId String
-
-  // Preference Details
-  category String // dashboard, notifications, inventory, etc.
-  key      String // specific setting name
-  value    Json // flexible value storage
-
-  // Metadata
+  id        String   @id @default(uuid())
+  userId    String
+  category  String
+  key       String
+  value     Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, category, key])
   @@map("user_preferences")
 }
 
-// ===================================================================
-// NOTIFICATION MODELS
-// ===================================================================
-
 model UserNotification {
-  id     String @id @default(uuid())
-  userId String
-
-  // Notification Content
-  title    String
-  message  String
-  type     NotificationType
-  category String? // inventory, orders, alerts, etc.
-  priority NotificationPriority @default(MEDIUM)
-
-  // Visual
-  icon  String?
-  color String?
-
-  // Actions
-  actionUrl  String?
-  actionText String?
-
-  // Status
-  isRead Boolean   @default(false)
-  readAt DateTime?
-
-  // Delivery
-  channels    Json? // email, sms, push, in-app
+  id          String               @id @default(uuid())
+  userId      String
+  title       String
+  message     String
+  type        NotificationType
+  category    String?
+  priority    NotificationPriority @default(MEDIUM)
+  icon        String?
+  color       String?
+  actionUrl   String?
+  actionText  String?
+  isRead      Boolean              @default(false)
+  readAt      DateTime?
+  channels    Json?
   sentAt      DateTime?
   deliveredAt DateTime?
-
-  // Metadata
-  metadata Json? // Additional data
-
-  // Timing
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  metadata    Json?
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  user        User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("user_notifications")
 }
 
-// ===================================================================
-// AUDIT & LOGGING MODELS
-// ===================================================================
-
 model AuditLog {
-  id String @id @default(uuid())
-
-  // User Context
-  userId    String?
-  userEmail String? // Stored for reference even if user is deleted
-
-  // Action Details
-  action     String // CREATE, UPDATE, DELETE, LOGIN, etc.
-  resource   String // users, roles, settings, etc.
-  resourceId String? // ID of the affected resource
-
-  // Changes
-  oldValues Json? // Previous state
-  newValues Json? // New state
-  changes   Json? // Summary of what changed
-
-  // Context
-  ipAddress String?
-  userAgent String?
-  sessionId String?
-
-  // Metadata
-  metadata Json? // Additional context
-  severity AuditSeverity @default(INFO)
-
-  // Timing
-  timestamp DateTime @default(now())
-
-  // Relations
-  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  id         String        @id @default(uuid())
+  userId     String?
+  userEmail  String?
+  action     String
+  resource   String
+  resourceId String?
+  oldValues  Json?
+  newValues  Json?
+  changes    Json?
+  ipAddress  String?
+  userAgent  String?
+  sessionId  String?
+  metadata   Json?
+  severity   AuditSeverity @default(INFO)
+  timestamp  DateTime      @default(now())
+  user       User?         @relation(fields: [userId], references: [id])
 
   @@map("audit_logs")
 }
 
-// ===================================================================
-// SYSTEM CONFIGURATION MODELS
-// ===================================================================
-
 model SystemSetting {
-  id String @id @default(uuid())
-
-  // Setting Details
-  category String // auth, security, features, etc.
-  key      String // specific setting name
-  value    Json // flexible value storage
-
-  // Metadata
+  id          String   @id @default(uuid())
+  category    String
+  key         String
+  value       Json
   description String?
-  isPublic    Boolean @default(false) // Can be read by frontend
-  isSystem    Boolean @default(false) // Cannot be modified via UI
-
-  // Validation
-  dataType   String? // string, number, boolean, json
-  validation Json? // Validation rules
-
-  // Timing
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  isPublic    Boolean  @default(false)
+  isSystem    Boolean  @default(false)
+  dataType    String?
+  validation  Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   @@unique([category, key])
   @@map("system_settings")
 }
 
-// ===================================================================
-// API & INTEGRATION MODELS
-// ===================================================================
-
 model ApiKey {
-  id     String  @id @default(uuid())
-  userId String? // Optional: for user-specific keys
-
-  // Key Details
-  name      String // Human-readable name
-  keyHash   String @unique // Hashed version of the key
-  keyPrefix String @unique // First 8 chars for identification
-
-  // Permissions
-  scopes Json // Array of allowed scopes/permissions
-
-  // Usage
+  id         String    @id @default(uuid())
+  userId     String?
+  name       String
+  keyHash    String    @unique
+  keyPrefix  String    @unique
+  scopes     Json
   lastUsedAt DateTime?
   usageCount Int       @default(0)
-
-  // Limits
-  rateLimit Int? // Requests per minute
-  expiresAt DateTime?
-
-  // Status
-  isActive  Boolean   @default(true)
-  isRevoked Boolean   @default(false)
-  revokedAt DateTime?
-  revokedBy String?
-
-  // Metadata
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Relations
-  user User? @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rateLimit  Int?
+  expiresAt  DateTime?
+  isActive   Boolean   @default(true)
+  isRevoked  Boolean   @default(false)
+  revokedAt  DateTime?
+  revokedBy  String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("api_keys")
 }
 
-// ===================================================================
-// ENUMS
-// ===================================================================
-
 enum CompanySize {
-  STARTUP // 1-10 employees
-  SMALL // 11-50 employees
-  MEDIUM // 51-200 employees
-  LARGE // 201-1000 employees
-  ENTERPRISE // 1000+ employees
+  STARTUP
+  SMALL
+  MEDIUM
+  LARGE
+  ENTERPRISE
 }
 
 enum BusinessType {
@@ -761,13 +481,13 @@ enum SubscriptionStatus {
 }
 
 enum CompanyRole {
-  OWNER // Full access, billing, company settings
-  ADMIN // Most access, user management
-  MANAGER // Department/team management
-  SUPERVISOR // Limited management access
-  EMPLOYEE // Standard user access
-  CONTRACTOR // Limited temporary access
-  VIEWER // Read-only access
+  OWNER
+  ADMIN
+  MANAGER
+  SUPERVISOR
+  EMPLOYEE
+  CONTRACTOR
+  VIEWER
 }
 
 enum EmploymentStatus {
@@ -789,13 +509,13 @@ enum LocationType {
 }
 
 enum IntegrationType {
-  ECOMMERCE // Shopify, WooCommerce, etc.
-  ACCOUNTING // QuickBooks, Xero, etc.
-  CRM // Salesforce, HubSpot, etc.
-  ERP // SAP, Oracle, etc.
-  SHIPPING // FedEx, UPS, DHL, etc.
-  PAYMENT // Stripe, PayPal, etc.
-  EMAIL // SendGrid, Mailchimp, etc.
+  ECOMMERCE
+  ACCOUNTING
+  CRM
+  ERP
+  SHIPPING
+  PAYMENT
+  EMAIL
   OTHER
 }
 
