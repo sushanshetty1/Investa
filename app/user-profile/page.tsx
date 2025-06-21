@@ -108,36 +108,106 @@ export default function UserProfilePage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const fetchCompanyMemberships = async () => {
+  };  const fetchCompanyMemberships = async () => {
     try {
-      const { data, error } = await supabase
+      console.log('Fetching company memberships for user:', user?.id, user?.email);
+      
+      // First, get active company user memberships without join
+      const { data: companyUsers, error: companyUsersError } = await supabase
+        .from('company_users')
+        .select('id, role, isActive, joinedAt, companyId')
+        .eq('userId', user?.id)
+        .eq('isActive', true)
+        .order('joinedAt', { ascending: false });
+
+      console.log('Company users result:', { companyUsers, companyUsersError });
+
+      if (companyUsersError) {
+        console.error('Error fetching company users:', companyUsersError);
+        throw companyUsersError;
+      }
+
+      // Get company details for the user memberships
+      const companyIds = (companyUsers || []).map(cu => cu.companyId);
+      let companyDetails: any[] = [];
+      
+      if (companyIds.length > 0) {
+        const { data: companies, error: companiesError } = await supabase
+          .from('companies')
+          .select('id, name')
+          .in('id', companyIds);
+          
+        if (companiesError) {
+          console.error('Error fetching companies:', companiesError);
+        } else {
+          companyDetails = companies || [];
+        }
+      }
+
+      // Then, get accepted invites that haven't been converted to company_users yet
+      const { data: acceptedInvites, error: invitesError } = await supabase
         .from('company_invites')
-        .select(`
-          id,
-          role,
-          status,
-          created_at,
-          companies (
-            name
-          )
-        `)
+        .select('id, role, status, acceptedAt, companyId')
         .eq('email', user?.email)
         .eq('status', 'ACCEPTED')
-        .order('created_at', { ascending: false });
+        .order('acceptedAt', { ascending: false });
 
-      if (error) throw error;
+      console.log('Company invites result:', { acceptedInvites, invitesError });
 
-      const memberships = data?.map((invite: any) => ({
-        id: invite.id,
-        companyName: invite.companies?.name || 'Unknown Company',
-        role: invite.role,
-        status: invite.status,
-        joinedAt: invite.created_at
-      })) || [];
+      if (invitesError) {
+        console.error('Error fetching company invites:', invitesError);
+      }
 
-      setCompanyMemberships(memberships);
+      // Get company details for invites
+      const inviteCompanyIds = (acceptedInvites || []).map(invite => invite.companyId);
+      let inviteCompanyDetails: any[] = [];
+      
+      if (inviteCompanyIds.length > 0) {
+        const { data: inviteCompanies, error: inviteCompaniesError } = await supabase
+          .from('companies')
+          .select('id, name')
+          .in('id', inviteCompanyIds);
+          
+        if (inviteCompaniesError) {
+          console.error('Error fetching invite companies:', inviteCompaniesError);
+        } else {
+          inviteCompanyDetails = inviteCompanies || [];
+        }
+      }
+
+      // Combine both sources
+      const memberships: CompanyMembership[] = [
+        // Active company users
+        ...(companyUsers || []).map((companyUser: any) => {
+          const company = companyDetails.find(c => c.id === companyUser.companyId);
+          return {
+            id: companyUser.id,
+            companyName: company?.name || 'Unknown Company',
+            role: companyUser.role,
+            status: 'ACTIVE' as const,
+            joinedAt: companyUser.joinedAt
+          };
+        }),
+        // Accepted invites (that might not be converted yet)
+        ...(acceptedInvites || []).map((invite: any) => {
+          const company = inviteCompanyDetails.find(c => c.id === invite.companyId);
+          return {
+            id: invite.id,
+            companyName: company?.name || 'Unknown Company',
+            role: invite.role,
+            status: 'ACTIVE' as const,
+            joinedAt: invite.acceptedAt
+          };
+        })
+      ];
+
+      // Remove duplicates (in case an invite was already converted to company_user)
+      const uniqueMemberships = memberships.filter((membership, index, self) => 
+        index === self.findIndex((m) => m.companyName === membership.companyName)
+      );
+
+      console.log('Final memberships:', uniqueMemberships);
+      setCompanyMemberships(uniqueMemberships);
     } catch (error) {
       console.error('Error fetching company memberships:', error);
     }
@@ -177,15 +247,14 @@ export default function UserProfilePage() {
     }
     return 'U';
   };
-
   const getRoleColor = (role: string) => {
     switch (role) {
+      case 'OWNER': return 'bg-purple-500';
       case 'ADMIN': return 'bg-red-500';
       case 'MANAGER': return 'bg-blue-500';
-      case 'INVENTORY_MANAGER': return 'bg-green-500';
-      case 'WAREHOUSE_STAFF': return 'bg-yellow-500';
-      case 'SALES_REP': return 'bg-purple-500';
-      case 'ACCOUNTANT': return 'bg-indigo-500';
+      case 'SUPERVISOR': return 'bg-green-500';
+      case 'EMPLOYEE': return 'bg-yellow-500';
+      case 'CONTRACTOR': return 'bg-orange-500';
       case 'VIEWER': return 'bg-gray-500';
       default: return 'bg-gray-500';
     }

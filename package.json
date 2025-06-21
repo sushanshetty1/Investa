@@ -1,12 +1,13 @@
 {
   "name": "invista",
   "version": "0.1.0",
-  "private": true,
-  "scripts": {
+  "private": true,  "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "clear-cache": "node scripts/clear-cache.js",
+    "dev:fresh": "npm run clear-cache && npm run dev",
     "db:generate": "prisma generate --schema=prisma/schema-neon.prisma && prisma generate --schema=prisma/schema-supabase.prisma",
     "db:migrate:neon": "prisma migrate dev --schema=prisma/schema-neon.prisma",
     "db:migrate:supabase": "prisma migrate dev --schema=prisma/schema-supabase.prisma",

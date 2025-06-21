@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { 
   Building2, 
   Users, 
@@ -62,11 +63,10 @@ interface InviteForm {
 
 const ROLES = [
   'ADMIN',
-  'MANAGER', 
-  'INVENTORY_MANAGER',
-  'WAREHOUSE_STAFF',
-  'SALES_REP',
-  'ACCOUNTANT',
+  'MANAGER',
+  'SUPERVISOR', 
+  'EMPLOYEE',
+  'CONTRACTOR',
   'VIEWER'
 ];
 
@@ -74,12 +74,12 @@ export default function CompanyProfilePage() {
   const { user } = useAuth();
   const router = useRouter();
   const [companyProfile, setCompanyProfile] = useState<CompanyProfile | null>(null);
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
-  const [inviteForm, setInviteForm] = useState<InviteForm>({ emails: '', role: 'VIEWER' });
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);  const [inviteForm, setInviteForm] = useState<InviteForm>({ emails: '', role: 'VIEWER' });
   const [isInviting, setIsInviting] = useState(false);
   const [showInviteDialog, setShowInviteDialog] = useState(false);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("profile");
+  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -190,8 +190,7 @@ export default function CompanyProfilePage() {
     } catch (error) {
       console.error('Error fetching team members:', error);
     }
-  };
-  const handleInviteUsers = async () => {
+  };  const handleInviteUsers = async () => {
     if (!inviteForm.emails.trim() || !inviteForm.role) return;
 
     setIsInviting(true);
@@ -208,15 +207,12 @@ export default function CompanyProfilePage() {
 
       const invitedByName = userData?.displayName || 
         (userData?.firstName && userData?.lastName ? `${userData.firstName} ${userData.lastName}` : null) ||
-        userData?.email || 'Someone';
-
-      // Parse emails (comma or newline separated)
+        userData?.email || user?.email || 'Someone';      // Parse emails (comma or newline separated)
       const emails = inviteForm.emails
         .split(/[,\n]/)
         .map(email => email.trim())
         .filter(email => email && email.includes('@'));
 
-      // Use the new company invites API
       const response = await fetch('/api/company-invites', {
         method: 'POST',
         headers: {
@@ -230,22 +226,34 @@ export default function CompanyProfilePage() {
           invitedByName,
           message: ''
         }),
+        signal: AbortSignal.timeout(30000) // 30 second timeout
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'Failed to send invitations');
+        console.error('Invite failed:', result);
+        const errorMessage = result.error || 'Failed to send invitations';
+        setMessage({ type: 'error', text: errorMessage });
+        throw new Error(errorMessage);
       }
 
-      // Reset form and close dialog
+      // Show success message
+      const successMessage = result.message || `Successfully sent ${emails.length} invitation(s)`;
+      setMessage({ type: 'success', text: successMessage });      // Reset form and close dialog
       setInviteForm({ emails: '', role: 'VIEWER' });
       setShowInviteDialog(false);
-      
-      // Refresh team members
+      setMessage(null);
+        // Refresh team members
       fetchTeamMembers();
     } catch (error) {
       console.error('Error inviting users:', error);
+      
+      // Set error message if not already set
+      if (!message || message.type !== 'error') {
+        const errorMessage = error instanceof Error ? error.message : 'Failed to send invitations';
+        setMessage({ type: 'error', text: errorMessage });
+      }
     } finally {
       setIsInviting(false);
     }
@@ -535,20 +543,31 @@ export default function CompanyProfilePage() {
               </h2>
               <p className="text-muted-foreground text-lg">Invite and manage your team members</p>
             </div>
-            <Dialog open={showInviteDialog} onOpenChange={setShowInviteDialog}>
+            <Dialog open={showInviteDialog} onOpenChange={(open) => {
+              setShowInviteDialog(open);
+              if (!open) {
+                setMessage(null);
+                setInviteForm({ emails: '', role: 'VIEWER' });
+              }
+            }}>
               <DialogTrigger asChild>
                 <Button className="bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105">
                   <UserPlus className="h-4 w-4 mr-2" />
                   Invite Team Members
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-md">
-                <DialogHeader>
+              <DialogContent className="sm:max-w-md">                <DialogHeader>
                   <DialogTitle className="text-xl font-semibold">Invite Team Members</DialogTitle>
                   <DialogDescription className="text-base">
                     Send invitations to join your company workspace
                   </DialogDescription>
                 </DialogHeader>
+                
+                {message && (
+                  <Alert variant={message.type === 'error' ? 'destructive' : 'default'}>
+                    <AlertDescription>{message.text}</AlertDescription>
+                  </Alert>
+                )}
                 <div className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="emails" className="text-sm font-medium">Email Addresses</Label>

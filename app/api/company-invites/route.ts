@@ -74,8 +74,7 @@ export async function GET(request: NextRequest) {
 }
 
 // POST - Create new company invites
-export async function POST(request: NextRequest) {
-  try {
+export async function POST(request: NextRequest) {  try {
     const body = await request.json();
     const { companyId, emails, role, invitedById, invitedByName, message } = body;
 
@@ -84,24 +83,44 @@ export async function POST(request: NextRequest) {
         { error: 'Missing required fields: companyId, emails, role, invitedById' },
         { status: 400 }
       );
-    }
-
-    // Validate that the user is authorized to invite (company owner or admin)
-    const { data: companyUser, error: authError } = await supabase
-      .from('company_users')
-      .select('role, isOwner')
-      .eq('companyId', companyId)
-      .eq('userId', invitedById)
+    }    // Validate that the user is authorized to invite (company owner or admin)
+    // First check if the user is the company owner (creator)
+    const { data: company, error: companyError } = await supabase
+      .from('companies')
+      .select('id, createdBy')
+      .eq('id', companyId)
       .single();
 
-    if (authError || (!companyUser?.isOwner && companyUser?.role !== 'ADMIN')) {
+    if (companyError) {
       return NextResponse.json(
-        { error: 'Unauthorized to send invites' },
-        { status: 403 }
+        { error: 'Company not found' },
+        { status: 404 }
       );
     }
 
-    // Parse emails (comma-separated or array)
+    const isCompanyOwner = company.createdBy === invitedById;
+
+    // If not the owner, check company_users table
+    let hasPermission = isCompanyOwner;
+    if (!isCompanyOwner) {
+      const { data: companyUser, error: authError } = await supabase
+        .from('company_users')
+        .select('role, isOwner')
+        .eq('companyId', companyId)
+        .eq('userId', invitedById)
+        .single();
+      
+      if (companyUser && (companyUser.isOwner || companyUser.role === 'ADMIN')) {
+        hasPermission = true;
+      }
+    }
+
+    if (!hasPermission) {
+      return NextResponse.json(
+        { error: 'Unauthorized to send invites. You must be a company owner or admin.' },
+        { status: 403 }
+      );
+    }    // Parse emails (comma-separated or array)
     const emailList = Array.isArray(emails) 
       ? emails 
       : emails.split(',').map((email: string) => email.trim()).filter((email: string) => email);
@@ -109,6 +128,17 @@ export async function POST(request: NextRequest) {
     if (emailList.length === 0) {
       return NextResponse.json(
         { error: 'No valid emails provided' },
+        { status: 400 }
+      );
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const invalidEmails = emailList.filter((email: string) => !emailRegex.test(email));
+    
+    if (invalidEmails.length > 0) {
+      return NextResponse.json(
+        { error: `Invalid email format: ${invalidEmails.join(', ')}` },
         { status: 400 }
       );
     }
@@ -140,9 +170,7 @@ export async function POST(request: NextRequest) {
         { error: 'All emails are already invited or are existing users' },
         { status: 400 }
       );
-    }
-
-    // Create invitations
+    }    // Create invitations
     const invitations = newEmails.map((email: string) => ({
       id: uuidv4(),
       companyId,
@@ -163,7 +191,10 @@ export async function POST(request: NextRequest) {
       .insert(invitations)
       .select();
 
-    if (error) throw error;
+    if (error) {
+      console.error('Database insert error:', error);
+      throw error;
+    }
 
     // TODO: Send email notifications here
 
@@ -262,12 +293,11 @@ export async function PUT(request: NextRequest) {
           .select('id')
           .eq('companyId', invite.companyId)
           .eq('userId', userId)
-          .single();
-
-        if (!existingMember) {
+          .single();        if (!existingMember) {
           const { error: companyUserError } = await supabase
             .from('company_users')
             .insert({
+              id: uuidv4(), // Add missing id field
               companyId: invite.companyId,
               userId,
               role: invite.role,
