@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import DashboardGuard from '@/components/DashboardGuard'
 import { Plus, FileText, TrendingUp, AlertTriangle, Eye, Clock, Calendar } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -124,12 +125,13 @@ export default function AuditsPage() {
       case 'INVESTIGATION':
         return <AlertTriangle className="h-4 w-4" />
       default:
-        return <FileText className="h-4 w-4" />
-    }
+        return <FileText className="h-4 w-4" />    }
   }
+  
   return (
-    <div className="min-h-screen bg-background pt-20">
-      <div className="container mx-auto p-6 space-y-6">
+    <DashboardGuard>
+      <div className="min-h-screen bg-background pt-20">
+        <div className="container mx-auto p-6 space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>
@@ -407,8 +409,8 @@ export default function AuditsPage() {
           onAuditCreated={() => {
             fetchStats()
             fetchRecentAudits()
-          }} />
+          }} />      </div>
       </div>
-    </div>
+    </DashboardGuard>
   )
 }

@@ -101,30 +101,10 @@ const Navbar = () => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [openDropdown]);
-  // Show loading state while auth is being determined
-  if (loading) {
-    return (
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border/30">
-        <div className="mx-4 md:mx-8 px-2 sm:px-4">
-          <div className="flex items-center justify-between h-20">
-            <Link href="/" className="flex items-center space-x-2 sm:space-x-3">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-lg flex items-center justify-center">
-                <Package className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-white" />
-              </div>
-              <span className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                Invista
-              </span>
-            </Link>
-            <div className="flex items-center space-x-2 sm:space-x-3">
-              <ThemeToggle />
-              <div className="w-6 h-6 sm:w-7 sm:h-7 bg-muted rounded-full animate-pulse" />
-            </div>
-          </div>
-        </div>
-      </nav>
-    );
-  }
+  }, [openDropdown]);  // We'll render the navbar normally but handle loading state with a flag
+  // This prevents remounting and helps maintain session
+  // Only show loading state during initial page load, not during subsequent auth checks
+  const showLoadingState = loading && !user;
 
   const dashboardNavItems = [
     {
@@ -209,13 +189,17 @@ const Navbar = () => {
         { title: "Custom Reports", href: "/reports/custom" },
       ]
     }
-  ];
-
-  // Check if we're in dashboard routes
-  const isDashboard = user && hasCompanyAccess && (pathname?.startsWith("/dashboard") ||
+  ];  // Check if we're in dashboard routes - include ALL authenticated pages
+  // Check for permanent access flag for consistent navbar display
+  const hasPermanentAccess = typeof window !== 'undefined' && user?.id && 
+    localStorage.getItem(`invista_has_access_${user.id}`) === 'true';
+  
+  // Show dashboard navbar if user has company access OR has ever had access (permanent flag)
+  const isDashboard = user && (hasCompanyAccess || hasPermanentAccess) && (pathname?.startsWith("/dashboard") ||
     pathname?.startsWith("/inventory") ||
     pathname?.startsWith("/orders") ||
     pathname?.startsWith("/profile") ||
+    pathname?.startsWith("/settings") ||
     pathname?.startsWith("/suppliers") ||
     pathname?.startsWith("/shipments") ||
     pathname?.startsWith("/reports") ||
@@ -225,7 +209,10 @@ const Navbar = () => {
     pathname?.startsWith("/warehouses") ||
     pathname?.startsWith("/invoices") ||
     pathname?.startsWith("/purchase-orders") ||
-    pathname?.startsWith("/audit"));
+    pathname?.startsWith("/audit") ||
+    pathname?.startsWith("/audits") ||
+    pathname?.startsWith("/user-profile") ||
+    pathname?.startsWith("/company-profile"));
 
   const handleAuthAction = async (action: string) => {
     if (action === "login") {
@@ -311,9 +298,7 @@ const Navbar = () => {
           className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
-      )}
-
-      {/* Single Line Futuristic Navbar */}
+      )}      {/* Single Line Futuristic Navbar */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
         ? "bg-background/95 dark:bg-background/85 backdrop-blur-2xl border-b border-border/80 dark:border-border/40 shadow-2xl shadow-primary/10 dark:shadow-primary/20"
         : "bg-background/80 dark:bg-background/70 backdrop-blur-xl border-b border-border/40 dark:border-border/20"
@@ -325,9 +310,34 @@ const Navbar = () => {
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div className="absolute w-2 h-2 bg-primary/20 rounded-full animate-ping" style={{ top: '20%', left: '10%', animationDelay: '0s' }} />
           <div className="absolute w-1 h-1 bg-purple-500/20 rounded-full animate-ping" style={{ top: '60%', left: '80%', animationDelay: '2s' }} />
-          <div className="absolute w-1.5 h-1.5 bg-cyan-500/20 rounded-full animate-ping" style={{ top: '40%', left: '60%', animationDelay: '4s' }} />        </div>
-
-        {isDashboard ? (
+          <div className="absolute w-1.5 h-1.5 bg-cyan-500/20 rounded-full animate-ping" style={{ top: '40%', left: '60%', animationDelay: '4s' }} />        
+        </div>
+        
+        {/* Show minimal navbar while loading auth state */}
+        {showLoadingState ? (
+          <div className="relative mx-4 md:mx-8 px-2 sm:px-4">
+            <div className="flex items-center justify-between h-12">
+              {/* Logo */}
+              <Link href="/" className="flex items-center space-x-3 group flex-shrink-0 relative">
+                <div className="relative">
+                  <div className="absolute inset-0 w-10 h-10 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl blur-lg opacity-40 group-hover:opacity-70 transition-all duration-500 group-hover:scale-150" />
+                  <div className="absolute inset-0 w-10 h-10 bg-gradient-to-br from-cyan-400 to-blue-600 rounded-xl blur-md opacity-30 group-hover:opacity-60 transition-all duration-300 group-hover:scale-125" />
+                  <div className="relative w-10 h-10 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-all duration-300 border-2 border-white/20 dark:border-white/10 shadow-2xl">
+                    <Package className="h-6 w-6 text-white drop-shadow-lg" />
+                  </div>
+                </div>
+                <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  Invista
+                </span>
+              </Link>
+              {/* Right side */}
+              <div className="flex items-center space-x-2 md:space-x-3">
+                <ThemeToggle />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-muted rounded-full animate-pulse" />
+              </div>
+            </div>
+          </div>
+        ) : isDashboard ? (
           /* SINGLE LINE LAYOUT FOR DASHBOARD */          <div className="relative mx-4 md:mx-8 px-2 sm:px-4">
             <div className="flex items-center justify-between h-12 gap-4">
 
@@ -777,8 +787,7 @@ const Navbar = () => {
                       <User className="mr-3 h-5 w-5 group-hover:scale-110 transition-transform duration-300" />
                       <span className="relative">Join as Individual</span>
                     </Button>
-                  </div>
-                </>
+                  </div>                </>
               )}
             </div>
           </div>

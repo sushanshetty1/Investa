@@ -101,30 +101,9 @@ const suppliers = [
 ];
 
 export default function DashboardPage() {
-  const { user, loading } = useAuth();  const router = useRouter();
+  const { user, loading } = useAuth();
   const [timeRange, setTimeRange] = useState("7d");
   const [selectedTab, setSelectedTab] = useState("overview");
-
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push("/auth/login");
-    }
-  }, [user, loading, router]);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <Package className="h-12 w-12 text-primary mx-auto mb-4 animate-spin" />
-          <p className="text-muted-foreground">Loading dashboard...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null; // Will redirect to login
-  }
   const getStatusBadge = (status: string) => {
     const variants = {
       completed: "bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-300",
@@ -137,8 +116,7 @@ export default function DashboardPage() {
 
   return (
     <DashboardGuard>
-    <div className="min-h-screen bg-background pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
+    <div className="min-h-screen bg-background pt-20">      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 lg:mb-10">
           <div className="flex-1">
@@ -146,19 +124,19 @@ export default function DashboardPage() {
               <Avatar className="h-14 w-14 border-2 border-primary/20">
                 <AvatarImage src="/placeholder-avatar.jpg" />
                 <AvatarFallback className="bg-primary text-primary-foreground text-lg font-semibold">
-                  {user.email?.charAt(0).toUpperCase() || 'U'}
+                  {user?.email?.charAt(0).toUpperCase() || 'U'}
                 </AvatarFallback>
               </Avatar>
               <div className="space-y-1">
                 <h1 className="text-2xl lg:text-3xl font-bold text-foreground leading-tight">
-                  Welcome back, {user.email?.split('@')[0] || 'User'}!
+                  Welcome back, {user?.email ? user.email.split('@')[0] : 'User'}!
                 </h1>
                 <p className="text-sm lg:text-base text-muted-foreground">
                   Here&apos;s your inventory performance overview for today
                 </p>
               </div>
             </div>
-          </div>          <div className="flex items-center gap-2 lg:gap-3 mt-6 lg:mt-0">
+          </div><div className="flex items-center gap-2 lg:gap-3 mt-6 lg:mt-0">
             <Select value={timeRange} onValueChange={setTimeRange}>
               <SelectTrigger className="w-36 h-9">
                 <SelectValue />

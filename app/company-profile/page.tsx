@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import DashboardGuard from "@/components/DashboardGuard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -350,10 +351,10 @@ export default function CompanyProfilePage() {
       </div>
     );
   }
-
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">      <div className="flex flex-col gap-2">
+    <DashboardGuard>
+      <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center justify-between"><div className="flex flex-col gap-2">
         <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
           Company Profile
         </h1>
@@ -710,8 +711,8 @@ export default function CompanyProfilePage() {
               )}
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+        </TabsContent>      </Tabs>
     </div>
+    </DashboardGuard>
   );
 }

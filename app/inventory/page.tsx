@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { InventoryAnalytics } from '@/components/inventory/InventoryAnalytics'
+import DashboardGuard from '@/components/DashboardGuard'
 
 interface DashboardStats {
   totalProducts: number
@@ -169,8 +170,8 @@ export default function InventoryDashboard() {
   const stockHealthPercentage = stats.totalProducts > 0
     ? ((stats.totalProducts - stats.lowStockItems - stats.outOfStockItems) / stats.totalProducts) * 100
     : 0
-
   return (
+    <DashboardGuard>
     <div className="py-8 px-6 mx-4 md:mx-8 space-y-8">
       {/* Header */}
       <div className="flex justify-between items-center">
@@ -448,8 +449,8 @@ export default function InventoryDashboard() {
           </Button>
         </div>
 
-        <InventoryAnalytics />
-      </div>
+        <InventoryAnalytics />      </div>
     </div>
+    </DashboardGuard>
   )
 }

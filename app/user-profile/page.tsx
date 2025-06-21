@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import DashboardGuard from "@/components/DashboardGuard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -273,10 +274,10 @@ export default function UserProfilePage() {
       </div>
     );
   }
-
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
+    <DashboardGuard>
+      <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">User Profile</h1>
           <p className="text-muted-foreground">Manage your personal information and preferences</p>
@@ -586,8 +587,8 @@ export default function UserProfilePage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+        </TabsContent>      </Tabs>
     </div>
+    </DashboardGuard>
   );
 }

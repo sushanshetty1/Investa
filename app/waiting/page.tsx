@@ -18,38 +18,43 @@ interface CompanyInvite {
   expiresAt: string;
 }
 
+import WaitingGuard from "@/components/WaitingGuard";
+
 export default function WaitingPage() {
   const { user, logout, hasCompanyAccess, checkUserAccess } = useAuth();
   const router = useRouter();
   const [invites, setInvites] = useState<CompanyInvite[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pageLoaded, setPageLoaded] = useState(false);
+  
+  // Mark page as loaded once
   useEffect(() => {
-    // If no user, redirect to login
-    if (!user) {
-      router.push('/auth/login');
-      return;
-    }
+    setPageLoaded(true);
+  }, []);
 
-    // If user has company access, redirect to dashboard
-    if (hasCompanyAccess) {
-      router.push('/dashboard');
-      return;
-    }
-
-    // If user exists, fetch invites
-    fetchInvites();
-  }, [user, hasCompanyAccess, router]);
+  // Fetch invites once we have user data and know they don't have company access
   useEffect(() => {
-    // Periodically check for company access (useful for recently created companies)
+    if (pageLoaded && user && !hasCompanyAccess) {
+      fetchInvites();
+    } else if (pageLoaded && !loading && (!user || hasCompanyAccess)) {
+      // If we have loaded and either no user or user has access already,
+      // don't show loading state for invites
+      setLoading(false);
+    }
+  }, [user, hasCompanyAccess, pageLoaded]);
+
+  // Periodically check for company access (useful for recently created companies)
+  useEffect(() => {
     if (!user || hasCompanyAccess) return;
-      const accessCheckInterval = setInterval(async () => {
+    
+    const accessCheckInterval = setInterval(async () => {
       if (!hasCompanyAccess) {
         await checkUserAccess(0);
       }
     }, 10000); // Check every 10 seconds
 
     return () => clearInterval(accessCheckInterval);
-  }, [user, hasCompanyAccess, checkUserAccess]);  const fetchInvites = async () => {
+  }, [user, hasCompanyAccess, checkUserAccess]);const fetchInvites = async () => {
     if (!user?.email) {
       setLoading(false);
       return;
@@ -96,13 +101,26 @@ export default function WaitingPage() {
 
       if (!apiResponse.ok) {
         throw new Error(result.error || 'Failed to update invite');
-      }
-
-      if (response === 'ACCEPTED') {
+      }      if (response === 'ACCEPTED') {
+        // Store in local storage that user has accepted an invitation before redirecting
+        // This helps prevent going back to waiting page after accepting
+        localStorage.setItem('invista_invite_accepted', 'true');
+        localStorage.setItem('invista_invite_accepted_time', Date.now().toString());
+        
+        // Set permanent flag that this user has access (keyed by user ID)
+        if (user?.id) {
+          localStorage.setItem(`invista_has_access_${user.id}`, 'true');
+          localStorage.setItem(`invista_has_access_time_${user.id}`, Date.now().toString());
+          localStorage.setItem(`invista_access_source_${user.id}`, 'invite_acceptance');
+        }
+        
         // Refresh user access check and redirect to dashboard
         await checkUserAccess(0);
+        
+        // Force redirect to dashboard regardless of checkUserAccess result
+        // The stored flag will keep the user on dashboard until access is updated
         router.push('/dashboard');
-      } else {
+      }else {
         // Refresh invites after declining
         fetchInvites();
       }
@@ -134,9 +152,9 @@ export default function WaitingPage() {
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
       </div>
     );
-  }
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-indigo-50/50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-900 grid-pattern">
+  }  return (
+    <WaitingGuard>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-indigo-50/50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-900 grid-pattern">
       {/* Header */}
       <header className="border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm glass-effect">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -307,9 +325,9 @@ export default function WaitingPage() {
                 ))}
               </div>
             </div>
-          )}
-        </div>
+          )}        </div>
       </div>
     </div>
+    </WaitingGuard>
   );
 }

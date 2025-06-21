@@ -25,12 +25,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [userType, setUserType] = useState<'company' | 'individual' | null>(null)
     const [hasCompanyAccess, setHasCompanyAccess] = useState(false)
     const router = useRouter()
-
-    const checkUserAccess = async (retryCount = 0) => {
+      const checkUserAccess = async (retryCount = 0) => {
         if (!user?.email || !user?.id) {
             setUserType(null);
             setHasCompanyAccess(false);
             return;
+        }
+        
+        // First check if user previously had access (permanent flag)
+        if (typeof window !== 'undefined') {
+            const hasBeenGrantedAccess = localStorage.getItem(`invista_has_access_${user.id}`) === 'true';
+            if (hasBeenGrantedAccess) {
+                console.log('AuthContext - User previously had access, setting hasCompanyAccess to true');
+                setUserType('company');
+                setHasCompanyAccess(true);
+                return;
+            }
         }
 
         try {
@@ -44,6 +54,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (companyUserData && companyUserData.length > 0) {
                 setUserType('company');
                 setHasCompanyAccess(true);
+                
+                // Set permanent access flag in localStorage
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem(`invista_has_access_${user.id}`, 'true');
+                }
+                
                 return;
             }
 
@@ -60,11 +76,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         .from('company_users')
                         .select('id, role, isOwner, isActive, companyId, userId')
                         .eq('userId', userRecord.id)
-                        .eq('isActive', true);
-
-                    if (companyUserByInternalId && companyUserByInternalId.length > 0) {
+                        .eq('isActive', true);                    if (companyUserByInternalId && companyUserByInternalId.length > 0) {
                         setUserType('company');
                         setHasCompanyAccess(true);
+                        
+                        // Set permanent access flag in localStorage
+                        if (typeof window !== 'undefined') {
+                            localStorage.setItem(`invista_has_access_${user.id}`, 'true');
+                        }
+                        
                         return;
                     }
                 }
@@ -75,11 +95,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 .from('companies')
                 .select('id, name, createdBy')
                 .eq('createdBy', user.id)
-                .eq('isActive', true);
-
-            if (companyData && companyData.length > 0) {
+                .eq('isActive', true);            if (companyData && companyData.length > 0) {
                 setUserType('company');
                 setHasCompanyAccess(true);
+                
+                // Set permanent access flag in localStorage
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem(`invista_has_access_${user.id}`, 'true');
+                }
+                
                 return;
             }
 
@@ -90,11 +114,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         .from('companies')
                         .select('id, name, createdBy')
                         .eq('createdBy', userRecord.id)
-                        .eq('isActive', true);
-
-                    if (companyByInternalId && companyByInternalId.length > 0) {
+                        .eq('isActive', true);                    if (companyByInternalId && companyByInternalId.length > 0) {
                         setUserType('company');
                         setHasCompanyAccess(true);
+                        
+                        // Set permanent access flag in localStorage
+                        if (typeof window !== 'undefined') {
+                            localStorage.setItem(`invista_has_access_${user.id}`, 'true');
+                        }
+                        
                         return;
                     }
                 }
@@ -109,11 +137,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 .select('id, name, createdAt, createdBy')
                 .eq('createdBy', user.id)
                 .eq('isActive', true)
-                .gte('createdAt', fiveMinutesAgo);
-
-            if (recentCompanyByAuth && recentCompanyByAuth.length > 0) {
+                .gte('createdAt', fiveMinutesAgo);            if (recentCompanyByAuth && recentCompanyByAuth.length > 0) {
                 setUserType('company');
                 setHasCompanyAccess(true);
+                
+                // Set permanent access flag in localStorage
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem(`invista_has_access_${user.id}`, 'true');
+                }
                 return;
             }
 
@@ -125,11 +156,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         .select('id, name, createdAt, createdBy')
                         .eq('createdBy', userRecord.id)
                         .eq('isActive', true)
-                        .gte('createdAt', fiveMinutesAgo);
-
-                    if (recentCompanyByInternal && recentCompanyByInternal.length > 0) {
+                        .gte('createdAt', fiveMinutesAgo);                    if (recentCompanyByInternal && recentCompanyByInternal.length > 0) {
                         setUserType('company');
                         setHasCompanyAccess(true);
+                        
+                        // Set permanent access flag in localStorage
+                        if (typeof window !== 'undefined') {
+                            localStorage.setItem(`invista_has_access_${user.id}`, 'true');
+                        }
+                        
                         return;
                     }
                 }
@@ -140,11 +175,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 .from('user_invitations')
                 .select('id, status, email')
                 .eq('email', user.email)
-                .eq('status', 'ACCEPTED');
-
-            if (inviteData && inviteData.length > 0) {
+                .eq('status', 'ACCEPTED');            if (inviteData && inviteData.length > 0) {
                 setUserType('individual');
                 setHasCompanyAccess(true);
+                
+                // Set permanent access flag in localStorage
+                if (typeof window !== 'undefined') {
+                    localStorage.setItem(`invista_has_access_${user.id}`, 'true');
+                }
+                
                 return;
             }
 
@@ -166,87 +205,141 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (retryCount < 3) {
                 const delay = (retryCount + 1) * 1000;
                 setTimeout(() => {
-                    checkUserAccess(retryCount + 1);
-                }, delay);
+                    checkUserAccess(retryCount + 1);                }, delay);
             }
         }
     }
-
+    
     useEffect(() => {
         let isMounted = true;
+        let subscription: { unsubscribe: () => void } | undefined;
         
-        const getSession = async () => {
-            const { data: { session } } = await supabase.auth.getSession()
-            if (isMounted) {
-                setUser(session?.user ?? null)
-                if (session?.user) {
-                    await checkUserAccess()
-                }
-                setLoading(false)
-            }
-        }
-
-        getSession()
-
-        const {
-            data: { subscription },
-        } = supabase.auth.onAuthStateChange(async (event, session) => {
-            if (!isMounted) return;
-            
-            setUser(session?.user ?? null)
-            
-            if (event === 'SIGNED_IN' && session?.user) {
-                // Handle Google sign-in user creation
-                const { data: existingUser } = await supabase
-                    .from('users')
-                    .select('id')
-                    .eq('id', session.user.id)
-                    .single()
-
-                if (!existingUser && isMounted) {
-                    // Create user record for Google sign-in
-                    const fullName = session.user.user_metadata?.full_name || ''
-                    const [firstName = '', lastName = ''] = fullName.split(' ')
-                    
-                    await supabase
-                        .from('users')
-                        .insert({
-                            id: session.user.id,
-                            email: session.user.email || '',
-                            firstName: firstName || null,
-                            lastName: lastName || null,
-                            displayName: fullName || null,
-                            avatar: session.user.user_metadata?.avatar_url || null,
-                            phone: session.user.user_metadata?.phone || null,
-                            timezone: 'UTC',
-                            language: 'en',
-                            theme: 'system',
-                            isActive: true,
-                            isVerified: true,
-                            emailVerified: session.user.email_confirmed_at ? true : false,
-                            twoFactorEnabled: false,
-                            failedLoginCount: 0,
-                            createdAt: new Date().toISOString(),
-                            updatedAt: new Date().toISOString()
-                        })
+        const initializeAuth = async () => {
+            try {
+                console.log('AuthContext - Initializing auth state');
+                
+                // First, get the current session
+                const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+                const currentSession = sessionData?.session;
+                
+                if (sessionError) {
+                    console.error('AuthContext - Error getting session:', sessionError);
                 }
                 
-                // Check user access after sign in
                 if (isMounted) {
-                    await checkUserAccess()
+                    if (currentSession?.user) {
+                        console.log('AuthContext - Session found:', currentSession.user.email);
+                        setUser(currentSession.user);
+                        
+                        // Wait for user access check to complete
+                        try {
+                            await checkUserAccess();
+                        } catch (accessError) {
+                            console.error('AuthContext - Error checking user access:', accessError);
+                            // Don't fail initialization if access check fails
+                        }
+                    } else {
+                        console.log('AuthContext - No session found');
+                        setUser(null);
+                        setUserType(null);
+                        setHasCompanyAccess(false);
+                    }
+                    
+                    // Only set loading to false after we've fully initialized
+                    if (isMounted) {
+                        setLoading(false);
+                    }
                 }
-            } else if (event === 'SIGNED_OUT') {
+                
+                // Set up the auth state change listener
+                const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
+                    if (!isMounted) return;
+                    
+                    console.log('AuthContext - Auth state change:', event);
+                    
+                    if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {                    if (session?.user) {
+                            console.log('AuthContext - User signed in or token refreshed:', session.user.email);
+                            setUser(session.user);
+                            
+                            // Check for invite acceptance flag and force check user access if found
+                            if (typeof window !== 'undefined') {
+                                const inviteAccepted = localStorage.getItem('invista_invite_accepted') === 'true';
+                                const inviteAcceptedTime = parseInt(localStorage.getItem('invista_invite_accepted_time') || '0', 10);
+                                const oneHourMs = 60 * 60 * 1000;
+                                
+                                if (inviteAccepted && (Date.now() - inviteAcceptedTime < oneHourMs)) {
+                                    console.log('AuthContext - Found invite acceptance flag, forcing access check');
+                                    await checkUserAccess(0);
+                                }
+                            }
+                            
+                            // Handle Google sign-in user creation
+                            const { data: existingUser } = await supabase
+                                .from('users')
+                                .select('id')
+                                .eq('id', session.user.id)
+                                .single();
+
+                            if (!existingUser && isMounted) {
+                                // Create user record for Google sign-in
+                                const fullName = session.user.user_metadata?.full_name || '';
+                                const [firstName = '', lastName = ''] = fullName.split(' ');
+                                
+                                await supabase
+                                    .from('users')
+                                    .insert({
+                                        id: session.user.id,
+                                        email: session.user.email || '',
+                                        firstName: firstName || null,
+                                        lastName: lastName || null,
+                                        displayName: fullName || null,
+                                        avatar: session.user.user_metadata?.avatar_url || null,
+                                        phone: session.user.user_metadata?.phone || null,
+                                        timezone: 'UTC',
+                                        language: 'en',
+                                        theme: 'system',
+                                        isActive: true,
+                                        isVerified: true,
+                                        emailVerified: session.user.email_confirmed_at ? true : false,
+                                        twoFactorEnabled: false,
+                                        failedLoginCount: 0,
+                                        createdAt: new Date().toISOString(),
+                                        updatedAt: new Date().toISOString()
+                                    });
+                            }
+                            
+                            // Check user access after sign in
+                            if (isMounted) {
+                                await checkUserAccess();
+                            }
+                        }
+                    } else if (event === 'SIGNED_OUT') {
+                        console.log('AuthContext - User signed out or deleted');
+                        if (isMounted) {
+                            setUser(null);
+                            setUserType(null);
+                            setHasCompanyAccess(false);
+                        }
+                    }
+                });
+                
+                subscription = data.subscription;
+            } catch (error) {
+                console.error('Error initializing auth:', error);
                 if (isMounted) {
-                    setUserType(null)
-                    setHasCompanyAccess(false)
+                    setLoading(false);
                 }
             }
-        })
+        };
+
+        initializeAuth();
 
         return () => {
             isMounted = false;
-            subscription.unsubscribe();
-        }
+            if (subscription) {
+                subscription.unsubscribe();
+            }
+        };
     }, []) // Remove user.id dependency to prevent infinite loops
 
     const signUp = async (email: string, password: string) => {

@@ -15,6 +15,7 @@ import { StockTransferDialog } from '@/components/inventory/StockTransferDialog'
 import { StockAdjustmentDialog } from '@/components/inventory/StockAdjustmentDialog'
 import { LowStockAlerts } from '@/components/inventory/LowStockAlerts'
 import { StockHistoryChart } from '@/components/inventory/StockHistoryChart'
+import DashboardGuard from '@/components/DashboardGuard'
 
 interface StockAdjustment {
   stockItemId: string
@@ -108,19 +109,23 @@ interface Warehouse {
 interface StockAlert {
   id: string
   type: 'LOW_STOCK' | 'OUT_OF_STOCK' | 'OVERSTOCK' | 'EXPIRING'
+  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW'
   productId: string
+  productName: string
+  productSku: string
+  variantId?: string
+  variantName?: string
   warehouseId: string
-  currentLevel: number
-  threshold: number
-  priority: 'HIGH' | 'MEDIUM' | 'LOW'
-  product: {
-    name: string
-    sku: string
-  }
-  warehouse: {
-    name: string
-    code: string
-  }
+  warehouseName: string
+  currentQuantity: number
+  minimumLevel?: number
+  maximumLevel?: number
+  reorderPoint?: number
+  expiryDate?: string
+  daysToExpiry?: number
+  message: string
+  createdAt: string
+  requiresAction: boolean
 }
 
 export default function StockPage() {  const [stockItems, setStockItems] = useState<StockItem[]>([])
@@ -247,28 +252,41 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
     ]
     setWarehouses(mockWarehouses)
   }
-
   const loadStockAlerts = async () => {
     // TODO: Implement API call to fetch stock alerts
     const mockAlerts: StockAlert[] = [
       {
         id: '1',
         type: 'LOW_STOCK',
+        severity: 'HIGH',
         productId: 'prod-2',
+        productName: 'Wireless Mouse',
+        productSku: 'WM-001',
         warehouseId: 'wh-1',
-        currentLevel: 5,
-        threshold: 10,
-        priority: 'HIGH',
-        product: {
-          name: 'Wireless Mouse',
-          sku: 'WM-001'
-        },
-        warehouse: {
-          name: 'Main Warehouse',
-          code: 'WH-MAIN'
-        }
+        warehouseName: 'Main Warehouse',
+        currentQuantity: 5,
+        minimumLevel: 10,
+        reorderPoint: 15,
+        message: 'Stock level is below minimum threshold',
+        createdAt: new Date().toISOString(),
+        requiresAction: true
       },
-      // Add more mock data...
+      {
+        id: '2',
+        type: 'OUT_OF_STOCK',
+        severity: 'CRITICAL',
+        productId: 'prod-3',
+        productName: 'USB-C Adapter',
+        productSku: 'USB-001',
+        warehouseId: 'wh-1',
+        warehouseName: 'Main Warehouse',
+        currentQuantity: 0,
+        minimumLevel: 5,
+        reorderPoint: 10,
+        message: 'Item is out of stock and needs immediate attention',
+        createdAt: new Date().toISOString(),
+        requiresAction: true
+      }
     ]
     setStockAlerts(mockAlerts)
   }
@@ -367,8 +385,8 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
       minute: '2-digit'
     })
   }
-  
-  return (
+    return (
+    <DashboardGuard>
     <div className="py-16 px-6 mx-4 md:mx-8 space-y-6">{/* Header */}
       <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 sm:justify-between sm:items-center">
         <div>
@@ -838,8 +856,8 @@ export default function StockPage() {  const [stockItems, setStockItems] = useSt
           // Implement stock adjustment logic here
           console.log('Stock adjustment:', adjustment)
           await loadData()
-        }}
-      />
+        }}      />
     </div>
+    </DashboardGuard>
   )
 }
