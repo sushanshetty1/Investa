@@ -1,6 +1,7 @@
 'use server'
 
 import { neonClient } from '@/lib/db'
+import { supabase } from '@/lib/supabaseClient'
 import {
   createSupplierSchema,
   updateSupplierSchema,
@@ -23,11 +24,30 @@ import { revalidatePath } from 'next/cache'
 // Create a new supplier
 export async function createSupplier(input: CreateSupplierInput): Promise<ActionResponse> {
   try {
+    // Get current user session from Supabase
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+    if (sessionError || !session?.user?.id) {
+      return actionError('Authentication required')
+    }
+
+    // Get user's company from Supabase
+    const { data: companyUser, error: companyError } = await supabase
+      .from('company_users')
+      .select('companyId')
+      .eq('userId', session.user.id)
+      .eq('isActive', true)
+      .single()
+
+    if (companyError || !companyUser) {
+      return actionError('User not associated with any company')
+    }
+
     const validatedData = createSupplierSchema.parse(input)
 
     const supplier = await neonClient.supplier.create({
       data: {
         ...validatedData,
+        companyId: companyUser.companyId, // Use the user's company ID
         billingAddress: validatedData.billingAddress,
         shippingAddress: validatedData.shippingAddress,
         certifications: validatedData.certifications,
