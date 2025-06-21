@@ -201,6 +201,24 @@ exports.Prisma.DepartmentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.CompanyInviteScalarFieldEnum = {
+  id: 'id',
+  companyId: 'companyId',
+  email: 'email',
+  role: 'role',
+  invitedById: 'invitedById',
+  invitedByName: 'invitedByName',
+  message: 'message',
+  status: 'status',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  sentAt: 'sentAt',
+  acceptedAt: 'acceptedAt',
+  declinedAt: 'declinedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.CompanyLocationScalarFieldEnum = {
   id: 'id',
   companyId: 'companyId',
@@ -552,6 +570,15 @@ exports.EmploymentStatus = exports.$Enums.EmploymentStatus = {
   ON_LEAVE: 'ON_LEAVE'
 };
 
+exports.InvitationStatus = exports.$Enums.InvitationStatus = {
+  PENDING: 'PENDING',
+  SENT: 'SENT',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED'
+};
+
 exports.LocationType = exports.$Enums.LocationType = {
   HEADQUARTERS: 'HEADQUARTERS',
   OFFICE: 'OFFICE',
@@ -596,15 +623,6 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
   CANCELLED: 'CANCELLED'
 };
 
-exports.InvitationStatus = exports.$Enums.InvitationStatus = {
-  PENDING: 'PENDING',
-  SENT: 'SENT',
-  ACCEPTED: 'ACCEPTED',
-  DECLINED: 'DECLINED',
-  EXPIRED: 'EXPIRED',
-  CANCELLED: 'CANCELLED'
-};
-
 exports.NotificationType = exports.$Enums.NotificationType = {
   INFO: 'INFO',
   SUCCESS: 'SUCCESS',
@@ -625,6 +643,7 @@ exports.Prisma.ModelName = {
   Company: 'Company',
   CompanyUser: 'CompanyUser',
   Department: 'Department',
+  CompanyInvite: 'CompanyInvite',
   CompanyLocation: 'CompanyLocation',
   CompanyIntegration: 'CompanyIntegration',
   CompanyAuditLog: 'CompanyAuditLog',

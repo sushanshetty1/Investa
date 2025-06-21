@@ -54,6 +54,7 @@ model Company {
   locations             CompanyLocation[]
   companyUsers          CompanyUser[]
   departments           Department[]
+  companyInvites        CompanyInvite[]
 
   @@map("companies")
 }
@@ -111,6 +112,29 @@ model Department {
 
   @@unique([companyId, name])
   @@map("departments")
+}
+
+model CompanyInvite {
+  id            String           @id @default(uuid())
+  companyId     String
+  email         String
+  role          CompanyRole      @default(EMPLOYEE)
+  invitedById   String
+  invitedByName String?
+  message       String?
+  status        InvitationStatus @default(PENDING)
+  token         String           @unique
+  expiresAt     DateTime
+  sentAt        DateTime?
+  acceptedAt    DateTime?
+  declinedAt    DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  company       Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  invitedBy     User             @relation("CompanyInvitedBy", fields: [invitedById], references: [id])
+
+  @@unique([companyId, email])
+  @@map("company_invites")
 }
 
 model CompanyLocation {
@@ -237,6 +261,7 @@ model User {
   preferences      UserPreference[]
   userRoles        UserRole[]
   sessions         UserSession[]
+  companyInvites   CompanyInvite[]    @relation("CompanyInvitedBy")
 
   @@map("users")
 }

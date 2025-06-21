@@ -49,60 +49,65 @@ export default function WaitingPage() {
     }, 10000); // Check every 10 seconds
 
     return () => clearInterval(accessCheckInterval);
-  }, [user, hasCompanyAccess, checkUserAccess]);
-  const fetchInvites = async () => {
+  }, [user, hasCompanyAccess, checkUserAccess]);  const fetchInvites = async () => {
     if (!user?.email) {
       setLoading(false);
       return;
     }
 
     try {
-      const { data, error } = await supabase
-        .from('user_invitations')
-        .select(`
-          id,
-          roleId,
-          status,
-          createdAt,
-          expiresAt,
-          invitedByName
-        `)
-        .eq('email', user.email)
-        .order('createdAt', { ascending: false });
+      const response = await fetch(`/api/company-invites?email=${encodeURIComponent(user.email)}`);
+      const result = await response.json();
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to fetch invites');
+      }
 
-      const formattedInvites = data?.map((invite: any) => ({
+      const formattedInvites = result.invites?.map((invite: any) => ({
         id: invite.id,
-        companyName: invite.invitedByName + "'s Company", // We'll improve this later
-        role: invite.roleId || 'EMPLOYEE',
+        companyName: invite.company?.displayName || invite.company?.name || 'Unknown Company',
+        role: invite.role,
         status: invite.status,
         invitedAt: invite.createdAt,
         expiresAt: invite.expiresAt
-      })) || [];      setInvites(formattedInvites);
+      })) || [];
+
+      setInvites(formattedInvites);
     } catch (error) {
-      // Error handling without logging
+      console.error('Error fetching invites:', error);
     } finally {
       setLoading(false);
     }
-  };
-  const handleInviteResponse = async (inviteId: string, response: 'ACCEPTED' | 'DECLINED') => {
+  };  const handleInviteResponse = async (inviteId: string, response: 'ACCEPTED' | 'DECLINED') => {
     try {
-      const { error } = await supabase
-        .from('user_invitations')
-        .update({ status: response })
-        .eq('id', inviteId);
+      const apiResponse = await fetch('/api/company-invites', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          inviteId,
+          status: response,
+          userId: user?.id
+        }),
+      });
 
-      if (error) throw error;
+      const result = await apiResponse.json();
+
+      if (!apiResponse.ok) {
+        throw new Error(result.error || 'Failed to update invite');
+      }
 
       if (response === 'ACCEPTED') {
-        // Redirect to dashboard after accepting
+        // Refresh user access check and redirect to dashboard
+        await checkUserAccess(0);
         router.push('/dashboard');
       } else {
-        // Refresh invites after declining        fetchInvites();
+        // Refresh invites after declining
+        fetchInvites();
       }
     } catch (error) {
-      // Error handling without logging
+      console.error('Error updating invite:', error);
     }
   };
 
@@ -130,17 +135,18 @@ export default function WaitingPage() {
       </div>
     );
   }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50/50 via-white to-indigo-50/50 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-900 grid-pattern">
       {/* Header */}
-      <header className="border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
+      <header className="border-b bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm glass-effect">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <Building2 className="h-8 w-8 text-primary" />
-            <h1 className="text-2xl font-bold">Invista</h1>
+            <Building2 className="h-8 w-8 text-primary logo-float" />
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+              Invista
+            </h1>
           </div>
-          <Button variant="outline" onClick={logout}>
+          <Button variant="outline" onClick={logout} className="hover:bg-primary/10 transition-all duration-300">
             <LogOut className="h-4 w-4 mr-2" />
             Logout
           </Button>
@@ -150,97 +156,146 @@ export default function WaitingPage() {
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-4xl mx-auto">
           {/* Welcome Section */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-4">
-              <Mail className="h-8 w-8 text-primary" />
+          <div className="text-center mb-12 animate-float">
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-primary/20 to-purple-600/20 rounded-full mb-6 glow-effect">
+              <Mail className="h-10 w-10 text-primary" />
             </div>
-            <h2 className="text-3xl font-bold mb-2">Welcome to Invista!</h2>
-            <p className="text-lg text-muted-foreground">
-              You&apos;re signed in as <span className="font-semibold">{user?.email}</span>
+            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+              Welcome to Invista!
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              You&apos;re signed in as <span className="font-semibold text-primary">{user?.email}</span>
             </p>
           </div>
 
           {/* Main Content */}
           {invites.length === 0 ? (
-            <Card className="max-w-2xl mx-auto">
-              <CardHeader className="text-center">
-                <CardTitle className="flex items-center justify-center gap-2">
-                  <Clock className="h-5 w-5 text-yellow-500" />
+            <Card className="max-w-2xl mx-auto profile-card hover:shadow-xl transition-all duration-500 animate-float delay-500">
+              <CardHeader className="text-center pb-4">
+                <CardTitle className="flex items-center justify-center gap-3 text-2xl">
+                  <Clock className="h-6 w-6 text-yellow-500" />
                   Waiting for Company Invitation
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="text-lg">
                   You need to be invited by a company to access the dashboard
                 </CardDescription>
               </CardHeader>
-              <CardContent className="text-center space-y-4">                <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-                  <p className="text-sm text-yellow-800 dark:text-yellow-200">
+              <CardContent className="text-center space-y-6">
+                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-6">
+                  <p className="text-yellow-800 dark:text-yellow-200 font-medium">
                     Please contact your company administrator to send you an invitation to join their Invista workspace.
                   </p>
                 </div>
                 
-                <div className="space-y-2">
-                  <h4 className="font-semibold">What happens next?</h4>
-                  <ul className="text-sm text-muted-foreground space-y-1">
-                    <li>• Your company admin will send you an invitation</li>
-                    <li>• You&apos;ll receive it at your registered email address</li>
-                    <li>• Accept the invitation to join their workspace</li>
-                    <li>• Get access to the full Invista dashboard</li>
+                <div className="space-y-4 text-left bg-muted/30 rounded-xl p-6">
+                  <h4 className="font-semibold text-lg text-center text-primary">What happens next?</h4>
+                  <ul className="text-muted-foreground space-y-3">
+                    <li className="flex items-center gap-3">
+                      <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
+                        <span className="text-primary text-xs font-bold">1</span>
+                      </div>
+                      Your company admin will send you an invitation
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
+                        <span className="text-primary text-xs font-bold">2</span>
+                      </div>
+                      You&apos;ll receive it at your registered email address
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
+                        <span className="text-primary text-xs font-bold">3</span>
+                      </div>
+                      Accept the invitation to join their workspace
+                    </li>
+                    <li className="flex items-center gap-3">
+                      <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
+                        <span className="text-primary text-xs font-bold">4</span>
+                      </div>
+                      Get access to the full Invista dashboard
+                    </li>
                   </ul>
                 </div>
               </CardContent>
             </Card>
           ) : (
-            <div className="space-y-6">
-              <div className="text-center">
-                <h3 className="text-2xl font-semibold mb-2">Company Invitations</h3>
-                <p className="text-muted-foreground">
+            <div className="space-y-8">
+              <div className="text-center animate-float delay-1000">
+                <h3 className="text-3xl font-bold mb-2 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                  Company Invitations
+                </h3>                <p className="text-muted-foreground text-lg">
                   You have {invites.filter(inv => inv.status === 'PENDING').length} pending invitation(s)
                 </p>
               </div>
 
-              <div className="grid gap-4">
-                {invites.map((invite) => (
-                  <Card key={invite.id} className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-6">
+              <div className="grid gap-6">
+                {invites.map((invite, index) => (
+                  <Card 
+                    key={invite.id} 
+                    className={`profile-card hover:shadow-xl transition-all duration-500 border-l-4 ${
+                      invite.status === 'PENDING' ? 'border-l-yellow-500' : 
+                      invite.status === 'ACCEPTED' ? 'border-l-green-500' : 'border-l-red-500'
+                    } ${index === 0 ? 'animate-float' : index === 1 ? 'animate-float delay-500' : 'animate-float delay-1000'}`}
+                  >
+                    <CardContent className="p-8">
                       <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-                            <Building2 className="h-6 w-6 text-white" />
+                        <div className="flex items-center space-x-6">
+                          <div className="relative">
+                            <div className="w-16 h-16 bg-gradient-to-br from-primary to-purple-600 rounded-xl flex items-center justify-center shadow-lg glow-effect">
+                              <Building2 className="h-8 w-8 text-white" />
+                            </div>
+                            {invite.status === 'PENDING' && (
+                              <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                                <span className="text-white text-xs font-bold">!</span>
+                              </div>
+                            )}
                           </div>
-                          <div>
-                            <h4 className="font-semibold text-lg">{invite.companyName}</h4>
-                            <p className="text-sm text-muted-foreground">
-                              Role: <span className="font-medium">{invite.role}</span>
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              Invited {new Date(invite.invitedAt).toLocaleDateString()}
-                            </p>
+                          <div className="space-y-2">
+                            <h4 className="font-bold text-xl text-foreground">{invite.companyName}</h4>
+                            <div className="flex items-center gap-4">
+                              <Badge variant="outline" className="border-primary/20 text-primary font-medium">
+                                {invite.role.replace('_', ' ')}
+                              </Badge>
+                              <span className="text-sm text-muted-foreground">
+                                Invited {new Date(invite.invitedAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                            {invite.status === 'PENDING' && (
+                              <p className="text-sm text-muted-foreground">
+                                Expires: {new Date(invite.expiresAt).toLocaleDateString()}
+                              </p>
+                            )}
                           </div>
                         </div>
                         
-                        <div className="flex items-center space-x-3">
-                          <Badge variant="secondary" className={`${getStatusColor(invite.status)} text-white`}>
-                            <span className="flex items-center gap-1">
+                        <div className="flex items-center space-x-4">
+                          <Badge 
+                            variant="secondary" 
+                            className={`${getStatusColor(invite.status)} text-white shadow-lg px-3 py-1 font-medium`}
+                          >
+                            <span className="flex items-center gap-2">
                               {getStatusIcon(invite.status)}
                               {invite.status}
                             </span>
                           </Badge>
                           
                           {invite.status === 'PENDING' && (
-                            <div className="flex space-x-2">
+                            <div className="flex space-x-3">
                               <Button
-                                size="sm"
+                                size="lg"
                                 onClick={() => handleInviteResponse(invite.id, 'ACCEPTED')}
-                                className="bg-green-600 hover:bg-green-700"
+                                className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-medium px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-105"
                               >
+                                <CheckCircle className="h-4 w-4 mr-2" />
                                 Accept
                               </Button>
                               <Button
-                                size="sm"
+                                size="lg"
                                 variant="outline"
                                 onClick={() => handleInviteResponse(invite.id, 'DECLINED')}
-                                className="border-red-300 text-red-600 hover:bg-red-50"
+                                className="border-red-300 text-red-600 hover:bg-red-50 dark:hover:bg-red-950 font-medium px-6 py-2 rounded-lg transition-all duration-300 hover:shadow-lg"
                               >
+                                <XCircle className="h-4 w-4 mr-2" />
                                 Decline
                               </Button>
                             </div>
